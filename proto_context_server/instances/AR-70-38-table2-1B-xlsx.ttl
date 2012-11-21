@@ -1,0 +1,31 @@
+@prefix rdfs: <http://www.w3.org/2000/01/rdf-schema#> .
+@prefix foaf: <http://xmlns.com/foaf/0.1/> .
+@prefix owl: <http://www.w3.org/2002/07/owl#> .
+@prefix xsd: <http://www.w3.org/2001/XMLSchema#> .
+@prefix rdf: <http://www.w3.org/1999/02/22-rdf-syntax-ns#> .
+@prefix ent: <http://entropy.com/terms#> .
+
+
+<ent:AR_70_38_table_2_1b> 
+        ent:description "High altitude or elevation spec, AR-70-38, Table 2-1B" ;
+	ent:elevation_units "ft" ;
+	ent:pressure_units "mb" ;
+	ent:temperature_units "f" ;
+	ent:elevation "10000.0" ;
+	ent:pressure "660.0" ;
+	ent:temperature "-42.0" ;
+	ent:elevation "15000.0" ;
+	ent:pressure "520.0" ;
+	ent:temperature "-53.0" ;
+	ent:elevation "20000.0" ;
+	ent:pressure "410.0" ;
+	ent:temperature "-68.0" ;
+	ent:elevation "30000.0" ;
+	ent:pressure "255.0" ;
+	ent:temperature "-87.0" ;
+	ent:elevation "40000.0" ;
+	ent:pressure "160.0" ;
+	ent:temperature "-98.0" ;
+	ent:elevation "50000.0" ;
+	ent:pressure "100.0" ;
+	ent:temperature "-105.0" .

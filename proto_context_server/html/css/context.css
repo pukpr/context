@@ -1,0 +1,29 @@
+p.context
+{ font-size: smaller;
+  color: dodgerblue;
+}
+
+th
+{ font-size: 120%;
+  font-family: Arial, Verdana, sans-serif;
+  background-color: blue;
+  padding:5px;
+  color: white;
+}
+
+/*
+div
+{ background-color: white;
+}
+*/
+
+td
+{ background-color: white;
+  font-family: Arial, Verdana, sans-serif;
+}
+
+
+li
+{ font-family: Arial, Verdana, sans-serif;
+  color: slategray;
+}

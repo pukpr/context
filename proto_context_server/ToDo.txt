@@ -1,0 +1,90 @@
+	Lightning PDF
+	Aquatic wave height model, plus connection to Sea-State, significant wave height
+	O-U into profiles
+	Particle size Monte-Carlo
+	Set up a rainfall drop distro too
+	Wavevector frequency PDF model
+	Calibrate corrosive model
+	Index the papers for PDF
+	Units page for resources, use repr:sciUnits
+	Map with refresh that shows explanation and Google Maps
+	Index models to SWEET terms
+	Search on all models
+	ENT classification system tied to SWEET
+	Each entry should have short narrative, include icon for resource
+	Use Wiki to PDF as an index
+	Add browser tree to individual features
+	Deliver buoyancy model
+	Correct Map locations, do it for corrosion in spain
+	Create a few Python tests
+	Collect all XLS and PPT files
+	Remove ref to cryosphere
+	Use target=_parent or target=_top
+	Req=humanDecision:Allocation, Pub=humanResearch:Publication, Spec=humanDecison:Objective
+	use capital letters for terminology
+	use realm:Land, realm:Ocean, realm:Atmosphere, realmLandform:Land
+	use phenAtmo:Thermal, phenAtmo:Weather, phenAtmo:Sunlight
+	Thermal heat sink model
+	Store FFT model as triples
+	Complete GPS example
+	Different data format generators
+	Semi-Markov sync function to scale
+	Context R should be split out, use the XYZ untuple call
+	TOPS has particle size classes, see raindrop model
+	Do humid storage which is linked to requirements
+	Use same_length predicate
+	Explanation of FFT, how to filter window or use default
+	Unit tests
+	context_solar, planck's law
+	entroplet.com/terms# --> rdf_server in html/data.ttl
+	river flow current example
+	switch graphs to native format whenever possible
+	map infor on click once zoomed in
+	coefficient of friction to RDF, needs units
+	hover on various liks
+
+	
+
+	
+	
+	
+
+	
+
+	
+	
+
+
+	
+
+
+	Named notation for graph
+	Put CSIR data as an extra tuple
+	Simulated data for DEM application
+	Name for temprary R files
+	Sometimes graph needs more sig figs
+	DEM meta data
+	Land,Terrain,Aquatic terms
+	Particulate model in salt/fresh water
+	Add average elevation to DEM
+	ID does not exist warning
+	Concat obstacles
+	Error margins on graphs
+	Auto-completion
+	Random number session seed
+	Math representation for obstacles
+	Altitude/pressure graph
+	FFT on SOS
+	shaded-relief, geohack
+	Links to Graphviz dot circles
+
+
+
+
+
+
+
+
+
+	
+	

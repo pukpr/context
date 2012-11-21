@@ -1,0 +1,441 @@
+﻿@base            <http://purl.org/net/biblio> .
+@prefix wordnet: <http://xmlns.com/wordnet/1.6/> .
+@prefix    foaf: <http://xmlns.com/foaf/0.1/> .
+@prefix    skos: <http://www.w3.org/2004/02/skos/core#> .
+@prefix     owl: <http://www.w3.org/2002/07/owl#> .
+@prefix    rdfs: <http://www.w3.org/2000/01/rdf-schema#> .
+@prefix     rdf: <http://www.w3.org/1999/02/22-rdf-syntax-ns#> .
+@prefix      cc: <http://web.resource.org/cc/> .
+@prefix    vann: <../vocab/vann/> .
+@prefix    core: <../vocab/frbr/core#> .
+@prefix     bib: <biblio#> .
+@prefix dcterms: <../dc/terms/> .
+@prefix      dc: <../dc/elements/1.1/> .
+@prefix      by: <http://creativecommons.org/licenses/by/2.0/> .
+
+# Named toplevel resources (60)
+
+<http://creativecommons.org/licenses/by/2.0/>
+	a cc:License ;
+	cc:permits cc:DerivativeWorks ,
+		   cc:Distribution ,
+		   cc:Reproduction ;
+	cc:requires cc:Attribution ,
+		    cc:Notice .
+
+<>
+	a cc:Work ,
+	  owl:Ontology ;
+	dc:creator "Bruce D'Arcus" ;
+	dc:description "A vocabulary to describe a general data model for scholarly citations. \n     It covers three primary classes: events, agents, and bibliographic reference types. It \n     is designed to offer a solid general relational model for citation metadata, and also to\n     provide a specific superset of reference types in standard formats like BibTeX, RIS, and\n     Refer/Endnote." ;
+	dc:rights "Copyright © 2006 Bruce D'Arcus" ;
+	dc:title "Citation Oriented Bibliographic Vocabulary" ;
+	dcterms:isVersionOf <biblio#> ;
+	dcterms:issued "2006-02-10" ;
+	vann:preferredNamespacePrefix "biblio" ;
+	vann:preferredNamespaceUri "http://purl.org/net/biblio#" ;
+	cc:license <http://creativecommons.org/licenses/by/2.0/> .
+
+bib:Abstract
+	a owl:Class ;
+	rdfs:isDefinedBy <biblio#> ;
+	rdfs:label "abstract"@en ;
+	rdfs:subClassOf bib:Reference .
+
+bib:Agent
+	a owl:Class ;
+	rdfs:isDefinedBy <biblio#> ;
+	rdfs:label "agent"@en ;
+	owl:equivalentClass <http://vocab.org/frbr/core#term-ResponsibleEntity> ,
+			    foaf:Agent .
+
+bib:Album
+	a owl:Class ;
+	rdfs:isDefinedBy <biblio#> ;
+	rdfs:label "album"@en ;
+	rdfs:subClassOf bib:Reference ;
+	owl:equivalentClass wordnet:Album .
+
+bib:AlbumTrack
+	a owl:Class ;
+	rdfs:isDefinedBy <biblio#> ;
+	rdfs:label "album track"@en ;
+	rdfs:subClassOf bib:Part .
+
+bib:Article
+	a owl:Class ;
+	rdfs:isDefinedBy <biblio#> ;
+	rdfs:label "article"@en ;
+	rdfs:subClassOf bib:Part ;
+	owl:equivalentClass wordnet:Article .
+
+bib:Bill
+	a owl:Class ;
+	rdfs:isDefinedBy <biblio#> ;
+	rdfs:label "bill"@en ;
+	rdfs:subClassOf bib:Legislation ;
+	owl:equivalentClass wordnet:Bill .
+
+bib:Book
+	a owl:Class ;
+	rdfs:isDefinedBy <biblio#> ;
+	rdfs:label "book"@en ;
+	rdfs:subClassOf bib:Reference ;
+	owl:equivalentClass wordnet:Book .
+
+bib:BookSection
+	a owl:Class ;
+	rdfs:isDefinedBy <biblio#> ;
+	rdfs:label "book section"@en ;
+	rdfs:subClassOf bib:Part .
+
+bib:Broadcast
+	a owl:Class ;
+	rdfs:isDefinedBy <biblio#> ;
+	rdfs:label "braadcast"@en ;
+	rdfs:subClassOf bib:Reference ;
+	owl:equivalentClass wordnet:Broadcast .
+
+bib:Chapter
+	a owl:Class ;
+	rdfs:isDefinedBy <biblio#> ;
+	rdfs:label "chapter"@en ;
+	rdfs:subClassOf bib:BookSection ;
+	owl:equivalentClass wordnet:Chapter .
+
+bib:Collection
+	a owl:Class ;
+	rdfs:isDefinedBy <biblio#> ;
+	rdfs:label "collection"@en ;
+	owl:equivalentClass wordnet:Collection .
+
+bib:Conference
+	a owl:Class ;
+	rdfs:isDefinedBy <biblio#> ;
+	rdfs:label "conference"@en ;
+	rdfs:subClassOf bib:Event ;
+	owl:equivalentClass wordnet:Conference .
+
+bib:CourtReporter
+	a owl:Class ;
+	rdfs:comment "A kind of periodical that publishes legal rulings."@en ;
+	rdfs:isDefinedBy <biblio#> ;
+	rdfs:label "court reporter"@en ;
+	rdfs:subClassOf bib:Periodical .
+
+bib:Data
+	a owl:Class ;
+	rdfs:isDefinedBy <biblio#> ;
+	rdfs:label "data"@en ;
+	rdfs:subClassOf bib:Reference .
+
+bib:Diagram
+	a owl:Class ;
+	rdfs:isDefinedBy <biblio#> ;
+	rdfs:label "diagram"@en ;
+	rdfs:subClassOf bib:Illustration ;
+	owl:equivalentClass wordnet:Diagram .
+
+bib:Dissertation
+	a owl:Class ;
+	rdfs:isDefinedBy <biblio#> ;
+	rdfs:label "dissertation"@en ;
+	rdfs:subClassOf bib:Thesis ;
+	owl:equivalentClass wordnet:Dissertation .
+
+bib:Document
+	a owl:Class ;
+	rdfs:isDefinedBy <biblio#> ;
+	rdfs:label "document"@en ;
+	rdfs:subClassOf bib:Reference ;
+	owl:equivalentClass wordnet:Docoment .
+
+bib:EMail
+	a owl:Class ;
+	rdfs:isDefinedBy <biblio#> ;
+	rdfs:label "e-mail"@en ;
+	rdfs:subClassOf bib:PersonalCommunication ;
+	owl:equivalentClass wordnet:EMail .
+
+bib:EditedBook
+	a owl:Class ;
+	rdfs:isDefinedBy <biblio#> ;
+	rdfs:label "edited book"@en ;
+	rdfs:subClassOf bib:Book .
+
+bib:Essay
+	a owl:Class ;
+	rdfs:isDefinedBy <biblio#> ;
+	rdfs:label "essay"@en ;
+	rdfs:subClassOf bib:Reference ;
+	owl:equivalentClass wordnet:Essay .
+
+bib:Event
+	a owl:Class ;
+	rdfs:isDefinedBy <biblio#> ;
+	rdfs:label "event"@en ;
+	owl:equivalentClass core:Event .
+
+bib:Figure
+	a owl:Class ;
+	rdfs:isDefinedBy <biblio#> ;
+	rdfs:label "figure"@en ;
+	rdfs:subClassOf bib:Reference ;
+	owl:equivalentClass wordnet:Figure .
+
+bib:Hearing
+	a owl:Class ;
+	rdfs:isDefinedBy <biblio#> ;
+	rdfs:label "hearing"@en ;
+	rdfs:subClassOf bib:Event ;
+	owl:equivalentClass wordnet:Hearing .
+
+bib:Illustration
+	a owl:Class ;
+	rdfs:isDefinedBy <biblio#> ;
+	rdfs:label "illustration"@en ;
+	rdfs:subClassOf bib:Reference ;
+	owl:equivalentClass wordnet:Illustration .
+
+bib:Interview
+	a owl:Class ;
+	rdfs:isDefinedBy <biblio#> ;
+	rdfs:label "interview"@en ;
+	rdfs:subClassOf bib:PersonalCommunication ;
+	owl:equivalentClass wordnet:Interview .
+
+bib:Journal
+	a owl:Class ;
+	rdfs:comment "An academic journal."@en ;
+	rdfs:isDefinedBy <biblio#> ;
+	rdfs:label "journal"@en ;
+	rdfs:subClassOf bib:Periodical .
+
+bib:Law
+	a owl:Class ;
+	rdfs:isDefinedBy <biblio#> ;
+	rdfs:label "law"@en ;
+	rdfs:subClassOf bib:Legislation ;
+	owl:equivalentClass wordnet:Law .
+
+bib:Legislation
+	a owl:Class ;
+	rdfs:comment "Documents issued by legislative bodies."@en ;
+	rdfs:isDefinedBy <biblio#> ;
+	rdfs:label "legislation"@en ;
+	rdfs:subClassOf bib:Reference ;
+	owl:equivalentClass wordnet:Legislation .
+
+bib:LegislativeBody
+	a owl:Class ;
+	rdfs:isDefinedBy <biblio#> ;
+	rdfs:label "legislative body"@en ;
+	rdfs:subClassOf bib:Organization ;
+	owl:equivalentClass wordnet:Legislative_assembly .
+
+bib:Letter
+	a owl:Class ;
+	rdfs:comment "A kind of written communication."@en ;
+	rdfs:isDefinedBy <biblio#> ;
+	rdfs:label "letter"@en ;
+	rdfs:subClassOf bib:PersonalCommunication ;
+	owl:equivalentClass wordnet:Letter .
+
+bib:Magazine
+	a owl:Class ;
+	rdfs:isDefinedBy <biblio#> ;
+	rdfs:label "magazine"@en ;
+	rdfs:subClass bib:Periodical ;
+	owl:equivalentClass wordnet:Magazine .
+
+bib:Manuscript
+	a owl:Class ;
+	rdfs:comment "An unpublished document."@en ;
+	rdfs:isDefinedBy <biblio#> ;
+	rdfs:label "manuscript"@en ;
+	rdfs:subClassOf bib:Reference ;
+	owl:equivalentClass wordnet:Manuscript .
+
+bib:Map
+	a owl:Class ;
+	rdfs:comment "A cartographic representation."@en ;
+	rdfs:isDefinedBy <biblio#> ;
+	rdfs:label "map"@en ;
+	rdfs:subClassOf bib:Reference ;
+	owl:equivalentClass wordnet:Map .
+
+bib:Memo
+	a owl:Class ;
+	rdfs:comment "More formally called a memorandum."@en ;
+	rdfs:isDefinedBy <biblio#> ;
+	rdfs:label "memo"@en ;
+	rdfs:subClassOf bib:PersonalCommunication .
+
+bib:MotionPicture
+	a owl:Class ;
+	rdfs:comment "A film, video, DVD, etc."@en ;
+	rdfs:isDefinedBy <biblio#> ;
+	rdfs:label "motion picture"@en ;
+	rdfs:subClassOf bib:Reference ;
+	owl:equivalentClass wordnet:Motion_Picture .
+
+bib:MusicalScore
+	a owl:Class ;
+	rdfs:comment "A textual representation of music."@en ;
+	rdfs:isDefinedBy <biblio#> ;
+	rdfs:label "musical score"@en ;
+	rdfs:subClassOf bib:Reference ;
+	owl:equivalentClass wordnet:Musical_Score .
+
+bib:Newspaper
+	a owl:Class ;
+	rdfs:isDefinedBy <biblio#> ;
+	rdfs:label "newspaper"@en ;
+	rdfs:subClassOf bib:Periodical ;
+	owl:equivalentClass wordnet:Newspaper .
+
+bib:Organization
+	a owl:Class ;
+	rdfs:isDefinedBy <biblio#> ;
+	rdfs:label "organization"@en ;
+	rdfs:subClassOf bib:Agent ;
+	owl:equivalentClass foaf:Organization ,
+			    wordnet:Organization .
+
+bib:Painting
+	a owl:Class ;
+	rdfs:isDefinedBy <biblio#> ;
+	rdfs:label "painting"@en ;
+	rdfs:subClassOf bib:Illustration ;
+	owl:equivalentClass wordnet:Painting .
+
+bib:Pamphlet
+	a owl:Class ;
+	rdfs:comment "An informally published document."@en ;
+	rdfs:isDefinedBy <biblio#> ;
+	rdfs:label "pamphlet"@en ;
+	rdfs:subClassOf bib:Reference ;
+	owl:equivalentClass wordnet:Patent .
+
+bib:Paper
+	a owl:Class ;
+	rdfs:comment "An unpublished document."@en ;
+	rdfs:isDefinedBy <biblio#> ;
+	rdfs:label "paper"@en ;
+	rdfs:subClassOf bib:Reference .
+
+bib:Part
+	a owl:Class ;
+	rdfs:comment "An item contained in something else; for example, a chapter in a book, or an article in a periodical."@en ;
+	rdfs:isDefinedBy <biblio#> ;
+	rdfs:label "part"@en ;
+	rdfs:subClassOf bib:Reference ;
+	owl:equivalentClass wordnet:Part .
+
+bib:Patent
+	a owl:Class ;
+	rdfs:isDefinedBy <biblio#> ;
+	rdfs:label "patent"@en ;
+	rdfs:subClassOf bib:Reference ;
+	owl:equivalentClass wordnet:Patent .
+
+bib:Periodical
+	a owl:Class ;
+	rdfs:isDefinedBy <biblio#> ;
+	rdfs:label "collection"@en ;
+	rdfs:subClassOf bib:Collection ;
+	owl:equivalentClass wordnet:Periodical .
+
+bib:Person
+	a owl:Class ;
+	rdfs:isDefinedBy <biblio#> ;
+	rdfs:label "person"@en ;
+	rdfs:subClassOf bib:Agent ;
+	owl:equivalentClass core:Person ,
+			    foaf:Person ,
+			    wordnet:Person .
+
+bib:PersonalCommunication
+	a owl:Class ;
+	rdfs:isDefinedBy <biblio#> ;
+	rdfs:label "personal communication"@en ;
+	rdfs:subClassOf bib:Reference ,
+			wordnet:Communication .
+
+bib:Poster
+	a owl:Class ;
+	rdfs:isDefinedBy <biblio#> ;
+	rdfs:label "poster"@en ;
+	rdfs:subClassOf bib:Reference .
+
+bib:Proceedings
+	a owl:Class ;
+	rdfs:isDefinedBy <biblio#> ;
+	rdfs:label "proceedings"@en ;
+	rdfs:subClassOf bib:Collection .
+
+bib:Publisher
+	a owl:Class ;
+	rdfs:isDefinedBy <biblio#> ;
+	rdfs:label "publisher"@en ;
+	rdfs:subClassOf bib:Organization ;
+	owl:equivalentClass wordnet:Publisher .
+
+bib:Reference
+	a owl:Class ;
+	rdfs:isDefinedBy <biblio#> ;
+	rdfs:label "bibliographic reference"@en ;
+	rdfs:subClassOf core:Manifestation .
+
+bib:Report
+	a owl:Class ;
+	rdfs:isDefinedBy <biblio#> ;
+	rdfs:label "report"@en ;
+	rdfs:subClassOf bib:Reference ;
+	owl:equivalentClass wordnet:Report .
+
+bib:Review
+	a owl:Class ;
+	rdfs:isDefinedBy <biblio#> ;
+	rdfs:label "review"@en ;
+	rdfs:subClassOf bib:Reference ;
+	owl:equivalentClass wordnet:Review .
+
+bib:Series
+	a owl:Class ;
+	rdfs:isDefinedBy <biblio#> ;
+	rdfs:label "series"@en ;
+	rdfs:subClassOf bib:Collection .
+
+bib:Song
+	a owl:Class ;
+	rdfs:isDefinedBy <biblio#> ;
+	rdfs:label "song"@en ;
+	rdfs:subClassOf bib:Reference ;
+	owl:equivalentClass wordnet:Song .
+
+bib:Speech
+	a owl:Class ;
+	rdfs:isDefinedBy <biblio#> ;
+	rdfs:label "speech"@en ;
+	rdfs:subClassOf bib:Reference ;
+	owl:equivalentClass wordnet:Speech .
+
+bib:Thesis
+	a owl:Class ;
+	rdfs:isDefinedBy <biblio#> ;
+	rdfs:label "thesis"@en ;
+	rdfs:subClassOf bib:Reference .
+
+bib:Workshop
+	a owl:Class ;
+	rdfs:isDefinedBy <biblio#> ;
+	rdfs:label "workshop"@en ;
+	rdfs:subClassOf bib:Event .
+
+bib:presentedAt
+	a owl:ObjectProperty ;
+	rdfs:isDefinedBy <biblio#> ;
+	rdfs:label "presented at"@en ;
+	rdfs:subPropertyOf dc:related ;
+	skos:definition "An item presented at an event."@en .

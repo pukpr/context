@@ -1,0 +1,1 @@
+assert(user(pp,[realname('Paul Pukite'),password('$1$AfpjvESH$1kcjBHlUHiVWxwQYNa7K71'),allow([read(_,_),write(_,_),admin(_)])])).

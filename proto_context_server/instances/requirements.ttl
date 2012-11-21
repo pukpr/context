@@ -1,0 +1,385 @@
+#
+@prefix rdf: <http://www.w3.org/1999/02/22-rdf-syntax-ns#> .
+@prefix dc:  <http://purl.org/dc/elements/1.1/> .
+@prefix dcterms: <http://purl.org/dc/terms/> .
+@prefix doap: <http://usefulinc.com/ns/doap#> .
+@prefix foaf: <http://xmlns.com/foaf/0.1/> .
+@prefix muto: <http://purl.org/muto/core#> .
+@prefix owl: <http://www.w3.org/2002/07/owl#> .
+@prefix rdfs: <http://www.w3.org/2000/01/rdf-schema#> .
+@prefix sioc: <http://rdfs.org/sioc/ns#> .
+@prefix sioctypes: <http://rdfs.org/sioc/types#> .
+@prefix skos: <http://www.w3.org/2004/02/skos/core#> .
+@prefix tags: <http://www.holygoat.co.uk/owl/redwood/0.1/tags/> .
+@prefix req: <http://ns.softwiki.de/req/> .
+
+@prefix context:  <https://babelfish.arc.nasa.gov/confluence/display/AVMPROJ/BAE#> .
+@prefix ent:  <http://entroplet.com/terms#> .
+
+
+ent:ModelPDF
+	a	req:ReferencePoint;
+	ent:workflow_path		"/context_search/search";
+	ent:workflow_comment	"Model index workflow"
+	.
+
+ent:ModelPSD
+	a	req:ReferencePoint;
+	ent:workflow_path		"/context_psd_workflow/navigate";
+	ent:workflow_comment	"PSD index workflow"
+	.
+
+ent:ModelAny
+	a	req:ReferencePoint;
+	ent:workflow_path		"/any_model_index";
+	ent:workflow_comment	"Placeholder model"
+	.
+
+ent:FineTerrain
+	a			req:ReferencePoint;
+	ent:workflow_path	"/context_select/navigate?category=fine_terrain";
+	ent:workflow_comment	"Fine terrain features"
+	.
+
+ent:Surface
+	a			req:ReferencePoint;
+	ent:workflow_path	"/context_select/navigate?category=fine_terrain";
+	ent:workflow_comment	"Fine terrain surface properties"
+	.
+
+ent:GrossTerrain
+	a			req:ReferencePoint;
+	ent:workflow_path	"/context_select/navigate?category=gross_terrain";
+	ent:workflow_comment	"Gross terrain features"
+	.
+
+ent:Wave
+	a			req:ReferencePoint;
+	ent:workflow_path	"/context_select/navigate?category=wave";
+	ent:workflow_comment	"Aquatic wave features"
+	.
+
+ent:Wind
+	a			req:ReferencePoint;
+	ent:workflow_path	"/context_select/navigate?category=wind";
+	ent:workflow_comment	"Wind features"
+	.
+
+ent:EMI
+	a			req:ReferencePoint;
+	ent:workflow_path	"/context_select/navigate?category=clutter";
+	ent:workflow_comment	"EMI features"
+	.
+
+
+ent:Lakes
+	a			req:ReferencePoint;
+	ent:workflow_path	"/context_select/navigate?category=lakes";
+	ent:workflow_comment	"Inland water features"
+	.
+
+ent:Particles
+	a			req:ReferencePoint;
+	ent:workflow_path	"/context_select/navigate?category=particles";
+	ent:workflow_comment	"Particulate features"
+	.
+
+ent:Thermal
+	a			req:ReferencePoint;
+	ent:workflow_path	"/context_select/navigate?category=thermal";
+	ent:workflow_comment	"Thermal features"
+	.
+
+
+ent:Rainfall
+	a			req:ReferencePoint;
+	ent:workflow_path	"/context_select/navigate?category=rainfall";
+	ent:workflow_comment	"Precipitation features"
+	.
+
+
+ent:Corrosion
+	a			req:ReferencePoint;
+	ent:workflow_path	"/context_select/navigate?category=corrosion";
+	ent:workflow_comment	"Corrosion features"
+	.
+
+
+ent:Resources
+	a			req:ReferencePoint;
+	ent:workflow_path	"/context_resources/navigate";
+	ent:workflow_comment	"Resources"
+	.
+
+
+
+
+context:MCO-4790-18B
+	a	req:ReferencePoint;
+	dc:subject	"humanEnvirStandards:EnvironmentalStandard" ;
+	dc:subject	"procChemical:Corrosion" ;
+	rdfs:label		"MCO-4790.18B";
+    dcterms:hasPart	"16 Jul 04  / TM 4795-34-2 / TM4795-12-1";
+	rdfs:comment	"salt-fog conditions" ;
+	req:references	ent:Corrosion
+	.
+
+context:MIL-STD-464A
+	a	req:ReferencePoint;
+	dc:subject	"phenAtmoLightning:Lightning" ;
+	dc:subject	"humanEnvirStandards:EnvironmentalStandard" ;
+	rdfs:label		"MIL-STD-464A";
+	dcterms:hasPart	"Lightning Indirect Effects environment specified in Paragraph 5.4";
+	rdfs:comment	"lightning strikes" ;
+	req:references	ent:EMI
+	.
+
+context:AR-70-38
+	a	req:ReferencePoint;
+	dc:subject	"humanEnvirStandards:EnvironmentalStandard" ;
+	dc:subject	"propFraction:Humidity" ;
+	rdfs:label		"AR-70-38";
+	dcterms:hasPart	"table 2.1";
+	rdfs:comment	"humid storage conditions" ;
+	req:references	ent:Resources
+	.
+
+context:USCS-Soil-Classification-System
+	a	req:ReferencePoint;
+	dc:subject	"humanEnvirStandards:EnvironmentalStandard" ;
+	dc:subject	"realmSoil:SoilLayer" ;
+	rdfs:label		"USCS-Soil-Classification-System";
+    dcterms:hasPart	"unspecified";
+	rdfs:comment	"level, clean, clay surface" ;
+	req:references	ent:FineTerrain
+	.
+
+context:NRMM
+	a	req:ReferencePoint;
+	dc:subject	"humanEnvirStandards:EnvironmentalStandard" ;
+	dc:subject	"propFraction:Humidity" ;
+	rdfs:label		"NRMM";
+    dcterms:hasPart	"unspecified";
+	rdfs:comment	"German dry conditions",
+					"Jordan dry conditions",
+					"German wet conditions",
+					"German snow conditions",
+					"Jordan sand conditions",
+					"North Korea dry conditions",
+					"North Korea wet conditions" ;
+	req:references	ent:Resources
+	.
+
+context:NATO_AEP-5 
+	a	req:ReferencePoint;
+	dc:subject	"humanEnvirStandards:EnvironmentalStandard" ;
+	dc:subject	"phenAtmoPressure:Barometric" ;
+	rdfs:label		"NATO AEP-5";
+        dcterms:hasPart	"ambient conditions";
+	rdfs:comment	"at 150 m altitude" ;
+	req:references	ent:Resources
+        .
+
+
+
+
+
+
+context:AmbientTemperature
+	a	req:Requirement;
+	dc:subject	"propTemperature:Temperature" ;
+	rdfs:comment	"max ambient temperature",
+					"-XX degrees C to +XX degrees C",
+					"ambient air temperatures",
+					"temperatures ranging between -XX F and XX F";
+	req:references	ent:Thermal
+	.
+
+context:Slope
+	a	req:Requirement;
+	dc:subject	"realmBiolBiome:Terrain" ;
+	rdfs:comment	"all Grade & Slope",
+					"XX% side slope",
+					"slope operations up to and including XX% (T)",
+					"XX% grade",
+					"XX% hard-dry grade",
+					"slopes up to and including the maximum grade",
+					"dry hard surface, XX% grade (XX degrees)",
+					"uphill or downhill",
+					"hard surface ingress and egress walls sloped at an angle no less thanXX degrees";
+	req:references	ent:GrossTerrain
+	.
+
+context:SeaState
+	a	req:Requirement;
+	dc:subject	"propSpaceHeight:SeaState" ;
+	rdfs:comment	"Sea State characterized by a XX meter SWH",
+					"calm water",
+					"sea state conditions",
+					"Significant Wave Height (SWH) of XX meters";
+	req:references	ent:Wave
+	.
+
+
+context:Surface
+	a	req:Requirement;
+	dc:subject	"propMass:Roughness" ;
+	rdfs:comment	"level, hard surfaced road",
+					"level, hard surface",
+					"level, clean, clay surface",
+					"flat secondary roads (T)",
+					"hard surface road with a coefficient of friction of XX",
+					"dry hard surface road that is free of loose material" ;
+	req:references	ent:FineTerrain
+	.
+
+context:Terrain
+	a	req:Requirement;
+	dc:subject	"realmBiolBiome:Terrain" ;
+	rdfs:comment	"level, hard surfaced road",
+					"cross-country",
+					"Root Mean Square (RMS) ride courses";
+	req:references	ent:FineTerrain
+	.
+
+context:Rainfall
+	a	req:Requirement;
+	dc:subject	"phenAtmoPrecipitation:Rainfall" ;
+	rdfs:comment	"XX mm (XX inch) rainfall per hour";
+	req:references	ent:Rainfall
+	.
+
+context:ClimateConditions
+	a	req:Requirement;
+	dc:subject	"propFraction:Humidity" ;
+	rdfs:comment	"German dry conditions",
+					"Jordan dry conditions",
+					"German wet conditions",
+					"German snow conditions",
+					"Jordan sand conditions",
+					"North Korea dry conditions",
+					"North Korea wet conditions";
+	req:references	ent:Resources
+	.
+
+context:Obstacle
+	a	req:Requirement;
+	dc:subject	"reprSpaceGeometry:Surface" ;
+	rdfs:comment	"non-deformable, half-round obstacle of XX inches",
+					"Obstacle Height (in.):    WW   XX   YY   ZZ";
+	req:references	ent:FineTerrain
+	.
+
+context:RiverLine
+	a	req:Requirement;
+	dc:subject	"realmLandform:LandRegion" ;
+	rdfs:comment	"river line operations";
+	req:references	ent:Lakes
+	.
+
+context:Surf
+	a	req:Requirement;
+	dc:subject	"phenWave:GravityWave" ;
+	rdfs:comment	"XX meter (XX feet) plunging surf",
+	                "transiting the surf and beach regions",
+	                "through the surf and onto a beach";
+	req:references	ent:Wave
+	.
+
+context:Water
+	a	req:Requirement;
+	dc:subject	"phenFluidDynamics:FluidPhenomena" ;
+	rdfs:comment	"fresh water";
+	req:references	ent:Lakes
+	.
+
+context:Corrosive
+	a	req:Requirement;
+	dc:subject	"procChemical:Corrosion" ;
+	rdfs:comment	"salt-fog conditions",
+	                "water contamination",
+					"salt atmosphere";
+	req:references	ent:Corrosion
+	.
+
+context:LandDistance
+	a	req:Requirement;
+	dc:subject	"realmLandform:LandRegion" ;
+	rdfs:comment	"distance of XX km";
+	req:references	ent:GrossTerrain
+	.
+
+context:AquaticDistance
+	a	req:Requirement;
+	dc:subject	"phenOcean:OceanPhenomena" ;
+	rdfs:comment	"XX nautical miles of water operation in sea state XX";
+	req:references	ent:Wave
+	.
+
+context:Step
+	a	req:Requirement;
+	dc:subject	"reprSpaceGeometry:Surface" ;
+	rdfs:comment	"stepping up and down a vertical step of XX inches";
+	req:references	ent:FineTerrain
+	.
+
+context:Gap
+	a	req:Requirement;
+	dc:subject	"reprSpaceGeometry:Surface" ;
+	rdfs:comment	"a gap no less than XX ft";
+	req:references	ent:FineTerrain
+	.
+
+context:Ditch
+	a	req:Requirement;
+	dc:subject	"reprSpaceGeometry:Surface" ;
+	rdfs:comment	"a ditch of no less than XX ft deep and no less than XX ft across";
+	req:references	ent:FineTerrain
+	.
+
+context:Fording
+	a	req:Requirement;
+	dc:subject	"realmHydroBody:Lake" ;
+	rdfs:comment	"ford a XX inch (T)",
+					"fording operations";
+	req:references	ent:Lakes
+	.
+
+context:AmbientWaterTemperature
+	a	req:Requirement;
+	dc:subject	"propTemperature:Temperature" ;
+	rdfs:comment	"max ambient water temperature of XX deg C";
+	req:references	ent:Resources
+	.
+
+context:Humidity
+	a	req:Requirement;
+	dc:subject	"propFraction:Humidity" ;
+	rdfs:comment	"ambient relative humidity of up to XX percent",
+					"humid storage conditions";
+	req:references	ent:Resources
+	.
+
+context:Altitude
+	a	req:Requirement;
+	dc:subject	"phenAtmoPressure:Barometric" ;
+	rdfs:comment	"-XX ft to +XX ft elevation",
+                        "at 150 m altitude";
+	req:references	ent:Resources
+	.
+
+
+context:Tree
+	a	req:Requirement;
+	dc:subject	"reprSpaceGeometry:Surface" ;
+	rdfs:comment	"XX inch tree";
+	req:references	ent:FineTerrain
+	.
+
+context:Lightning
+	a	req:Requirement;
+	dc:subject	"phenAtmoLightning:Lightning" ;
+	rdfs:comment	"lightning strikes";
+	req:references	ent:EMI
+	.
+

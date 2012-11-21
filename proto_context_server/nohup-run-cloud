@@ -1,0 +1,1 @@
+sudo nohup env PATH=/bin:/usr/local/bin/:/usr/bin swipl -g 'cp_server,sleep(100000000)' -s run.pl -t halt &

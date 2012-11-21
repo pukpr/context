@@ -1,0 +1,57 @@
+@prefix rdfs: <http://www.w3.org/2000/01/rdf-schema#> .
+@prefix foaf: <http://xmlns.com/foaf/0.1/> .
+@prefix owl: <http://www.w3.org/2002/07/owl#> .
+@prefix xsd: <http://www.w3.org/2001/XMLSchema#> .
+@prefix rdf: <http://www.w3.org/1999/02/22-rdf-syntax-ns#> .
+@prefix ent: <http://entroplet.com/terms#> .
+
+
+<http://entroplet.com/terms#Calm+%28glassy%29> ent:sea_state "0" ;
+	ent:wave_height "[0,0]" ;
+        ent:unit "m";
+	ent:description "Calm (glassy)" .
+
+<http://entroplet.com/terms#Calm+%28rippled%29> ent:sea_state "1" ;
+	ent:wave_height "[0,0.1]" ;
+        ent:unit "m";
+	ent:description "Calm (rippled)" .
+
+<http://entroplet.com/terms#Smooth+%28wavelets%29> ent:sea_state "2" ;
+	ent:wave_height "[0.1, 0.5]" ;
+        ent:unit "m";
+	ent:description "Smooth (wavelets)" .
+
+ent:Slight ent:sea_state "3" ;
+	ent:wave_height "[0.5, 1.25]" ;
+        ent:unit "m";
+	ent:description "Slight" .
+
+ent:Moderate ent:sea_state "4" ;
+	ent:wave_height "[1.25, 2.5]" ;
+        ent:unit "m";
+	ent:description "Moderate" .
+
+ent:Rough ent:sea_state "5" ;
+	ent:wave_height "[2.5, 4]" ;
+        ent:unit "m";
+	ent:description "Rough" .
+
+<http://entroplet.com/terms#Very+rough> ent:sea_state "6" ;
+	ent:wave_height "[4, 6]" ;
+        ent:unit "m";
+	ent:description "Very rough" .
+
+ent:High ent:sea_state "7" ;
+	ent:wave_height "[6, 9]" ;
+        ent:unit "m";
+	ent:description "High" .
+
+<http://entroplet.com/terms#Very+high> ent:sea_state "8" ;
+	ent:wave_height "[9, 14]" ;
+        ent:unit "m";
+	ent:description "Very high" .
+
+ent:Phenomenal ent:sea_state "9" ;
+	ent:wave_height "[14,9999]" ;
+        ent:unit "m";
+	ent:description "Phenomenal" .

@@ -1,0 +1,308 @@
+:- module(context_r_demo, [rplot/2,
+                           rhist2d/2,
+                           rplot_with_regression/7]).
+
+/** <module> Interfacing with R
+    * Bessel function
+    * Comparison to other math
+*/
+
+:- use_module(context_complex).
+:- use_module(library('R')).
+:- use_module(context_math).
+
+:- op(400, xfx, ~).
+
+% Note that [with(non_interactive)] is required for Linux but not Windows
+
+:- context:register(context_r_demo:r_app).
+:- context:register(context_r_demo:complex_psd).
+
+% :- http_handler(root(r_app), rcplx, []).
+% :- U = 'complex_psd', http_handler(root(U), U, []).
+
+
+xy([], Xc, X, Yc, Y) :- reverse(Xc, X), reverse(Yc, Y).
+xy([[X,Y]|Rest], Ix, Xc, Iy, Yc) :-
+    xy(Rest, [X|Ix], Xc, [Y|Iy], Yc).
+
+xy(Pairs, X, Y) :-
+    xy(Pairs, [], X, [], Y).
+
+xyz([], Xc, X, Yc, Y, Zc, Z) :- reverse(Xc, X), reverse(Yc, Y), reverse(Zc, Z).
+xyz([[X,Y,Z]|Rest], Ix, Xc, Iy, Yc, Iz, Zc) :-
+    xyz(Rest, [X|Ix], Xc, [Y|Iy], Yc, [Z|Iz], Zc).
+
+xyz(Triples, X, Y, Z) :-
+    xyz(Triples, [], X, [], Y, [], Z).
+
+
+r_open_session :-
+    % getenv('OS', 'Windows_NT'),
+    current_prolog_flag(windows, true),
+    r_open([]), !.
+r_open_session :-
+    r_open([with(non_interactive)]).
+
+open_mat(N, Lat, Lon) :-
+     r_open_session,
+     r_in( library('R.matlab') ),
+     r_in( library('R.utils') ),
+     data <- readMat('"./Rough_Track_Rock_Bed.mat"'),
+     y <- 'data$Y[0:1024]',
+     z <- 'data$Z[0:1024]',
+     lat <- 'data$Start.Coordinate[1]',
+     lon <- 'data$Start.Coordinate[2]',
+     Lat <- lat,
+     Lon <- lon,
+     Y <- y,
+     Z <- z,
+     r_close,!,
+     %,
+     length(Z, N),
+     rplot(Y,Z)
+     .
+
+
+
+
+rplot(X,Y) :-
+     r_open_session,
+     y <- Y,
+     x <- X,
+     r_in( x11(width=5,height=3.5) ),
+     r_in( plot(x,y) ),
+     write( 'Press Return to continue...' ), nl,
+     read_line_to_codes( user_input, _ ),
+     r_print( 'dev.off()' ),
+     r_close.
+
+rcontour(Image, X,Y,Z, Contour) -->
+     {
+     Vector range [3.0,6.0]/0.1,
+     r_open_session,
+     y <- Y,
+     x <- X,
+     z <- Z,
+     at <- Vector,
+     r_in( library(lattice) ),
+     dquote(Image, FN),
+     r_in( bmp(filename=FN)),
+     (   Contour = true,
+         r_in( 'contourplot(z~x*y, cuts=10)' )
+     ;
+         r_in( 'levelplot(z~x*y, col.regions=terrain.colors, at=at)' )
+     ),
+     r_print( 'dev.off()' ),
+     r_close
+     },
+     html(img(src(Image))).
+
+/*
+rlevel(Image,X,Y,Z) -->
+     {
+     r_open_session,
+     y <- Y,
+     x <- X,
+     z <- Z,
+     r_in( library(lattice) ),
+     dquote(Image, FN),
+     r_in( bmp(filename=FN)),
+     r_print( 'dev.off()' ),
+     r_close
+     },
+     html(img(src(Image))).
+*/
+
+rhist2d(X,Y) :-
+     r_open_session,
+     y <- Y,
+     x <- X,
+     r_in( library(gplots) ),
+     r_in( x11(width=5,height=3.5) ),
+     r_in( hist2d(x,y, nbins=20) ),
+     write( 'Press Return to continue...' ), nl,
+     read_line_to_codes( user_input, _ ),
+     r_print( 'dev.off()' ),
+     r_close.
+
+rplot_with_regression(Image, X, Y, Title, X_Axis, Y_Axis, Slope) :-
+     r_open_session,
+     y <- Y,
+     x <- X,
+     fitxy <- lm('y~x'),
+     r_print(fitxy),
+     Slope <- 'as.double(fitxy$coefficients[2])',
+     dquote(Image, FN),
+     r_in( bmp(filename=FN)),
+     % r_in( x11(width=5,height=3.5) ),
+     r_in( plot(x,y,xlab=X_Axis,ylab=Y_Axis,main=Title) ),
+     % r_in( summary(fitxy) ),
+     r_in( abline(fitxy) ),
+     r_print( 'dev.off()' ),
+     r_close.
+
+
+rtest :-
+     r_open_session,
+     y <- rnorm(50),
+     r_print( y ),
+     x <- rnorm(y),
+     r_in( x11(width=5,height=3.5) ),
+     r_in( plot(x,y) ),
+     write( 'Press Return to continue...' ), nl,
+     read_line_to_codes( user_input, _ ),
+     r_print( 'dev.off()' ),
+     Y <- y,
+     write( y(Y) ), nl,
+     findall( Zx, between(1,9,Zx), Z ),
+     z <- Z,
+     r_print( z ),
+     cars <- c(1, 3, 6, 4, 9),
+     r_in(pie(cars)),
+     write( 'Press Return to continue...' ), nl,
+     read_line_to_codes( user_input, _ ),
+     r_close.
+
+rbessel :-
+    r_open_session,
+    Input mapdot sqrt ~> 2.*[0.00001,0.0001,0.001,0.01,0.1,1.0,10.0,100.0],
+    y <- besselK(Input,1),
+    Y <- y,
+    Output mapdot Input * Y,
+    write(Output), nl,
+    % write( y(Y) ), nl,
+    r_close.
+
+delayed_exponent_R(L, Alpha, S, R) :-
+    Theta is -L*S,
+    num <- complex(modulus=1.0, argument=Theta),
+    den <- complex(real=Alpha, imaginary=S),
+    r <- num/den,
+    R = r.
+% retract(num), retract(den).
+
+two_level_model_R(L1, Alpha1, L2, Alpha2, S, R) :-
+    delayed_exponent_R(L1, Alpha1, S, P),
+    delayed_exponent_R(L2, Alpha2, S, Q),
+    a <- 1.0-P,
+    b <- 1.0-Q,
+    c <- 1.0-P*Q,
+    r <- 'Re'(a*b/c/S^2),
+    R <- r.
+% retract(a), retract(b), retract(c), retract(r).
+
+frequencies(S, _, Result, Result) :-
+    S < 0.01.
+frequencies(S, linear, L, Result) :-
+    S1 is 0.95*S,
+    frequencies(S1, linear, [S|L], Result).
+frequencies(S, log, L, Result) :-
+    S1 is 0.95*S,
+    LogS is log(S1),
+    frequencies(S1, log, [LogS|L], Result).
+
+two_level_spectrum_R(_, _, _, _, S, Result, Result) :-
+    S < 0.01.
+two_level_spectrum_R(L1, Alpha1, L2, Alpha2, S, L, Result) :-
+    two_level_model_R(L1, Alpha1, L2, Alpha2, S, R),
+    S1 is 0.95*S,
+    LogR is log(R),
+    two_level_spectrum_R(L1, Alpha1, L2, Alpha2, S1, [LogR|L], Result).
+
+dquote(X, Y) :-
+    atomic_list_concat(['".', X, '"'], Y).
+
+% :- r_open([with(non_interactive)]).
+
+r_complex(FileName) :-
+    r_open_session, % ([with(non_interactive)]),
+    S is 100.0,
+    Alpha1 is 1.0,
+    L1 is 1.0,
+    Alpha2 is 1.0,
+    L2 is 1.0,
+    frequencies(S, log, [], F),
+    two_level_spectrum_R(L1, Alpha1, L2, Alpha2, S, [], Result),
+    x <- F,
+    y <- Result,
+    !,
+    dquote(FileName, FN),
+    r_in( bmp(filename=FN)),
+    r_in( plot(x,y) ),
+    r_in( 'dev.off()'),
+    r_close.
+
+r_app(_) :-
+    FN = '/html/images/psd.bmp',
+    r_complex(FN),
+    reply_html_page(title('Chart'),
+                   [ p('PSD from R'),
+                     img(src(FN))
+                   ]).
+
+delayed_exponent(L, Alpha, S, R) :-
+    Theta is -L*S,
+    Num isx 1.0*exp(i*Theta),
+    R isx Num / (Alpha & S).
+
+two_level_model(L1, Alpha1, L2, Alpha2, S, R) :-
+    delayed_exponent(L1, Alpha1, S, P),
+    delayed_exponent(L2, Alpha2, S, Q),
+    One isx 1.0 & 0.0,
+    K   isx S   & 0.0,
+    R & _ isx (One-P)*(One-Q)/(One-P*Q)/K^2.
+
+two_level_spectrum(_, _, _, _, S, Result, Result) :-
+    S < 0.01.
+two_level_spectrum(L1, Alpha1, L2, Alpha2, S, L, Result) :-
+    two_level_model(L1, Alpha1, L2, Alpha2, S, R),
+    S1 is 0.95*S,
+    % LogR is log(R),
+    LogR is R,
+    two_level_spectrum(L1, Alpha1, L2, Alpha2, S1, [LogR|L], Result).
+
+builtin_complex(Length, Scale, F, Result) :-
+    S is 100.0,
+    Alpha1 is 1.0,
+    L1 = Length,
+    Alpha2 is 1.0,
+    L2 = Length,
+    frequencies(S, Scale, [], F),
+    two_level_spectrum(L1, Alpha1, L2, Alpha2, S, [], Result).
+
+
+construct_psd([], [], Out, Out).
+construct_psd([F|FR], [R|RR], In, Out) :-
+    atomic_list_concat([In, '+ "', F, ',', R, '\\n"'], Next),
+    construct_psd(FR, RR, Next, Out).
+
+complex_psd(Request) :-
+    http_parameters(Request, [length(Value, [float])]),
+    builtin_complex(Value, log, F, Result),
+    construct_psd(F, Result, '"S, Intensity\\n"', Out),
+    reply_html_page(% cliopatria(default),
+                   [title('PSD'),
+                    \(con_text:style_cliopatria)
+                    % \(context_graphing:dygraph_script_load)
+                   ],
+                   [
+                     \(context_graphing:dygraph_plot( true,
+                                                      '',
+                                                      'log of wave number',
+                                                      'PSD',
+                                                      'Constructed PSD from two-level',
+                                                      Out ))
+                   ]).
+
+test_complex_math(A,B) :-
+   A&B isx ((1&1) + (1&1))/((1&1) + (1&1)).
+
+
+
+
+
+
+
+
+

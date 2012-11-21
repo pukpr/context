@@ -1,0 +1,611 @@
+@prefix rdfs: <http://www.w3.org/2000/01/rdf-schema#> .
+@prefix foaf: <http://xmlns.com/foaf/0.1/> .
+@prefix owl: <http://www.w3.org/2002/07/owl#> .
+@prefix xsd: <http://www.w3.org/2001/XMLSchema#> .
+@prefix rdf: <http://www.w3.org/1999/02/22-rdf-syntax-ns#> .
+@prefix ent: <http://entroplet.com/terms#> .
+
+
+<https://babelfish.arc.nasa.gov/confluence/download/attachments/19202054/0> a ent:requirement ;
+	ent:uri		"/ref/FANG_reqts_to_BAE.htm" ;
+	ent:req_category "Category" ;
+	ent:req_attribute "Attribute Title" ;
+	ent:req_system_level "System Level" ;
+	ent:req_sys_description "System Description" .
+
+<https://babelfish.arc.nasa.gov/confluence/download/attachments/19202054/1> a ent:requirement ;
+	ent:uri		"/ref/FANG_reqts_to_BAE.htm" ;
+	ent:req_category "Mobility" ;
+	ent:req_attribute "Cooling System" ;
+	ent:req_system_level "Vehicle" ;
+	ent:req_sys_description "Thermal" ;
+	ent:req_text "The vehicle cooling System shall enable the vehicle to meet all performance requirements at temperatures from -XX degrees C to +XX degrees C (-XX F to +XXF) with no degradation in performance, and keep sub system fluid temperatures to within manufactures specific limits. The cooling System shall enable the vehicle to meet all land, water and transition operation performance requirements at all speeds and over obstacles that allow it to conduct sustained operations." .
+
+<https://babelfish.arc.nasa.gov/confluence/download/attachments/19202054/2> a ent:requirement ;
+	ent:uri		"/ref/FANG_reqts_to_BAE.htm" ;
+	ent:req_category "Mobility - Land" ;
+	ent:req_attribute "Tractive Effort Cooling" ;
+	ent:req_system_level "Sub System" ;
+	ent:req_sys_description "Thermal" ;
+	ent:req_text "The vehicle cooling System shall maintain temperatures within manufacturer's specific limits while operating at max ambient temperature, with the vehicle developing a tractive effort equal to XX% of GVW" .
+
+<https://babelfish.arc.nasa.gov/confluence/download/attachments/19202054/3> a ent:requirement ;
+	ent:uri		"/ref/FANG_reqts_to_BAE.htm" ;
+	ent:req_category "Mobility" ;
+	ent:req_attribute "Heater Exchanger Clearances" ;
+	ent:req_system_level "Sub System" ;
+	ent:req_sys_description "Thermal" ;
+	ent:req_text "When staking XX or more heat exchanges, they will be a minimum gap of XX mm between them" .
+
+<https://babelfish.arc.nasa.gov/confluence/download/attachments/19202054/4> a ent:requirement ;
+	ent:uri		"/ref/FANG_reqts_to_BAE.htm" ;
+	ent:req_category "Mobility - Land" ;
+	ent:req_attribute "Land Speed (road)" ;
+	ent:req_system_level " Vehicle" ;
+	ent:req_sys_description "Full Vehicle" ;
+	ent:req_text "The vehicle shall attain a speed of no less than XX kph (XX mph) on a level, hard surfaced road." .
+
+<https://babelfish.arc.nasa.gov/confluence/download/attachments/19202054/5> a ent:requirement ;
+	ent:uri		"/ref/FANG_reqts_to_BAE.htm" ;
+	ent:req_category "Mobility - Land" ;
+	ent:req_attribute "Land Speed (cross country)" ;
+	ent:req_system_level "Vehicle" ;
+	ent:req_sys_description "Full Vehicle" ;
+	ent:req_text "The vehicle shall be able to attain land speeds of XX kph (XX mph) for cross-country movement." .
+
+<https://babelfish.arc.nasa.gov/confluence/download/attachments/19202054/6> a ent:requirement ;
+	ent:uri		"/ref/FANG_reqts_to_BAE.htm" ;
+	ent:req_category "Mobility - Land" ;
+	ent:req_attribute "Sustained Low average Speed" ;
+	ent:req_system_level "Vehicle" ;
+	ent:req_sys_description "Full Vehicle" ;
+	ent:req_text "The vehicle shall operate at a speed no greater than XX kph (XX mph) on a level, hard surface without use of service brakes." .
+
+<https://babelfish.arc.nasa.gov/confluence/download/attachments/19202054/7> a ent:requirement ;
+	ent:uri		"/ref/FANG_reqts_to_BAE.htm" ;
+	ent:req_category "Mobility - Land" ;
+	ent:req_attribute "Reverse Speed" ;
+	ent:req_system_level "Vehicle" ;
+	ent:req_sys_description "Full Vehicle" ;
+	ent:req_text "The vehicle at GVW shall have a reverse speed of no less than XX kph" .
+
+<https://babelfish.arc.nasa.gov/confluence/download/attachments/19202054/8> a ent:requirement ;
+	ent:uri		"/ref/FANG_reqts_to_BAE.htm" ;
+	ent:req_category "Mobility - Land" ;
+	ent:req_attribute "Acceleration" ;
+	ent:req_system_level "Vehicle" ;
+	ent:req_sys_description "Full Vehicle" ;
+	ent:req_text "The vehicle shall accelerate on a level hard surface from 0 to XX kph in XX sec" .
+
+<https://babelfish.arc.nasa.gov/confluence/download/attachments/19202054/9> a ent:requirement ;
+	ent:uri		"/ref/FANG_reqts_to_BAE.htm" ;
+	ent:req_category "Mobility - Land" ;
+	ent:req_attribute "Ground clearance" ;
+	ent:req_system_level "Vehicle" ;
+	ent:req_sys_description "Full Vehicle" ;
+	ent:req_text "Have a minimum ground clearance of XX cm" .
+
+<https://babelfish.arc.nasa.gov/confluence/download/attachments/19202054/10> a ent:requirement ;
+	ent:uri		"/ref/FANG_reqts_to_BAE.htm" ;
+	ent:req_category "Mobility - Land" ;
+	ent:req_attribute "Approach Angle" ;
+	ent:req_system_level "Vehicle" ;
+	ent:req_sys_description "Full Vehicle" ;
+	ent:req_text "The Approach angle shall be XX deg (T)" .
+
+<https://babelfish.arc.nasa.gov/confluence/download/attachments/19202054/11> a ent:requirement ;
+	ent:uri		"/ref/FANG_reqts_to_BAE.htm" ;
+	ent:req_category "Mobility - Land" ;
+	ent:req_attribute "Departure Angle" ;
+	ent:req_system_level "Vehicle" ;
+	ent:req_sys_description "Full Vehicle" ;
+	ent:req_text "The Departure angle shall be XX deg (T) inclusive of tow pintle, exclusive of mud flaps" .
+
+<https://babelfish.arc.nasa.gov/confluence/download/attachments/19202054/12> a ent:requirement ;
+	ent:uri		"/ref/FANG_reqts_to_BAE.htm" ;
+	ent:req_category "Mobility - Land" ;
+	ent:req_attribute "Pivot Turn" ;
+	ent:req_system_level "Vehicle" ;
+	ent:req_sys_description "Full Vehicle" ;
+	ent:req_text "The vehicle shall perform a XX degree pivot turn in no greater than XX seconds, on a level hard surface in the left and right direction independently, within XX vehicle lengths." .
+
+<https://babelfish.arc.nasa.gov/confluence/download/attachments/19202054/13> a ent:requirement ;
+	ent:uri		"/ref/FANG_reqts_to_BAE.htm" ;
+	ent:req_category "Mobility - Land" ;
+	ent:req_attribute "Turning Radius - Small" ;
+	ent:req_system_level "Vehicle" ;
+	ent:req_sys_description "Full Vehicle" ;
+	ent:req_text "The vehicle shall traverse a XX degree, XX meter (XX foot) radius turn while moving at speeds not less than XX kph (XX mph) to not greater than XX kph (XX mph)." .
+
+<https://babelfish.arc.nasa.gov/confluence/download/attachments/19202054/14> a ent:requirement ;
+	ent:uri		"/ref/FANG_reqts_to_BAE.htm" ;
+	ent:req_category "Mobility - Land" ;
+	ent:req_attribute "Turning Radius - Large" ;
+	ent:req_system_level "Vehicle" ;
+	ent:req_sys_description "Full Vehicle" ;
+	ent:req_text "The vehicle shall traverse a XX degree, XX meter (XX foot) radius turn while moving at speeds not less than XX kph (XX mph) to not greater than XX kph (XX mph)." .
+
+<https://babelfish.arc.nasa.gov/confluence/download/attachments/19202054/15> a ent:requirement ;
+	ent:uri		"/ref/FANG_reqts_to_BAE.htm" ;
+	ent:req_category "Mobility - Land" ;
+	ent:req_attribute "Dead Engine Steer" ;
+	ent:req_system_level "Vehicle" ;
+	ent:req_sys_description "Full Vehicle" ;
+	ent:req_text "The vehicle shall steer at least XX degrees while coasting with the engine inoperative at speeds greater than XX kph (XX mph)." .
+
+<https://babelfish.arc.nasa.gov/confluence/download/attachments/19202054/16> a ent:requirement ;
+	ent:uri		"/ref/FANG_reqts_to_BAE.htm" ;
+	ent:req_category "Mobility - Land" ;
+	ent:req_attribute "Drift" ;
+	ent:req_system_level "Vehicle" ;
+	ent:req_sys_description "Full Vehicle" ;
+	ent:req_text """The vehicle shall maintain vehicle direction without steering input applied, when underway on a level hard surfaced road, at vehicle speeds of not less than XX kph (XX mph) to not greater than XX kph (XX mph).
+The vehicle side drift shall be no greater than XX meters (XX feet) and the vehicle travel distance shall be no less than XX meters (XX feet).""" .
+
+<https://babelfish.arc.nasa.gov/confluence/download/attachments/19202054/17> a ent:requirement ;
+	ent:uri		"/ref/FANG_reqts_to_BAE.htm" ;
+	ent:req_category "Mobility - Land" ;
+	ent:req_attribute "Drawbar Pull" ;
+	ent:req_system_level "Vehicle" ;
+	ent:req_sys_description "Full Vehicle" ;
+	ent:req_text "The vehicle shall provide a drawbar pull of XX TE/GVW on a level, clean, clay surface (CL in USCS Soil Classification System) with a strength of XX or greater Rating Cone Index immediately after a XX mm (XX inch) rainfall per hour for XX hours." .
+
+<https://babelfish.arc.nasa.gov/confluence/download/attachments/19202054/18> a ent:requirement ;
+	ent:uri		"/ref/FANG_reqts_to_BAE.htm" ;
+	ent:req_category "Mobility - Land" ;
+	ent:req_attribute "Ground Pressure" ;
+	ent:req_system_level "Vehicle" ;
+	ent:req_sys_description "Full Vehicle" ;
+	ent:req_text "The vehicle at GVW shall not exceed a ground pressure of XX kPa (XX psi)" .
+
+<https://babelfish.arc.nasa.gov/confluence/download/attachments/19202054/19> a ent:requirement ;
+	ent:uri		"/ref/FANG_reqts_to_BAE.htm" ;
+	ent:req_category "Mobility - Land" ;
+	ent:req_attribute "NATO Mobility" ;
+	ent:req_system_level "Vehicle" ;
+	ent:req_sys_description "Full Vehicle" ;
+	ent:req_text """The vehicle (at GVW) shall achieve the NATO Reference Mobility Model (NRMM) requirements as called out below.
+XX% no-go German dry conditions V (XX) - XX mph
+XX% no-go German wet conditions V (XX) - XX mph
+XX% no-go German snow conditions V (XX) - XX mph
+XX% no-go Jordan dry conditions V (XX) - XX mph
+XX% no-go Jordan sand conditions V (XX) - XX mph
+XX% no-go North Korea dry conditions V (XX) - XX mph
+XX% no-go North Korea wet conditions V (XX) - XX mph""" .
+
+<https://babelfish.arc.nasa.gov/confluence/download/attachments/19202054/20> a ent:requirement ;
+	ent:uri		"/ref/FANG_reqts_to_BAE.htm" ;
+	ent:req_category "Mobility - Land" ;
+	ent:req_attribute "Vehicle Cone Index" ;
+	ent:req_system_level "Vehicle" ;
+	ent:req_sys_description "Full Vehicle" ;
+	ent:req_text "The vehicles single pass vehicle cone index (VCI [VCI1]) for mud/sand/snow shall have a value no greater than XX at GVW," .
+
+<https://babelfish.arc.nasa.gov/confluence/download/attachments/19202054/21> a ent:requirement ;
+	ent:uri		"/ref/FANG_reqts_to_BAE.htm" ;
+	ent:req_category "Mobility - Land" ;
+	ent:req_attribute "Absorbed Power" ;
+	ent:req_system_level "Vehicle" ;
+	ent:req_sys_description "Full Vehicle" ;
+	ent:req_text """The vehicle at GVW shall attain no more than XX watts average vertical absorbed power, as measured at the base of all occupant seats, while negotiating the following Root Mean Square (RMS) ride courses at speeds listed below
+XX mph at XX in
+XX mph at XX in
+XX mph at XX in
+XX mph at XX in""" .
+
+<https://babelfish.arc.nasa.gov/confluence/download/attachments/19202054/22> a ent:requirement ;
+	ent:uri		"/ref/FANG_reqts_to_BAE.htm" ;
+	ent:req_category "Mobility - Land" ;
+	ent:req_attribute "Vertical Accelerations" ;
+	ent:req_system_level "Vehicle" ;
+	ent:req_sys_description "Full Vehicle" ;
+	ent:req_text "The vehicle shall sustain no more than XX-G peak vertical acceleration, as measured at each occupant location while negotiating a non-deformable, half-round obstacle of XX inches at the rates listed below." .
+
+<https://babelfish.arc.nasa.gov/confluence/download/attachments/19202054/23> a ent:requirement ;
+	ent:uri		"/ref/FANG_reqts_to_BAE.htm" ;
+	ent:req_text "Obstacle Height (in.):    WW   XX   YY   ZZ" .
+
+<https://babelfish.arc.nasa.gov/confluence/download/attachments/19202054/24> a ent:requirement ;
+	ent:uri		"/ref/FANG_reqts_to_BAE.htm" ;
+	ent:req_text "Speed (mph):                  WW  XX  YY   ZZ" .
+
+<https://babelfish.arc.nasa.gov/confluence/download/attachments/19202054/25> a ent:requirement ;
+	ent:uri		"/ref/FANG_reqts_to_BAE.htm" ;
+	ent:req_category "Mobility - Land" ;
+	ent:req_attribute "Fuel On Grade" ;
+	ent:req_system_level "Vehicle" ;
+	ent:req_sys_description "Fuel System" ;
+	ent:req_text "The vehicle shall be capable of meeting all Grade & Slope operations in the following states: 1) With the fuel tank at XX% full. 2) With the fuel tank at XX% of the useable left." .
+
+<https://babelfish.arc.nasa.gov/confluence/download/attachments/19202054/26> a ent:requirement ;
+	ent:uri		"/ref/FANG_reqts_to_BAE.htm" ;
+	ent:req_category "Mobility - Land" ;
+	ent:req_attribute "Steering on Side Slope" ;
+	ent:req_system_level "Vehicle" ;
+	ent:req_sys_description "Full Vehicle" ;
+	ent:req_text "Steer on a XX% side slope in either direction" .
+
+<https://babelfish.arc.nasa.gov/confluence/download/attachments/19202054/27> a ent:requirement ;
+	ent:uri		"/ref/FANG_reqts_to_BAE.htm" ;
+	ent:req_category "Mobility - Land" ;
+	ent:req_attribute "Side Slope" ;
+	ent:req_system_level "Vehicle" ;
+	ent:req_sys_description "Full Vehicle" ;
+	ent:req_text "The vehicle at GVW shall be capable of slope operations up to and including XX% (T)" .
+
+<https://babelfish.arc.nasa.gov/confluence/download/attachments/19202054/28> a ent:requirement ;
+	ent:uri		"/ref/FANG_reqts_to_BAE.htm" ;
+	ent:req_category "Mobility - Land" ;
+	ent:req_attribute "Speed on 60% Grade" ;
+	ent:req_system_level "Vehicle" ;
+	ent:req_sys_description "Full Vehicle" ;
+	ent:req_text "The vehicle, at GVW shall be able to ascend/descend,  in both forward and reverse, a XX% grade at XX mph (T)" .
+
+<https://babelfish.arc.nasa.gov/confluence/download/attachments/19202054/29> a ent:requirement ;
+	ent:uri		"/ref/FANG_reqts_to_BAE.htm" ;
+	ent:req_category "Mobility - Land" ;
+	ent:req_attribute "Stopping & Re-starting on a Grade" ;
+	ent:req_system_level "Vehicle" ;
+	ent:req_sys_description "Full Vehicle" ;
+	ent:req_text "The vehicle at GVW shall be capable of stopping on a XX% hard-dry grade for not less than XX minutes, shut the engine off, restart, and then continue to ascend/descend the XX% grade.  " .
+
+<https://babelfish.arc.nasa.gov/confluence/download/attachments/19202054/30> a ent:requirement ;
+	ent:uri		"/ref/FANG_reqts_to_BAE.htm" ;
+	ent:req_category "Mobility - Land" ;
+	ent:req_attribute "Brake Performance" ;
+	ent:req_system_level "Vehicle" ;
+	ent:req_sys_description "Full Vehicle" ;
+	ent:req_text "The vehicle, at GVW, shall have a deceleration rate of no less than XX G on a dry hard surface road that is free of loose material." .
+
+<https://babelfish.arc.nasa.gov/confluence/download/attachments/19202054/31> a ent:requirement ;
+	ent:uri		"/ref/FANG_reqts_to_BAE.htm" ;
+	ent:req_category "Mobility - Land" ;
+	ent:req_attribute "Stopping Distance & Drift" ;
+	ent:req_system_level "Vehicle" ;
+	ent:req_sys_description "Full Vehicle" ;
+	ent:req_text "The vehicle, at GVW, shall stop within XX meters from the max vehicle forward speed. The lateral drift shall note exceed XX meters." .
+
+<https://babelfish.arc.nasa.gov/confluence/download/attachments/19202054/32> a ent:requirement ;
+	ent:uri		"/ref/FANG_reqts_to_BAE.htm" ;
+	ent:req_category "Mobility - Land" ;
+	ent:req_attribute "Brake Fade" ;
+	ent:req_system_level "Vehicle" ;
+	ent:req_sys_description "Full Vehicle" ;
+	ent:req_text "The vehicle shall be capable of braking from the maximum forward speed defined in this specification to a full stop XX consecutive times with no more than XX minutes between repetitions and no more than XX% brake fade." .
+
+<https://babelfish.arc.nasa.gov/confluence/download/attachments/19202054/33> a ent:requirement ;
+	ent:uri		"/ref/FANG_reqts_to_BAE.htm" ;
+	ent:req_category "Mobility - Land" ;
+	ent:req_attribute "Cyclic Braking" ;
+	ent:req_system_level "Vehicle" ;
+	ent:req_sys_description "Full Vehicle" ;
+	ent:req_text "The vehicle shall be capable of braking from XX kph (XX mph) to a full stop XX consecutive times with no more than XX minutes between repetitions and no more than XX% brake fade." .
+
+<https://babelfish.arc.nasa.gov/confluence/download/attachments/19202054/34> a ent:requirement ;
+	ent:uri		"/ref/FANG_reqts_to_BAE.htm" ;
+	ent:req_category "Mobility - Land" ;
+	ent:req_attribute "Dead Engine Braking on Slopes" ;
+	ent:req_system_level "Vehicle" ;
+	ent:req_sys_description "Full Vehicle" ;
+	ent:req_text "If the engine shuts down during slope operations prior to the parking brake being set, the vehicle shall stop on slopes up to and including the maximum grade defined in this specification within XX m in both forward and reverse directions." .
+
+<https://babelfish.arc.nasa.gov/confluence/download/attachments/19202054/35> a ent:requirement ;
+	ent:uri		"/ref/FANG_reqts_to_BAE.htm" ;
+	ent:req_category "Mobility - Land" ;
+	ent:req_attribute "Service Brake Holding" ;
+	ent:req_system_level "Vehicle" ;
+	ent:req_sys_description "Full Vehicle" ;
+	ent:req_text "With the engine running, the service brakes shall hold the vehicle at GVW on a dry hard surface, XX% grade (XX degrees) pointing either uphill or downhill." .
+
+<https://babelfish.arc.nasa.gov/confluence/download/attachments/19202054/36> a ent:requirement ;
+	ent:uri		"/ref/FANG_reqts_to_BAE.htm" ;
+	ent:req_category "Mobility - Land" ;
+	ent:req_attribute "Park Brake Performance" ;
+	ent:req_system_level "Vehicle" ;
+	ent:req_sys_description "Full Vehicle" ;
+	ent:req_text "With the engine running or shut down, the parking brake shall hold the vehicle at GVW, stationary on a XX percent grade, headed both uphill and downhill, on a dry hard surface that is free from loose material." .
+
+<https://babelfish.arc.nasa.gov/confluence/download/attachments/19202054/37> a ent:requirement ;
+	ent:uri		"/ref/FANG_reqts_to_BAE.htm" ;
+	ent:req_category "Mobility - Water" ;
+	ent:req_attribute "Forward Speed" ;
+	ent:req_system_level "Vehicle" ;
+	ent:req_sys_description "Water Propulsion" ;
+	ent:req_text "The vehicle, in sea mode, shall have a sustained minimum average speed of no less than XX knots while operating at any heading in a Sea State characterized by a XX meter (XX inches) SWH or in beam and following seas headings in a Sea State characterized by a XX meter (XX inches)." .
+
+<https://babelfish.arc.nasa.gov/confluence/download/attachments/19202054/38> a ent:requirement ;
+	ent:uri		"/ref/FANG_reqts_to_BAE.htm" ;
+	ent:req_category "Mobility - Water" ;
+	ent:req_attribute "Reverse Speed" ;
+	ent:req_system_level "Vehicle" ;
+	ent:req_sys_description "Water Propulsion" ;
+	ent:req_text "The vehicle, in sea mode, shall achieve a reverse speed of no less than XX kph (XX knots) in calm water." .
+
+<https://babelfish.arc.nasa.gov/confluence/download/attachments/19202054/39> a ent:requirement ;
+	ent:uri		"/ref/FANG_reqts_to_BAE.htm" ;
+	ent:req_category "Mobility - Water" ;
+	ent:req_attribute "Reverse Steering" ;
+	ent:req_system_level "Vehicle" ;
+	ent:req_sys_description "Water Propulsion" ;
+	ent:req_text "The vehicle shall steer in reverse in both the port and starboard directions." .
+
+<https://babelfish.arc.nasa.gov/confluence/download/attachments/19202054/40> a ent:requirement ;
+	ent:uri		"/ref/FANG_reqts_to_BAE.htm" ;
+	ent:req_category "Mobility - Water" ;
+	ent:req_attribute "Water Pivot-Steer" ;
+	ent:req_system_level "Vehicle" ;
+	ent:req_sys_description "Water Propulsion" ;
+	ent:req_text "The vehicle shall execute a XX degree pivot turn in both port and starboard directions within a XX meter (XX feet) diameter in calm water." .
+
+<https://babelfish.arc.nasa.gov/confluence/download/attachments/19202054/41> a ent:requirement ;
+	ent:uri		"/ref/FANG_reqts_to_BAE.htm" ;
+	ent:req_category "Mobility - Water" ;
+	ent:req_attribute "Stopping Distance" ;
+	ent:req_system_level "Vehicle" ;
+	ent:req_sys_description "Water Propulsion" ;
+	ent:req_text "The vehicle shall stop forward motion within XX meters (XX ft) from XX kph (XX knots or XX mph) speed in calm water from operation initiation." .
+
+<https://babelfish.arc.nasa.gov/confluence/download/attachments/19202054/42> a ent:requirement ;
+	ent:uri		"/ref/FANG_reqts_to_BAE.htm" ;
+	ent:req_category "Mobility - Water" ;
+	ent:req_attribute "Water Towing" ;
+	ent:req_system_level "Vehicle" ;
+	ent:req_sys_description "Water Propulsion" ;
+	ent:req_text "The vehicle shall tow and be towed in Sea mode and Transition mode head-to-tail at speeds up to XX knots, through the surf and onto a beach." .
+
+<https://babelfish.arc.nasa.gov/confluence/download/attachments/19202054/43> a ent:requirement ;
+	ent:uri		"/ref/FANG_reqts_to_BAE.htm" ;
+	ent:req_category "Mobility - Water" ;
+	ent:req_attribute "Survivability in Rough Seas" ;
+	ent:req_system_level "Vehicle" ;
+	ent:req_sys_description "Full Vehicle" ;
+	ent:req_text "The vehicle shall maintain heading in sea state conditions characterized by a Significant Wave Height (SWH) of XX meters (XX feet)." .
+
+<https://babelfish.arc.nasa.gov/confluence/download/attachments/19202054/44> a ent:requirement ;
+	ent:uri		"/ref/FANG_reqts_to_BAE.htm" ;
+	ent:req_category "Mobility - Transition" ;
+	ent:req_attribute "Transition Mode Operation" ;
+	ent:req_system_level "Vehicle" ;
+	ent:req_sys_description "Water Propulsion" ;
+	ent:req_text "The vehicle shall be capable of both land and water mobility while in the transition mode. This mode of operation is for interfacing with amphibious ships and craft, for transiting the surf and beach regions, for limited operation on land, and while conducting river line operations.  It can be expected that the vehicle will operate in transition mode at engine idle speed for up to XX minutes in ship well decks that are dry (prior to launching), on land for up to XX minutes at full land mobility power. Unless otherwise specified all Transition Mode Operation requirements shall be performed in a Sea State characterized by a XX meter (XX inches) SWH" .
+
+<https://babelfish.arc.nasa.gov/confluence/download/attachments/19202054/45> a ent:requirement ;
+	ent:uri		"/ref/FANG_reqts_to_BAE.htm" ;
+	ent:req_category "Mobility - Transition" ;
+	ent:req_attribute "Minimum Forward Speed" ;
+	ent:req_system_level "Vehicle" ;
+	ent:req_sys_description "Water Propulsion" ;
+	ent:req_text "With the engine at idle and drive engaged in Transition Mode, the forward speed shall not exceed XX knots." .
+
+<https://babelfish.arc.nasa.gov/confluence/download/attachments/19202054/46> a ent:requirement ;
+	ent:uri		"/ref/FANG_reqts_to_BAE.htm" ;
+	ent:req_category "Mobility - Transition" ;
+	ent:req_attribute "Reverse Speed" ;
+	ent:req_system_level "Vehicle" ;
+	ent:req_sys_description "Water Propulsion" ;
+	ent:req_text "The vehicle, in transition mode, shall achieve a reverse speed of no less than XX kph (XX knots) in calm water." .
+
+<https://babelfish.arc.nasa.gov/confluence/download/attachments/19202054/47> a ent:requirement ;
+	ent:uri		"/ref/FANG_reqts_to_BAE.htm" ;
+	ent:req_category "Mobility - Transition" ;
+	ent:req_attribute "Stopping Distance" ;
+	ent:req_system_level "Vehicle" ;
+	ent:req_sys_description "Water Propulsion" ;
+	ent:req_text "From a forward speed of XX kph (XX knots), the FANG stopping distance shall not exceed XX meters (XX feet)." .
+
+<https://babelfish.arc.nasa.gov/confluence/download/attachments/19202054/48> a ent:requirement ;
+	ent:uri		"/ref/FANG_reqts_to_BAE.htm" ;
+	ent:req_category "Mobility - Transition" ;
+	ent:req_attribute "Steering during Transition" ;
+	ent:req_system_level "Vehicle" ;
+	ent:req_sys_description "Water Propulsion" ;
+	ent:req_text "The vehicle shall steer and shall maintain a desired heading during mode reconfiguration." .
+
+<https://babelfish.arc.nasa.gov/confluence/download/attachments/19202054/49> a ent:requirement ;
+	ent:uri		"/ref/FANG_reqts_to_BAE.htm" ;
+	ent:req_category "Mobility - Transition" ;
+	ent:req_attribute "Surf Transit" ;
+	ent:req_system_level "Vehicle" ;
+	ent:req_sys_description "Water Propulsion" ;
+	ent:req_text "The vehicle shall transit both seaward and shoreward in a XX meter (XX feet) plunging surf." .
+
+<https://babelfish.arc.nasa.gov/confluence/download/attachments/19202054/50> a ent:requirement ;
+	ent:uri		"/ref/FANG_reqts_to_BAE.htm" ;
+	ent:req_category "Configuration" ;
+	ent:req_attribute "Roll Correction" ;
+	ent:req_system_level "Vehicle" ;
+	ent:req_sys_description "Full Vehicle" ;
+	ent:req_text """The vehicle shall be able to right itself from a XX degree roll to either side while operating in any weight condition in fresh water.
+The roll correction stability is defined as the condition (other than vehicle topside positioned upward) where there exists zero righting arm.""" .
+
+<https://babelfish.arc.nasa.gov/confluence/download/attachments/19202054/51> a ent:requirement ;
+	ent:uri		"/ref/FANG_reqts_to_BAE.htm" ;
+	ent:req_category "Environment" ;
+	ent:req_attribute "Ambient Air Temperature" ;
+	ent:req_system_level "Vehicle" ;
+	ent:req_sys_description "Full Vehicle" ;
+	ent:req_text """The vehicle shall meet all operational performance requirements in land, transition and sea modes at the following ambient air temperatures
+Land Mode: -XX deg C to +XX deg C (-XX F to + XX F)
+Transition Mode: -XX deg C to + XX deg C (-XX F to +XX F)
+Sea Mode: -XX deg C to + XX deg C (-XX F to +XX f)""" .
+
+<https://babelfish.arc.nasa.gov/confluence/download/attachments/19202054/52> a ent:requirement ;
+	ent:uri		"/ref/FANG_reqts_to_BAE.htm" ;
+	ent:req_category "Mobility" ;
+	ent:req_attribute "Engine Starting / Cranking" ;
+	ent:req_system_level "Vehicle" ;
+	ent:req_sys_description "Powertrain" ;
+	ent:req_text "1) -XX°F to XX°F (-XX° C to XX° C) within one minute from the initiation of cranking with no external aids, kits, or prior warming of the batteries. 2) -XX°F  to -XX°F (-XX° C to -XX° C)  within XX minutes or less from the initiation of cranking assisted by external aids or arctic heater kits which will not be a permanent part of the non-arctic fleet. a) The engine must be able to be started within XX (XX) minutes from the initiation of the engine arctic kit-aided start sequence. " .
+
+<https://babelfish.arc.nasa.gov/confluence/download/attachments/19202054/53> a ent:requirement ;
+	ent:uri		"/ref/FANG_reqts_to_BAE.htm" ;
+	ent:req_category "Environment" ;
+	ent:req_attribute "Storage" ;
+	ent:req_system_level "Vehicle" ;
+	ent:req_sys_description "Full Vehicle" ;
+	ent:req_text "The vehicle shall be capable of being placed outdoor in long term storage, up to XX months, at temperatures ranging between -XX° F and XX° F (-XX° C to XX° C) , in humid storage conditions IAW AR 70-38 table 2-1 and in salt-fog conditions per MCO 4790.18B 16 Jul 04  / TM 4795-34-2 / TM4795-12-1 without degradation." .
+
+<https://babelfish.arc.nasa.gov/confluence/download/attachments/19202054/54> a ent:requirement ;
+	ent:uri		"/ref/FANG_reqts_to_BAE.htm" ;
+	ent:req_category "Mobility - Land" ;
+	ent:req_attribute "Lateral Acceleration" ;
+	ent:req_system_level "Vehicle" ;
+	ent:req_sys_description "Full Vehicle" ;
+	ent:req_text "The vehicle shall attain no less than XX G lateral acceleration without skid-out on a hard surface road with a coefficient of friction of XX at speeds no less than XX kph (XX mph).The vehicle shall attain no less than XX G lateral acceleration without skid-out on a hard surface road with a coefficient of friction of XX at speeds no less than XX kph (XX mph)." .
+
+<https://babelfish.arc.nasa.gov/confluence/download/attachments/19202054/55> a ent:requirement ;
+	ent:uri		"/ref/FANG_reqts_to_BAE.htm" ;
+	ent:req_category "Mobility" ;
+	ent:req_attribute "Range - Combined land and sea mode" ;
+	ent:req_system_level "Vehicle" ;
+	ent:req_sys_description "Full Vehicle" ;
+	ent:req_text "The vehicle shall be capable of operating on internally carried fuel for a minimum distance of XX km (XX miles) at an average speed of XX kph (XX mph) on a level hard surface road after completion of XX nautical miles of water operation in sea state XX at an average of XX knots." .
+
+<https://babelfish.arc.nasa.gov/confluence/download/attachments/19202054/56> a ent:requirement ;
+	ent:uri		"/ref/FANG_reqts_to_BAE.htm" ;
+	ent:req_category "Mobility - Land" ;
+	ent:req_attribute "Range - Land Mode" ;
+	ent:req_system_level "Vehicle" ;
+	ent:req_sys_description "Full Vehicle" ;
+	ent:req_text "The vehicle shall be capable of operating on internally carried fuel for a minimum distance of XX miles at an average speed of XX kph (XX mph) on a level hard surface road." .
+
+<https://babelfish.arc.nasa.gov/confluence/download/attachments/19202054/57> a ent:requirement ;
+	ent:uri		"/ref/FANG_reqts_to_BAE.htm" ;
+	ent:req_category "Mobility - Land" ;
+	ent:req_attribute "Vertical Step" ;
+	ent:req_system_level "Vehicle" ;
+	ent:req_sys_description "Full Vehicle" ;
+	ent:req_text "The vehicle at GVW shall be capable of stepping up and down a vertical step of XX inches (T)  in forward and reverse on a straight on approach." .
+
+<https://babelfish.arc.nasa.gov/confluence/download/attachments/19202054/58> a ent:requirement ;
+	ent:uri		"/ref/FANG_reqts_to_BAE.htm" ;
+	ent:req_category "Mobility - Land" ;
+	ent:req_attribute "Gap Crossing" ;
+	ent:req_system_level "Vehicle" ;
+	ent:req_sys_description "Full Vehicle" ;
+	ent:req_text "The vehicle shall cross a gap no less than XX ft across (T)" .
+
+<https://babelfish.arc.nasa.gov/confluence/download/attachments/19202054/59> a ent:requirement ;
+	ent:uri		"/ref/FANG_reqts_to_BAE.htm" ;
+	ent:req_category "Mobility - Land" ;
+	ent:req_attribute "Trench Crossing" ;
+	ent:req_system_level "Vehicle" ;
+	ent:req_sys_description "Full Vehicle" ;
+	ent:req_text "The vehicle shall traverse a ditch of no less than XX ft deep and no less than XX ft across, with hard surface ingress and egress walls sloped at an angle no less thanXX degrees" .
+
+<https://babelfish.arc.nasa.gov/confluence/download/attachments/19202054/60> a ent:requirement ;
+	ent:uri		"/ref/FANG_reqts_to_BAE.htm" ;
+	ent:req_category "Mobility - Land" ;
+	ent:req_attribute "Fording" ;
+	ent:req_system_level "Vehicle" ;
+	ent:req_sys_description "Full Vehicle" ;
+	ent:req_text "The vehicle, at GVW, shall ford a XX” (T) in forward and reverse while maintaining contact with the ground." .
+
+<https://babelfish.arc.nasa.gov/confluence/download/attachments/19202054/61> a ent:requirement ;
+	ent:uri		"/ref/FANG_reqts_to_BAE.htm" ;
+	ent:req_category "Mobility - Land" ;
+	ent:req_attribute "Fording" ;
+	ent:req_system_level "Vehicle" ;
+	ent:req_sys_description "Full Vehicle" ;
+	ent:req_text "While fording, the engine shall be capable of being restarted when stopped for XX minutes." .
+
+<https://babelfish.arc.nasa.gov/confluence/download/attachments/19202054/62> a ent:requirement ;
+	ent:uri		"/ref/FANG_reqts_to_BAE.htm" ;
+	ent:req_category "Mobility - Land" ;
+	ent:req_attribute "Fording" ;
+	ent:req_system_level "Vehicle" ;
+	ent:req_sys_description "Full Vehicle" ;
+	ent:req_text "During fording operations water contamination of engine, brake fluid, transmission, transfer transmission, power steering pump, bearing lubricants, fuel tank(s) and all differentials shall not exceed XX% by volume. All bearing seals shall restrict the leaking of lubricants from the bearings." .
+
+<https://babelfish.arc.nasa.gov/confluence/download/attachments/19202054/63> a ent:requirement ;
+	ent:uri		"/ref/FANG_reqts_to_BAE.htm" ;
+	ent:req_category "Mobility - Land" ;
+	ent:req_attribute "Like For Like Tow" ;
+	ent:req_system_level "Vehicle" ;
+	ent:req_sys_description "Full Vehicle" ;
+	ent:req_text "The vehicle shall be capable of towing another like vehicle in its payload category at GVW for XX miles over flat secondary roads (T). All available on-board fuel including additional fuel cans, as well as any necessary attachments, tow bars or couplers, are permitted to meet this requirement." .
+
+<https://babelfish.arc.nasa.gov/confluence/download/attachments/19202054/64> a ent:requirement ;
+	ent:uri		"/ref/FANG_reqts_to_BAE.htm" ;
+	ent:req_category "Environment" ;
+	ent:req_attribute "Cold Weather Operation" ;
+	ent:req_system_level "Vehicle" ;
+	ent:req_sys_description "Full Vehicle" ;
+	ent:req_text "At temperatures between -XX deg C and -XX deg C (- XX F to - XX F) a XX min warm up period is permissible prior to system performance operation. An arctic kit may not be used." .
+
+<https://babelfish.arc.nasa.gov/confluence/download/attachments/19202054/65> a ent:requirement ;
+	ent:uri		"/ref/FANG_reqts_to_BAE.htm" ;
+	ent:req_category "Environment" ;
+	ent:req_attribute "Water Temperature" ;
+	ent:req_system_level "Vehicle" ;
+	ent:req_sys_description "Full Vehicle" ;
+	ent:req_text "In the amphibious environment, a max ambient water temperature of XX deg C (XX F) shall be used" .
+
+<https://babelfish.arc.nasa.gov/confluence/download/attachments/19202054/66> a ent:requirement ;
+	ent:uri		"/ref/FANG_reqts_to_BAE.htm" ;
+	ent:req_category "Environment" ;
+	ent:req_attribute "Humidity" ;
+	ent:req_system_level "Vehicle" ;
+	ent:req_sys_description "Full Vehicle" ;
+	ent:req_text "The vehicle shall meet all operational performance requirements at ambient relative humidity of up to XX percent" .
+
+<https://babelfish.arc.nasa.gov/confluence/download/attachments/19202054/67> a ent:requirement ;
+	ent:uri		"/ref/FANG_reqts_to_BAE.htm" ;
+	ent:req_category "Environment" ;
+	ent:req_attribute "Elevation" ;
+	ent:req_system_level "Vehicle" ;
+	ent:req_sys_description "Full Vehicle" ;
+	ent:req_text "The vehicle shall meet all operational performance requirements on land mode at -XX ft to +XX ft elevation" .
+
+<https://babelfish.arc.nasa.gov/confluence/download/attachments/19202054/68> a ent:requirement ;
+	ent:uri		"/ref/FANG_reqts_to_BAE.htm" ;
+	ent:req_category "Environment" ;
+	ent:req_attribute "Accidental Loads" ;
+	ent:req_system_level "Vehicle" ;
+	ent:req_sys_description "Full Vehicle" ;
+	ent:req_text "The vehicle shall be capable of withstanding, without degradation to the vehicle or any vehicle subsystem, maximum accidental loads of XX G vertical, XX G longitudinal, XX G traverse." .
+
+<https://babelfish.arc.nasa.gov/confluence/download/attachments/19202054/69> a ent:requirement ;
+	ent:uri		"/ref/FANG_reqts_to_BAE.htm" ;
+	ent:req_category "Environment" ;
+	ent:req_attribute "Shock" ;
+	ent:req_system_level "Vehicle" ;
+	ent:req_sys_description "Full Vehicle" ;
+	ent:req_text "The vehicle shall be capable of withstanding, without degradation to the vehicle or sub systems, shock loads as defined in  MIL-STD-810" .
+
+<https://babelfish.arc.nasa.gov/confluence/download/attachments/19202054/70> a ent:requirement ;
+	ent:uri		"/ref/FANG_reqts_to_BAE.htm" ;
+	ent:req_category "Environment" ;
+	ent:req_attribute "Surf Transition Loads" ;
+	ent:req_system_level "Vehicle" ;
+	ent:req_sys_description "Full Vehicle" ;
+	ent:req_text "The vehicle shall be capable of withstanding, without degradation to the vehicle or sub systems all loads imparted in grounding at a speed of XX knots" .
+
+<https://babelfish.arc.nasa.gov/confluence/download/attachments/19202054/71> a ent:requirement ;
+	ent:uri		"/ref/FANG_reqts_to_BAE.htm" ;
+	ent:req_category "Environment" ;
+	ent:req_attribute "NATO Tree Impact" ;
+	ent:req_system_level "Vehicle" ;
+	ent:req_sys_description "Full Vehicle" ;
+	ent:req_text "The vehicle shall be capable of withstanding, without degradation to the vehicle or sub systems all loads imparted in impacting a XX inch tree at XX kph" .
+
+<https://babelfish.arc.nasa.gov/confluence/download/attachments/19202054/72> a ent:requirement ;
+	ent:uri		"/ref/FANG_reqts_to_BAE.htm" ;
+	ent:req_category "Environment" ;
+	ent:req_attribute "Lightning Protection" ;
+	ent:req_system_level "Vehicle" ;
+	ent:req_sys_description "Full Vehicle" ;
+	ent:req_text """Vehicle systems shall meet their operational performance requirements during the presence of lightning strikes as defined by the Lightning Indirect Effects environment specified in Paragraph 5.4 of MIL-STD-464A, at a distance of XX mile from the vehicle platform.
+""" .
+
+<https://babelfish.arc.nasa.gov/confluence/download/attachments/19202054/73> a ent:requirement ;
+	ent:uri		"/ref/FANG_reqts_to_BAE.htm" ;
+	ent:req_category "Environment" ;
+	ent:req_attribute "Salt Atmosphere" ;
+	ent:req_system_level "Vehicle" ;
+	ent:req_sys_description "Full Vehicle" ;
+	ent:req_text "The Vehicle and its components shall withstand the exposure to salt atmosphere encountered during amphibious operations throughout the operational mission profile and shall meet and continue to meet all operational performance, mission, and reliability requirements after exposure to the salt atmosphere." .
+
+<https://babelfish.arc.nasa.gov/confluence/download/attachments/19202054/74> a ent:requirement .
+
+<https://babelfish.arc.nasa.gov/confluence/download/attachments/19202054/75> a ent:requirement .

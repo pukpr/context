@@ -1,0 +1,11 @@
+/* Generated file
+   Keep track of installed config files
+*/
+
+file('debug.pl','c:/svn/ontology/reasoners/prolog/cliopatria/config-available',1339682963).
+file('config.pl','c:/svn/ontology/reasoners/prolog/cliopatria/config-available',1339682963).
+file('store.pl','c:/svn/ontology/reasoners/prolog/cliopatria/config-available',1339682963).
+file('network.pl','c:/svn/ontology/reasoners/prolog/cliopatria/config-available',1339682963).
+file('winpath.pl','c:/svn/ontology/reasoners/prolog/cliopatria/config-available',1339682963).
+file('zlib.pl','c:/svn/ontology/reasoners/prolog/cliopatria/config-available',1339682963).
+file('cloud.pl','cpack/cloud/config-available',1347832043).

@@ -1,0 +1,92 @@
+@prefix rdfs: <http://www.w3.org/2000/01/rdf-schema#> .
+@prefix foaf: <http://xmlns.com/foaf/0.1/> .
+@prefix xsd: <http://www.w3.org/2001/XMLSchema#> .
+@prefix owl: <http://www.w3.org/2002/07/owl#> .
+@prefix rdf: <http://www.w3.org/1999/02/22-rdf-syntax-ns#> .
+@prefix ent: <http://entroplet.com/terms#> .
+
+
+<http://entroplet.com/terms#lightning_indirect_effect_A>
+   a rdfs:Resource ;
+	ent:current_component "A" ;
+	ent:description "Severe stroke" ;
+	ent:i0 "218810*amp" ;
+	ent:alpha "11354/s" ;
+	ent:beta "647265/s" ;
+	ent:peak_current "200*kamp" ;
+	ent:action_integral "2e6*amp^2/s" ;
+	ent:decay50percent "69*mics" ;
+	ent:time10percent "0.15*mics" ;
+	ent:time90percent "3.0*mics" ;
+	ent:time_to_peak "6.4*mics" ;
+	ent:rate_of_rise "1e11*amp/s" ;
+        ent:peak_rate_of_rise "1.4e11*amp/s".
+
+<http://entroplet.com/terms#lightning_indirect_effect_B>
+   a rdfs:Resource ;
+	ent:current_component "B" ;
+	ent:description "Intermediate current" ;
+	ent:i0 "11300*amp" ;
+	ent:alpha "700/s" ;
+	ent:beta "2000/s" ;
+	ent:behavior "Produces average current of 2 kA over a 5 ms period" .
+
+<http://entroplet.com/terms#lightning_indirect_effect_C>
+   a rdfs:Resource ;
+	ent:current_component "C" ;
+	ent:description "Continuing current" ;
+	ent:i0 "400*amp" ;
+	ent:duration "0.5*s" ;
+	ent:alpha "n/a" ;
+	ent:beta "n/a" ;
+ 	ent:behavior "Defined as rectangular waveform for analysis purposes of 400 A for 500 ms." .
+
+
+<http://entroplet.com/terms#lightning_indirect_effect_D>
+   a rdfs:Resource ;
+	ent:current_component "D" ;
+	ent:description "Restrike" ;
+	ent:i0 "109405*amp" ;
+	ent:alpha "22708/s" ;
+	ent:beta "1294530/s" ;
+	ent:peak_current "100*kamp" ;
+	ent:action_integral "0.25e6*amp^2/s" ;
+	ent:decay50percent "34.5*mics" ;
+	ent:time10percent "0.08*mics" ;
+	ent:time90percent "1.5*mics" ;
+	ent:time_to_peak "3.18*mics" ;
+	ent:rate_of_rise "1e11*amp/s" ;
+        ent:peak_rate_of_rise "1.4e11*amp/s".
+
+<http://entroplet.com/terms#lightning_indirect_effect_D2>
+   a rdfs:Resource ;
+	ent:current_component "D/2" ;
+	ent:description "Multiple stroke" ;
+	ent:i0 "54703*amp" ;
+	ent:alpha "22708/s" ;
+	ent:beta "1294530/s" ;
+	ent:peak_current "50*kamp" ;
+	ent:action_integral "6.25e4*amp^2/s" ;
+	ent:decay50percent "34.5*mics" ;
+	ent:time10percent "0.08*mics" ;
+	ent:time90percent "1.5*mics" ;
+	ent:time_to_peak "3.18*mics" ;
+	ent:rate_of_rise "0.5e11*amp/s" ;
+        ent:peak_rate_of_rise "0.7e11*amp/s".
+
+<http://entroplet.com/terms#lightning_indirect_effect_H>
+   a rdfs:Resource ;
+	ent:current_component "H" ;
+	ent:description "Multiple burst" ;
+	ent:i0 "10572*amp" ;
+	ent:alpha "187191/s" ;
+	ent:beta "19105100/s" ;
+	ent:peak_current "10*kamp" ;
+	ent:action_integral "n/a" ;
+	ent:decay50percent "4.0*mics" ;
+	ent:time10percent "0.0053*mics" ;
+	ent:time90percent "0.11*mics" ;
+	ent:time_to_peak "0.24*mics" ;
+	ent:rate_of_rise "n/a" ;
+        ent:peak_rate_of_rise "2e11*amp/s".
+

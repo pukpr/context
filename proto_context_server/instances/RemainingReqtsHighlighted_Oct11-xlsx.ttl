@@ -1,0 +1,806 @@
+﻿@prefix rdfs: <http://www.w3.org/2000/01/rdf-schema#> .
+@prefix foaf: <http://xmlns.com/foaf/0.1/> .
+@prefix owl: <http://www.w3.org/2002/07/owl#> .
+@prefix xsd: <http://www.w3.org/2001/XMLSchema#> .
+@prefix rdf: <http://www.w3.org/1999/02/22-rdf-syntax-ns#> .
+@prefix ent: <http://entroplet.com/terms#> .
+
+
+<http://entroplet.com/terms#Bilge+Pump+Capacity> ent:req_category "Configuration" ;
+	ent:uri		"/ref/RemainingReqtsHighlighted_Oct11.htm" ;
+	ent:req_sub_category "Bilge Sub-System" ;
+	ent:req_attribute "Bilge Pump Capacity" ;
+	ent:req_system_level "Sub System" ;
+	ent:req_sys_description "Bilge System" ;
+	ent:priority "High" ;
+	ent:req_text "The total bilge pump capacity shall be greater than:" ;
+	ent:vehicle_system_required "Check of final design" ;
+	ent:limits_check "None" ;
+	ent:driver "None" ;
+	ent:context "None" ;
+	ent:key_variable "Bilge pump capacity(s)" ;
+	rdf:type ent:requirement;
+        ent:requirement_type "Vehicle Functionality" .
+
+<http://entroplet.com/terms#+Sufficient+Cooling+During+Tractive+Effort> ent:req_category "Configuration" ;
+	ent:uri		"/ref/RemainingReqtsHighlighted_Oct11.htm" ;
+	ent:req_sub_category "Thermal Management" ;
+	ent:req_attribute " Sufficient Cooling During Tractive Effort" ;
+	ent:req_system_level "Sub System" ;
+	ent:req_sys_description "Thermal" ;
+	ent:priority "High" ;
+	ent:req_text "The vehicle cooling System shall maintain and stabilize component temperatures within manufacturer's specific limits while operating at max ambient temperature for a period of 2 hrs, with the vehicle developing a tractive effort equal to :" ;
+	ent:units "TE/GVW" ;
+	ent:vehicle_system_required "Full vehicle powertrain (with full vehicle weight)" ;
+	ent:limits_check "Thermal, Driveline" ;
+	ent:driver "Standard" ;
+	ent:context "Asphalt" ;
+	ent:key_variable "Coolant temps from limit checking" ;
+	rdf:type ent:requirement; ent:requirement_type  "Vehicle Functionality" .
+
+<http://entroplet.com/terms#Maneuverability+Survivability+in+Rough+Seas> ent:req_category "Configuration" ;
+	ent:uri		"/ref/RemainingReqtsHighlighted_Oct11.htm" ;
+	ent:req_sub_category "Flotation Stability" ;
+	ent:req_attribute "Maneuverability Survivability in Rough Seas" ;
+	ent:req_system_level "Vehicle" ;
+	ent:req_sys_description "Full Vehicle" ;
+	ent:priority "High" ;
+	ent:req_text "The vehicle shall be able to negotiate sea state 3 (1-1.2m wave height) and shall not sink or capsize in sea state 5 (2.4-3.6m wave height)" ;
+	ent:vehicle_system_required "Full vehicle powertrain (with full vehicle weight)" ;
+	ent:limits_check "Thermal, Driveline" ;
+	ent:driver "Standard" ;
+	ent:context "Sea State 3" ;
+	ent:key_variable "cg" ;
+	rdf:type ent:requirement; ent:requirement_type  "Vehicle Functionality" .
+
+<http://entroplet.com/terms#Plunging+Surf+Zone+Transit> ent:req_category "Configuration" ;
+	ent:uri		"/ref/RemainingReqtsHighlighted_Oct11.htm" ;
+	ent:req_sub_category "Flotation Stability" ;
+	ent:req_attribute "Plunging Surf Zone Transit" ;
+	ent:req_system_level "Vehicle" ;
+	ent:req_sys_description "Water Propulsion" ;
+	ent:priority "High" ;
+	ent:req_text "The vehicle in all load conditions shall be able to negotiate a surf zone in both seaward and shoreward in a plunging surf of 1.8 m" ;
+	ent:units "m" ;
+	ent:vehicle_system_required "Full vehicle powertrain (with full vehicle weight)" ;
+	ent:limits_check "Thermal, Driveline" ;
+	ent:driver "Standard" ;
+	ent:context "Surf Zone" ;
+	ent:key_variable "cg, vehicle speed" ;
+	rdf:type ent:requirement; ent:requirement_type  "Vehicle Functionality" .
+
+<http://entroplet.com/terms#Transverse+Center+of+Gravity+%28TCG%29+for+All+Weight+Conditions> ent:req_category "Configuration" ;
+	ent:uri		"/ref/RemainingReqtsHighlighted_Oct11.htm" ;
+	ent:req_sub_category "Design" ;
+	ent:req_attribute "Transverse Center of Gravity (TCG) for All Weight Conditions" ;
+	ent:req_system_level "Vehicle" ;
+	ent:req_sys_description "Full Vehicle" ;
+	ent:priority "High" ;
+	ent:req_text "The vehicle TCG, from the vehicle Center Line in all weight conditions, shall be no more than (T: 20 cm, O: 10 cm)" ;
+	ent:units "cm" ;
+	ent:vehicle_system_required "Full vehicle powertrain (with full vehicle weight)" ;
+	ent:limits_check "None" ;
+	ent:driver "None" ;
+	ent:context "None" ;
+	ent:key_variable "cg" ;
+	rdf:type ent:requirement; ent:requirement_type  "Vehicle Functionality" .
+
+<http://entroplet.com/terms#Noise+Limits+on+Land+and+Sea> ent:req_category "Configuration" ;
+	ent:uri		"/ref/RemainingReqtsHighlighted_Oct11.htm" ;
+	ent:req_sub_category "Human Engineering" ;
+	ent:req_attribute "Noise Limits on Land and Sea" ;
+	ent:req_system_level "Vehicle" ;
+	ent:req_sys_description "Full Vehicle" ;
+	ent:priority "High" ;
+	ent:req_text "In water at speeds from idle to 25 knots (29 mph) and on land at speeds from idle to 40 kph (25 mph) steady state noise shall not exceed:" ;
+	ent:vehicle_system_required "Vehicle Powertrain With Full Exhaust Volume" ;
+	ent:limits_check "None" ;
+	ent:driver "None" ;
+	ent:context "None" ;
+	ent:key_variable "Analytic" ;
+	rdf:type ent:requirement; ent:requirement_type  "Vehicle Functionality" .
+
+<http://entroplet.com/terms#Troop+Capacity> ent:req_category "Automotive Performance" ;
+	ent:uri		"/ref/RemainingReqtsHighlighted_Oct11.htm" ;
+	ent:req_sub_category "Payload" ;
+	ent:req_attribute "Troop Capacity" ;
+	ent:req_system_level "Vehicle" ;
+	ent:req_sys_description "Full Vehicle" ;
+	ent:priority "KPP" ;
+	ent:req_text "The vehicle shall carry a reinforced rifle squad of combat equipped marines of no less than:" ;
+	ent:units "marines" ;
+	ent:vehicle_system_required "Full vehicle powertrain (with full vehicle weight)" ;
+	ent:limits_check "None" ;
+	ent:driver "None" ;
+	ent:context "None" ;
+	ent:key_variable "Marine assemblies" ;
+	rdf:type ent:requirement; ent:requirement_type  "Vehicle Functionality" .
+
+<http://entroplet.com/terms#Power+Generation+with+Hotel+Loads> ent:req_category "Configuration" ;
+	ent:uri		"/ref/RemainingReqtsHighlighted_Oct11.htm" ;
+	ent:req_sub_category "Power Management" ;
+	ent:req_attribute "Power Generation with Hotel Loads" ;
+	ent:req_system_level "Sub System" ;
+	ent:req_sys_description "Electrical" ;
+	ent:priority "High" ;
+	ent:req_text "The vehicle shall have a 28 Volt DC power source and shall be capable of providing sustained electrical power to on-board vehicle subsystems, in addition to the power required for the vehicle hotel loads.  Hotel loads include loads required to run the vehicle and not provided as GFE (i.e. vehicle lighting, environmental control units, heater fans and blowers, cooling fans, engine ECU, driver controls).  Provided sustained electrical power shall be:" ;
+	ent:vehicle_system_required "Vehicle Powertrain With Full Electrical System" ;
+	ent:limits_check "Thermal" ;
+	ent:driver "None" ;
+	ent:context "None" ;
+	ent:key_variable "Total power draw, generator capacity" ;
+	rdf:type ent:requirement; ent:requirement_type  "Vehicle Functionality" .
+
+<http://entroplet.com/terms#Power+Generation+Availability> ent:req_category "Configuration" ;
+	ent:uri		"/ref/RemainingReqtsHighlighted_Oct11.htm" ;
+	ent:req_sub_category "Power Management" ;
+	ent:req_attribute "Power Generation Availability" ;
+	ent:req_system_level "Sub System" ;
+	ent:req_sys_description "Electrical" ;
+	ent:priority "High" ;
+	ent:req_text "The on-board power generation shall be simultaneously provided as the vehicle is charging the batteries and/or capacitors consistent with the specifications of the battery manufacturer." ;
+	ent:vehicle_system_required "Vehicle Powertrain With Full Electrical System" ;
+	ent:limits_check "Thermal" ;
+	ent:driver "None" ;
+	ent:context "None" ;
+	ent:key_variable "Total power draw, generator capacity, battery charge capacity" ;
+	rdf:type ent:requirement; ent:requirement_type  "Vehicle Functionality" .
+
+<http://entroplet.com/terms#Combined+Land+and+Sea+Range> ent:req_category "Automotive Performance" ;
+	ent:uri		"/ref/RemainingReqtsHighlighted_Oct11.htm" ;
+	ent:req_sub_category "Range" ;
+	ent:req_attribute "Combined Land and Sea Range" ;
+	ent:req_system_level "Vehicle" ;
+	ent:req_sys_description "Full Vehicle" ;
+	ent:priority "High" ;
+	ent:req_text "The vehicle shall be capable of operating on internally carried fuel for a minimum distance (a) at an average speed of 40 kph (25mph) on a level hard surface road after completion of a minimum water distance (b) at an average water speed of 10 knots in sea state 1: " ;
+	ent:vehicle_system_required "Full vehicle powertrain (with full vehicle weight)" ;
+	ent:limits_check "Thermal, Driveline" ;
+	ent:driver "Standard" ;
+	ent:context "Asphalt and Sea State 1" ;
+	ent:key_variable "Vehicle speed, fuel flow" ;
+	rdf:type ent:requirement; ent:requirement_type  "Vehicle Functionality" .
+
+<http://entroplet.com/terms#Brake+Performance+on+Dry%2C+Level+Ground> ent:req_category "Automotive Performance" ;
+	ent:uri		"/ref/RemainingReqtsHighlighted_Oct11.htm" ;
+	ent:req_sub_category "Brake Performance" ;
+	ent:req_attribute "Brake Performance on Dry, Level Ground" ;
+	ent:req_system_level "Vehicle" ;
+	ent:req_sys_description "Full Vehicle" ;
+	ent:priority "Med" ;
+	ent:req_text "The vehicle, at GVW, on a dry hard surface road free of loose material, shall have a deceleration of more than:" ;
+	ent:units "G" ;
+	ent:vehicle_system_required "Full vehicle powertrain (with full vehicle weight)" ;
+	ent:limits_check "Thermal, Driveline" ;
+	ent:driver "Standard" ;
+	ent:context "Asphalt" ;
+	ent:key_variable "Vehicle speed" ;
+	rdf:type ent:requirement; ent:requirement_type  "Vehicle Functionality" .
+
+<http://entroplet.com/terms#Service+Brake++Performance+on+Grades> ent:req_category "Automotive Performance" ;
+	ent:uri		"/ref/RemainingReqtsHighlighted_Oct11.htm" ;
+	ent:req_sub_category "Brake Performance" ;
+	ent:req_attribute "Service Brake  Performance on Grades" ;
+	ent:req_system_level "Vehicle" ;
+	ent:req_sys_description "Full Vehicle" ;
+	ent:priority "High" ;
+	ent:req_text "With the engine running, the service brakes shall hold the vehicle at GVW on a dry hard surface,  pointing either uphill or downhill on a grade greater than :" ;
+	ent:units "%" ;
+	ent:vehicle_system_required "Full vehicle powertrain (with full vehicle weight)" ;
+	ent:limits_check "Thermal, Driveline" ;
+	ent:driver "Standard" ;
+	ent:context "Asphalt" ;
+	ent:key_variable "Vehicle speed" ;
+	rdf:type ent:requirement; ent:requirement_type  "Vehicle Functionality" .
+
+<http://entroplet.com/terms#Stopping+Distance+%26+Drift+from+Maximum+Road+Speed> ent:req_category "Automotive Performance" ;
+	ent:uri		"/ref/RemainingReqtsHighlighted_Oct11.htm" ;
+	ent:req_sub_category "Brake Performance" ;
+	ent:req_attribute "Stopping Distance & Drift from Maximum Road Speed" ;
+	ent:req_system_level "Vehicle" ;
+	ent:req_sys_description "Full Vehicle" ;
+	ent:priority "High" ;
+	ent:req_text "The vehicle, at GVW, shall stop from maximum vehicle forward speed , with drift not exceeding 2m, within a distance of:" ;
+	ent:units "m" ;
+	ent:vehicle_system_required "Full vehicle powertrain (with full vehicle weight)" ;
+	ent:limits_check "Thermal, Driveline" ;
+	ent:driver "Standard" ;
+	ent:context "Asphalt" ;
+	ent:key_variable "Vehicle speed" ;
+	rdf:type ent:requirement; ent:requirement_type  "Vehicle Functionality" .
+
+<http://entroplet.com/terms#Like+For+Like+Tow+Capability> ent:req_category "Automotive Performance" ;
+	ent:uri		"/ref/RemainingReqtsHighlighted_Oct11.htm" ;
+	ent:req_sub_category "Tractive Effort & Towing" ;
+	ent:req_attribute "Like For Like Tow Capability" ;
+	ent:req_system_level "Vehicle" ;
+	ent:req_sys_description "Full Vehicle" ;
+	ent:priority "High" ;
+	ent:req_text "The vehicle with a full tank of fuel, at GVW shall  be capable of towing another like vehicle in its payload category of GVW over flat secondary roads for a distance of:" ;
+	ent:units "km" ;
+	ent:vehicle_system_required "Full vehicle powertrain (with full vehicle weight) x 2" ;
+	ent:limits_check "Thermal, Driveline" ;
+	ent:driver "Standard" ;
+	ent:context "Asphalt" ;
+	ent:key_variable "Vehicle speed, fuel flow, tank size" ;
+	rdf:type ent:requirement; ent:requirement_type  "Vehicle Functionality" .
+
+<http://entroplet.com/terms#Water+Towing+Speed> ent:req_category "Automotive Performance" ;
+	ent:uri		"/ref/RemainingReqtsHighlighted_Oct11.htm" ;
+	ent:req_sub_category "Tractive Effort & Towing" ;
+	ent:req_attribute "Water Towing Speed" ;
+	ent:req_system_level "Vehicle" ;
+	ent:req_sys_description "Full Vehicle" ;
+	ent:priority "High" ;
+	ent:req_text "The vehicle at GVW shall be capable of towing a like vehicle at GVW in sea state 1 and through the surf zone onto a beach at speed of:" ;
+	ent:units "knots" ;
+	ent:vehicle_system_required "Full vehicle powertrain (with full vehicle weight) x 2" ;
+	ent:limits_check "Thermal, Driveline" ;
+	ent:driver "Standard" ;
+	ent:context "Sea State 1" ;
+	ent:key_variable "Vehicle speed, cg" ;
+	rdf:type ent:requirement; ent:requirement_type  "Vehicle Functionality" .
+
+<http://entroplet.com/terms#Maximum+Tractive+Effort+on+Level+Ground> ent:req_category "Automotive Performance" ;
+	ent:uri		"/ref/RemainingReqtsHighlighted_Oct11.htm" ;
+	ent:req_sub_category "Tractive Effort & Towing" ;
+	ent:req_attribute "Maximum Tractive Effort on Level Ground" ;
+	ent:req_system_level "Vehicle" ;
+	ent:req_sys_description "Full Vehicle" ;
+	ent:priority "High" ;
+	ent:req_text "The maximum output torque at the sprocket under ambient conditions defined by NATO AEP-5 at 150 m altitude in forward and reverse on a level, hard surface road shall be sufficient to generate a tractive effort equal to :" ;
+	ent:units "TE/GVW" ;
+	ent:vehicle_system_required "Full vehicle powertrain (with full vehicle weight)" ;
+	ent:limits_check "Thermal, Driveline" ;
+	ent:driver "Standard" ;
+	ent:context "Asphalt" ;
+	ent:key_variable "Tractive Force" ;
+	rdf:type ent:requirement; ent:requirement_type  "Vehicle Functionality" .
+
+<http://entroplet.com/terms#Vehicle+Operations+on+Side+Slope> ent:req_category "Automotive Performance" ;
+	ent:uri		"/ref/RemainingReqtsHighlighted_Oct11.htm" ;
+	ent:req_sub_category "Gradeability" ;
+	ent:req_attribute "Vehicle Operations on Side Slope" ;
+	ent:req_system_level "Vehicle" ;
+	ent:req_sys_description "Full Vehicle" ;
+	ent:priority "High" ;
+	ent:req_text "The vehicle at GVW shall be capable of slope operations at a grade of more than:" ;
+	ent:units "%" ;
+	ent:vehicle_system_required "Full vehicle powertrain (with full vehicle weight)" ;
+	ent:limits_check "None" ;
+	ent:driver "None" ;
+	ent:context "Asphalt" ;
+	ent:key_variable "cg" ;
+	rdf:type ent:requirement; ent:requirement_type  "Vehicle Functionality" .
+
+<http://entroplet.com/terms#Speed+on+60%25+Grade> ent:req_category "Automotive Performance" ;
+	ent:uri		"/ref/RemainingReqtsHighlighted_Oct11.htm" ;
+	ent:req_sub_category "Gradeability" ;
+	ent:req_attribute "Speed on 60% Grade" ;
+	ent:req_system_level "Vehicle" ;
+	ent:req_sys_description "Full Vehicle" ;
+	ent:priority "High" ;
+	ent:req_text "The vehicle, at GVW shall be able to ascend/descend,  in both forward and reverse, a 60% grade at:" ;
+	ent:units "kph" ;
+	ent:vehicle_system_required "Full vehicle powertrain (with full vehicle weight)" ;
+	ent:limits_check "Thermal, Driveline" ;
+	ent:driver "Standard" ;
+	ent:context "Asphalt" ;
+	ent:key_variable "Vehicle speed" ;
+	rdf:type ent:requirement; ent:requirement_type  "Vehicle Functionality" .
+
+<http://entroplet.com/terms#Stopping+%26+Re-starting+on+Grades> ent:req_category "Automotive Performance" ;
+	ent:uri		"/ref/RemainingReqtsHighlighted_Oct11.htm" ;
+	ent:req_sub_category "Gradeability" ;
+	ent:req_attribute "Stopping & Re-starting on Grades" ;
+	ent:req_system_level "Vehicle" ;
+	ent:req_sys_description "Full Vehicle" ;
+	ent:priority "High" ;
+	ent:req_text "The vehicle at GVW shall be capable of stopping on a 60% hard-dry grade for not less than one minute, shut the engine off, restart, and then continue to ascend/descend the 60% grade.  " ;
+	ent:vehicle_system_required "Full vehicle powertrain (with full vehicle weight)" ;
+	ent:limits_check "None" ;
+	ent:driver "Standard" ;
+	ent:context "Asphalt" ;
+	ent:key_variable "Vehicle speed" ;
+	rdf:type ent:requirement; ent:requirement_type  "Vehicle Functionality" .
+
+<http://entroplet.com/terms#NATO+Mobility> ent:req_category "Automotive Performance" ;
+	ent:uri		"/ref/RemainingReqtsHighlighted_Oct11.htm" ;
+	ent:req_sub_category "Obstacle Negotiation" ;
+	ent:req_attribute "NATO Mobility" ;
+	ent:req_system_level "Vehicle" ;
+	ent:req_sys_description "Full Vehicle" ;
+	ent:priority "KPP" ;
+	ent:req_text """The vehicle (at GVW) shall achieve the NATO Reference Mobility Model (NRMM) requirements as called out below.
+""" ;
+	ent:vehicle_system_required "Full vehicle powertrain (with full vehicle weight)" ;
+	ent:limits_check "None" ;
+	ent:driver "None" ;
+	ent:context "None" ;
+	ent:key_variable "None" ;
+	rdf:type ent:requirement; ent:requirement_type  "Vehicle Functionality" .
+
+<http://entroplet.com/terms#Approach+Angle> ent:req_category "Automotive Performance" ;
+	ent:uri		"/ref/RemainingReqtsHighlighted_Oct11.htm" ;
+	ent:req_sub_category "Obstacle Negotiation" ;
+	ent:req_attribute "Approach Angle" ;
+	ent:req_system_level "Vehicle" ;
+	ent:req_sys_description "Full Vehicle" ;
+	ent:priority "High" ;
+	ent:req_text "The Approach angle shall be :" ;
+	ent:units "deg" ;
+	ent:vehicle_system_required "Full vehicle powertrain (with full vehicle weight)" ;
+	ent:limits_check "None" ;
+	ent:driver "None" ;
+	ent:context "None" ;
+	ent:key_variable "Approach angle" ;
+	rdf:type ent:requirement; ent:requirement_type  "Vehicle Functionality" .
+
+<http://entroplet.com/terms#Departure+Angle> ent:req_category "Automotive Performance" ;
+	ent:uri		"/ref/RemainingReqtsHighlighted_Oct11.htm" ;
+	ent:req_sub_category "Obstacle Negotiation" ;
+	ent:req_attribute "Departure Angle" ;
+	ent:req_system_level "Vehicle" ;
+	ent:req_sys_description "Full Vehicle" ;
+	ent:priority "High" ;
+	ent:req_text "The Departure angle, shall be:" ;
+	ent:units "deg" ;
+	ent:vehicle_system_required "Full vehicle powertrain (with full vehicle weight)" ;
+	ent:limits_check "None" ;
+	ent:driver "None" ;
+	ent:context "None" ;
+	ent:key_variable "Departure angle" ;
+	rdf:type ent:requirement; ent:requirement_type  "Vehicle Functionality" .
+
+<http://entroplet.com/terms#Gap+Crossing> ent:req_category "Automotive Performance" ;
+	ent:uri		"/ref/RemainingReqtsHighlighted_Oct11.htm" ;
+	ent:req_sub_category "Obstacle Negotiation" ;
+	ent:req_attribute "Gap Crossing" ;
+	ent:req_system_level "Vehicle" ;
+	ent:req_sys_description "Full Vehicle" ;
+	ent:priority "High" ;
+	ent:req_text "The vehicle shall cross a gap no less than:" ;
+	ent:units "m" ;
+	ent:vehicle_system_required "Full vehicle powertrain (with full vehicle weight)" ;
+	ent:limits_check "Thermal, Driveline" ;
+	ent:driver "Standard" ;
+	ent:context "Asphalt" ;
+	ent:key_variable "Vehicle speed, track contact point" ;
+	rdf:type ent:requirement; ent:requirement_type  "Vehicle Functionality" .
+
+<http://entroplet.com/terms#Ground+Clearance> ent:req_category "Automotive Performance" ;
+	ent:uri		"/ref/RemainingReqtsHighlighted_Oct11.htm" ;
+	ent:req_sub_category "Obstacle Negotiation" ;
+	ent:req_attribute "Ground Clearance" ;
+	ent:req_system_level "Vehicle" ;
+	ent:req_sys_description "Full Vehicle" ;
+	ent:priority "High" ;
+	ent:req_text "Have a minimum ground clearance of:" ;
+	ent:units "cm" ;
+	ent:vehicle_system_required "Full vehicle powertrain (with full vehicle weight)" ;
+	ent:limits_check "None" ;
+	ent:driver "None" ;
+	ent:context "None" ;
+	ent:key_variable "Ground clearance" ;
+	rdf:type ent:requirement; ent:requirement_type  "Vehicle Functionality" .
+
+<http://entroplet.com/terms#Trench+Crossing+%28small+dry+river+bed%29> ent:req_category "Automotive Performance" ;
+	ent:uri		"/ref/RemainingReqtsHighlighted_Oct11.htm" ;
+	ent:req_sub_category "Obstacle Negotiation" ;
+	ent:req_attribute "Trench Crossing (small dry river bed)" ;
+	ent:req_system_level "Vehicle" ;
+	ent:req_sys_description "Full Vehicle" ;
+	ent:priority "High" ;
+	ent:req_text "The vehicle shall traverse a ditch of minimum dimensions ≥4.5 ft deep and ≥25.5 ft across, with hard surface ingress and egress walls sloped at an angle of ≤36.5 degrees" ;
+	ent:units "ft" ;
+	ent:vehicle_system_required "Full vehicle powertrain (with full vehicle weight)" ;
+	ent:limits_check "None" ;
+	ent:driver "Standard" ;
+	ent:context "Asphalt" ;
+	ent:key_variable "Vehicle speed, track contact point" ;
+	rdf:type ent:requirement; ent:requirement_type  "Vehicle Functionality" .
+
+<http://entroplet.com/terms#Vertical+Step+Maneuver> ent:req_category "Automotive Performance" ;
+	ent:uri		"/ref/RemainingReqtsHighlighted_Oct11.htm" ;
+	ent:req_sub_category "Obstacle Negotiation" ;
+	ent:req_attribute "Vertical Step Maneuver" ;
+	ent:req_system_level "Vehicle" ;
+	ent:req_sys_description "Full Vehicle" ;
+	ent:priority "High" ;
+	ent:req_text "The vehicle at GVW shall be capable of stepping up and down, in forward and reverse on a straight on approach, a vertical step of:" ;
+	ent:units "cm" ;
+	ent:vehicle_system_required "Full vehicle powertrain (with full vehicle weight)" ;
+	ent:limits_check "Thermal, Driveline" ;
+	ent:driver "Standard" ;
+	ent:context "Asphalt" ;
+	ent:key_variable "Vehicle speed, track contact point" ;
+	rdf:type ent:requirement; ent:requirement_type  "Vehicle Functionality" .
+
+<http://entroplet.com/terms#Land+Range+on+Level+Ground> ent:req_category "Automotive Performance" ;
+	ent:uri		"/ref/RemainingReqtsHighlighted_Oct11.htm" ;
+	ent:req_sub_category "Range" ;
+	ent:req_attribute "Land Range on Level Ground" ;
+	ent:req_system_level "Vehicle" ;
+	ent:req_sys_description "Full Vehicle" ;
+	ent:priority "High" ;
+	ent:req_text "The vehicle at GVW shall be capable of operating on a level hard surface road on internally carried fuel, at an average speed of 40 kph (25 mph) for a minimum distance  of:" ;
+	ent:units "km" ;
+	ent:vehicle_system_required "Full vehicle powertrain (with full vehicle weight)" ;
+	ent:limits_check "Thermal, Driveline" ;
+	ent:driver "Standard" ;
+	ent:context "Asphalt" ;
+	ent:key_variable "Vehicle speed, fuel flow" ;
+	rdf:type ent:requirement; ent:requirement_type  "Vehicle Functionality" .
+
+<http://entroplet.com/terms#6+Watts+Absorbed+Power+Limit+Over+RMS+Courses> ent:req_category "Automotive Performance" ;
+	ent:uri		"/ref/RemainingReqtsHighlighted_Oct11.htm" ;
+	ent:req_sub_category "Ride Quality" ;
+	ent:req_attribute "6 Watts Absorbed Power Limit Over RMS Courses" ;
+	ent:req_system_level "Vehicle" ;
+	ent:req_sys_description "Full Vehicle" ;
+	ent:priority "High" ;
+	ent:req_text "The vehicle at GVW & Combat weight shall attain no more than an average vertical absorbed power of 6 Watts, as measured at the base of all occupant seats, while negotiating the following Root Mean Square (RMS) ride courses at speeds listed:" ;
+	ent:vehicle_system_required "Full vehicle powertrain (with full vehicle weight)" ;
+	ent:limits_check "None" ;
+	ent:driver "Standard" ;
+	ent:context "Asphalt" ;
+	ent:key_variable "Vehicle speed, hull vertical acceleration" ;
+	rdf:type ent:requirement; ent:requirement_type  "Vehicle Functionality" .
+
+<http://entroplet.com/terms#2.5g+Vertical+Accelerations+Over+Half+Rounds> ent:req_category "Automotive Performance" ;
+	ent:uri		"/ref/RemainingReqtsHighlighted_Oct11.htm" ;
+	ent:req_sub_category "Ride Quality" ;
+	ent:req_attribute "2.5g Vertical Accelerations Over Half Rounds" ;
+	ent:req_system_level "Vehicle" ;
+	ent:req_sys_description "Full Vehicle" ;
+	ent:priority "High" ;
+	ent:req_text "The vehicle at combat weight, while negotiating a non-deformable, half-round obstacle of the specified size and at the rates listed, the vehicle shall sustain no more than a peak vertical acceleration, as measured at each occupant location of 2.5G" ;
+	ent:vehicle_system_required "Full vehicle powertrain (with full vehicle weight)" ;
+	ent:limits_check "None" ;
+	ent:driver "Standard" ;
+	ent:context "Asphalt" ;
+	ent:key_variable "Vehicle speed, hull vertical acceleration" ;
+	rdf:type ent:requirement; ent:requirement_type  "Vehicle Functionality" .
+
+<http://entroplet.com/terms#0-20+mph+Acceleration+on+Level+Ground> ent:req_category "Automotive Performance" ;
+	ent:uri		"/ref/RemainingReqtsHighlighted_Oct11.htm" ;
+	ent:req_sub_category "Speed" ;
+	ent:req_attribute "0-20 mph Acceleration on Level Ground" ;
+	ent:req_system_level "Vehicle" ;
+	ent:req_sys_description "Full Vehicle" ;
+	ent:priority "High" ;
+	ent:req_text "The vehicle at GVW shall accelerate on a level hard surface from 0 to 32 kph (20mph) in:" ;
+	ent:units "sec" ;
+	ent:vehicle_system_required "Full vehicle powertrain (with full vehicle weight)" ;
+	ent:limits_check "Driveline" ;
+	ent:driver "Standard" ;
+	ent:context "Asphalt" ;
+	ent:key_variable "Vehicle speed" ;
+	rdf:type ent:requirement; ent:requirement_type  "Vehicle Functionality" .
+
+<http://entroplet.com/terms#Cross+Country+Land+Speed> ent:req_category "Automotive Performance" ;
+	ent:uri		"/ref/RemainingReqtsHighlighted_Oct11.htm" ;
+	ent:req_sub_category "Speed" ;
+	ent:req_attribute "Cross Country Land Speed" ;
+	ent:req_system_level "Vehicle" ;
+	ent:req_sys_description "Full Vehicle" ;
+	ent:priority "High" ;
+	ent:req_text "For cross-country movement, with the vehicle at GVW, shall be able to attain land speeds of:" ;
+	ent:units "kph" ;
+	ent:vehicle_system_required "Full vehicle powertrain (with full vehicle weight)" ;
+	ent:limits_check "Thermal, Driveline" ;
+	ent:driver "Standard" ;
+	ent:context "Asphalt" ;
+	ent:key_variable "Vehicle speed" ;
+	rdf:type ent:requirement; ent:requirement_type  "Vehicle Functionality" .
+
+<http://entroplet.com/terms#Level+Road+Land+Speed> ent:req_category "Automotive Performance" ;
+	ent:uri		"/ref/RemainingReqtsHighlighted_Oct11.htm" ;
+	ent:req_sub_category "Speed" ;
+	ent:req_attribute "Level Road Land Speed" ;
+	ent:req_system_level " Vehicle" ;
+	ent:req_sys_description "Full Vehicle" ;
+	ent:priority "KPP" ;
+	ent:req_text "On a level, hard surfaced road, the vehicle, at GVW, shall attain a speed of no less than:" ;
+	ent:units "kph" ;
+	ent:vehicle_system_required "Full vehicle powertrain (with full vehicle weight)" ;
+	ent:limits_check "Thermal, Driveline" ;
+	ent:driver "Standard" ;
+	ent:context "Asphalt" ;
+	ent:key_variable "Vehicle speed" ;
+	rdf:type ent:requirement; ent:requirement_type  "Vehicle Functionality" .
+
+<http://entroplet.com/terms#Minimum+Reverse+Land+Speed> ent:req_category "Automotive Performance" ;
+	ent:uri		"/ref/RemainingReqtsHighlighted_Oct11.htm" ;
+	ent:req_sub_category "Speed" ;
+	ent:req_attribute "Minimum Reverse Land Speed" ;
+	ent:req_system_level "Vehicle" ;
+	ent:req_sys_description "Full Vehicle" ;
+	ent:priority "High" ;
+	ent:req_text "The vehicle at GVW shall have a reverse speed of no less than:" ;
+	ent:units "kph" ;
+	ent:vehicle_system_required "Full vehicle powertrain (with full vehicle weight)" ;
+	ent:limits_check "Thermal, Driveline" ;
+	ent:driver "Standard" ;
+	ent:context "Asphalt" ;
+	ent:key_variable "Vehicle speed, direction" ;
+	rdf:type ent:requirement; ent:requirement_type  "Vehicle Functionality" .
+
+<http://entroplet.com/terms#Sustained+Low+Average+Speed+on+Level+Ground++%28no+brakes%29> ent:req_category "Automotive Performance" ;
+	ent:uri		"/ref/RemainingReqtsHighlighted_Oct11.htm" ;
+	ent:req_sub_category "Speed" ;
+	ent:req_attribute "Sustained Low Average Speed on Level Ground  (no brakes)" ;
+	ent:req_system_level "Vehicle" ;
+	ent:req_sys_description "Full Vehicle" ;
+	ent:priority "Med" ;
+	ent:req_text "On a level, hard surface without use of service brakes, the vehicle shall operate at a speed no greater than:" ;
+	ent:units "kph" ;
+	ent:vehicle_system_required "Full vehicle powertrain (with full vehicle weight)" ;
+	ent:limits_check "None" ;
+	ent:driver "Standard" ;
+	ent:context "Asphalt" ;
+	ent:key_variable "Vehicle speed" ;
+	rdf:type ent:requirement; ent:requirement_type  "Vehicle Functionality" .
+
+<http://entroplet.com/terms#360+Degree+Pivot+Turn+on+Level+Ground> ent:req_category "Automotive Performance" ;
+	ent:uri		"/ref/RemainingReqtsHighlighted_Oct11.htm" ;
+	ent:req_sub_category "Steering and Turning" ;
+	ent:req_attribute "360 Degree Pivot Turn on Level Ground" ;
+	ent:req_system_level "Vehicle" ;
+	ent:req_sys_description "Full Vehicle" ;
+	ent:priority "High" ;
+	ent:req_text "The vehicle shall perform a 360 degree pivot turn, on a level hard surface in the left and right direction independently, within one and one half vehicle lengths, in no greater than " ;
+	ent:units "sec" ;
+	ent:vehicle_system_required "Full vehicle powertrain (with full vehicle weight)" ;
+	ent:limits_check "Driveline" ;
+	ent:driver "Standard" ;
+	ent:context "Asphalt" ;
+	ent:key_variable "Vehicle speed, direction" ;
+	rdf:type ent:requirement; ent:requirement_type  "Vehicle Functionality" .
+
+<http://entroplet.com/terms#Minimum+Forward+Speed+in+Surf+Zones> ent:req_category "Automotive Performance" ;
+	ent:uri		"/ref/RemainingReqtsHighlighted_Oct11.htm" ;
+	ent:req_sub_category "Speed" ;
+	ent:req_attribute "Minimum Forward Speed in Surf Zones" ;
+	ent:req_system_level "Vehicle" ;
+	ent:req_sys_description "Full Vehicle" ;
+	ent:priority "High" ;
+	ent:req_text "With the engine at idle and drive engaged in a surf zone, the forward speed shall be less than:" ;
+	ent:units "knots" ;
+	ent:vehicle_system_required "Full vehicle powertrain (with full vehicle weight)" ;
+	ent:limits_check "Thermal, Driveline" ;
+	ent:driver "Standard" ;
+	ent:context "Surf Zone" ;
+	ent:key_variable "Vehicle speed" ;
+	rdf:type ent:requirement; ent:requirement_type  "Vehicle Functionality" .
+
+<http://entroplet.com/terms#Reverse+Speed+in+Surf+Zones> ent:req_category "Automotive Performance" ;
+	ent:uri		"/ref/RemainingReqtsHighlighted_Oct11.htm" ;
+	ent:req_sub_category "Speed" ;
+	ent:req_attribute "Reverse Speed in Surf Zones" ;
+	ent:req_system_level "Vehicle" ;
+	ent:req_sys_description "Full Vehicle" ;
+	ent:priority "High" ;
+	ent:req_text "The vehicle, at GVW while in the surf zone, shall achieve a reverse speed of more than:" ;
+	ent:units "knots" ;
+	ent:vehicle_system_required "Full vehicle powertrain (with full vehicle weight)" ;
+	ent:limits_check "Thermal, Driveline" ;
+	ent:driver "Standard" ;
+	ent:context "Surf Zone" ;
+	ent:key_variable "Vehicle speed, direction" ;
+	rdf:type ent:requirement; ent:requirement_type  "Vehicle Functionality" .
+
+<http://entroplet.com/terms#Stopping+Distance+in+Surf+Zone> ent:req_category "Automotive Performance" ;
+	ent:uri		"/ref/RemainingReqtsHighlighted_Oct11.htm" ;
+	ent:req_sub_category "Maneuverability Surf Zone" ;
+	ent:req_attribute "Stopping Distance in Surf Zone" ;
+	ent:req_system_level "Vehicle" ;
+	ent:req_sys_description "Water Propulsion" ;
+	ent:priority "High" ;
+	ent:req_text "From a forward speed of 9 knots (10 mph), the vehicle stopping distance shall be less than:" ;
+	ent:units "m" ;
+	ent:vehicle_system_required "Full vehicle powertrain (with full vehicle weight)" ;
+	ent:limits_check "Thermal, Driveline" ;
+	ent:driver "Standard" ;
+	ent:context "Surf Zone" ;
+	ent:key_variable "Vehicle speed" ;
+	rdf:type ent:requirement; ent:requirement_type  "Vehicle Functionality" .
+
+<http://entroplet.com/terms#Surf+Zone+Operation> ent:req_category "Automotive Performance" ;
+	ent:uri		"/ref/RemainingReqtsHighlighted_Oct11.htm" ;
+	ent:req_sub_category "Maneuverability Surf Zone" ;
+	ent:req_attribute "Surf Zone Operation" ;
+	ent:req_system_level "Vehicle" ;
+	ent:req_sys_description "Water Propulsion" ;
+	ent:priority "High" ;
+	ent:req_text "The vehicle shall be capable of both land and water mobility while in a surf zone. This mode of operation is for interfacing with amphibious ships and craft, for transiting the surf and beach regions, for limited operation on land, and while conducting river line operations.  It can be expected that the vehicle will operate in surf zones at engine idle speed for up to 15 minutes in ship well decks that are dry (prior to launching), on land for up to 3 minutes at full land mobility power. Unless otherwise specified all surf zone operation requirements shall be performed in a Sea State characterized by a 0.9 m (36 inches) SWH" ;
+	ent:vehicle_system_required "Full vehicle powertrain (with full vehicle weight)" ;
+	ent:limits_check "Thermal, Driveline" ;
+	ent:driver "Standard" ;
+	ent:context "Surf Zone" ;
+	ent:key_variable "Vehicle speed, cg" ;
+	rdf:type ent:requirement; ent:requirement_type  "Vehicle Functionality" .
+
+<http://entroplet.com/terms#Operating+Time+at+Sea> ent:req_category "Automotive Performance" ;
+	ent:uri		"/ref/RemainingReqtsHighlighted_Oct11.htm" ;
+	ent:req_sub_category "Range" ;
+	ent:req_attribute "Operating Time at Sea" ;
+	ent:req_system_level "Vehicle" ;
+	ent:req_sys_description "Water Propulsion" ;
+	ent:priority "High" ;
+	ent:req_text "The vehicle shall be capable of operating in in sea state 1at an average speed of 5.2 knots for:" ;
+	ent:units "hrs" ;
+	ent:vehicle_system_required "Full vehicle powertrain (with full vehicle weight)" ;
+	ent:limits_check "Thermal, Driveline" ;
+	ent:driver "Standard" ;
+	ent:context "Sea State 1" ;
+	ent:key_variable "Vehicle speed" ;
+	rdf:type ent:requirement; ent:requirement_type  "Vehicle Functionality" .
+
+<http://entroplet.com/terms#Minimum+Sustained+Forward+Cruising+Speed+in+up+to+Sea+State+3> ent:req_category "Automotive Performance" ;
+	ent:uri		"/ref/RemainingReqtsHighlighted_Oct11.htm" ;
+	ent:req_sub_category "Speed" ;
+	ent:req_attribute "Minimum Sustained Forward Cruising Speed in up to Sea State 3" ;
+	ent:req_system_level "Vehicle" ;
+	ent:req_sys_description "Full Vehicle" ;
+	ent:priority "KPP" ;
+	ent:req_text "The vehicle at GVW, while operating through a mix of head and following seas with a SWH of up to 0.9 m (36 inches) shall have a sustained minimum average speed of (T: 5.2 knots, O: 16 knots)" ;
+	ent:units "knots" ;
+	ent:vehicle_system_required "Full vehicle powertrain (with full vehicle weight)" ;
+	ent:limits_check "Thermal, Driveline" ;
+	ent:driver "Standard" ;
+	ent:context "Sea State 3" ;
+	ent:key_variable "Vehicle speed" ;
+	rdf:type ent:requirement; ent:requirement_type  "Vehicle Functionality" .
+
+<http://entroplet.com/terms#Max+Forward+Speed+in+up+to+Sea+State+3> ent:req_category "Automotive Performance" ;
+	ent:uri		"/ref/RemainingReqtsHighlighted_Oct11.htm" ;
+	ent:req_sub_category "Speed" ;
+	ent:req_attribute "Max Forward Speed in up to Sea State 3" ;
+	ent:req_system_level "Vehicle" ;
+	ent:req_sys_description "Full Vehicle" ;
+	ent:priority "High" ;
+	ent:req_text "The vehicle at GVW, while operating through fully formed seas with a SWH of up to 0.9 m (36 inches) shall posses a max water speed of more than " ;
+	ent:units "knots" ;
+	ent:vehicle_system_required "Full vehicle powertrain (with full vehicle weight)" ;
+	ent:limits_check "None" ;
+	ent:driver "Standard" ;
+	ent:context "Sea State 3" ;
+	ent:key_variable "Vehicle speed" ;
+	rdf:type ent:requirement; ent:requirement_type  "Vehicle Functionality" .
+
+<http://entroplet.com/terms#Minimum+Reverse+Speed+in+Calm+Open+Water> ent:req_category "Automotive Performance" ;
+	ent:uri		"/ref/RemainingReqtsHighlighted_Oct11.htm" ;
+	ent:req_sub_category "Speed" ;
+	ent:req_attribute "Minimum Reverse Speed in Calm Open Water" ;
+	ent:req_system_level "Vehicle" ;
+	ent:req_sys_description "Full Vehicle" ;
+	ent:priority "High" ;
+	ent:req_text "The vehicle, shall achieve a reverse speed in calm water of more than:" ;
+	ent:units "knots" ;
+	ent:vehicle_system_required "Full vehicle powertrain (with full vehicle weight)" ;
+	ent:limits_check "Thermal, Driveline" ;
+	ent:driver "Standard" ;
+	ent:context "Calm Water" ;
+	ent:key_variable "Vehicle speed" ;
+	rdf:type ent:requirement; ent:requirement_type  "Vehicle Functionality" .
+
+<http://entroplet.com/terms#Reverse+Steering+on+Open+Water> ent:req_category "Automotive Performance" ;
+	ent:uri		"/ref/RemainingReqtsHighlighted_Oct11.htm" ;
+	ent:req_sub_category "Maneuverability on Water" ;
+	ent:req_attribute "Reverse Steering on Open Water" ;
+	ent:req_system_level "Vehicle" ;
+	ent:req_sys_description "Water Propulsion" ;
+	ent:priority "High" ;
+	ent:req_text "The vehicle shall steer in reverse in both the port and starboard directions." ;
+	ent:vehicle_system_required "Full vehicle powertrain (with full vehicle weight)" ;
+	ent:limits_check "None" ;
+	ent:driver "Standard" ;
+	ent:context "Calm Water" ;
+	ent:key_variable "Vehicle speed, direction" ;
+	rdf:type ent:requirement; ent:requirement_type  "Vehicle Functionality" .
+
+<http://entroplet.com/terms#Stopping+Distance+from+Maximum+Speed+in+Calm+Open+Water> ent:req_category "Automotive Performance" ;
+	ent:uri		"/ref/RemainingReqtsHighlighted_Oct11.htm" ;
+	ent:req_sub_category "Maneuverability on Water" ;
+	ent:req_attribute "Stopping Distance from Maximum Speed in Calm Open Water" ;
+	ent:req_system_level "Vehicle" ;
+	ent:req_sys_description "Water Propulsion" ;
+	ent:priority "High" ;
+	ent:req_text "The vehicle shall stop forward motion from max water speed in calm water within a distance of:" ;
+	ent:units "m" ;
+	ent:vehicle_system_required "Full vehicle powertrain (with full vehicle weight)" ;
+	ent:limits_check "None" ;
+	ent:driver "Standard" ;
+	ent:context "Calm Water" ;
+	ent:key_variable "Vehicle speed" ;
+	rdf:type ent:requirement; ent:requirement_type  "Vehicle Functionality" .
+
+<http://entroplet.com/terms#Vehicle+Unit+Cost> ent:req_category "Cost" ;
+	ent:uri		"/ref/RemainingReqtsHighlighted_Oct11.htm" ;
+	ent:req_sub_category "Cost" ;
+	ent:req_attribute "Vehicle Unit Cost" ;
+	ent:req_system_level "Vehicle" ;
+	ent:req_sys_description "Full Vehicle" ;
+	ent:priority "High" ;
+	ent:req_text "Vehicle Unit cost shall not exceed (T: 20 $M, O: 5.5 $M)" ;
+	ent:units "$M" .
+
+<http://entroplet.com/terms#Component+Lead+Time> ent:req_category "Lead Time" ;
+	ent:uri		"/ref/RemainingReqtsHighlighted_Oct11.htm" ;
+	ent:req_sub_category "Manufacturability" ;
+	ent:req_attribute "Component Lead Time" ;
+	ent:req_system_level "Vehicle" ;
+	ent:req_sys_description "Full Vehicle" ;
+	ent:priority "High" ;
+	ent:req_text "Lead times for all specified components shall be (T: less than the available build window, O: less than 30 days)" .
+
+<http://entroplet.com/terms#Service+Life+over+Mission+Profile> ent:req_category "RAM-D" ;
+	ent:uri		"/ref/RemainingReqtsHighlighted_Oct11.htm" ;
+	ent:req_sub_category "Durability" ;
+	ent:req_attribute "Service Life over Mission Profile" ;
+	ent:req_system_level "Vehicle" ;
+	ent:req_sys_description "Full Vehicle" ;
+	ent:priority "High" ;
+	ent:req_text "The vehicle over the defined mission profile shall achieve a 0.90 or greater probability with depot refurbishment, while be a cumulative engine operating hours of: " ;
+	rdf:type ent:requirement; ent:requirement_type  "Vehicle Functionality" .
+
+<http://entroplet.com/terms#Air+Transportation+Compatibility> ent:req_category "Transportability" ;
+	ent:uri		"/ref/RemainingReqtsHighlighted_Oct11.htm" ;
+	ent:req_sub_category "Transportability" ;
+	ent:req_attribute "Air Transportation Compatibility" ;
+	ent:req_system_level "Vehicle" ;
+	ent:req_sys_description "Full Vehicle" ;
+	ent:priority "High" ;
+	ent:req_text "The vehicle shall be air transportable aboard both C-5, C-17" ;
+	rdf:type ent:requirement; ent:requirement_type  "Vehicle Functionality" .
+
+<http://entroplet.com/terms#Rail+Transportation+Compatibility> ent:req_category "Transportability" ;
+	ent:uri		"/ref/RemainingReqtsHighlighted_Oct11.htm" ;
+	ent:req_sub_category "Transportability" ;
+	ent:req_attribute "Rail Transportation Compatibility" ;
+	ent:req_system_level "Vehicle" ;
+	ent:req_sys_description "Full Vehicle" ;
+	ent:priority "High" ;
+	ent:req_text "Shall be compatible with, and transportable on, U.S. railway systems" ;
+	rdf:type ent:requirement; ent:requirement_type  "Vehicle Functionality" .
+
+<http://entroplet.com/terms#Road+Transportation+Standard> ent:req_category "Transportability" ;
+	ent:uri		"/ref/RemainingReqtsHighlighted_Oct11.htm" ;
+	ent:req_sub_category "Transportability" ;
+	ent:req_attribute "Road Transportation Standard" ;
+	ent:req_system_level "Vehicle" ;
+	ent:req_sys_description "Full Vehicle" ;
+	ent:priority "High" ;
+	ent:req_text "Transportable By highway, rail, air, and sea. Per MIL-STD-1366D" ;
+	rdf:type ent:requirement; ent:requirement_type  "Vehicle Functionality" .
+
+<http://entroplet.com/terms#Highway+Road+Transportation+Standards> ent:req_category "Transportability" ;
+	ent:uri		"/ref/RemainingReqtsHighlighted_Oct11.htm" ;
+	ent:req_sub_category "Transportability" ;
+	ent:req_attribute "Highway Road Transportation Standards" ;
+	ent:req_system_level "Vehicle" ;
+	ent:req_sys_description "Full Vehicle" ;
+	ent:priority "High" ;
+	ent:req_text "The vehicle shall not exceed highway weight and dimensional permit limits when carried as cargo by highway transportation assets of the Army, USMC, NATO, or allied countries." ;
+	rdf:type ent:requirement; ent:requirement_type  "Vehicle Functionality" .
+
+<http://entroplet.com/terms#Well+Deck+Water+Transportation+Compatibility> ent:req_category "Transportability" ;
+	ent:uri		"/ref/RemainingReqtsHighlighted_Oct11.htm" ;
+	ent:req_sub_category "Transportability" ;
+	ent:req_attribute "Well Deck Water Transportation Compatibility" ;
+	ent:req_system_level "Vehicle" ;
+	ent:req_sys_description "Full Vehicle" ;
+	ent:priority "KPP" ;
+	ent:req_text "Compatible with all classes of U.S. Navy amphibious ships that possess a well deck and amphibious landing craft. Compatible Length <370 in Width<146.5 in Height<129.5 in 12 vehicles on LSD- 49 class; 14 on LPD-17 class" ;
+	rdf:type ent:requirement; ent:requirement_type  "Vehicle Functionality" .
+
+<http://entroplet.com/terms#MPF+Water+Transportation+Compatibility> ent:req_category "Transportability" ;
+	ent:uri		"/ref/RemainingReqtsHighlighted_Oct11.htm" ;
+	ent:req_sub_category "Transportability" ;
+	ent:req_attribute "MPF Water Transportation Compatibility" ;
+	ent:req_system_level "Vehicle" ;
+	ent:req_sys_description "Full Vehicle" ;
+	ent:priority "High" ;
+	ent:req_text "Compatible with all classes MPF ships for MPF shipping with ramps rated to accommodate the weight of the vehicle. Compatible Length <370 in Width<146.5 in Height<129.5 in" ;
+	rdf:type ent:requirement; ent:requirement_type  "Vehicle Functionality" .

@@ -1,0 +1,689 @@
+﻿@prefix rdfs: <http://www.w3.org/2000/01/rdf-schema#> .
+@prefix foaf: <http://xmlns.com/foaf/0.1/> .
+@prefix owl: <http://www.w3.org/2002/07/owl#> .
+@prefix xsd: <http://www.w3.org/2001/XMLSchema#> .
+@prefix rdf: <http://www.w3.org/1999/02/22-rdf-syntax-ns#> .
+@prefix ent: <http://entroplet.com/terms#> .
+
+
+<http://entroplet.com/terms#ATC_MTA_2InchWashboard>
+   ent:course_name "ATC 2-Inch Washboard" ;
+	ent:course_description "Concrete course with 1-inch amplitude sinusoidal surface with wavelength of 2 feet" ;
+	ent:course_type "Obstacle" ;
+	ent:course_material "concrete" ;
+	ent:course_roughness_percent "50.0" ;
+	ent:F_static "1.0" ;
+	ent:F_dynamic "0.8" ;
+	ent:course_roughness_inches "0.25" ;
+	ent:PSD_text_file "ATC_MTA_2InchWashboard.txt" ;
+	ent:PSD_JSON_file "ATC_MTA_2InchWashboard.JSON" ;
+	ent:FMU_source_data "0.0" .
+
+<http://entroplet.com/terms#ATC_MTA_RadialWashboard>
+   ent:course_name "ATC 2- to 4-Inch Radial Washboard" ;
+	ent:course_description "Concrete course with sinusoidal surface: amplitude varies from 1 to 2 inches and wavelength varies from 1 to 5 feet" ;
+	ent:course_type "Obstacle" ;
+	ent:course_material "concrete" ;
+	ent:course_roughness_percent "50.0" ;
+	ent:F_static "1.0" ;
+	ent:F_dynamic "0.8" ;
+	ent:course_roughness_inches "1.69" ;
+	ent:PSD_text_file "ATC_MTA_RadialWashboard.txt" ;
+	ent:PSD_JSON_file "ATC_MTA_RadialWashboard.JSON" ;
+	ent:FMU_source_data "1.0" .
+
+<http://entroplet.com/terms#ATC_MTA_3InchSpacedBump>
+   ent:course_name "ATC 3-Inch Spaced Bumps" ;
+	ent:course_description "Concrete course with 3-inch bumps (3 feet long and 30 feet apart); orientation of bumps varies" ;
+	ent:course_type "Obstacle" ;
+	ent:course_material "concrete" ;
+	ent:course_roughness_percent "50.0" ;
+	ent:F_static "1.0" ;
+	ent:F_dynamic "0.8" ;
+	ent:course_roughness_inches "0.3" ;
+	ent:PSD_text_file "ATC_MTA_3InchSpacedBump.txt" ;
+	ent:PSD_JSON_file "ATC_MTA_3InchSpacedBump.JSON" ;
+	ent:FMU_source_data "2.0" .
+
+<http://entroplet.com/terms#ATC_MTA_6InchWashboard>
+   ent:course_name "ATC 6-Inch Washboard" ;
+	ent:course_description "Concrete course with 3-inch amplitude sinusoidal surface with wavelength of 6 feet" ;
+	ent:course_type "Obstacle" ;
+	ent:course_material "concrete" ;
+	ent:course_roughness_percent "50.0" ;
+	ent:F_static "1.0" ;
+	ent:F_dynamic "0.8" ;
+	ent:course_roughness_inches "2.25" ;
+	ent:PSD_text_file "ATC_MTA_6InchWashboard.txt" ;
+	ent:PSD_JSON_file "ATC_MTA_6InchWashboard.JSON" ;
+	ent:FMU_source_data "3.0" .
+
+<http://entroplet.com/terms#ATC_MTA30percentConcreteSlope>
+   ent:course_name "ATC 30percent Gradeability Slope" ;
+	ent:course_description "Concrete slope, constant incline of 30percent" ;
+	ent:course_type "Obstacle" ;
+	ent:course_material "concrete" ;
+	ent:course_roughness_percent "50.0" ;
+	ent:F_static "1.0" ;
+	ent:F_dynamic "0.8" ;
+	ent:course_roughness_inches "0.0" ;
+	ent:PSD_text_file "ATC_MTA30percentConcreteSlope.txt" ;
+	ent:PSD_JSON_file "ATC_MTA30percentConcreteSlope.JSON" ;
+	ent:FMU_source_data "4.0" .
+
+<http://entroplet.com/terms#ATC_MTA40percentConcreteSlope>
+   ent:course_name "ATC 40percent Gradeability Slope" ;
+	ent:course_description "Concrete slope, constant incline of 40percent" ;
+	ent:course_type "Obstacle" ;
+	ent:course_material "concrete" ;
+	ent:course_roughness_percent "50.0" ;
+	ent:F_static "1.0" ;
+	ent:F_dynamic "0.8" ;
+	ent:course_roughness_inches "0.0" ;
+	ent:PSD_text_file "ATC_MTA40percentConcreteSlope.txt" ;
+	ent:PSD_JSON_file "ATC_MTA40percentConcreteSlope.JSON" ;
+	ent:FMU_source_data "5.0" .
+
+<http://entroplet.com/terms#ATC_MTA45percentConcreteSlope>
+   ent:course_name "ATC 45percent Gradeability Slope" ;
+	ent:course_description "Concrete slope, constant incline of 45percent" ;
+	ent:course_type "Obstacle" ;
+	ent:course_material "concrete" ;
+	ent:course_roughness_percent "50.0" ;
+	ent:F_static "1.0" ;
+	ent:F_dynamic "0.8" ;
+	ent:course_roughness_inches "0.0" ;
+	ent:PSD_text_file "ATC_MTA45percentConcreteSlope.txt" ;
+	ent:PSD_JSON_file "ATC_MTA45percentConcreteSlope.JSON" ;
+	ent:FMU_source_data "6.0" .
+
+<http://entroplet.com/terms#ATC_MTA50percentConcreteSlope>
+   ent:course_name "ATC 50percent Gradeability Slope" ;
+	ent:course_description "Concrete slope, constant incline of 50percent" ;
+	ent:course_type "Obstacle" ;
+	ent:course_material "concrete" ;
+	ent:course_roughness_percent "50.0" ;
+	ent:F_static "1.0" ;
+	ent:F_dynamic "0.8" ;
+	ent:course_roughness_inches "0.0" ;
+	ent:PSD_text_file "ATC_MTA50percentConcreteSlope.txt" ;
+	ent:PSD_JSON_file "ATC_MTA50percentConcreteSlope.JSON" ;
+	ent:FMU_source_data "7.0" .
+
+<http://entroplet.com/terms#ATC_MTA60percentConcreteSlope>
+   ent:course_name "ATC 60percent Gradeability Slope" ;
+	ent:course_description "Concrete slope, constant incline of 60percent" ;
+	ent:course_type "Obstacle" ;
+	ent:course_material "concrete" ;
+	ent:course_roughness_percent "50.0" ;
+	ent:F_static "1.0" ;
+	ent:F_dynamic "0.8" ;
+	ent:course_roughness_inches "0.0" ;
+	ent:PSD_text_file "ATC_MTA60percentConcreteSlope.txt" ;
+	ent:PSD_JSON_file "ATC_MTA60percentConcreteSlope.JSON" ;
+	ent:FMU_source_data "8.0" .
+
+<http://entroplet.com/terms#ATC_MTA_15DegreeLoadingRamp>
+   ent:course_name "ATC 15° Simulated Loading Ramp" ;
+	ent:course_description "Concrete slope, constant incline of 15° up to 1.55 m elevation gain" ;
+	ent:course_type "Obstacle" ;
+	ent:course_material "concrete" ;
+	ent:course_roughness_percent "50.0" ;
+	ent:F_static "1.0" ;
+	ent:F_dynamic "0.8" ;
+	ent:course_roughness_inches "0.0" ;
+	ent:PSD_text_file "ATC_MTA_15DegreeLoadingRamp.txt" ;
+	ent:PSD_JSON_file "ATC_MTA_15DegreeLoadingRamp.JSON" ;
+	ent:FMU_source_data "9.0" .
+
+<http://entroplet.com/terms#ATC_MTA_20DegreeLoadingRamp>
+   ent:course_name "ATC 20° Simulated Loading Ramp" ;
+	ent:course_description "Concrete slope, constant incline of 20° up to 4.1 m elevation gain" ;
+	ent:course_type "Obstacle" ;
+	ent:course_material "concrete" ;
+	ent:course_roughness_percent "50.0" ;
+	ent:F_static "1.0" ;
+	ent:F_dynamic "0.8" ;
+	ent:course_roughness_inches "0.0" ;
+	ent:PSD_text_file "ATC_MTA_20DegreeLoadingRamp.txt" ;
+	ent:PSD_JSON_file "ATC_MTA_20DegreeLoadingRamp.JSON" ;
+	ent:FMU_source_data "10.0" .
+
+<http://entroplet.com/terms#ATC_MTA_StandardDitch>
+   ent:course_name "ATC Standard Ditch" ;
+	ent:course_description "Concrete ditch, max depth of 56 in. and length of 25' 8\"" ;
+	ent:course_type "Obstacle" ;
+	ent:course_material "concrete" ;
+	ent:course_roughness_percent "50.0" ;
+	ent:F_static "1.0" ;
+	ent:F_dynamic "0.8" ;
+	ent:course_roughness_inches "0.0" ;
+	ent:PSD_text_file "ATC_MTA_StandardDitch.txt" ;
+	ent:PSD_JSON_file "ATC_MTA_StandardDitch.JSON" ;
+	ent:FMU_source_data "11.0" .
+
+<http://entroplet.com/terms#ATC_MTA_ProfileIVCourse>
+   ent:course_name "ATC Profile IV Course" ;
+	ent:course_description "Concrete course with bumps of various size and spacing, 465 ft in length" ;
+	ent:course_type "Obstacle" ;
+	ent:course_material "concrete" ;
+	ent:course_roughness_percent "50.0" ;
+	ent:F_static "1.0" ;
+	ent:F_dynamic "0.8" ;
+	ent:course_roughness_inches "3.47" ;
+	ent:PSD_text_file "ATC_MTA_ProfileIVCourse.txt" ;
+	ent:PSD_JSON_file "ATC_MTA_ProfileIVCourse.JSON" ;
+	ent:FMU_source_data "12.0" .
+
+<http://entroplet.com/terms#ATC_MTA_36InchWall>
+   ent:course_name "ATC 36-inch Wall" ;
+	ent:course_description "Concrete with wood tie at top of step" ;
+	ent:course_type "Obstacle" ;
+	ent:course_material "Concrete and wood" ;
+	ent:course_roughness_percent "50.0" ;
+	ent:F_static "0.0" ;
+	ent:F_dynamic "0.0" ;
+	ent:course_roughness_inches "0.0" ;
+	ent:PSD_text_file "ATC_MTA_36InchWall.txt" ;
+	ent:PSD_JSON_file "ATC_MTA_36InchWall.JSON" ;
+	ent:FMU_source_data "13.0" .
+
+<http://entroplet.com/terms#Jersey_Barrier_whole>
+   ent:course_name "Jersey Barrier Whole" ;
+	ent:course_description "Concrete Jersey barrier sitting on top of road" ;
+	ent:course_type "Obstacle" ;
+	ent:course_material "concrete" ;
+	ent:course_roughness_percent "50.0" ;
+	ent:F_static "1.0" ;
+	ent:F_dynamic "0.8" ;
+	ent:course_roughness_inches "0.0" ;
+	ent:PSD_text_file "Jersey_Barrier_whole.txt" ;
+	ent:PSD_JSON_file "Jersey_Barrier_whole.JSON" ;
+	ent:FMU_source_data "14.0" .
+
+<http://entroplet.com/terms#Jersey_Barrier_inset>
+   ent:course_name "Jersey Barrier Inset" ;
+	ent:course_description "Concrete Jersey barrier inset into road" ;
+	ent:course_type "Obstacle" ;
+	ent:course_material "concrete" ;
+	ent:course_roughness_percent "50.0" ;
+	ent:F_static "1.0" ;
+	ent:F_dynamic "0.8" ;
+	ent:course_roughness_inches "0.0" ;
+	ent:PSD_text_file "Jersey_Barrier_inset.txt" ;
+	ent:PSD_JSON_file "Jersey_Barrier_inset.JSON" ;
+	ent:FMU_source_data "15.0" .
+
+<http://entroplet.com/terms#ATC_ElevationStabilizationBump>
+   ent:course_name "ATC Elevation Stabilization Bump Course" ;
+	ent:course_description "Concrete bumps on unknown road surface" ;
+	ent:course_type "Obstacle" ;
+	ent:course_material "concrete" ;
+	ent:course_roughness_percent "50.0" ;
+	ent:F_static "1.0" ;
+	ent:F_dynamic "0.8" ;
+	ent:course_roughness_inches "0.0" ;
+	ent:PSD_text_file "ATC_ElevationStabilizationBump.txt" ;
+	ent:PSD_JSON_file "ATC_ElevationStabilizationBump.JSON" ;
+	ent:FMU_source_data "16.0" .
+
+<http://entroplet.com/terms#ATC_RRC9Stabilization>
+   ent:course_name "ATC RRC-9 Stabilization Course" ;
+	ent:course_description "Concrete bumps on unknown road surface" ;
+	ent:course_type "Obstacle" ;
+	ent:course_material "concrete" ;
+	ent:course_roughness_percent "50.0" ;
+	ent:F_static "1.0" ;
+	ent:F_dynamic "0.8" ;
+	ent:course_roughness_inches "0.0" ;
+	ent:PSD_text_file "ATC_RRC9Stabilization.txt" ;
+	ent:PSD_JSON_file "ATC_RRC9Stabilization.JSON" ;
+	ent:FMU_source_data "17.0" .
+
+<http://entroplet.com/terms#ATC_1InchBumps>
+   ent:course_name "ATC 1-inch Bump Course" ;
+	ent:course_description "Iron-rod bumps in concrete" ;
+	ent:course_type "Obstacle" ;
+	ent:course_material "concrete" ;
+	ent:course_roughness_percent "50.0" ;
+	ent:F_static "1.0" ;
+	ent:F_dynamic "0.8" ;
+	ent:course_roughness_inches "0.0" ;
+	ent:PSD_text_file "ATC_1InchBumps.txt" ;
+	ent:PSD_JSON_file "ATC_1InchBumps.JSON" ;
+	ent:FMU_source_data "18.0" .
+
+<http://entroplet.com/terms#ATC_10percentSoilSlope>
+   ent:course_name "ATC 10percent Soil Slope" ;
+	ent:course_description "Soil slope, constant incline of 10percent" ;
+	ent:course_type "Obstacle" ;
+	ent:course_material "Soil, USCS type SC" ;
+	ent:course_roughness_percent "50.0" ;
+	ent:F_static "1.0" ;
+	ent:F_dynamic "0.8" ;
+	ent:course_roughness_inches "0.0" ;
+	ent:PSD_text_file "ATC_10percentSoilSlope.txt" ;
+	ent:PSD_JSON_file "ATC_10percentSoilSlope.JSON" ;
+	ent:FMU_source_data "19.0" .
+
+<http://entroplet.com/terms#ATC_15percentSoilSlope>
+   ent:course_name "ATC 15percent Soil Slope" ;
+	ent:course_description "Soil slope, constant incline of 15percent" ;
+	ent:course_type "Obstacle" ;
+	ent:course_material "Soil, USCS type SC" ;
+	ent:course_roughness_percent "50.0" ;
+	ent:F_static "1.0" ;
+	ent:F_dynamic "0.8" ;
+	ent:course_roughness_inches "0.0" ;
+	ent:PSD_text_file "ATC_15percentSoilSlope.txt" ;
+	ent:PSD_JSON_file "ATC_15percentSoilSlope.JSON" ;
+	ent:FMU_source_data "20.0" .
+
+<http://entroplet.com/terms#ATC_20percentSoilSlope>
+   ent:course_name "ATC 20percent Soil Slope" ;
+	ent:course_description "Soil slope, constant incline of 20percent" ;
+	ent:course_type "Obstacle" ;
+	ent:course_material "Soil, USCS type SC" ;
+	ent:course_roughness_percent "50.0" ;
+	ent:F_static "1.0" ;
+	ent:F_dynamic "0.8" ;
+	ent:course_roughness_inches "0.0" ;
+	ent:PSD_text_file "ATC_20percentSoilSlope.txt" ;
+	ent:PSD_JSON_file "ATC_20percentSoilSlope.JSON" ;
+	ent:FMU_source_data "21.0" .
+
+<http://entroplet.com/terms#ATC_25percentSoilSlope>
+   ent:course_name "ATC 25percent Soil Slope" ;
+	ent:course_description "Soil slope, constant incline of 25percent" ;
+	ent:course_type "Obstacle" ;
+	ent:course_material "Soil, USCS type SC" ;
+	ent:course_roughness_percent "50.0" ;
+	ent:F_static "1.0" ;
+	ent:F_dynamic "0.8" ;
+	ent:course_roughness_inches "0.0" ;
+	ent:PSD_text_file "ATC_25percentSoilSlope.txt" ;
+	ent:PSD_JSON_file "ATC_25percentSoilSlope.JSON" ;
+	ent:FMU_source_data "22.0" .
+
+<http://entroplet.com/terms#ATC_60percentSoilSlope>
+   ent:course_name "ATC 60percent Soil Slope" ;
+	ent:course_description "Soil slope, constant incline of 60percent" ;
+	ent:course_type "Obstacle" ;
+	ent:course_material "Soil, USCS type SC" ;
+	ent:course_roughness_percent "50.0" ;
+	ent:F_static "1.0" ;
+	ent:F_dynamic "0.8" ;
+	ent:course_roughness_inches "0.0" ;
+	ent:PSD_text_file "ATC_60percentSoilSlope.txt" ;
+	ent:PSD_JSON_file "ATC_60percentSoilSlope.JSON" ;
+	ent:FMU_source_data "23.0" .
+
+<http://entroplet.com/terms#ATC_CrosstieCourse>
+   ent:course_name "ATC Crossties Course" ;
+	ent:course_description "Wood crossties in concrete surface" ;
+	ent:course_type "Obstacle" ;
+	ent:course_material "concrete and wood" ;
+	ent:course_roughness_percent "50.0" ;
+	ent:F_static "1.0" ;
+	ent:F_dynamic "0.8" ;
+	ent:course_roughness_inches "0.0" ;
+	ent:PSD_text_file "ATC_CrosstieCourse.txt" ;
+	ent:PSD_JSON_file "ATC_CrosstieCourse.JSON" ;
+	ent:FMU_source_data "24.0" .
+
+<http://entroplet.com/terms#ATC_PotholeCourse>
+   ent:course_name "ATC Pothole Course" ;
+	ent:course_description "concrete" ;
+	ent:course_type "Obstacle" ;
+	ent:course_material "concrete" ;
+	ent:course_roughness_percent "50.0" ;
+	ent:F_static "1.0" ;
+	ent:F_dynamic "0.8" ;
+	ent:course_roughness_inches "0.0" ;
+	ent:PSD_text_file "ATC_PotholeCourse.txt" ;
+	ent:PSD_JSON_file "ATC_PotholeCourse.JSON" ;
+	ent:FMU_source_data "25.0" .
+
+<http://entroplet.com/terms#ATC_MTA5percentAsphaltSlope>
+   ent:course_name "ATC 5percent Asphalt Slope" ;
+	ent:course_description "Asphalt slope, constant incline of 5percent" ;
+	ent:course_type "Obstacle" ;
+	ent:course_material "asphalt" ;
+	ent:course_roughness_percent "50.0" ;
+	ent:F_static "1.0" ;
+	ent:F_dynamic "0.8" ;
+	ent:course_roughness_inches "0.0" ;
+	ent:PSD_text_file "ATC_MTA5percentAsphaltSlope.txt" ;
+	ent:PSD_JSON_file "ATC_MTA5percentAsphaltSlope.JSON" ;
+	ent:FMU_source_data "26.0" .
+
+<http://entroplet.com/terms#ATC_MTA10percentAsphaltSlope>
+   ent:course_name "ATC 10percent Asphalt Slope" ;
+	ent:course_description "Asphalt slope, constant incline of 10percent" ;
+	ent:course_type "Obstacle" ;
+	ent:course_material "asphalt" ;
+	ent:course_roughness_percent "50.0" ;
+	ent:F_static "1.0" ;
+	ent:F_dynamic "0.8" ;
+	ent:course_roughness_inches "0.0" ;
+	ent:PSD_text_file "ATC_MTA10percentAsphaltSlope.txt" ;
+	ent:PSD_JSON_file "ATC_MTA10percentAsphaltSlope.JSON" ;
+	ent:FMU_source_data "27.0" .
+
+<http://entroplet.com/terms#ATC_MTA15percentAsphaltSlope>
+   ent:course_name "ATC 15percent Asphalt Slope" ;
+	ent:course_description "Asphalt slope, constant incline of 15percent" ;
+	ent:course_type "Obstacle" ;
+	ent:course_material "asphalt" ;
+	ent:course_roughness_percent "50.0" ;
+	ent:F_static "1.0" ;
+	ent:F_dynamic "0.8" ;
+	ent:course_roughness_inches "0.0" ;
+	ent:PSD_text_file "ATC_MTA15percentAsphaltSlope.txt" ;
+	ent:PSD_JSON_file "ATC_MTA15percentAsphaltSlope.JSON" ;
+	ent:FMU_source_data "28.0" .
+
+<http://entroplet.com/terms#ATC_MTA20percentAsphaltSlope>
+   ent:course_name "ATC 20percent Asphalt Slope" ;
+	ent:course_description "Asphalt slope, constant incline of 20percent" ;
+	ent:course_type "Obstacle" ;
+	ent:course_material "asphalt" ;
+	ent:course_roughness_percent "50.0" ;
+	ent:F_static "1.0" ;
+	ent:F_dynamic "0.8" ;
+	ent:course_roughness_inches "0.0" ;
+	ent:PSD_text_file "ATC_MTA20percentAsphaltSlope.txt" ;
+	ent:PSD_JSON_file "ATC_MTA20percentAsphaltSlope.JSON" ;
+	ent:FMU_source_data "29.0" .
+
+<http://entroplet.com/terms#ATC_MTA_18InchWall>
+   ent:course_name "ATC 18-inch Wall" ;
+	ent:course_description "Concrete with wood tie at top of step" ;
+	ent:course_type "Obstacle" ;
+	ent:course_material "Concrete and wood" ;
+	ent:course_roughness_percent "50.0" ;
+	ent:F_static "1.0" ;
+	ent:F_dynamic "0.8" ;
+	ent:course_roughness_inches "0.0" ;
+	ent:PSD_text_file "ATC_MTA_18InchWall.txt" ;
+	ent:PSD_JSON_file "ATC_MTA_18InchWall.JSON" ;
+	ent:FMU_source_data "30.0" .
+
+<http://entroplet.com/terms#ATC_MTA_24InchWall>
+   ent:course_name "ATC 24-inch Wall" ;
+	ent:course_description "Concrete with wood tie at top of step" ;
+	ent:course_type "Obstacle" ;
+	ent:course_material "Concrete and wood" ;
+	ent:course_roughness_percent "50.0" ;
+	ent:F_static "1.0" ;
+	ent:F_dynamic "0.8" ;
+	ent:course_roughness_inches "0.0" ;
+	ent:PSD_text_file "ATC_MTA_24InchWall.txt" ;
+	ent:PSD_JSON_file "ATC_MTA_24InchWall.JSON" ;
+	ent:FMU_source_data "31.0" .
+
+<http://entroplet.com/terms#ATC_MTA_42InchWall>
+   ent:course_name "ATC 42-inch Wall" ;
+	ent:course_description "Concrete with wood tie at top of step" ;
+	ent:course_type "Obstacle" ;
+	ent:course_material "Concrete and wood" ;
+	ent:course_roughness_percent "50.0" ;
+	ent:F_static "1.0" ;
+	ent:F_dynamic "0.8" ;
+	ent:course_roughness_inches "0.0" ;
+	ent:PSD_text_file "ATC_MTA_42InchWall.txt" ;
+	ent:PSD_JSON_file "ATC_MTA_42InchWall.JSON" ;
+	ent:FMU_source_data "32.0" .
+
+<http://entroplet.com/terms#ATC_MTA_WaveCourse>
+   ent:course_name "ATC Wave Course" ;
+	ent:course_description "Concrete surface; 2-foot-amplitude sinusoid  at edges; edges are 180 degrees out of phase" ;
+	ent:course_type "Obstacle" ;
+	ent:course_material "Concrete" ;
+	ent:course_roughness_percent "50.0" ;
+	ent:F_static "1.0" ;
+	ent:F_dynamic "0.8" ;
+	ent:course_roughness_inches "0.0" ;
+	ent:PSD_text_file "ATC_MTA_WaveCourse.txt" ;
+	ent:PSD_JSON_file "ATC_MTA_WaveCourse.JSON" ;
+	ent:FMU_source_data "33.0" .
+
+<http://entroplet.com/terms#YTC_MOUT_9inch_Half_Rounds>
+   ent:course_name "MOUT 9-Inch Half Rounds" ;
+	ent:course_description "Metal half-rounds on sand/gravel surface" ;
+	ent:course_type "Obstacle" ;
+	ent:course_material "Metal" ;
+	ent:course_roughness_percent "50.0" ;
+	ent:F_static "1.0" ;
+	ent:F_dynamic "0.8" ;
+	ent:course_roughness_inches "0.0" ;
+	ent:PSD_JSON_file "YTC_MOUT_9inch_Half_Rounds.JSON" ;
+	ent:FMU_source_data "34.0" .
+
+<http://entroplet.com/terms#YTC_MOUT_Curb>
+   ent:course_name "MOUT 9-Inch Curbs" ;
+	ent:course_description "Concrete curbs on sand/gravel surface" ;
+	ent:course_type "Obstacle" ;
+	ent:course_material "Concrete" ;
+	ent:course_roughness_percent "50.0" ;
+	ent:F_static "1.0" ;
+	ent:F_dynamic "0.8" ;
+	ent:course_roughness_inches "0.0" ;
+	ent:PSD_JSON_file "YTC_MOUT_Curb.JSON" ;
+	ent:FMU_source_data "35.0" .
+
+<http://entroplet.com/terms#YTC_MOUT_Log>
+   ent:course_name "MOUT 9-Inch Logs" ;
+	ent:course_description "Wood logs on sand/gravel surface" ;
+	ent:course_type "Obstacle" ;
+	ent:course_material "Wood" ;
+	ent:course_roughness_percent "50.0" ;
+	ent:F_static "1.0" ;
+	ent:F_dynamic "0.8" ;
+	ent:course_roughness_inches "0.0" ;
+	ent:PSD_JSON_file "YTC_MOUT_Log.JSON" ;
+	ent:FMU_source_data "36.0" .
+
+<http://entroplet.com/terms#YTC_MOUT_Washboard>
+   ent:course_name "MOUT 9-Inch Washboard" ;
+	ent:course_description "Washboard on sand/gravel surface" ;
+	ent:course_type "Obstacle" ;
+	ent:course_material "Sand and gravel" ;
+	ent:course_roughness_percent "50.0" ;
+	ent:F_static "1.0" ;
+	ent:F_dynamic "0.8" ;
+	ent:course_roughness_inches "0.0" ;
+	ent:PSD_JSON_file "YTC_MOUT_Washboard.JSON" ;
+	ent:FMU_source_data "37.0" .
+
+<http://entroplet.com/terms#YTC_MOUT_Staircase>
+   ent:course_name "MOUT 9-Inch Stairs" ;
+	ent:course_description "Metal Stairs on sand/gravel surface" ;
+	ent:course_type "Obstacle" ;
+	ent:course_material "Metal" ;
+	ent:course_roughness_percent "50.0" ;
+	ent:F_static "1.0" ;
+	ent:F_dynamic "0.8" ;
+	ent:course_roughness_inches "0.0" ;
+	ent:PSD_JSON_file "YTC_MOUT_Staircase.JSON" ;
+	ent:FMU_source_data "38.0" .
+
+<http://entroplet.com/terms#ATC_MTA_4_Inch_Half_Round>
+   ent:course_name "ATC MTA 4-Inch Half Rounds" ;
+	ent:course_description "Metal half-rounds on gravel surface" ;
+	ent:course_type "Obstacle" ;
+	ent:course_material "Metal" ;
+	ent:course_roughness_percent "50.0" ;
+	ent:F_static "1.0" ;
+	ent:F_dynamic "0.8" ;
+	ent:course_roughness_inches "0.0" ;
+	ent:PSD_JSON_file "ATC_MTA_4_Inch_Half_Round.JSON" ;
+	ent:FMU_source_data "39.0" .
+
+<http://entroplet.com/terms#ATC_MTA_6_Inch_Half_Round>
+   ent:course_name "ATC MTA 6-Inch Half Rounds" ;
+	ent:course_description "Metal half-rounds on gravel surface" ;
+	ent:course_type "Obstacle" ;
+	ent:course_material "Metal" ;
+	ent:course_roughness_percent "50.0" ;
+	ent:F_static "1.0" ;
+	ent:F_dynamic "0.8" ;
+	ent:course_roughness_inches "0.0" ;
+	ent:PSD_JSON_file "ATC_MTA_6_Inch_Half_Round.JSON" ;
+	ent:FMU_source_data "40.0" .
+
+<http://entroplet.com/terms#ATC_MTA_8_Inch_Half_Round>
+   ent:course_name "ATC MTA 8-Inch Half Rounds" ;
+	ent:course_description "Metal half-rounds on gravel surface" ;
+	ent:course_type "Obstacle" ;
+	ent:course_material "Metal" ;
+	ent:course_roughness_percent "50.0" ;
+	ent:F_static "1.0" ;
+	ent:F_dynamic "0.8" ;
+	ent:course_roughness_inches "0.0" ;
+	ent:PSD_JSON_file "ATC_MTA_8_Inch_Half_Round.JSON" ;
+	ent:FMU_source_data "41.0" .
+
+<http://entroplet.com/terms#ATC_MTA_10_Inch_Half_Round>
+   ent:course_name "ATC MTA 10-Inch Half Rounds" ;
+	ent:course_description "Metal half-rounds on gravel surface" ;
+	ent:course_type "Obstacle" ;
+	ent:course_material "Metal" ;
+	ent:course_roughness_percent "50.0" ;
+	ent:F_static "1.0" ;
+	ent:F_dynamic "0.8" ;
+	ent:course_roughness_inches "0.0" ;
+	ent:PSD_JSON_file "ATC_MTA_10_Inch_Half_Round.JSON" ;
+	ent:FMU_source_data "42.0" .
+
+<http://entroplet.com/terms#ATC_MTA_12_Inch_Half_Round>
+   ent:course_name "ATC MTA 12-Inch Half Rounds" ;
+	ent:course_description "Metal half-rounds on gravel surface" ;
+	ent:course_type "Obstacle" ;
+	ent:course_material "Metal" ;
+	ent:course_roughness_percent "50.0" ;
+	ent:F_static "1.0" ;
+	ent:F_dynamic "0.8" ;
+	ent:course_roughness_inches "0.0" ;
+	ent:PSD_JSON_file "ATC_MTA_12_Inch_Half_Round.JSON" ;
+	ent:FMU_source_data "43.0" .
+
+<http://entroplet.com/terms#YTC_12_Degree_Roll_On_Ramp>
+   ent:course_name "YTC 12-degree Roll-on Ramp" ;
+	ent:course_description "Metal ramp" ;
+	ent:course_type "Obstacle" ;
+	ent:course_material "Metal" ;
+	ent:course_roughness_percent "50.0" ;
+	ent:F_static "1.0" ;
+	ent:F_dynamic "0.8" ;
+	ent:course_roughness_inches "0.0" ;
+	ent:PSD_JSON_file "YTC_12_Degree_Roll_On_Ramp.JSON" ;
+	ent:FMU_source_data "44.0" .
+
+<http://entroplet.com/terms#YTC_15_Degree_Roll_On_Ramp>
+   ent:course_name "YTC 15-degree Roll-on Ramp" ;
+	ent:course_description "Metal ramp" ;
+	ent:course_type "Obstacle" ;
+	ent:course_material "Metal" ;
+	ent:course_roughness_percent "50.0" ;
+	ent:F_static "1.0" ;
+	ent:F_dynamic "0.8" ;
+	ent:course_roughness_inches "0.0" ;
+	ent:PSD_JSON_file "YTC_15_Degree_Roll_On_Ramp.JSON" ;
+	ent:FMU_source_data "45.0" .
+
+<http://entroplet.com/terms#YTC_4_Inch_Pothole>
+   ent:course_name "YTC 4-inch Pothole" ;
+	ent:course_description "Concrete pothole" ;
+	ent:course_type "Obstacle" ;
+	ent:course_material "Concrete" ;
+	ent:course_roughness_percent "50.0" ;
+	ent:F_static "1.0" ;
+	ent:F_dynamic "0.8" ;
+	ent:course_roughness_inches "0.0" ;
+	ent:PSD_JSON_file "YTC_4_Inch_Pothole.JSON" ;
+	ent:FMU_source_data "46.0" .
+
+<http://entroplet.com/terms#YTC_6_Inch_Pothole>
+   ent:course_name "YTC 6-inch Pothole" ;
+	ent:course_description "Concrete pothole" ;
+	ent:course_type "Obstacle" ;
+	ent:course_material "Concrete" ;
+	ent:course_roughness_percent "50.0" ;
+	ent:F_static "1.0" ;
+	ent:F_dynamic "0.8" ;
+	ent:course_roughness_inches "0.0" ;
+	ent:PSD_JSON_file "YTC_6_Inch_Pothole.JSON" ;
+	ent:FMU_source_data "47.0" .
+
+<http://entroplet.com/terms#YTC_9_Inch_Pothole>
+   ent:course_name "YTC 9-inch Pothole" ;
+	ent:course_description "Concrete pothole" ;
+	ent:course_type "Obstacle" ;
+	ent:course_material "Concrete" ;
+	ent:course_roughness_percent "50.0" ;
+	ent:F_static "1.0" ;
+	ent:F_dynamic "0.8" ;
+	ent:course_roughness_inches "0.0" ;
+	ent:PSD_JSON_file "YTC_9_Inch_Pothole.JSON" ;
+	ent:FMU_source_data "48.0" .
+
+<http://entroplet.com/terms#YTC_11_Inch_Pothole>
+   ent:course_name "YTC 11-inch Pothole" ;
+	ent:course_description "Concrete pothole" ;
+	ent:course_type "Obstacle" ;
+	ent:course_material "Concrete" ;
+	ent:course_roughness_percent "50.0" ;
+	ent:F_static "1.0" ;
+	ent:F_dynamic "0.8" ;
+	ent:course_roughness_inches "0.0" ;
+	ent:PSD_JSON_file "YTC_11_Inch_Pothole.JSON" ;
+	ent:FMU_source_data "49.0" .
+
+<http://entroplet.com/terms#YTC_12_Inch_Pothole>
+   ent:course_name "YTC 12-inch Pothole" ;
+	ent:course_description "Concrete pothole" ;
+	ent:course_type "Obstacle" ;
+	ent:course_material "Concrete" ;
+	ent:course_roughness_percent "50.0" ;
+	ent:F_static "1.0" ;
+	ent:F_dynamic "0.8" ;
+	ent:course_roughness_inches "0.0" ;
+	ent:PSD_JSON_file "YTC_12_Inch_Pothole.JSON" ;
+	ent:FMU_source_data "50.0" .
+
+<http://entroplet.com/terms#YTC_VDitch_Direct>
+   ent:course_name "YTC Vditch Direct" ;
+	ent:course_description "Concrete V-ditch; direct approach" ;
+	ent:course_type "Obstacle" ;
+	ent:course_material "Concrete" ;
+	ent:course_roughness_percent "50.0" ;
+	ent:F_static "1.0" ;
+	ent:F_dynamic "0.8" ;
+	ent:course_roughness_inches "0.0" ;
+	ent:PSD_JSON_file "YTC_VDitch_Direct.JSON" ;
+	ent:FMU_source_data "51.0" .
+
+<http://entroplet.com/terms#YTC_VDitch_45Left>
+   ent:course_name "YTC Vditch 45 Left" ;
+	ent:course_description "Concrete V-ditch; 45 degree approach" ;
+	ent:course_type "Obstacle" ;
+	ent:course_material "Concrete" ;
+	ent:course_roughness_percent "50.0" ;
+	ent:F_static "1.0" ;
+	ent:F_dynamic "0.8" ;
+	ent:course_roughness_inches "0.0" ;
+	ent:PSD_JSON_file "YTC_VDitch_45Left.JSON" ;
+	ent:FMU_source_data "52.0" .
+
+<http://entroplet.com/terms#YTC_VDitch_45Right>
+   ent:course_name "YTC Vditch 45 Right" ;
+	ent:course_description "Concrete V-ditch; 45 degree approach" ;
+	ent:course_type "Obstacle" ;
+	ent:course_material "Concrete" ;
+	ent:course_roughness_percent "50.0" ;
+	ent:F_static "1.0" ;
+	ent:F_dynamic "0.8" ;
+	ent:course_roughness_inches "0.0" ;
+	ent:PSD_JSON_file "YTC_VDitch_45Right.JSON" ;
+	ent:FMU_source_data "53.0" .

@@ -1,0 +1,38 @@
+@prefix rdfs: <http://www.w3.org/2000/01/rdf-schema#> .
+@prefix foaf: <http://xmlns.com/foaf/0.1/> .
+@prefix xsd: <http://www.w3.org/2001/XMLSchema#> .
+@prefix owl: <http://www.w3.org/2002/07/owl#> .
+@prefix rdf: <http://www.w3.org/1999/02/22-rdf-syntax-ns#> .
+@prefix ent: <http://entroplet.com/terms#> .
+@prefix dc: <http://purl.org/dc/elements/1.1/> .
+
+@prefix reprDataModel:	<http://sweet.jpl.nasa.gov/2.3/reprDataModel.owl#> .
+
+
+ent:name                   rdfs:subClassOf   rdfs:label .
+
+ent:unit                   rdfs:subClassOf   rdf:resource .
+
+ent:description            rdfs:subClassOf   rdf:resource .
+
+ent:context_type           rdfs:subClassOf   rdf:resource .
+
+ent:model                  rdfs:subClassOf   reprDataModel:Model .
+
+ent:locale                 rdfs:subClassOf   rdf:resource .
+
+ent:characteristic         rdfs:subClassOf   rdf:resource .
+
+ent:title                  rdfs:subClassOf   dc:title .
+
+ent:x_axis                 rdfs:subClassOf   rdf:resource .
+
+ent:pdf			   rdfs:subClassOf   rdf:resource .
+
+ent:moments                rdfs:subClassOf   rdf:resource .
+
+ent:interval               rdfs:subClassOf   rdf:resource .
+
+ent:min_extent		   rdfs:subClassOf   rdf:resource .
+
+ent:max_extent		   rdfs:subClassOf   rdf:resource .

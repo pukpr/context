@@ -1,0 +1,58 @@
+@prefix rdfs: <http://www.w3.org/2000/01/rdf-schema#> .
+@prefix foaf: <http://xmlns.com/foaf/0.1/> .
+@prefix xsd: <http://www.w3.org/2001/XMLSchema#> .
+@prefix owl: <http://www.w3.org/2002/07/owl#> .
+@prefix rdf: <http://www.w3.org/1999/02/22-rdf-syntax-ns#> .
+@prefix ent: <http://entroplet.com/terms#> .
+
+
+ent:CONUS a rdfs:Resource ;
+        ent:title "Continental USA";
+	ent:lon "-100.0"^^xsd:double ;
+	ent:lat "38.0"^^xsd:double.
+
+ent:Iowa a rdfs:Resource ;
+        ent:title "Iowa state";
+	ent:lon "-91.0"^^xsd:double ;
+	ent:lat "41.0"^^xsd:double.
+
+ent:LakeMichigan a rdfs:Resource ;
+        ent:title "Lake Michigan";
+	ent:lon "-85.0"^^xsd:double ;
+	ent:lat "43.0"^^xsd:double.
+
+ent:volcano a rdfs:Resource ;
+        ent:title "A Volcanic area";
+	ent:lat "63.0"^^xsd:double ;
+	ent:lon "-16.0"^^xsd:double.
+
+ent:Oregon a rdfs:Resource ;
+        ent:title "Oregon state";
+	ent:lon "-121.0"^^xsd:double ;
+	ent:lat "43.0"^^xsd:double.
+
+ent:Canada a rdfs:Resource ;
+        ent:title "Canada";
+	ent:lat "50.0"^^xsd:double ;
+	ent:lon "-89.0"^^xsd:double.
+
+ent:Atlantic a rdfs:Resource ;
+        ent:title "Atlantic area";
+	ent:lon "-75.0"^^xsd:double ;
+	ent:lat "33.0"^^xsd:double.
+
+ent:Baltimore a rdfs:Resource ;
+        ent:title "Baltimore area";
+	ent:lon "-76.61"^^xsd:double ;
+	ent:lat "39.29"^^xsd:double.
+
+ent:Wilmington a rdfs:Resource ;
+        ent:title "Wilmington area";
+	ent:lat "34.28"^^xsd:double ;
+	ent:lon "-77.92"^^xsd:double.
+
+ent:world a rdfs:Resource ;
+        ent:title "The World";
+	ent:lat "0.0"^^xsd:double ;
+	ent:lon "0.0"^^xsd:double.
+

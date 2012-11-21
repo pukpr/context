@@ -1,0 +1,151 @@
+@prefix rdfs: <http://www.w3.org/2000/01/rdf-schema#> .
+@prefix foaf: <http://xmlns.com/foaf/0.1/> .
+@prefix owl: <http://www.w3.org/2002/07/owl#> .
+@prefix xsd: <http://www.w3.org/2001/XMLSchema#> .
+@prefix rdf: <http://www.w3.org/1999/02/22-rdf-syntax-ns#> .
+@prefix ent: <http://entroplet.com/terms#> .
+
+<http://www.atlantaeng.com/aes_calculator_vehicle_speed_combined.html>  
+		ent:name "Atlanta Engineering coefficient of friction table" ;
+                ent:standard   ent:friction.
+
+
+<http://entroplet.com/terms#PORTLANDCEMENT,New,Sharp> ent:material "PORTLAND CEMENT" ;
+       ent:standard_applies ent:friction ;
+	ent:description " New,Sharp" ;
+	ent:dry_slow_friction " [.80, 1.20]" ;
+	ent:dry_fast_friction " [.70, 1.00]" ;
+	ent:wet_slow_friction " [.50, .80]" ;
+	ent:wet_fast_friction " [.40, .75] " ;
+	ent:note "Speeds of 30 MPH separate slow from fast" ;
+	ent:constraint "Not for heavy large trucks" .
+
+<http://entroplet.com/terms#PORTLANDCEMENT,Traveled> ent:material "PORTLAND CEMENT" ;
+       ent:standard_applies ent:friction ;
+	ent:description " Traveled" ;
+	ent:dry_slow_friction " [.60, .80]" ;
+	ent:dry_fast_friction " [.60, .75]" ;
+	ent:wet_slow_friction " [.45, .70]" ;
+	ent:wet_fast_friction " [.45, .65] " ;
+	ent:note "Speeds of 30 MPH separate slow from fast" ;
+	ent:constraint "Not for heavy large trucks" .
+
+<http://entroplet.com/terms#PORTLANDCEMENT,TrafficPolished> ent:material "PORTLAND CEMENT" ;
+       ent:standard_applies ent:friction ;
+	ent:description " Traffic Polished" ;
+	ent:dry_slow_friction "[.55, .75]" ;
+	ent:dry_fast_friction " [.50, .65]" ;
+	ent:wet_slow_friction " [.45, .65]" ;
+	ent:wet_fast_friction "[.45, .60] " ;
+	ent:note "Speeds of 30 MPH separate slow from fast" ;
+	ent:constraint "Not for heavy large trucks" .
+
+<http://entroplet.com/terms#ASPHALTorTAR,New,Sharp> ent:material "ASPHALT or TAR" ;
+       ent:standard_applies ent:friction ;
+	ent:description " New,Sharp" ;
+	ent:dry_slow_friction " [.80, 1.20]" ;
+	ent:dry_fast_friction " [.65, 1.00]" ;
+	ent:wet_slow_friction " [.50, .80]" ;
+	ent:wet_fast_friction " [.45, .75] " ;
+	ent:note "Speeds of 30 MPH separate slow from fast" ;
+	ent:constraint "Not for heavy large trucks" .
+
+<http://entroplet.com/terms#ASPHALTorTAR.Traveled> ent:material "ASPHALT or TAR" ;
+       ent:standard_applies ent:friction ;
+	ent:description " Traveled" ;
+	ent:dry_slow_friction " [.60, .80]" ;
+	ent:dry_fast_friction " [.55, .70]" ;
+	ent:wet_slow_friction " [.45, .70]" ;
+	ent:wet_fast_friction " [.40, .65] " ;
+	ent:note "Speeds of 30 MPH separate slow from fast" ;
+	ent:constraint "Not for heavy large trucks" .
+
+<http://entroplet.com/terms#ASPHALTorTAR,TrafficPolished> ent:material "ASPHALT or TAR" ;
+       ent:standard_applies ent:friction ;
+	ent:description " Traffic Polished" ;
+	ent:dry_slow_friction " [.55, .75]" ;
+	ent:dry_fast_friction " [.45, .65]" ;
+	ent:wet_slow_friction " [.45, .65]" ;
+	ent:wet_fast_friction " [.40, .60] " ;
+	ent:note "Speeds of 30 MPH separate slow from fast" ;
+	ent:constraint "Not for heavy large trucks" .
+
+<http://entroplet.com/terms#ASPHALTorTAR,ExcessTar> ent:material "ASPHALT or TAR" ;
+       ent:standard_applies ent:friction ;
+	ent:description " Excess Tar" ;
+	ent:dry_slow_friction " [.50, .60]" ;
+	ent:dry_fast_friction " [.35, .60]" ;
+	ent:wet_slow_friction " [.30, .60]" ;
+	ent:wet_fast_friction " [.25, .55] " ;
+	ent:note "Speeds of 30 MPH separate slow from fast" ;
+	ent:constraint "Not for heavy large trucks" .
+
+<http://entroplet.com/terms#GRAVEL,Packed,Oiled> ent:material "GRAVEL" ;
+       ent:standard_applies ent:friction ;
+	ent:description " Packed,Oiled" ;
+	ent:dry_slow_friction " [.55, .85]" ;
+	ent:dry_fast_friction " [.50, .80]" ;
+	ent:wet_slow_friction " [.40, .10]" ;
+	ent:wet_fast_friction " [.40, .60] " ;
+	ent:note "Speeds of 30 MPH separate slow from fast" ;
+	ent:constraint "Not for heavy large trucks" .
+
+<http://entroplet.com/terms#GRAVEL,Loose> ent:material "GRAVEL" ;
+       ent:standard_applies ent:friction ;
+	ent:description " Loose" ;
+	ent:dry_slow_friction " [.40, .70]" ;
+	ent:dry_fast_friction " [.40, .70]" ;
+	ent:wet_slow_friction " [.45, .75]" ;
+	ent:wet_fast_friction " [.45, .75] " ;
+	ent:note "Speeds of 30 MPH separate slow from fast" ;
+	ent:constraint "Not for heavy large trucks" .
+
+<http://entroplet.com/terms#CINDERS,Packed> ent:material "CINDERS" ;
+       ent:standard_applies ent:friction ;
+	ent:description " Packed" ;
+	ent:dry_slow_friction " [.50, .70]" ;
+	ent:dry_fast_friction " [.50, .70]" ;
+	ent:wet_slow_friction " [.65, .75]" ;
+	ent:wet_fast_friction " [.65, .75] " ;
+	ent:note "Speeds of 30 MPH separate slow from fast" ;
+	ent:constraint "Not for heavy large trucks" .
+
+ent:ROCK ent:material "ROCK" ;
+       ent:standard_applies ent:friction ;
+	ent:description " Crushed" ;
+	ent:dry_slow_friction " [.55, .75]" ;
+	ent:dry_fast_friction " [.55, .75]" ;
+	ent:wet_slow_friction " [.55, .75]" ;
+	ent:wet_fast_friction " [.55, .75] " ;
+	ent:note "Speeds of 30 MPH separate slow from fast" ;
+	ent:constraint "Not for heavy large trucks" .
+
+ent:ICE ent:material "ICE" ;
+       ent:standard_applies ent:friction ;
+	ent:description " Smooth" ;
+	ent:dry_slow_friction " [.10, .25]" ;
+	ent:dry_fast_friction " [.07, .20]" ;
+	ent:wet_slow_friction " [.05, .10]" ;
+	ent:wet_fast_friction " [.05, .10] " ;
+	ent:note "Speeds of 30 MPH separate slow from fast" ;
+	ent:constraint "Not for heavy large trucks" .
+
+<http://entroplet.com/terms#SNOW,Packed> ent:material "SNOW" ;
+       ent:standard_applies ent:friction ;
+	ent:description " Packed" ;
+	ent:dry_slow_friction " [.30, .55]" ;
+	ent:dry_fast_friction " [.35, .55]" ;
+	ent:wet_slow_friction " [.30, .60]" ;
+	ent:wet_fast_friction " [.30, .60]" ;
+	ent:note "Speeds of 30 MPH separate slow from fast" ;
+	ent:constraint "Not for heavy large trucks" .
+
+<http://entroplet.com/terms#SNOW,Loose> ent:material "SNOW" ;
+       ent:standard_applies ent:friction ;
+	ent:description " Loose" ;
+	ent:dry_slow_friction " [.10, .25]" ;
+	ent:dry_fast_friction " [.10, .20]" ;
+	ent:wet_slow_friction " [.30, .60]" ;
+	ent:wet_fast_friction " [.30, .60] " ;
+	ent:note "Speeds of 30 MPH separate slow from fast" ;
+	ent:constraint "Not for heavy large trucks" .

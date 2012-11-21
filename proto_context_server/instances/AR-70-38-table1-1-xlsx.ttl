@@ -1,0 +1,22 @@
+@prefix rdfs: <http://www.w3.org/2000/01/rdf-schema#> .
+@prefix foaf: <http://xmlns.com/foaf/0.1/> .
+@prefix owl: <http://www.w3.org/2002/07/owl#> .
+@prefix xsd: <http://www.w3.org/2001/XMLSchema#> .
+@prefix rdf: <http://www.w3.org/1999/02/22-rdf-syntax-ns#> .
+@prefix ent: <http://entroplet.com/terms#> .
+
+
+ent:TypeMaterial ent:material "Type Material" ;
+	ent:site "Type of Site with the Highest Deterioration Rates " .
+
+ent:Elastomers ent:material "Elastomers" ;
+	ent:site "Open" .
+
+ent:Polymers ent:material "Polymers" ;
+	ent:site "Open" .
+
+ent:Textiles ent:material "Textiles" ;
+	ent:site "Forest" .
+
+ent:Metals ent:material "Metals" ;
+	ent:site "Coastal swamp (mangrove) and forest" .

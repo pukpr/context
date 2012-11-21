@@ -1,0 +1,751 @@
+﻿@prefix rdfs: <http://www.w3.org/2000/01/rdf-schema#> .
+@prefix foaf: <http://xmlns.com/foaf/0.1/> .
+@prefix xsd: <http://www.w3.org/2001/XMLSchema#> .
+@prefix owl: <http://www.w3.org/2002/07/owl#> .
+@prefix rdf: <http://www.w3.org/1999/02/22-rdf-syntax-ns#> .
+@prefix ent: <http://entroplet.com/terms#> .
+
+
+<http://entroplet.com/terms#ATC_Belgian_Block_10_logspaced>
+   a rdfs:Resource ;
+	ent:course_name "ATC Belgian Block 10" ;
+	ent:course_description "paved course with unevenly laid granite blocks." ;
+	ent:course_material "granite" ;
+	ent:course_roughness_percent "10" ;
+	ent:F_static "0.75" ;
+	ent:F_dynamic "0.55" ;
+	ent:course_roughness_inches "0.73" ;
+	ent:PSD_text_file "ATC_Belgian_Block_10_logspaced.txt" ;
+	ent:PSD_JSON_file "ATC_Belgian_Block_10_logspaced.JSON" ;
+	ent:FMU_source_data "0" ;
+        ent:docref "ABB10".
+
+<http://entroplet.com/terms#ATC_Belgian_Block_90_logspaced>
+   a rdfs:Resource ;
+	ent:course_name "ATC Belgian Block 90" ;
+	ent:course_description "paved course with unevenly laid granite blocks." ;
+	ent:course_material "granite" ;
+	ent:course_roughness_percent "90.0" ;
+	ent:F_static "0.75" ;
+	ent:F_dynamic "0.55" ;
+	ent:course_roughness_inches "0.91" ;
+	ent:PSD_text_file "ATC_Belgian_Block_90_logspaced.txt" ;
+	ent:PSD_JSON_file "ATC_Belgian_Block_90_logspaced.JSON" ;
+	ent:FMU_source_data "1.0" ;
+        ent:docref "ABB90".
+
+<http://entroplet.com/terms#ATC_Belgian_Block_logspaced>
+   a rdfs:Resource ;
+	ent:course_name "ATC Belgian Block" ;
+	ent:course_description "paved course with unevenly laid granite blocks." ;
+	ent:course_material "granite" ;
+	ent:course_roughness_percent "50.0" ;
+	ent:F_static "0.75" ;
+	ent:F_dynamic "0.55" ;
+	ent:course_roughness_inches "0.82" ;
+	ent:PSD_text_file "ATC_Belgian_Block_logspaced.txt" ;
+	ent:PSD_JSON_file "ATC_Belgian_Block_logspaced.JSON" ;
+	ent:FMU_source_data "2.0" ;
+        ent:docref "ABB".
+
+<http://entroplet.com/terms#ATC_Churchville_B_10_logspaced>
+   a rdfs:Resource ;
+	ent:course_name "ATC Churchville B 10" ;
+	ent:course_description "Steep hilly course with a severe \"rough portion\"" ;
+	ent:course_material "native soil and rock" ;
+	ent:course_roughness_percent "10.0" ;
+	ent:F_static "0.65" ;
+	ent:F_dynamic "0.45" ;
+	ent:course_roughness_inches "0.93" ;
+	ent:PSD_text_file "ATC_Churchville_B_10_logspaced.txt" ;
+	ent:PSD_JSON_file "ATC_Churchville_B_10_logspaced.JSON" ;
+	ent:FMU_source_data "3.0" ;
+        ent:docref "ACB10".
+
+<http://entroplet.com/terms#ATC_Churchville_B_90_logspaced>
+   a rdfs:Resource ;
+	ent:course_name "ATC Churchville B 90" ;
+	ent:course_description "Steep hilly course with a severe \"rough portion\"" ;
+	ent:course_material "native soil and rock" ;
+	ent:course_roughness_percent "90.0" ;
+	ent:F_static "0.65" ;
+	ent:F_dynamic "0.45" ;
+	ent:course_roughness_inches "1.26" ;
+	ent:PSD_text_file "ATC_Churchville_B_90_logspaced.txt" ;
+	ent:PSD_JSON_file "ATC_Churchville_B_90_logspaced.JSON" ;
+	ent:FMU_source_data "4.0" ;
+        ent:docref "ACB90".
+
+<http://entroplet.com/terms#ATC_Churchville_B_logspaced>
+   a rdfs:Resource ;
+	ent:course_name "ATC Churchville B" ;
+	ent:course_description "Steep hilly course with a severe \"rough portion\"" ;
+	ent:course_material "native soil and rock" ;
+	ent:course_roughness_percent "50.0" ;
+	ent:F_static "0.65" ;
+	ent:F_dynamic "0.45" ;
+	ent:course_roughness_inches "1.09" ;
+	ent:PSD_text_file "ATC_Churchville_B_logspaced.txt" ;
+	ent:PSD_JSON_file "ATC_Churchville_B_logspaced.JSON" ;
+	ent:FMU_source_data "5.0" ;
+        ent:docref "ACB".
+
+<http://entroplet.com/terms#ATC_Churchville_C_10_logspaced>
+   a rdfs:Resource ;
+	ent:course_name "ATC Churchville C 10" ;
+	ent:course_description "Moderately hilly secondary road course with turnarounds for continuous testing" ;
+	ent:course_material "soil and gravel" ;
+	ent:course_roughness_percent "10.0" ;
+	ent:F_static "0.4" ;
+	ent:F_dynamic "0.2" ;
+	ent:course_roughness_inches "0.15" ;
+	ent:PSD_text_file "ATC_Churchville_C_10_logspaced.txt" ;
+	ent:PSD_JSON_file "ATC_Churchville_C_10_logspaced.JSON" ;
+	ent:FMU_source_data "6.0" ;
+        ent:docref "ACC10".
+
+<http://entroplet.com/terms#ATC_Churchville_C_90_logspaced>
+   a rdfs:Resource ;
+	ent:course_name "ATC Churchville C 90" ;
+	ent:course_description "Moderately hilly secondary road course with turnarounds for continuous testing" ;
+	ent:course_material "soil and gravel" ;
+	ent:course_roughness_percent "90.0" ;
+	ent:F_static "0.4" ;
+	ent:F_dynamic "0.2" ;
+	ent:course_roughness_inches "0.26" ;
+	ent:PSD_text_file "ATC_Churchville_C_90_logspaced.txt" ;
+	ent:PSD_JSON_file "ATC_Churchville_C_90_logspaced.JSON" ;
+	ent:FMU_source_data "7.0" ;
+        ent:docref "ACC90".
+
+<http://entroplet.com/terms#ATC_Churchville_C_logspaced>
+   a rdfs:Resource ;
+	ent:course_name "ATC Churchville C" ;
+	ent:course_description "Moderately hilly secondary road course with turnarounds for continuous testing" ;
+	ent:course_material "soil and gravel" ;
+	ent:course_roughness_percent "50.0" ;
+	ent:F_static "0.4" ;
+	ent:F_dynamic "0.2" ;
+	ent:course_roughness_inches "0.21" ;
+	ent:PSD_text_file "ATC_Churchville_C_logspaced.txt" ;
+	ent:PSD_JSON_file "ATC_Churchville_C_logspaced.JSON" ;
+	ent:FMU_source_data "8.0" ;
+        ent:docref "ACC".
+
+<http://entroplet.com/terms#ATC_Munson_Gravel_10_logspaced>
+   a rdfs:Resource ;
+	ent:course_name "ATC Munson Gravel 10" ;
+	ent:course_description "Gravel road course with left and right turns" ;
+	ent:course_material "soil and gravel" ;
+	ent:course_roughness_percent "10.0" ;
+	ent:F_static "0.4" ;
+	ent:F_dynamic "0.2" ;
+	ent:course_roughness_inches "0.16" ;
+	ent:PSD_text_file "ATC_Munson_Gravel_10_logspaced.txt" ;
+	ent:PSD_JSON_file "ATC_Munson_Gravel_10_logspaced.JSON" ;
+	ent:FMU_source_data "9.0" ;
+        ent:docref "AMG10".
+
+<http://entroplet.com/terms#ATC_Munson_Gravel_90_logspaced>
+   a rdfs:Resource ;
+	ent:course_name "ATC Munson Gravel 90" ;
+	ent:course_description "Gravel road course with left and right turns" ;
+	ent:course_material "soil and gravel" ;
+	ent:course_roughness_percent "90.0" ;
+	ent:F_static "0.4" ;
+	ent:F_dynamic "0.2" ;
+	ent:course_roughness_inches "0.34" ;
+	ent:PSD_text_file "ATC_Munson_Gravel_90_logspaced.txt" ;
+	ent:PSD_JSON_file "ATC_Munson_Gravel_90_logspaced.JSON" ;
+	ent:FMU_source_data "10.0" ;
+        ent:docref "AMG90".
+
+<http://entroplet.com/terms#ATC_Munson_Gravel_logspaced>
+   a rdfs:Resource ;
+	ent:course_name "ATC Munson Gravel" ;
+	ent:course_description "Gravel road course with left and right turns" ;
+	ent:course_material "soil and gravel" ;
+	ent:course_roughness_percent "50.0" ;
+	ent:F_static "0.4" ;
+	ent:F_dynamic "0.2" ;
+	ent:course_roughness_inches "0.25" ;
+	ent:PSD_text_file "ATC_Munson_Gravel_logspaced.txt" ;
+	ent:PSD_JSON_file "ATC_Munson_Gravel_logspaced.JSON" ;
+	ent:FMU_source_data "11.0" ;
+        ent:docref "AMG".
+
+<http://entroplet.com/terms#ATC_Perryman_1_10_logspaced>
+   a rdfs:Resource ;
+	ent:course_name "ATC Perryman 1 10" ;
+	ent:course_description "Variable course with potholes, washboard, and rutting" ;
+	ent:course_material "Quarry spall and gravel" ;
+	ent:course_roughness_percent "10.0" ;
+	ent:F_static "0.4" ;
+	ent:F_dynamic "0.2" ;
+	ent:course_roughness_inches "0.24" ;
+	ent:PSD_text_file "ATC_Perryman_1_10_logspaced.txt" ;
+	ent:PSD_JSON_file "ATC_Perryman_1_10_logspaced.JSON" ;
+	ent:FMU_source_data "12.0" ;
+        ent:docref "AP110".
+
+<http://entroplet.com/terms#ATC_Perryman_1_90_logspaced>
+   a rdfs:Resource ;
+	ent:course_name "ATC Perryman 1 90" ;
+	ent:course_description "Variable course with potholes, washboard, and rutting" ;
+	ent:course_material "Quarry spall and gravel" ;
+	ent:course_roughness_percent "90.0" ;
+	ent:F_static "0.4" ;
+	ent:F_dynamic "0.2" ;
+	ent:course_roughness_inches "0.42" ;
+	ent:PSD_text_file "ATC_Perryman_1_90_logspaced.txt" ;
+	ent:PSD_JSON_file "ATC_Perryman_1_90_logspaced.JSON" ;
+	ent:FMU_source_data "13.0" ;
+        ent:docref "AP190".
+
+<http://entroplet.com/terms#ATC_Perryman_1_logspaced>
+   a rdfs:Resource ;
+	ent:course_name "ATC Perryman 1" ;
+	ent:course_description "Variable course with potholes, washboard, and rutting" ;
+	ent:course_material "Quarry spall and gravel" ;
+	ent:course_roughness_percent "50.0" ;
+	ent:F_static "0.4" ;
+	ent:F_dynamic "0.2" ;
+	ent:course_roughness_inches "0.34" ;
+	ent:PSD_text_file "ATC_Perryman_1_logspaced.txt" ;
+	ent:PSD_JSON_file "ATC_Perryman_1_logspaced.JSON" ;
+	ent:FMU_source_data "14.0" ;
+        ent:docref "AP1".
+
+<http://entroplet.com/terms#ATC_Perryman_2_10_logspaced>
+   a rdfs:Resource ;
+	ent:course_name "ATC Perryman 2 10" ;
+	ent:course_description "Irregular course with variable surface characteristics, potholes and depressions up to 46 cm are present" ;
+	ent:course_material "native soil" ;
+	ent:course_roughness_percent "10.0" ;
+	ent:F_static "0.65" ;
+	ent:F_dynamic "0.45" ;
+	ent:course_roughness_inches "0.7" ;
+	ent:PSD_text_file "ATC_Perryman_2_10_logspaced.txt" ;
+	ent:PSD_JSON_file "ATC_Perryman_2_10_logspaced.JSON" ;
+	ent:FMU_source_data "15.0" ;
+        ent:docref "AP210".
+
+<http://entroplet.com/terms#ATC_Perryman_2_90_logspaced>
+   a rdfs:Resource ;
+	ent:course_name "ATC Perryman 2 90" ;
+	ent:course_description "Irregular course with variable surface characteristics, potholes and depressions up to 46 cm  are present" ;
+	ent:course_material "native soil" ;
+	ent:course_roughness_percent "90.0" ;
+	ent:F_static "0.65" ;
+	ent:F_dynamic "0.45" ;
+	ent:course_roughness_inches "1.05" ;
+	ent:PSD_text_file "ATC_Perryman_2_90_logspaced.txt" ;
+	ent:PSD_JSON_file "ATC_Perryman_2_90_logspaced.JSON" ;
+	ent:FMU_source_data "16.0" ;
+        ent:docref "AP290".
+
+<http://entroplet.com/terms#ATC_Perryman_2_logspaced>
+   a rdfs:Resource ;
+	ent:course_name "ATC Perryman 2" ;
+	ent:course_description "Irregular course with variable surface characteristics, potholes and depressions up to 46 cm are present" ;
+	ent:course_material "native soil" ;
+	ent:course_roughness_percent "50.0" ;
+	ent:F_static "0.65" ;
+	ent:F_dynamic "0.45" ;
+	ent:course_roughness_inches "0.9" ;
+	ent:PSD_text_file "ATC_Perryman_2_logspaced.txt" ;
+	ent:PSD_JSON_file "ATC_Perryman_2_logspaced.JSON" ;
+	ent:FMU_source_data "17.0" ;
+        ent:docref "AP2".
+
+<http://entroplet.com/terms#ATC_Perryman_3_10_logspaced>
+   a rdfs:Resource ;
+	ent:course_name "ATC Perryman 3 10" ;
+	ent:course_description "Rough course with repetitive humps, 45 to 60 meters apart, potholes and depressions up to 90 cm are present" ;
+	ent:course_material "native soil" ;
+	ent:course_roughness_percent "10.0" ;
+	ent:F_static "0.65" ;
+	ent:F_dynamic "0.45" ;
+	ent:course_roughness_inches "2.45" ;
+	ent:PSD_text_file "ATC_Perryman_3_10_logspaced.txt" ;
+	ent:PSD_JSON_file "ATC_Perryman_3_10_logspaced.JSON" ;
+	ent:FMU_source_data "18.0" ;
+        ent:docref "AP310".
+
+<http://entroplet.com/terms#ATC_Perryman_3_90_logspaced>
+   a rdfs:Resource ;
+	ent:course_name "ATC Perryman 3 90" ;
+	ent:course_description "Rough course with repetitive humps, 45 to 60 meters apart, potholes and depressions up to 90 cm are present" ;
+	ent:course_material "native soil" ;
+	ent:course_roughness_percent "90.0" ;
+	ent:F_static "0.65" ;
+	ent:F_dynamic "0.45" ;
+	ent:course_roughness_inches "3.21" ;
+	ent:PSD_text_file "ATC_Perryman_3_90_logspaced.txt" ;
+	ent:PSD_JSON_file "ATC_Perryman_3_90_logspaced.JSON" ;
+	ent:FMU_source_data "19.0" ;
+        ent:docref "AP390".
+
+<http://entroplet.com/terms#ATC_Perryman_3_logspaced>
+   a rdfs:Resource ;
+	ent:course_name "ATC Perryman 3" ;
+	ent:course_description "Rough course with repetitive humps, 45 to 60 meters apart, potholes and depressions up to 90 cm are present" ;
+	ent:course_material "native soil" ;
+	ent:course_roughness_percent "50.0" ;
+	ent:F_static "0.65" ;
+	ent:F_dynamic "0.45" ;
+	ent:course_roughness_inches "2.86" ;
+	ent:PSD_text_file "ATC_Perryman_3_logspaced.txt" ;
+	ent:PSD_JSON_file "ATC_Perryman_3_logspaced.JSON" ;
+	ent:FMU_source_data "20.0" ;
+        ent:docref "AP3".
+
+<http://entroplet.com/terms#ATC_Perryman_A_10_logspaced>
+   a rdfs:Resource ;
+	ent:course_name "ATC Perryman A 10" ;
+	ent:course_description "Course typical of unimproved country road maintained by grading" ;
+	ent:course_material "native soil" ;
+	ent:course_roughness_percent "10.0" ;
+	ent:F_static "0.65" ;
+	ent:F_dynamic "0.45" ;
+	ent:course_roughness_inches "0.21" ;
+	ent:PSD_text_file "ATC_Perryman_A_10_logspaced.txt" ;
+	ent:PSD_JSON_file "ATC_Perryman_A_10_logspaced.JSON" ;
+	ent:FMU_source_data "21.0" ;
+        ent:docref "APA10".
+
+<http://entroplet.com/terms#ATC_Perryman_A_90_logspaced>
+   a rdfs:Resource ;
+	ent:course_name "ATC Perryman A 90" ;
+	ent:course_description "Course typical of unimproved country road maintained by grading" ;
+	ent:course_material "native soil" ;
+	ent:course_roughness_percent "90.0" ;
+	ent:F_static "0.65" ;
+	ent:F_dynamic "0.45" ;
+	ent:course_roughness_inches "0.43" ;
+	ent:PSD_text_file "ATC_Perryman_A_90_logspaced.txt" ;
+	ent:PSD_JSON_file "ATC_Perryman_A_90_logspaced.JSON" ;
+	ent:FMU_source_data "22.0" ;
+        ent:docref "APA90".
+
+<http://entroplet.com/terms#ATC_Perryman_A_logspaced>
+   a rdfs:Resource ;
+	ent:course_name "ATC Perryman A" ;
+	ent:course_description "Course typical of unimproved country road maintained by grading" ;
+	ent:course_material "native soil" ;
+	ent:course_roughness_percent "50.0" ;
+	ent:F_static "0.65" ;
+	ent:F_dynamic "0.45" ;
+	ent:course_roughness_inches "0.33" ;
+	ent:PSD_text_file "ATC_Perryman_A_logspaced.txt" ;
+	ent:PSD_JSON_file "ATC_Perryman_A_logspaced.JSON" ;
+	ent:FMU_source_data "23.0" ;
+        ent:docref "APA".
+
+<http://entroplet.com/terms#YTC_Desert_March_logspaced>
+   a rdfs:Resource ;
+	ent:course_name "YTC Desert March" ;
+	ent:course_description "Long test course for comprehensive vehicle testing" ;
+	ent:course_material "sand, gravel" ;
+	ent:course_roughness_percent "50.0" ;
+	ent:F_static "0.4" ;
+	ent:F_dynamic "0.2" ;
+	ent:course_roughness_inches "0.92" ;
+	ent:PSD_text_file "YTC_Desert_March_logspaced.txt" ;
+	ent:PSD_JSON_file "YTC_Desert_March_logspaced.JSON" ;
+	ent:FMU_source_data "24.0" ;
+        ent:docref "YDM".
+
+<http://entroplet.com/terms#YTC_KOFA_Level_Gravel_logspaced>
+   a rdfs:Resource ;
+	ent:course_name "YTC KOFA Level Gravel" ;
+	ent:course_description "improved secondary gravel road, nearly level.  Graded and compacted." ;
+	ent:course_material "quarried road construction grade gravel" ;
+	ent:course_roughness_percent "50.0" ;
+	ent:F_static "0.4" ;
+	ent:F_dynamic "0.2" ;
+	ent:course_roughness_inches "0.23" ;
+	ent:PSD_text_file "YTC_KOFA_Level_Gravel_logspaced.txt" ;
+	ent:PSD_JSON_file "YTC_KOFA_Level_Gravel_logspaced.JSON" ;
+	ent:FMU_source_data "25.0" ;
+        ent:docref "YKLG".
+
+<http://entroplet.com/terms#YTC_Laguna_Hilly_Trails_logspaced>
+   a rdfs:Resource ;
+	ent:course_name "YTC Laguna Hilly Trails" ;
+	ent:course_description "Hilly terrain with grades up to 30percent" ;
+	ent:course_material "loose rock, gravel, sand" ;
+	ent:course_roughness_percent "50.0" ;
+	ent:F_static "0.4" ;
+	ent:F_dynamic "0.2" ;
+	ent:course_roughness_inches "0.4" ;
+	ent:PSD_text_file "YTC_Laguna_Hilly_Trails_logspaced.txt" ;
+	ent:PSD_JSON_file "YTC_Laguna_Hilly_Trails_logspaced.JSON" ;
+	ent:FMU_source_data "26.0" ;
+        ent:soil_classification "['GP', 'GP-GM', 'GC', 'GW']";
+        ent:docref "YLHT".
+
+<http://entroplet.com/terms#YTC_Laguna_Level_Trails_East_logspaced>
+   a rdfs:Resource ;
+	ent:course_name "YTC Laguna Level Trails East" ;
+	ent:course_description "Endurance course comprised of maintained gravel and dirt roads" ;
+	ent:course_material "gravel, dirt, and sand" ;
+	ent:course_roughness_percent "50.0" ;
+	ent:F_static "0.4" ;
+	ent:F_dynamic "0.2" ;
+	ent:course_roughness_inches "0.35" ;
+	ent:PSD_text_file "YTC_Laguna_Level_Trails_East_logspaced.txt" ;
+	ent:PSD_JSON_file "YTC_Laguna_Level_Trails_East_logspaced.JSON" ;
+	ent:FMU_source_data "27.0" ;
+        ent:soil_classification "['GP', 'GP-GM', 'GC', 'GW']";
+        ent:docref "YLLTE".
+
+<http://entroplet.com/terms#YTC_Laguna_Level_logspaced>
+   a rdfs:Resource ;
+	ent:course_name "YTC Laguna Level" ;
+	ent:course_description "Abandoned highway, compacted and graded, used primarily for RAM and performance testing" ;
+	ent:course_material "gravel" ;
+	ent:course_roughness_percent "50.0" ;
+	ent:F_static "0.4" ;
+	ent:F_dynamic "0.2" ;
+	ent:course_roughness_inches "0.23" ;
+	ent:PSD_text_file "YTC_Laguna_Level_logspaced.txt" ;
+	ent:PSD_JSON_file "YTC_Laguna_Level_logspaced.JSON" ;
+	ent:FMU_source_data "28.0" ;
+        ent:docref "YLL".
+
+<http://entroplet.com/terms#YTC_Laguna_Levels_Trails_West_logspaced>
+   a rdfs:Resource ;
+	ent:course_name "YTC Laguna Levels Trails West" ;
+	ent:course_description "Dirt road course suitable for testing commercial trucks" ;
+	ent:course_material "gravel, sand,  soil" ;
+	ent:course_roughness_percent "50.0" ;
+	ent:F_static "0.4" ;
+	ent:F_dynamic "0.2" ;
+	ent:course_roughness_inches "0.39" ;
+	ent:PSD_text_file "YTC_Laguna_Levels_Trails_West_logspaced.txt" ;
+	ent:PSD_JSON_file "YTC_Laguna_Levels_Trails_West_logspaced.JSON" ;
+	ent:FMU_source_data "29.0" ;
+        ent:docref "YLLTW".
+
+<http://entroplet.com/terms#YTC_Laguna_Paved_logspaced>
+   a rdfs:Resource ;
+	ent:course_name "YTC Laguna Paved" ;
+	ent:course_description "Smooth, near level paved course with turnarounds for continuous testing" ;
+	ent:course_material "high-strength asphalt" ;
+	ent:course_roughness_percent "50.0" ;
+	ent:F_static "0.9" ;
+	ent:F_dynamic "0.65" ;
+	ent:course_roughness_inches "0.08" ;
+	ent:PSD_text_file "YTC_Laguna_Paved_logspaced.txt" ;
+	ent:PSD_JSON_file "YTC_Laguna_Paved_logspaced.JSON" ;
+	ent:FMU_source_data "30.0" ;
+        ent:docref "YLP".
+
+<http://entroplet.com/terms#YTC_Midid-Eastpercent20Secpercent20B>
+   a rdfs:Resource ;
+	ent:course_name "YTC Mid-East Section B" ;
+	ent:course_description "Rough course with hilly washes " ;
+	ent:course_material "coarse loamy sand, gravely loamy soil" ;
+	ent:course_roughness_percent "50.0" ;
+	ent:F_static "0.65" ;
+	ent:F_dynamic "0.45" ;
+	ent:course_roughness_inches "1.77" ;
+	ent:PSD_text_file "YTC_Mid-East_Sec_B_logspaced.txt" ;
+	ent:PSD_JSON_file "YTC_Mid-East_Sec_B_logspaced.JSON" ;
+	ent:FMU_source_data "31.0" ;
+        ent:docref "YMEB".
+
+<http://entroplet.com/terms#YTC_Midid-Eastpercent20Start>
+   a rdfs:Resource ;
+	ent:course_name "YTC Mid-East Start" ;
+	ent:course_description "Rough course with hilly washes " ;
+	ent:course_material "coarse loamy sand, gravely loamy soil" ;
+	ent:course_roughness_percent "50.0" ;
+	ent:F_static "0.65" ;
+	ent:F_dynamic "0.45" ;
+	ent:course_roughness_inches "1.02" ;
+	ent:PSD_text_file "YTC_Mid-East_Start_logspaced.txt" ;
+	ent:PSD_JSON_file "YTC_Mid-East_Start_logspaced.JSON" ;
+	ent:FMU_source_data "32.0" ;
+        ent:docref "YME".
+
+<http://entroplet.com/terms#YTC_Midid-Eastpercent20WashEnd>
+   a rdfs:Resource ;
+	ent:course_name "YTC Mid-East Wash/End" ;
+	ent:course_description "Rough course with hilly washes " ;
+	ent:course_material "coarse loamy sand, gravely loamy soil" ;
+	ent:course_roughness_percent "50.0" ;
+	ent:F_static "0.65" ;
+	ent:F_dynamic "0.45" ;
+	ent:course_roughness_inches "0.7" ;
+	ent:PSD_text_file "YTC_Mid-East_WashEnd_logspaced.txt" ;
+	ent:PSD_JSON_file "YTC_Mid-East_WashEnd_logspaced.JSON" ;
+	ent:FMU_source_data "33.0" ;
+        ent:docref "YMEW".
+
+<http://entroplet.com/terms#YTC_MidEast_Sec_A_logspaced>
+   a rdfs:Resource ;
+	ent:course_name "YTC Mid-East Section A" ;
+	ent:course_description "Rough course with hilly washes " ;
+	ent:course_material "coarse loamy sand, gravely loamy soil" ;
+	ent:course_roughness_percent "50.0" ;
+	ent:F_static "0.65" ;
+	ent:F_dynamic "0.45" ;
+	ent:course_roughness_inches "1.44" ;
+	ent:PSD_text_file "YTC_MidEast_Sec_A_logspaced.txt" ;
+	ent:PSD_JSON_file "YTC_MidEast_Sec_A_logspaced.JSON" ;
+	ent:FMU_source_data "34.0" ;
+        ent:docref "YMEA".
+
+<http://entroplet.com/terms#YTC_Patton_Hilly_Gravel_logspaced>
+   a rdfs:Resource ;
+	ent:course_name "YTC Patton Hilly Gravel" ;
+	ent:course_description "Hilly test course with steep grades" ;
+	ent:course_material "gravel, gravel and soil, gravel and sand" ;
+	ent:course_roughness_percent "50.0" ;
+	ent:F_static "0.65" ;
+	ent:F_dynamic "0.45" ;
+	ent:course_roughness_inches "0.36" ;
+	ent:PSD_text_file "YTC_Patton_Hilly_Gravel_logspaced.txt" ;
+	ent:PSD_JSON_file "YTC_Patton_Hilly_Gravel_logspaced.JSON" ;
+	ent:FMU_source_data "35.0" ;
+        ent:soil_classification "['GP', 'GP-GM', 'GC', 'GW']";
+        ent:docref "YPHG".
+
+<http://entroplet.com/terms#YTC_Patton_Hilly_Trails_logspaced>
+   a rdfs:Resource ;
+	ent:course_name "YTC Patton Hilly Trails" ;
+	ent:course_description "Rustic hilly test course which includes extreme grades" ;
+	ent:course_material "sand, rock, soil" ;
+	ent:course_roughness_percent "50.0" ;
+	ent:F_static "0.65" ;
+	ent:F_dynamic "0.45" ;
+	ent:course_roughness_inches "1.15" ;
+	ent:PSD_text_file "YTC_Patton_Hilly_Trails_logspaced.txt" ;
+	ent:PSD_JSON_file "YTC_Patton_Hilly_Trails_logspaced.JSON" ;
+	ent:FMU_source_data "36.0" ;
+        ent:soil_classification "['GP', 'GP-GM', 'GC', 'GW-GM']";
+        ent:docref "YPHT".
+
+<http://entroplet.com/terms#YTC_Patton_Level_Gravel_logspaced>
+   a rdfs:Resource ;
+	ent:course_name "YTC Patton Level Gravel" ;
+	ent:course_description "Course typical of secondary graveled road. Graded and compacted" ;
+	ent:course_material "quarried road construction grade gravel" ;
+	ent:course_roughness_percent "50.0" ;
+	ent:F_static "0.4" ;
+	ent:F_dynamic "0.2" ;
+	ent:course_roughness_inches "0.36" ;
+	ent:PSD_text_file "YTC_Patton_Level_Gravel_logspaced.txt" ;
+	ent:PSD_JSON_file "YTC_Patton_Level_Gravel_logspaced.JSON" ;
+	ent:FMU_source_data "37.0" ;
+        ent:docref "YPLG".
+
+<http://entroplet.com/terms#YTC_Patton_Level_Trails_logspaced>
+   a rdfs:Resource ;
+	ent:course_name "YTC Patton Level Trails" ;
+	ent:course_description "Level course with severe bumps used to excersise suspension systems and drive trains" ;
+	ent:course_material "gravel, sand, clay, soil" ;
+	ent:course_roughness_percent "50.0" ;
+	ent:F_static "0.4" ;
+	ent:F_dynamic "0.2" ;
+	ent:course_roughness_inches "0.85" ;
+	ent:PSD_text_file "YTC_Patton_Level_Trails_logspaced.txt" ;
+	ent:PSD_JSON_file "YTC_Patton_Level_Trails_logspaced.JSON" ;
+	ent:FMU_source_data "38.0" ;
+        ent:soil_classification "['GP', 'GP-GM', 'GC', 'SM', 'SP-SM', 'SP']";
+        ent:docref "YPLT".
+
+<http://entroplet.com/terms#BAE_Systems_Concrete_logspaced>
+   a rdfs:Resource ;
+	ent:course_name "BAE Systems Concrete" ;
+	ent:course_description "Smooth, near level paved course adapted from YTC Laguna Paved - different friction coefficients" ;
+	ent:course_material "concrete" ;
+	ent:course_roughness_percent "50.0" ;
+	ent:F_static "1.0" ;
+	ent:F_dynamic "0.75" ;
+	ent:course_roughness_inches "0.08" ;
+	ent:PSD_text_file "BAE_Systems_Concrete_logspaced.txt" ;
+	ent:PSD_JSON_file "BAE_Systems_Concrete_logspaced.JSON" ;
+	ent:FMU_source_data "39.0" .
+
+<http://entroplet.com/terms#ATC_MTA_2InchWashboard>
+   a rdfs:Resource ;
+	ent:course_name "ATC 2-Inch Washboard" ;
+	ent:course_description "Concrete course with 1-inch amplitude sinusoidal surface with wavelength of 2 feet" ;
+	ent:course_material "concrete" ;
+	ent:course_roughness_percent "50.0" ;
+	ent:F_static "1.0" ;
+	ent:F_dynamic "0.8" ;
+	ent:course_roughness_inches "0.25" ;
+	ent:PSD_text_file "ATC_MTA_2InchWashboard.txt" ;
+	ent:PSD_JSON_file "ATC_MTA_2InchWashboard.JSON" .
+
+<http://entroplet.com/terms#ATC_MTA_RadialWashboard>
+   a rdfs:Resource ;
+	ent:course_name "ATC 2- to 4-Inch Radial Washboard" ;
+	ent:course_description "Concrete course with sinusoidal surface: amplitude varies from 1 to 2 inches and wavelength varies from 1 to 5 feet" ;
+	ent:course_material "concrete" ;
+	ent:course_roughness_percent "50.0" ;
+	ent:F_static "1.0" ;
+	ent:F_dynamic "0.8" ;
+	ent:course_roughness_inches "1.69" ;
+	ent:PSD_text_file "ATC_MTA_RadialWashboard.txt" ;
+	ent:PSD_JSON_file "ATC_MTA_RadialWashboard.JSON" .
+
+<http://entroplet.com/terms#ATC_MTA_3InchSpacedBump>
+   a rdfs:Resource ;
+	ent:course_name "ATC 3-Inch Spaced Bumps" ;
+	ent:course_description "Concrete course with 3-inch bumps (3 feet long and 30 feet apart); orientation of bumps varies" ;
+	ent:course_material "concrete" ;
+	ent:course_roughness_percent "50.0" ;
+	ent:F_static "1.0" ;
+	ent:F_dynamic "0.8" ;
+	ent:course_roughness_inches "0.3" ;
+	ent:PSD_text_file "ATC_MTA_3InchSpacedBump.txt" ;
+	ent:PSD_JSON_file "ATC_MTA_3InchSpacedBump.JSON" .
+
+<http://entroplet.com/terms#ATC_MTA_6InchWashboard>
+   a rdfs:Resource ;
+	ent:course_name "ATC 6-Inch Washboard" ;
+	ent:course_description "Concrete course with 3-inch amplitude sinusoidal surface with wavelength of 6 feet" ;
+	ent:course_material "concrete" ;
+	ent:course_roughness_percent "50.0" ;
+	ent:F_static "1.0" ;
+	ent:F_dynamic "0.8" ;
+	ent:course_roughness_inches "2.25" ;
+	ent:PSD_text_file "ATC_MTA_6InchWashboard.txt" ;
+	ent:PSD_JSON_file "ATC_MTA_6InchWashboard.JSON" .
+
+<http://entroplet.com/terms#ATC_MTA30percentConcreteSlope>
+   a rdfs:Resource ;
+	ent:course_name "ATC 30percent Gradeability Slope" ;
+	ent:course_description "Concrete slope, constant incline of 30percent" ;
+	ent:course_material "concrete" ;
+	ent:course_roughness_percent "50.0" ;
+	ent:F_static "1.0" ;
+	ent:F_dynamic "0.8" ;
+	ent:PSD_text_file "ATC_MTA30percentConcreteSlope.txt" ;
+	ent:PSD_JSON_file "ATC_MTA30percentConcreteSlope.JSON" .
+
+<http://entroplet.com/terms#ATC_MTA40percentConcreteSlope>
+   a rdfs:Resource ;
+	ent:course_name "ATC 40percent Gradeability Slope" ;
+	ent:course_description "Concrete slope, constant incline of 40percent" ;
+	ent:course_material "concrete" ;
+	ent:course_roughness_percent "50.0" ;
+	ent:F_static "1.0" ;
+	ent:F_dynamic "0.8" ;
+	ent:PSD_text_file "ATC_MTA40percentConcreteSlope.txt" ;
+	ent:PSD_JSON_file "ATC_MTA40percentConcreteSlope.JSON" .
+
+<http://entroplet.com/terms#ATC_MTA45percentConcreteSlope>
+   a rdfs:Resource ;
+	ent:course_name "ATC 45percent Gradeability Slope" ;
+	ent:course_description "Concrete slope, constant incline of 45percent" ;
+	ent:course_material "concrete" ;
+	ent:course_roughness_percent "50.0" ;
+	ent:F_static "1.0" ;
+	ent:F_dynamic "0.8" ;
+	ent:PSD_text_file "ATC_MTA45percentConcreteSlope.txt" ;
+	ent:PSD_JSON_file "ATC_MTA45percentConcreteSlope.JSON" .
+
+<http://entroplet.com/terms#ATC_MTA50percentConcreteSlope>
+   a rdfs:Resource ;
+	ent:course_name "ATC 50percent Gradeability Slope" ;
+	ent:course_description "Concrete slope, constant incline of 50percent" ;
+	ent:course_material "concrete" ;
+	ent:course_roughness_percent "50.0" ;
+	ent:F_static "1.0" ;
+	ent:F_dynamic "0.8" ;
+	ent:PSD_text_file "ATC_MTA50percentConcreteSlope.txt" ;
+	ent:PSD_JSON_file "ATC_MTA50percentConcreteSlope.JSON" .
+
+<http://entroplet.com/terms#ATC_MTA60percentConcreteSlope>
+   a rdfs:Resource ;
+	ent:course_name "ATC 60percent Gradeability Slope" ;
+	ent:course_description "Concrete slope, constant incline of 60percent" ;
+	ent:course_material "concrete" ;
+	ent:course_roughness_percent "50.0" ;
+	ent:F_static "1.0" ;
+	ent:F_dynamic "0.8" ;
+	ent:PSD_text_file "ATC_MTA60percentConcreteSlope.txt" ;
+	ent:PSD_JSON_file "ATC_MTA60percentConcreteSlope.JSON" .
+
+<http://entroplet.com/terms#ATC+20percent25+Side+Slope>  a rdfs:Resource ;
+	ent:course_name "ATC 20percent Side Slope" ;
+	ent:course_description "Concrete slope, no longitudinal height change, but constant cross-slope of 20percent" ;
+	ent:course_material "concrete" ;
+	ent:course_roughness_percent "50.0" ;
+	ent:F_static "1.0" ;
+	ent:F_dynamic "0.8" .
+
+<http://entroplet.com/terms#ATC+30percent25+Side+Slope>  a rdfs:Resource ;
+	ent:course_name "ATC 30percent Side Slope" ;
+	ent:course_description "Concrete slope, no longitudinal height change, but constant cross-slope of 30percent" ;
+	ent:course_material "concrete" ;
+	ent:course_roughness_percent "50.0" ;
+	ent:F_static "1.0" ;
+	ent:F_dynamic "0.8" .
+
+<http://entroplet.com/terms#ATC+40percent25+Side+Slope>  a rdfs:Resource ;
+	ent:course_name "ATC 40percent Side Slope" ;
+	ent:course_description "Concrete slope, no longitudinal height change, but constant cross-slope of 40percent" ;
+	ent:course_material "concrete" ;
+	ent:course_roughness_percent "50.0" ;
+	ent:F_static "1.0" ;
+	ent:F_dynamic "0.8" .
+
+<http://entroplet.com/terms#ATC_MTA_15DegreeLoadingRamp>
+   a rdfs:Resource ;
+	ent:course_name "ATC 15° Simulated Loading Ramp" ;
+	ent:course_description "Concrete slope, constant incline of 15° up to 1.55 m elevation gain" ;
+	ent:course_material "concrete" ;
+	ent:course_roughness_percent "50.0" ;
+	ent:F_static "1.0" ;
+	ent:F_dynamic "0.8" ;
+	ent:PSD_text_file "ATC_MTA_15DegreeLoadingRamp.txt" ;
+	ent:PSD_JSON_file "ATC_MTA_15DegreeLoadingRamp.JSON" .
+
+<http://entroplet.com/terms#ATC_MTA_20DegreeLoadingRamp>
+   a rdfs:Resource ;
+	ent:course_name "ATC 20° Simulated Loading Ramp" ;
+	ent:course_description "Concrete slope, constant incline of 20° up to 4.1 m elevation gain" ;
+	ent:course_material "concrete" ;
+	ent:course_roughness_percent "50.0" ;
+	ent:F_static "1.0" ;
+	ent:F_dynamic "0.8" ;
+	ent:PSD_text_file "ATC_MTA_20DegreeLoadingRamp.txt" ;
+	ent:PSD_JSON_file "ATC_MTA_20DegreeLoadingRamp.JSON" .
+
+<http://entroplet.com/terms#ATC_MTA_StandardDitch>
+   a rdfs:Resource ;
+	ent:course_name "ATC Standard Ditch" ;
+	ent:course_description "Concrete ditch, max depth of 56 in. and length of 25' 8\"" ;
+	ent:course_material "concrete" ;
+	ent:course_roughness_percent "50.0" ;
+	ent:F_static "1.0" ;
+	ent:F_dynamic "0.8" ;
+	ent:PSD_text_file "ATC_MTA_StandardDitch.txt" ;
+	ent:PSD_JSON_file "ATC_MTA_StandardDitch.JSON" .
+
+<http://entroplet.com/terms#ATC+Turning+Circle>  a rdfs:Resource ;
+	ent:course_name "ATC Turning Circle" ;
+	ent:course_description "Round concrete area, 250 ft. in diameter, for conducting turning tests" ;
+	ent:course_material "concrete" ;
+	ent:course_roughness_percent "50.0" ;
+	ent:F_static "1.0" ;
+	ent:F_dynamic "0.8" .
+
+<http://entroplet.com/terms#ATC_MTA_ProfileIVCourse>
+   a rdfs:Resource ;
+	ent:course_name "ATC Profile IV Course" ;
+	ent:course_description "Concrete course with bumps of various size and spacing, 465 ft in length" ;
+	ent:course_material "concrete" ;
+	ent:course_roughness_percent "50.0" ;
+	ent:F_static "1.0" ;
+	ent:F_dynamic "0.8" ;
+	ent:course_roughness_inches "3.47" ;
+	ent:PSD_text_file "ATC_MTA_ProfileIVCourse.txt" ;
+	ent:PSD_JSON_file "ATC_MTA_ProfileIVCourse.JSON" .

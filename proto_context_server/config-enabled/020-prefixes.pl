@@ -1,0 +1,254 @@
+:- module(conf_prefixes, []).
+:- use_module(library(semweb/rdf_db)).
+
+/** <module> Configure prefixes (namespaces)
+
+Register  additional  prefixes.  Registering  a    prefix  serves  three
+purposes:
+
+    * It can be used in code, e.g., rdf(X, rdf:type, rdfs:'Class')
+    * It can be used in the same fashion from the toplevel
+    * It is used by the web-services to present resources more compact.
+
+@see	rdf_register_ns/2 and rdf_register_ns/3
+*/
+
+
+:- rdf_register_ns('bib','http://purl.org/net/biblio#').
+:- rdf_register_ns('bibo','http://purl.org/ontology/bibo/').
+:- rdf_register_ns('req','http://ns.softwiki.de/req/').
+:- rdf_register_ns('cite','http://www.zotero.org/namespaces/export#').
+:- rdf_register_ns('prism','http://prismstandard.org/namespaces/1.2/basic/').
+:- rdf_register_ns('context', 'https://babelfish.arc.nasa.gov/confluence/display/AVMPROJ/BAE#').
+:- rdf_register_ns('ent', 'http://entroplet.com/terms#').
+:- rdf_register_ns('svg','http://www.w3.org/2000/svg#').
+:- rdf_register_ns('xlink','http://www.w3.org/1999/xlink#').
+:- rdf_register_ns('rsslink','http://purl.org/rss/1.0/modules/link/').
+
+
+% Add SWEET layers here
+
+:- rdf_register_ns(human,'http://sweet.jpl.nasa.gov/2.3/human.owl#').
+:- rdf_register_ns(humanAgriculture,'http://sweet.jpl.nasa.gov/2.3/humanAgriculture.owl#').
+:- rdf_register_ns(humanCommerce,'http://sweet.jpl.nasa.gov/2.3/humanCommerce.owl#').
+:- rdf_register_ns(humanDecision,'http://sweet.jpl.nasa.gov/2.3/humanDecision.owl#').
+:- rdf_register_ns(humanEnvirControl,'http://sweet.jpl.nasa.gov/2.3/humanEnvirControl.owl#').
+:- rdf_register_ns(humanEnvirConservation,'http://sweet.jpl.nasa.gov/2.3/humanEnvirConservation.owl#').
+:- rdf_register_ns(humanEnvirStandards,'http://sweet.jpl.nasa.gov/2.3/humanEnvirStandards.owl#').
+:- rdf_register_ns(humanEnvirAssessment,'http://sweet.jpl.nasa.gov/2.3/humanEnvirAssessment.owl#').
+:- rdf_register_ns(humanJurisdiction,'http://sweet.jpl.nasa.gov/2.3/humanJurisdiction.owl#').
+:- rdf_register_ns(humanKnowledgeDomain,'http://sweet.jpl.nasa.gov/2.3/humanKnowledgeDomain.owl#').
+:- rdf_register_ns(humanResearch,'http://sweet.jpl.nasa.gov/2.3/humanResearch.owl#').
+:- rdf_register_ns(humanTechReadiness,'http://sweet.jpl.nasa.gov/2.3/humanTechReadiness.owl#').
+:- rdf_register_ns(humanTransportation,'http://sweet.jpl.nasa.gov/2.3/humanTransportation.owl#').
+:- rdf_register_ns(matr,'http://sweet.jpl.nasa.gov/2.3/matr.owl#').
+:- rdf_register_ns(matrAerosol,'http://sweet.jpl.nasa.gov/2.3/matrAerosol.owl#').
+:- rdf_register_ns(matrAnimal,'http://sweet.jpl.nasa.gov/2.3/matrAnimal.owl#').
+:- rdf_register_ns(matrBiomass,'http://sweet.jpl.nasa.gov/2.3/matrBiomass.owl#').
+:- rdf_register_ns(matrOrganicCompound,'http://sweet.jpl.nasa.gov/2.3/matrOrganicCompound.owl#').
+:- rdf_register_ns(matrEnergy,'http://sweet.jpl.nasa.gov/2.3/matrEnergy.owl#').
+:- rdf_register_ns(matrEquipment,'http://sweet.jpl.nasa.gov/2.3/matrEquipment.owl#').
+:- rdf_register_ns(matrFacility,'http://sweet.jpl.nasa.gov/2.3/matrFacility.owl#').
+:- rdf_register_ns(matrElement,'http://sweet.jpl.nasa.gov/2.3/matrElement.owl#').
+:- rdf_register_ns(matrElementalMolecule,'http://sweet.jpl.nasa.gov/2.3/matrElementalMolecule.owl#').
+:- rdf_register_ns(matrIndustrial,'http://sweet.jpl.nasa.gov/2.3/matrIndustrial.owl#').
+:- rdf_register_ns(matrInstrument,'http://sweet.jpl.nasa.gov/2.3/matrInstrument.owl#').
+:- rdf_register_ns(matrIon,'http://sweet.jpl.nasa.gov/2.3/matrIon.owl#').
+:- rdf_register_ns(matrIsotope,'http://sweet.jpl.nasa.gov/2.3/matrIsotope.owl#').
+:- rdf_register_ns(matrMicrobiota,'http://sweet.jpl.nasa.gov/2.3/matrMicrobiota.owl#').
+:- rdf_register_ns(matrMineral,'http://sweet.jpl.nasa.gov/2.3/matrMineral.owl#').
+:- rdf_register_ns(matrNaturalResource,'http://sweet.jpl.nasa.gov/2.3/matrNaturalResource.owl#').
+:- rdf_register_ns(matrParticle,'http://sweet.jpl.nasa.gov/2.3/matrParticle.owl#').
+:- rdf_register_ns(matrPlant,'http://sweet.jpl.nasa.gov/2.3/matrPlant.owl#').
+:- rdf_register_ns(matrRock,'http://sweet.jpl.nasa.gov/2.3/matrRock.owl#').
+:- rdf_register_ns(matrRockIgneous,'http://sweet.jpl.nasa.gov/2.3/matrRockIgneous.owl#').
+:- rdf_register_ns(matrSediment,'http://sweet.jpl.nasa.gov/2.3/matrSediment.owl#').
+:- rdf_register_ns(matrWater,'http://sweet.jpl.nasa.gov/2.3/matrWater.owl#').
+:- rdf_register_ns(phen,'http://sweet.jpl.nasa.gov/2.3/phen.owl#').
+:- rdf_register_ns(phenAtmo,'http://sweet.jpl.nasa.gov/2.3/phenAtmo.owl#').
+:- rdf_register_ns(phenAtmoCloud,'http://sweet.jpl.nasa.gov/2.3/phenAtmoCloud.owl#').
+:- rdf_register_ns(phenAtmoFog,'http://sweet.jpl.nasa.gov/2.3/phenAtmoFog.owl#').
+:- rdf_register_ns(phenAtmoFront,'http://sweet.jpl.nasa.gov/2.3/phenAtmoFront.owl#').
+:- rdf_register_ns(phenAtmoLightning,'http://sweet.jpl.nasa.gov/2.3/phenAtmoLightning.owl#').
+:- rdf_register_ns(phenAtmoPrecipitation,'http://sweet.jpl.nasa.gov/2.3/phenAtmoPrecipitation.owl#').
+:- rdf_register_ns(phenAtmoPressure,'http://sweet.jpl.nasa.gov/2.3/phenAtmoPressure.owl#').
+:- rdf_register_ns(phenAtmoTransport,'http://sweet.jpl.nasa.gov/2.3/phenAtmoTransport.owl#').
+:- rdf_register_ns(phenAtmoWind,'http://sweet.jpl.nasa.gov/2.3/phenAtmoWind.owl#').
+:- rdf_register_ns(phenAtmoWindMesoscale,'http://sweet.jpl.nasa.gov/2.3/phenAtmoWindMesoscale.owl#').
+:- rdf_register_ns(phenBiol,'http://sweet.jpl.nasa.gov/2.3/phenBiol.owl#').
+:- rdf_register_ns(phenEcology,'http://sweet.jpl.nasa.gov/2.3/phenEcology.owl#').
+:- rdf_register_ns(phenEnvirImpact,'http://sweet.jpl.nasa.gov/2.3/phenEnvirImpact.owl#').
+:- rdf_register_ns(phenEnergy,'http://sweet.jpl.nasa.gov/2.3/phenEnergy.owl#').
+:- rdf_register_ns(phenCryo,'http://sweet.jpl.nasa.gov/2.3/phenCryo.owl#').
+:- rdf_register_ns(phenCycle,'http://sweet.jpl.nasa.gov/2.3/phenCycle.owl#').
+:- rdf_register_ns(phenCycleMaterial,'http://sweet.jpl.nasa.gov/2.3/phenCycleMaterial.owl#').
+:- rdf_register_ns(phenElecMag,'http://sweet.jpl.nasa.gov/2.3/phenElecMag.owl#').
+:- rdf_register_ns(phenFluidDynamics,'http://sweet.jpl.nasa.gov/2.3/phenFluidDynamics.owl#').
+:- rdf_register_ns(phenFluidInstability,'http://sweet.jpl.nasa.gov/2.3/phenFluidInstability.owl#').
+:- rdf_register_ns(phenFluidTransport,'http://sweet.jpl.nasa.gov/2.3/phenFluidTransport.owl#').
+:- rdf_register_ns(phenGeol,'http://sweet.jpl.nasa.gov/2.3/phenGeol.owl#').
+:- rdf_register_ns(phenGeolFault,'http://sweet.jpl.nasa.gov/2.3/phenGeolFault.owl#').
+:- rdf_register_ns(phenGeolGeomorphology,'http://sweet.jpl.nasa.gov/2.3/phenGeolGeomorphology.owl#').
+:- rdf_register_ns(phenGeolSeismicity,'http://sweet.jpl.nasa.gov/2.3/phenGeolSeismicity.owl#').
+:- rdf_register_ns(phenGeolTectonic,'http://sweet.jpl.nasa.gov/2.3/phenGeolTectonic.owl#').
+:- rdf_register_ns(phenGeolVolcano,'http://sweet.jpl.nasa.gov/2.3/phenGeolVolcano.owl#').
+:- rdf_register_ns(phenHelio,'http://sweet.jpl.nasa.gov/2.3/phenHelio.owl#').
+:- rdf_register_ns(phenHydro,'http://sweet.jpl.nasa.gov/2.3/phenHydro.owl#').
+:- rdf_register_ns(phenMixing,'http://sweet.jpl.nasa.gov/2.3/phenMixing.owl#').
+:- rdf_register_ns(phenOcean,'http://sweet.jpl.nasa.gov/2.3/phenOcean.owl#').
+:- rdf_register_ns(phenOceanDynamics,'http://sweet.jpl.nasa.gov/2.3/phenOceanDynamics.owl#').
+:- rdf_register_ns(phenOceanCoastal,'http://sweet.jpl.nasa.gov/2.3/phenOceanCoastal.owl#').
+:- rdf_register_ns(phenPlanetClimate,'http://sweet.jpl.nasa.gov/2.3/phenPlanetClimate.owl#').
+:- rdf_register_ns(phenReaction,'http://sweet.jpl.nasa.gov/2.3/phenReaction.owl#').
+:- rdf_register_ns(phenSolid,'http://sweet.jpl.nasa.gov/2.3/phenSolid.owl#').
+:- rdf_register_ns(phenStar,'http://sweet.jpl.nasa.gov/2.3/phenStar.owl#').
+:- rdf_register_ns(phenSystem,'http://sweet.jpl.nasa.gov/2.3/phenSystem.owl#').
+:- rdf_register_ns(phenSystemComplexity,'http://sweet.jpl.nasa.gov/2.3/phenSystemComplexity.owl#').
+:- rdf_register_ns(phenWave,'http://sweet.jpl.nasa.gov/2.3/phenWave.owl#').
+:- rdf_register_ns(phenWaveNoise,'http://sweet.jpl.nasa.gov/2.3/phenWaveNoise.owl#').
+:- rdf_register_ns(proc,'http://sweet.jpl.nasa.gov/2.3/proc.owl#').
+:- rdf_register_ns(procChemical,'http://sweet.jpl.nasa.gov/2.3/procChemical.owl#').
+:- rdf_register_ns(procPhysical,'http://sweet.jpl.nasa.gov/2.3/procPhysical.owl#').
+:- rdf_register_ns(procStateChange,'http://sweet.jpl.nasa.gov/2.3/procStateChange.owl#').
+:- rdf_register_ns(procWave,'http://sweet.jpl.nasa.gov/2.3/procWave.owl#').
+:- rdf_register_ns(prop,'http://sweet.jpl.nasa.gov/2.3/prop.owl#').
+:- rdf_register_ns(propBinary,'http://sweet.jpl.nasa.gov/2.3/propBinary.owl#').
+:- rdf_register_ns(propCapacity,'http://sweet.jpl.nasa.gov/2.3/propCapacity.owl#').
+:- rdf_register_ns(propCategorical,'http://sweet.jpl.nasa.gov/2.3/propCategorical.owl#').
+:- rdf_register_ns(propCharge,'http://sweet.jpl.nasa.gov/2.3/propCharge.owl#').
+:- rdf_register_ns(propChemical,'http://sweet.jpl.nasa.gov/2.3/propChemical.owl#').
+:- rdf_register_ns(propConductivity,'http://sweet.jpl.nasa.gov/2.3/propConductivity.owl#').
+:- rdf_register_ns(propCount,'http://sweet.jpl.nasa.gov/2.3/propCount.owl#').
+:- rdf_register_ns(propDifference,'http://sweet.jpl.nasa.gov/2.3/propDifference.owl#').
+:- rdf_register_ns(propDiffusivity,'http://sweet.jpl.nasa.gov/2.3/propDiffusivity.owl#').
+:- rdf_register_ns(propDimensionlessRatio,'http://sweet.jpl.nasa.gov/2.3/propDimensionlessRatio.owl#').
+:- rdf_register_ns(propEnergy,'http://sweet.jpl.nasa.gov/2.3/propEnergy.owl#').
+:- rdf_register_ns(propEnergyFlux,'http://sweet.jpl.nasa.gov/2.3/propEnergyFlux.owl#').
+:- rdf_register_ns(propFraction,'http://sweet.jpl.nasa.gov/2.3/propFraction.owl#').
+:- rdf_register_ns(propIndex,'http://sweet.jpl.nasa.gov/2.3/propIndex.owl#').
+:- rdf_register_ns(propMass,'http://sweet.jpl.nasa.gov/2.3/propMass.owl#').
+:- rdf_register_ns(propMassFlux,'http://sweet.jpl.nasa.gov/2.3/propMassFlux.owl#').
+:- rdf_register_ns(propOrdinal,'http://sweet.jpl.nasa.gov/2.3/propOrdinal.owl#').
+:- rdf_register_ns(propPressure,'http://sweet.jpl.nasa.gov/2.3/propPressure.owl#').
+:- rdf_register_ns(propQuantity,'http://sweet.jpl.nasa.gov/2.3/propQuantity.owl#').
+:- rdf_register_ns(propSpace,'http://sweet.jpl.nasa.gov/2.3/propSpace.owl#').
+:- rdf_register_ns(propSpaceDirection,'http://sweet.jpl.nasa.gov/2.3/propSpaceDirection.owl#').
+:- rdf_register_ns(propSpaceDistance,'http://sweet.jpl.nasa.gov/2.3/propSpaceDistance.owl#').
+:- rdf_register_ns(propSpaceHeight,'http://sweet.jpl.nasa.gov/2.3/propSpaceHeight.owl#').
+:- rdf_register_ns(propSpaceLocation,'http://sweet.jpl.nasa.gov/2.3/propSpaceLocation.owl#').
+:- rdf_register_ns(propSpaceMultidimensional,'http://sweet.jpl.nasa.gov/2.3/propSpaceMultidimensional.owl#').
+:- rdf_register_ns(propSpaceThickness,'http://sweet.jpl.nasa.gov/2.3/propSpaceThickness.owl#').
+:- rdf_register_ns(propFunction,'http://sweet.jpl.nasa.gov/2.3/propFunction.owl#').
+:- rdf_register_ns(propTemperature,'http://sweet.jpl.nasa.gov/2.3/propTemperature.owl#').
+:- rdf_register_ns(propTemperatureGradient,'http://sweet.jpl.nasa.gov/2.3/propTemperatureGradient.owl#').
+:- rdf_register_ns(propTime,'http://sweet.jpl.nasa.gov/2.3/propTime.owl#').
+:- rdf_register_ns(propTimeFrequency,'http://sweet.jpl.nasa.gov/2.3/propTimeFrequency.owl#').
+:- rdf_register_ns(propSpeed,'http://sweet.jpl.nasa.gov/2.3/propSpeed.owl#').
+:- rdf_register_ns(propRotation,'http://sweet.jpl.nasa.gov/2.3/propRotation.owl#').
+:- rdf_register_ns(realm,'http://sweet.jpl.nasa.gov/2.3/realm.owl#').
+:- rdf_register_ns(realmAstroBody,'http://sweet.jpl.nasa.gov/2.3/realmAstroBody.owl#').
+:- rdf_register_ns(realmAstroHelio,'http://sweet.jpl.nasa.gov/2.3/realmAstroHelio.owl#').
+:- rdf_register_ns(realmAstroStar,'http://sweet.jpl.nasa.gov/2.3/realmAstroStar.owl#').
+:- rdf_register_ns(realmAtmo,'http://sweet.jpl.nasa.gov/2.3/realmAtmo.owl#').
+:- rdf_register_ns(realmAtmoWeather,'http://sweet.jpl.nasa.gov/2.3/realmAtmoWeather.owl#').
+:- rdf_register_ns(realmAtmoBoundaryLayer,'http://sweet.jpl.nasa.gov/2.3/realmAtmoBoundaryLayer.owl#').
+:- rdf_register_ns(realmBiolBiome,'http://sweet.jpl.nasa.gov/2.3/realmBiolBiome.owl#').
+:- rdf_register_ns(realmClimateZone,'http://sweet.jpl.nasa.gov/2.3/realmClimateZone.owl#').
+:- rdf_register_ns(realmCryo,'http://sweet.jpl.nasa.gov/2.3/realmCryo.owl#').
+:- rdf_register_ns(realmEarthReference,'http://sweet.jpl.nasa.gov/2.3/realmEarthReference.owl#').
+:- rdf_register_ns(realmGeol,'http://sweet.jpl.nasa.gov/2.3/realmGeol.owl#').
+:- rdf_register_ns(realmGeolBasin,'http://sweet.jpl.nasa.gov/2.3/realmGeolBasin.owl#').
+:- rdf_register_ns(realmGeolConstituent,'http://sweet.jpl.nasa.gov/2.3/realmGeolConstituent.owl#').
+:- rdf_register_ns(realmGeolContinental,'http://sweet.jpl.nasa.gov/2.3/realmGeolContinental.owl#').
+:- rdf_register_ns(realmGeolOrogen,'http://sweet.jpl.nasa.gov/2.3/realmGeolOrogen.owl#').
+:- rdf_register_ns(realmHydro,'http://sweet.jpl.nasa.gov/2.3/realmHydro.owl#').
+:- rdf_register_ns(realmHydroBody,'http://sweet.jpl.nasa.gov/2.3/realmHydroBody.owl#').
+:- rdf_register_ns(realmLandAeolian,'http://sweet.jpl.nasa.gov/2.3/realmLandAeolian.owl#').
+:- rdf_register_ns(realmLandCoastal,'http://sweet.jpl.nasa.gov/2.3/realmLandCoastal.owl#').
+:- rdf_register_ns(realmLandFluvial,'http://sweet.jpl.nasa.gov/2.3/realmLandFluvial.owl#').
+:- rdf_register_ns(realmLandGlacial,'http://sweet.jpl.nasa.gov/2.3/realmLandGlacial.owl#').
+:- rdf_register_ns(realmLandform,'http://sweet.jpl.nasa.gov/2.3/realmLandform.owl#').
+:- rdf_register_ns(realmLandOrographic,'http://sweet.jpl.nasa.gov/2.3/realmLandOrographic.owl#').
+:- rdf_register_ns(realmLandProtected,'http://sweet.jpl.nasa.gov/2.3/realmLandProtected.owl#').
+:- rdf_register_ns(realmLandTectonic,'http://sweet.jpl.nasa.gov/2.3/realmLandTectonic.owl#').
+:- rdf_register_ns(realmLandVolcanic,'http://sweet.jpl.nasa.gov/2.3/realmLandVolcanic.owl#').
+:- rdf_register_ns(realmOcean,'http://sweet.jpl.nasa.gov/2.3/realmOcean.owl#').
+:- rdf_register_ns(realmOceanFeature,'http://sweet.jpl.nasa.gov/2.3/realmOceanFeature.owl#').
+:- rdf_register_ns(realmOceanFloor,'http://sweet.jpl.nasa.gov/2.3/realmOceanFloor.owl#').
+:- rdf_register_ns(realmRegion,'http://sweet.jpl.nasa.gov/2.3/realmRegion.owl#').
+:- rdf_register_ns(realmSoil,'http://sweet.jpl.nasa.gov/2.3/realmSoil.owl#').
+:- rdf_register_ns(rela,'http://sweet.jpl.nasa.gov/2.3/rela.owl#').
+:- rdf_register_ns(relaChemical,'http://sweet.jpl.nasa.gov/2.3/relaChemical.owl#').
+:- rdf_register_ns(relaClimate,'http://sweet.jpl.nasa.gov/2.3/relaClimate.owl#').
+:- rdf_register_ns(relaHuman,'http://sweet.jpl.nasa.gov/2.3/relaHuman.owl#').
+:- rdf_register_ns(relaMath,'http://sweet.jpl.nasa.gov/2.3/relaMath.owl#').
+:- rdf_register_ns(relaPhysical,'http://sweet.jpl.nasa.gov/2.3/relaPhysical.owl#').
+:- rdf_register_ns(relaProvenance,'http://sweet.jpl.nasa.gov/2.3/relaProvenance.owl#').
+:- rdf_register_ns(relaSci,'http://sweet.jpl.nasa.gov/2.3/relaSci.owl#').
+:- rdf_register_ns(relaSpace,'http://sweet.jpl.nasa.gov/2.3/relaSpace.owl#').
+:- rdf_register_ns(relaTime,'http://sweet.jpl.nasa.gov/2.3/relaTime.owl#').
+:- rdf_register_ns(repr,'http://sweet.jpl.nasa.gov/2.3/repr.owl#').
+:- rdf_register_ns(reprDataFormat,'http://sweet.jpl.nasa.gov/2.3/reprDataFormat.owl#').
+:- rdf_register_ns(reprDataModel,'http://sweet.jpl.nasa.gov/2.3/reprDataModel.owl#').
+:- rdf_register_ns(reprDataProduct,'http://sweet.jpl.nasa.gov/2.3/reprDataProduct.owl#').
+:- rdf_register_ns(reprDataService,'http://sweet.jpl.nasa.gov/2.3/reprDataService.owl#').
+:- rdf_register_ns(reprDataServiceAnalysis,'http://sweet.jpl.nasa.gov/2.3/reprDataServiceAnalysis.owl#').
+:- rdf_register_ns(reprDataServiceReduction,'http://sweet.jpl.nasa.gov/2.3/reprDataServiceReduction.owl#').
+:- rdf_register_ns(reprDataServiceGeospatial,'http://sweet.jpl.nasa.gov/2.3/reprDataServiceGeospatial.owl#').
+:- rdf_register_ns(reprDataServiceValidation,'http://sweet.jpl.nasa.gov/2.3/reprDataServiceValidation.owl#').
+:- rdf_register_ns(reprMath,'http://sweet.jpl.nasa.gov/2.3/reprMath.owl#').
+:- rdf_register_ns(reprMathFunction,'http://sweet.jpl.nasa.gov/2.3/reprMathFunction.owl#').
+:- rdf_register_ns(reprMathFunctionOrthogonal,'http://sweet.jpl.nasa.gov/2.3/reprMathFunctionOrthogonal.owl#').
+:- rdf_register_ns(reprMathGraph,'http://sweet.jpl.nasa.gov/2.3/reprMathGraph.owl#').
+:- rdf_register_ns(reprMathOperation,'http://sweet.jpl.nasa.gov/2.3/reprMathOperation.owl#').
+:- rdf_register_ns(reprMathSolution,'http://sweet.jpl.nasa.gov/2.3/reprMathSolution.owl#').
+:- rdf_register_ns(reprMathStatistics,'http://sweet.jpl.nasa.gov/2.3/reprMathStatistics.owl#').
+:- rdf_register_ns(reprSciComponent,'http://sweet.jpl.nasa.gov/2.3/reprSciComponent.owl#').
+:- rdf_register_ns(reprSciFunction,'http://sweet.jpl.nasa.gov/2.3/reprSciFunction.owl#').
+:- rdf_register_ns(reprSciLaw,'http://sweet.jpl.nasa.gov/2.3/reprSciLaw.owl#').
+:- rdf_register_ns(reprSciMethodology,'http://sweet.jpl.nasa.gov/2.3/reprSciMethodology.owl#').
+:- rdf_register_ns(reprSciModel,'http://sweet.jpl.nasa.gov/2.3/reprSciModel.owl#').
+:- rdf_register_ns(reprSciProvenance,'http://sweet.jpl.nasa.gov/2.3/reprSciProvenance.owl#').
+:- rdf_register_ns(reprSciUnits,'http://sweet.jpl.nasa.gov/2.3/reprSciUnits.owl#').
+:- rdf_register_ns(reprSpace,'http://sweet.jpl.nasa.gov/2.3/reprSpace.owl#').
+:- rdf_register_ns(reprSpaceCoordinate,'http://sweet.jpl.nasa.gov/2.3/reprSpaceCoordinate.owl#').
+:- rdf_register_ns(reprSpaceDirection,'http://sweet.jpl.nasa.gov/2.3/reprSpaceDirection.owl#').
+:- rdf_register_ns(reprSpaceGeometry,'http://sweet.jpl.nasa.gov/2.3/reprSpaceGeometry.owl#').
+:- rdf_register_ns(reprSpaceGeometry3D,'http://sweet.jpl.nasa.gov/2.3/reprSpaceGeometry3D.owl#').
+:- rdf_register_ns(reprSpaceReferenceSystem,'http://sweet.jpl.nasa.gov/2.3/reprSpaceReferenceSystem.owl#').
+:- rdf_register_ns(reprTime,'http://sweet.jpl.nasa.gov/2.3/reprTime.owl#').
+:- rdf_register_ns(reprTimeDay,'http://sweet.jpl.nasa.gov/2.3/reprTimeDay.owl#').
+:- rdf_register_ns(reprTimeSeason,'http://sweet.jpl.nasa.gov/2.3/reprTimeSeason.owl#').
+:- rdf_register_ns(state,'http://sweet.jpl.nasa.gov/2.3/state.owl#').
+:- rdf_register_ns(stateBiological,'http://sweet.jpl.nasa.gov/2.3/stateBiological.owl#').
+:- rdf_register_ns(stateChemical,'http://sweet.jpl.nasa.gov/2.3/stateChemical.owl#').
+:- rdf_register_ns(stateDataProcessing,'http://sweet.jpl.nasa.gov/2.3/stateDataProcessing.owl#').
+:- rdf_register_ns(stateEnergyFlux,'http://sweet.jpl.nasa.gov/2.3/stateEnergyFlux.owl#').
+:- rdf_register_ns(stateFluid,'http://sweet.jpl.nasa.gov/2.3/stateFluid.owl#').
+:- rdf_register_ns(stateOrdinal,'http://sweet.jpl.nasa.gov/2.3/stateOrdinal.owl#').
+:- rdf_register_ns(statePhysical,'http://sweet.jpl.nasa.gov/2.3/statePhysical.owl#').
+:- rdf_register_ns(stateRealm,'http://sweet.jpl.nasa.gov/2.3/stateRealm.owl#').
+:- rdf_register_ns(stateRole,'http://sweet.jpl.nasa.gov/2.3/stateRole.owl#').
+:- rdf_register_ns(stateRoleImpact,'http://sweet.jpl.nasa.gov/2.3/stateRoleImpact.owl#').
+:- rdf_register_ns(stateRoleBiological,'http://sweet.jpl.nasa.gov/2.3/stateRoleBiological.owl#').
+:- rdf_register_ns(stateRoleChemical,'http://sweet.jpl.nasa.gov/2.3/stateRoleChemical.owl#').
+:- rdf_register_ns(stateRoleGeographic,'http://sweet.jpl.nasa.gov/2.3/stateRoleGeographic.owl#').
+:- rdf_register_ns(stateRoleRepresentative,'http://sweet.jpl.nasa.gov/2.3/stateRoleRepresentative.owl#').
+:- rdf_register_ns(stateRoleTrust,'http://sweet.jpl.nasa.gov/2.3/stateRoleTrust.owl#').
+:- rdf_register_ns(stateSolid,'http://sweet.jpl.nasa.gov/2.3/stateSolid.owl#').
+:- rdf_register_ns(stateSpace,'http://sweet.jpl.nasa.gov/2.3/stateSpace.owl#').
+:- rdf_register_ns(stateSpaceScale,'http://sweet.jpl.nasa.gov/2.3/stateSpaceScale.owl#').
+:- rdf_register_ns(stateSpaceConfiguration,'http://sweet.jpl.nasa.gov/2.3/stateSpaceConfiguration.owl#').
+:- rdf_register_ns(stateSpectralBand,'http://sweet.jpl.nasa.gov/2.3/stateSpectralBand.owl#').
+:- rdf_register_ns(stateSpectralLine,'http://sweet.jpl.nasa.gov/2.3/stateSpectralLine.owl#').
+:- rdf_register_ns(stateStorm,'http://sweet.jpl.nasa.gov/2.3/stateStorm.owl#').
+:- rdf_register_ns(stateSystem,'http://sweet.jpl.nasa.gov/2.3/stateSystem.owl#').
+:- rdf_register_ns(stateThermodynamic,'http://sweet.jpl.nasa.gov/2.3/stateThermodynamic.owl#').
+:- rdf_register_ns(stateTime,'http://sweet.jpl.nasa.gov/2.3/stateTime.owl#').
+:- rdf_register_ns(stateTimeCycle,'http://sweet.jpl.nasa.gov/2.3/stateTimeCycle.owl#').
+:- rdf_register_ns(stateTimeFrequency,'http://sweet.jpl.nasa.gov/2.3/stateTimeFrequency.owl#').
+:- rdf_register_ns(stateTimeGeologic,'http://sweet.jpl.nasa.gov/2.3/stateTimeGeologic.owl#').
+:- rdf_register_ns(stateVisibility,'http://sweet.jpl.nasa.gov/2.3/stateVisibility.owl#').
+
+
+

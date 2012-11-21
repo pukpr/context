@@ -1,0 +1,120 @@
+@base        <user> .
+@prefix ent: <http://entroplet.com/terms#> .
+
+# Named toplevel resources (29)
+
+<10_Inch_Half_Round.txt>
+	ent:name "10_Inch_Half_Round.txt" ;
+	ent:src_file "../../../../Models/Land/terrains/grades_slopes/tools/Unity/RoadExperiments/Assets/Resources/Obstacles/10_Inch_Half_Round.txt" .
+
+<12_Degree_Roll_On_Ramp.txt>
+	ent:name "12_Degree_Roll_On_Ramp.txt" ;
+	ent:src_file "../../../../Models/Land/terrains/grades_slopes/tools/Unity/RoadExperiments/Assets/Resources/Obstacles/12_Degree_Roll_On_Ramp.txt" .
+
+<12_Inch_Half_Round.txt>
+	ent:name "12_Inch_Half_Round.txt" ;
+	ent:src_file "../../../../Models/Land/terrains/grades_slopes/tools/Unity/RoadExperiments/Assets/Resources/Obstacles/12_Inch_Half_Round.txt" .
+
+<15_Degree_Roll_On_Ramp.txt>
+	ent:name "15_Degree_Roll_On_Ramp.txt" ;
+	ent:src_file "../../../../Models/Land/terrains/grades_slopes/tools/Unity/RoadExperiments/Assets/Resources/Obstacles/15_Degree_Roll_On_Ramp.txt" .
+
+<4_Inch_Half_Round.txt>
+	ent:name "4_Inch_Half_Round.txt" ;
+	ent:src_file "../../../../Models/Land/terrains/grades_slopes/tools/Unity/RoadExperiments/Assets/Resources/Obstacles/4_Inch_Half_Round.txt" .
+
+<6_Inch_Half_Round.txt>
+	ent:name "6_Inch_Half_Round.txt" ;
+	ent:src_file "../../../../Models/Land/terrains/grades_slopes/tools/Unity/RoadExperiments/Assets/Resources/Obstacles/6_Inch_Half_Round.txt" .
+
+<8_Inch_Half_Round.txt>
+	ent:name "8_Inch_Half_Round.txt" ;
+	ent:src_file "../../../../Models/Land/terrains/grades_slopes/tools/Unity/RoadExperiments/Assets/Resources/Obstacles/8_Inch_Half_Round.txt" .
+
+<9_Inch_Half_Round.txt>
+	ent:name "9_Inch_Half_Round.txt" ;
+	ent:src_file "../../../../Models/Land/terrains/grades_slopes/tools/Unity/RoadExperiments/Assets/Resources/Obstacles/9_Inch_Half_Round.txt" .
+
+<ATC_1InchBumps.txt>
+	ent:name "ATC_1InchBumps.txt" ;
+	ent:src_file "../../../../Models/Land/terrains/grades_slopes/tools/Unity/RoadExperiments/Assets/Resources/Obstacles/ATC_1InchBumps.txt" .
+
+<ATC_Churchville_1InchBumps.txt>
+	ent:name "ATC_Churchville_1InchBumps.txt" ;
+	ent:src_file "../../../../Models/Land/terrains/grades_slopes/tools/Unity/RoadExperiments/Assets/Resources/Obstacles/ATC_Churchville_1InchBumps.txt" .
+
+<ATC_CrosstieCourse.txt>
+	ent:name "ATC_CrosstieCourse.txt" ;
+	ent:src_file "../../../../Models/Land/terrains/grades_slopes/tools/Unity/RoadExperiments/Assets/Resources/Obstacles/ATC_CrosstieCourse.txt" .
+
+<ATC_ElevationStabilizationBump.txt>
+	ent:name "ATC_ElevationStabilizationBump.txt" ;
+	ent:src_file "../../../../Models/Land/terrains/grades_slopes/tools/Unity/RoadExperiments/Assets/Resources/Obstacles/ATC_ElevationStabilizationBump.txt" .
+
+<ATC_MTA_2InchWashboard.txt>
+	ent:name "ATC_MTA_2InchWashboard.txt" ;
+	ent:src_file "../../../../Models/Land/terrains/grades_slopes/tools/Unity/RoadExperiments/Assets/Resources/Obstacles/ATC_MTA_2InchWashboard.txt" .
+
+<ATC_MTA_3InchSpacedBump.txt>
+	ent:name "ATC_MTA_3InchSpacedBump.txt" ;
+	ent:src_file "../../../../Models/Land/terrains/grades_slopes/tools/Unity/RoadExperiments/Assets/Resources/Obstacles/ATC_MTA_3InchSpacedBump.txt" .
+
+<ATC_MTA_6InchWashboard.txt>
+	ent:name "ATC_MTA_6InchWashboard.txt" ;
+	ent:src_file "../../../../Models/Land/terrains/grades_slopes/tools/Unity/RoadExperiments/Assets/Resources/Obstacles/ATC_MTA_6InchWashboard.txt" .
+
+<ATC_MTA_ProfileIVCourse.txt>
+	ent:name "ATC_MTA_ProfileIVCourse.txt" ;
+	ent:src_file "../../../../Models/Land/terrains/grades_slopes/tools/Unity/RoadExperiments/Assets/Resources/Obstacles/ATC_MTA_ProfileIVCourse.txt" .
+
+<ATC_MTA_RadialWashboard.txt>
+	ent:name "ATC_MTA_RadialWashboard.txt" ;
+	ent:src_file "../../../../Models/Land/terrains/grades_slopes/tools/Unity/RoadExperiments/Assets/Resources/Obstacles/ATC_MTA_RadialWashboard.txt" .
+
+<ATC_PotholeCourse.txt>
+	ent:name "ATC_PotholeCourse.txt" ;
+	ent:src_file "../../../../Models/Land/terrains/grades_slopes/tools/Unity/RoadExperiments/Assets/Resources/Obstacles/ATC_PotholeCourse.txt" .
+
+<ATC_RRC9Stabilization.txt>
+	ent:name "ATC_RRC9Stabilization.txt" ;
+	ent:src_file "../../../../Models/Land/terrains/grades_slopes/tools/Unity/RoadExperiments/Assets/Resources/Obstacles/ATC_RRC9Stabilization.txt" .
+
+<YTC_11_Inch_Pothole.txt>
+	ent:name "YTC_11_Inch_Pothole.txt" ;
+	ent:src_file "../../../../Models/Land/terrains/grades_slopes/tools/Unity/RoadExperiments/Assets/Resources/Obstacles/YTC_11_Inch_Pothole.txt" .
+
+<YTC_12_Inch_Pothole.txt>
+	ent:name "YTC_12_Inch_Pothole.txt" ;
+	ent:src_file "../../../../Models/Land/terrains/grades_slopes/tools/Unity/RoadExperiments/Assets/Resources/Obstacles/YTC_12_Inch_Pothole.txt" .
+
+<YTC_4_Inch_Pothole.txt>
+	ent:name "YTC_4_Inch_Pothole.txt" ;
+	ent:src_file "../../../../Models/Land/terrains/grades_slopes/tools/Unity/RoadExperiments/Assets/Resources/Obstacles/YTC_4_Inch_Pothole.txt" .
+
+<YTC_6_Inch_Pothole.txt>
+	ent:name "YTC_6_Inch_Pothole.txt" ;
+	ent:src_file "../../../../Models/Land/terrains/grades_slopes/tools/Unity/RoadExperiments/Assets/Resources/Obstacles/YTC_6_Inch_Pothole.txt" .
+
+<YTC_9_Inch_Pothole.txt>
+	ent:name "YTC_9_Inch_Pothole.txt" ;
+	ent:src_file "../../../../Models/Land/terrains/grades_slopes/tools/Unity/RoadExperiments/Assets/Resources/Obstacles/YTC_9_Inch_Pothole.txt" .
+
+<YTC_MOUT_9inHalfRounds.txt>
+	ent:name "YTC_MOUT_9inHalfRounds.txt" ;
+	ent:src_file "../../../../Models/Land/terrains/grades_slopes/tools/Unity/RoadExperiments/Assets/Resources/Obstacles/YTC_MOUT_9inHalfRounds.txt" .
+
+<YTC_MOUT_Curb.txt>
+	ent:name "YTC_MOUT_Curb.txt" ;
+	ent:src_file "../../../../Models/Land/terrains/grades_slopes/tools/Unity/RoadExperiments/Assets/Resources/Obstacles/YTC_MOUT_Curb.txt" .
+
+<YTC_MOUT_Log.txt>
+	ent:name "YTC_MOUT_Log.txt" ;
+	ent:src_file "../../../../Models/Land/terrains/grades_slopes/tools/Unity/RoadExperiments/Assets/Resources/Obstacles/YTC_MOUT_Log.txt" .
+
+<YTC_MOUT_Staircase.txt>
+	ent:name "YTC_MOUT_Staircase.txt" ;
+	ent:src_file "../../../../Models/Land/terrains/grades_slopes/tools/Unity/RoadExperiments/Assets/Resources/Obstacles/YTC_MOUT_Staircase.txt" .
+
+<YTC_MOUT_Washboard.txt>
+	ent:name "YTC_MOUT_Washboard.txt" ;
+	ent:src_file "../../../../Models/Land/terrains/grades_slopes/tools/Unity/RoadExperiments/Assets/Resources/Obstacles/YTC_MOUT_Washboard.txt" .

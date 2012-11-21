@@ -1,0 +1,57 @@
+@prefix void: <http://rdfs.org/ns/void#> .
+@prefix vann: <http://purl.org/vocab/vann/> .
+@prefix	 lib: <http://www.swi-prolog.org/rdf/library/> .
+@prefix  owl: <http://www.w3.org/2002/07/owl#> .
+@prefix  rdf: <http://www.w3.org/1999/02/22-rdf-syntax-ns#> .
+@prefix rdfs: <http://www.w3.org/2000/01/rdf-schema#> .
+@prefix   dc: <http://purl.org/dc/terms/> .
+
+<terms/standard-vocabulary>
+	a lib:Ontology ;
+        a lib:Virtual ;
+	dc:title     "Standard Vocabulary";
+	owl:imports  <http://www.w3.org/2002/07/owl>,
+                     <http://www.w3.org/1999/02/22-rdf-syntax-ns#>,
+		     <http://www.w3.org/2000/01/rdf-schema#>,
+                     <http://xmlns.com/foaf/spec/index.rdf>,
+                     <http://dublincore.org/2012/06/14/dcterms.ttl>,
+                     <http://dublincore.org/2012/06/14/dcelements.ttl>,
+                     <http://www.w3.org/2009/08/skos-reference/skos.rdf>.
+
+
+<http://www.w3.org/2002/07/owl>
+        a lib:Schema ;
+        a lib:CloudNode ;
+	dc:title "OWL terminology".
+
+<http://dublincore.org/2012/06/14/dcterms.ttl>
+        a lib:Schema ;
+        a lib:CloudNode ;
+	dc:title "Dublin core terms".
+
+<http://dublincore.org/2012/06/14/dcelements.ttl>
+        a lib:Schema ;
+        a lib:CloudNode ;
+	dc:title "Dublin core elements".
+
+<http://www.w3.org/1999/02/22-rdf-syntax-ns#>
+        a lib:Schema ;
+        a lib:CloudNode ;
+	dc:title "RDF terminology".
+
+<http://www.w3.org/2000/01/rdf-schema#>
+        a lib:Schema ;
+        a lib:CloudNode ;
+	dc:title "RDF schema".
+
+<http://www.w3.org/2009/08/skos-reference/skos.rdf>
+        a lib:Schema ;
+        a lib:CloudNode ;
+	dc:title "SKOS vocabulary".
+
+<http://xmlns.com/foaf/spec/index.rdf>
+        a lib:Schema ;
+        a lib:CloudNode ;
+	dc:title "Friend of a friend terminology".
+
+

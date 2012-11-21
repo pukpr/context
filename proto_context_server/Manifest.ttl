@@ -1,0 +1,169 @@
+@prefix void: <http://rdfs.org/ns/void#> .
+@prefix vann: <http://purl.org/vocab/vann/> .
+@prefix	 lib: <http://www.swi-prolog.org/rdf/library/> .
+@prefix  owl: <http://www.w3.org/2002/07/owl#> .
+@prefix  rdf: <http://www.w3.org/1999/02/22-rdf-syntax-ns#> .
+@prefix rdfs: <http://www.w3.org/2000/01/rdf-schema#> .
+@prefix   dc: <http://purl.org/dc/terms/> .
+
+<instances/context.rdf>
+        a lib:Instances ;
+        a lib:CloudNode ;
+	dc:title     "Context knowledge from Zotero";
+	owl:imports  <instances/context_data.ttl>,
+		     <instances/requirements.ttl>,
+		     <instances/FANG_reqts_to_BAE-xlsx.ttl>,
+		     <instances/RemainingReqtsHighlighted_Oct11-xlsx.ttl>,
+                     <instances/Terrain-PSD-metadata-xlsx.ttl>,
+                     <instances/Obstacle-metadata-xlsx.ttl>,
+                     <instances/Terrain-PSD-data-json.ttl>,
+                     <instances/Terrain-Profile-data-crg.ttl>,
+                     <instances/Terrain-Profile-data-assorted.ttl>,
+                     <instances/Terrain-Obstacles-data-csv.ttl>,
+                     <instances/Temperature-Model-data.ttl>,
+                     <instances/pdf_instances-xlsx.ttl>,
+                     <instances/standard-atmosphere-table-xlsx.ttl>,
+                     <instances/locales.ttl>,
+                     <instances/usgsdems-xlsx.ttl>,
+                     <instances/seastate-xlsx.ttl>,
+                     <instances/lightning_indirect_effects.ttl>,
+                     <instances/corrosion_iso_12944-2__iso_14713.ttl>,
+                     <instances/surface_friction-xlsx.ttl>,
+                     <terms/defs.ttl>,
+                     <terms/swore.rdf>,
+                     <terms/biblio.ttl>,
+                     <terms/bibo.xml.owl.rdf>,
+                     <terms/sweet23_db.trp>.
+
+
+<instances/context_data.ttl>
+	 a lib:Instances ;
+	 a lib:CloudNode ;
+	 dc:title "Context instances from data sources, proto" .
+
+<instances/pdf_instances-xls.ttl>
+	 a lib:Instances ;
+	 a lib:CloudNode ;
+	 dc:title "Context PDF instances" .
+
+<instances/requirements.ttl>
+	 a lib:Instances ;
+	 a lib:CloudNode ;
+	 dc:title "Context instances from requirements" .
+
+<instances/locales.ttl>
+	 a lib:Instances ;
+	 a lib:CloudNode ;
+	 dc:title "Named loclities around the world" .
+
+<instances/FANG_reqts_to_BAE-xlsx.ttl>
+	 a lib:Instances ;
+	 a lib:CloudNode ;
+	 dc:title "System requirements" .
+
+<instances/RemainingReqtsHighlighted_Oct11-xlsx.ttl>
+	 a lib:Instances ;
+	 a lib:CloudNode ;
+	 dc:title "Additional system requirements" .
+
+<instances/Terrain-PSD-metadata-xlsx.ttl>
+	 a lib:Instances ;
+	 a lib:CloudNode ;
+	 dc:title "Meta data for terrain courses" .
+
+<instances/Obstacle-metadata-xlsx.ttl>
+	 a lib:Instances ;
+	 a lib:CloudNode ;
+	 dc:title "Meta data for obstacle courses" .
+
+<instances/Terrain-PSD-data-json.ttl>
+	 a lib:Instances ;
+	 a lib:CloudNode ;
+	 dc:title "Data for terrain PSD courses and obstacles" .
+
+<instances/Terrain-Profile-data-crg.ttl>
+	 a lib:Instances ;
+	 a lib:CloudNode ;
+	 dc:title "Data for terrain course profiles from CSIR, mainly from CRG format" .
+
+<instances/Terrain-Profile-data-assorted.ttl>
+	 a lib:Instances ;
+	 a lib:CloudNode ;
+	 dc:title "Data for terrain course profiles from assorted locations, such as Mercedes-Benz " .
+
+<instances/Terrain-Obstacles-data-csv.ttl>
+	 a lib:Instances ;
+	 a lib:CloudNode ;
+	 dc:title "Files for obstacle course profiles in CSV format" .
+
+<instances/Temperature-Model-data.ttl>
+	 a lib:Instances ;
+	 a lib:CloudNode ;
+	 dc:title "Models for geospatial temperature records" .
+
+<instances/standard-atmosphere-table-xlsx.ttl>
+	 a lib:Instances ;
+	 a lib:CloudNode ;
+	 dc:title "Table of standard atmosphere properties in increments of 1000 ft" .
+
+<instances/usgsdems-xslx.ttl>
+        a lib:Schema ;
+        a lib:CloudNode ;
+	dc:title "Names of USGS DEM 1 deg sections for CONUS".
+
+<instances/seastate-xslx.ttl>
+        a lib:Schema ;
+        a lib:CloudNode ;
+	dc:title "Sea state table".
+
+<instances/lightning_indirect_effects.ttl>
+        a lib:Schema ;
+        a lib:CloudNode ;
+	dc:title "Lightning indirect effects table".
+
+<instances/corrosion_iso_12944-2__iso_14713.ttl>
+        a lib:Schema ;
+        a lib:CloudNode ;
+	dc:title "Corrosive scales according to ISO standards".
+
+<instances/surface_friction-xlsx.ttl>
+        a lib:Schema ;
+        a lib:CloudNode ;
+	dc:title "Average coefficients of friction of various roadway surfaces.".
+
+<terms/defs.ttl>
+        a lib:Schema ;
+        a lib:CloudNode ;
+	dc:title "Base context terminology - http://entroplet.com/terms#".
+
+<terms/biblio.ttl>
+        a lib:Schema ;
+        a lib:CloudNode ;
+	dc:title "Bibliography terminology - http://purl.org/net/biblio".
+
+<terms/bibo.xml.owl.rdf>
+        a lib:Schema ;
+        a lib:CloudNode ;
+	dc:title "Bibliography terminology - http://purl.org/ontology/bibo/".
+
+<terms/swore.ttl>
+        a lib:Schema ;
+        a lib:CloudNode ;
+	dc:title "Requirements terms from http://ns.softwiki.de/req/".
+
+<terms/sweet23_db.trp>
+        a lib:Schema ;
+        a lib:CloudNode ;
+	dc:title "SWEET Ontology (from http://sweet.jpl.nasa.gov/2.3/sweetAll.owl)".
+
+# <http://sweet.jpl.nasa.gov/2.3/sweetAll.owl>
+#        a lib:Schema ;
+#        a lib:CloudNode ;
+#	dc:title "SWEET Ontology collection".
+
+
+#  rdf_library:rdf_attach_library('Manifest.ttl').
+#  rdf_library:rdf_list_library.
+#  rdf_library:rdf_load_library('context').
+
+#  <http://sweet.jpl.nasa.gov/2.3/sweetAll.owl>.

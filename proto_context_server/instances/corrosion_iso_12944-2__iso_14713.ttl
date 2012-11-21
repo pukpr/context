@@ -1,0 +1,72 @@
+@prefix rdfs: <http://www.w3.org/2000/01/rdf-schema#> .
+@prefix foaf: <http://xmlns.com/foaf/0.1/> .
+@prefix owl: <http://www.w3.org/2002/07/owl#> .
+@prefix xsd: <http://www.w3.org/2001/XMLSchema#> .
+@prefix rdf: <http://www.w3.org/1999/02/22-rdf-syntax-ns#> .
+@prefix ent: <http://entroplet.com/terms#> .
+
+
+ent:ISO_12944-2 ent:name       "ISO 12944-2" ;
+                ent:standard   ent:corrosion.
+
+ent:ISO_14713   ent:name       "ISO 14713" ;
+                ent:standard   ent:corrosion.
+
+ent:C1 ent:corrosion_scale "C1" ;
+       ent:standard_applies ent:corrosion ;
+	ent:environmental_conditions "Very low" ;
+	ent:exterior_examples "Inland rural" ;
+	ent:interior_examples "Interior of buildings, offices, stores, schools, hotels. Indoor spaces with occasional condensation." ;
+	ent:carbon_steel_thickness_loss "[1,3]" ;
+	ent:carbon_steel_mass_loss "[8,24]" ;
+	ent:zinc_thickness_loss "[0,0.1]" ;
+	ent:zinc_mass_loss "[0,0.7]" .
+
+ent:C2 ent:corrosion_scale "C2" ;
+       ent:standard_applies ent:corrosion ;
+	ent:environmental_conditions "Low" ;
+	ent:exterior_examples "Very ligh industrial zone or in a city without pollution" ;
+	ent:interior_examples "Warehouses, sports auditoriums, logistic centers, hangars. Dry indoor spaces." ;
+	ent:carbon_steel_thickness_loss "[3,25]" ;
+	ent:carbon_steel_mass_loss "[24,200]" ;
+	ent:zinc_thickness_loss "[0.1,0.7]" ;
+	ent:zinc_mass_loss "[0.7,5]" .
+
+ent:C3 ent:corrosion_scale "C3" ;
+       ent:standard_applies ent:corrosion ;
+	ent:environmental_conditions "Medium" ;
+	ent:exterior_examples "Inland urban, mildly saline. Urban and Industrial atmospheres, moderate SO2 pollution, coastal areas with low salinity." ;
+	ent:interior_examples "Indoor spaces with high moisture content, not much impurities. Production rooms with high humidity and some air pollution, e.g. food processing plants, breweries, laundries." ;
+	ent:carbon_steel_thickness_loss "[25 ,50]" ;
+	ent:carbon_steel_mass_loss "[200,400]" ;
+	ent:zinc_thickness_loss "[0.7,2.1]" ;
+	ent:zinc_mass_loss "[5,15]" .
+
+ent:C4 ent:corrosion_scale "C4" ;
+       ent:standard_applies ent:corrosion ;
+	ent:environmental_conditions "High" ;
+	ent:exterior_examples "Industrial and coastal areas with moderate salinity." ;
+	ent:interior_examples "Chemical plants. Swimming pools. Coastal shipyards, boatyards and seaside docks." ;
+	ent:carbon_steel_thickness_loss "[50 , 80]" ;
+	ent:carbon_steel_mass_loss "[400,650]" ;
+	ent:zinc_thickness_loss "[2.1,4.2]" ;
+	ent:zinc_mass_loss "[15,30]" .
+
+ent:C5-I ent:corrosion_scale "C5-I" ;
+       ent:standard_applies ent:corrosion ;
+	ent:environmental_conditions "Very high (heavy industrial zone)" ;
+	ent:exterior_examples "Very humid industrial atmosphere. Heavy industrial zone, contact with chemicals ." ;
+	ent:interior_examples "Industrial plants, warehouses, heavy equipment workshops" ;
+	ent:carbon_steel_thickness_loss "[80,200]" ;
+	ent:carbon_steel_mass_loss "[400,650]" ;
+	ent:zinc_thickness_loss "[4.2,8.4]" ;
+	ent:zinc_mass_loss "[15,30]" .
+
+ent:C5-M ent:corrosion_scale "C5-M" ;
+	ent:environmental_conditions "Very high (marine atmosphere)" ;
+	ent:exterior_examples "Saline seaside atmosphere. Coastal and off-shore areas with high salinity, up to 1000 m from the coastline" ;
+	ent:interior_examples "Buildings or areas with almost permanent condensation and high pollution." ;
+	ent:carbon_steel_thickness_loss "[80,200]" ;
+	ent:carbon_steel_mass_loss "[650,1500]" ;
+	ent:zinc_thickness_loss "[4.2,8.4]" ;
+	ent:zinc_mass_loss "[30,60]" .
