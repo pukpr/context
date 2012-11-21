@@ -1,0 +1,34 @@
+@prefix rdf:     <http://www.w3.org/1999/02/22-rdf-syntax-ns#> .
+@prefix rdfs:    <http://www.w3.org/2000/01/rdf-schema#> .
+@prefix dcterms: <http://purl.org/dc/terms/> .
+@prefix foaf:    <http://xmlns.com/foaf/0.1/> .
+@prefix cpack:   <http://cliopatria.swi-prolog.org/schema/cpack#> .
+
+# This file is a Turtle-format RDF file that describes the package.  It
+# *must* be located in rdf/cpack/cloud.ttl
+#
+# Author is a FOAF Person. If you have a FOAF profile, you can link to
+# this.  Otherwise you can specify the information inline as done below.
+# See http://xmlns.com/foaf/spec/ for defines fields.
+
+<> a cpack:Application ;
+	cpack:packageName "cloud" ;
+	dcterms:title "Visualize loaded datacloud" ;
+	cpack:author [ a foaf:Person ;
+		       foaf:name "Jan Wielemaker" ;
+		       foaf:mbox <mailto:J.Wielemaker@cs.vu.nl> ;
+		     ] ;
+	cpack:primaryRepository
+	    [ a cpack:GitRepository ;
+	      cpack:gitURL <git://eculture.cs.vu.nl/home/janw/git/ClioPatria/cloud.git>
+	    ] ;
+	cpack:description
+
+"""This package creates a datacload (see e.g., http://richard.cyganiak.de/2007/10/lod/)
+   dynamically based on the data loaded into the current ClioPatria image.  Nodes are
+   defined by the Manifest files as used by library(semweb/rdf_library).  Each entry
+   tagged using rdf:type as =|lib:CloudNode|= is added, where all triples from graphs
+   referenced from this entry are counted.
+""" .
+
+

@@ -1,0 +1,25 @@
+---+ SeRQL server TODO list
+
+---++ SPARQL
+
+* Complete SORT BY:
+	* Compare in test-cases
+	* Realise decending and multi-column sorting
+	* Value-specific comparison
+
+* Implement value based semantics in xsd:dateTime
+
+* { ?x ?y 1 } cannot be mapped to rdf(X, Y, literal(type(xsd:integer, '1')))
+  because it must match :a :b "01"^^xsd:integer.
+
+* Does SPARQL define a total ordering of literals?  If so, we may use
+  this for teh literal AVL-tree and speedup some of these queries a
+  lot.
+
+---++ Jena compatibility
+
+	* Function properties
+	    * <S> <P> <O> has special meaning for some <P>, generating
+	    different values for <O>.
+
+	    --> Post processing
