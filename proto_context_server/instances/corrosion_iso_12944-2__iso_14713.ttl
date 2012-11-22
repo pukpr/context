@@ -20,7 +20,8 @@ ent:C1 ent:corrosion_scale "C1" ;
 	ent:carbon_steel_thickness_loss "[1,3]" ;
 	ent:carbon_steel_mass_loss "[8,24]" ;
 	ent:zinc_thickness_loss "[0,0.1]" ;
-	ent:zinc_mass_loss "[0,0.7]" .
+	ent:zinc_mass_loss "[0,0.7]"  ;
+        ent:unit "micron/yr" .
 
 ent:C2 ent:corrosion_scale "C2" ;
        ent:standard_applies ent:corrosion ;
@@ -30,7 +31,8 @@ ent:C2 ent:corrosion_scale "C2" ;
 	ent:carbon_steel_thickness_loss "[3,25]" ;
 	ent:carbon_steel_mass_loss "[24,200]" ;
 	ent:zinc_thickness_loss "[0.1,0.7]" ;
-	ent:zinc_mass_loss "[0.7,5]" .
+	ent:zinc_mass_loss "[0.7,5]"  ;
+        ent:unit "micron/yr" .
 
 ent:C3 ent:corrosion_scale "C3" ;
        ent:standard_applies ent:corrosion ;
@@ -40,7 +42,8 @@ ent:C3 ent:corrosion_scale "C3" ;
 	ent:carbon_steel_thickness_loss "[25 ,50]" ;
 	ent:carbon_steel_mass_loss "[200,400]" ;
 	ent:zinc_thickness_loss "[0.7,2.1]" ;
-	ent:zinc_mass_loss "[5,15]" .
+	ent:zinc_mass_loss "[5,15]"  ;
+        ent:unit "micron/yr" .
 
 ent:C4 ent:corrosion_scale "C4" ;
        ent:standard_applies ent:corrosion ;
@@ -50,7 +53,8 @@ ent:C4 ent:corrosion_scale "C4" ;
 	ent:carbon_steel_thickness_loss "[50 , 80]" ;
 	ent:carbon_steel_mass_loss "[400,650]" ;
 	ent:zinc_thickness_loss "[2.1,4.2]" ;
-	ent:zinc_mass_loss "[15,30]" .
+	ent:zinc_mass_loss "[15,30]" ;
+        ent:unit "micron/yr" .
 
 ent:C5-I ent:corrosion_scale "C5-I" ;
        ent:standard_applies ent:corrosion ;
@@ -60,7 +64,8 @@ ent:C5-I ent:corrosion_scale "C5-I" ;
 	ent:carbon_steel_thickness_loss "[80,200]" ;
 	ent:carbon_steel_mass_loss "[400,650]" ;
 	ent:zinc_thickness_loss "[4.2,8.4]" ;
-	ent:zinc_mass_loss "[15,30]" .
+	ent:zinc_mass_loss "[15,30]"  ;
+        ent:unit "micron/yr".
 
 ent:C5-M ent:corrosion_scale "C5-M" ;
 	ent:environmental_conditions "Very high (marine atmosphere)" ;
@@ -69,4 +74,27 @@ ent:C5-M ent:corrosion_scale "C5-M" ;
 	ent:carbon_steel_thickness_loss "[80,200]" ;
 	ent:carbon_steel_mass_loss "[650,1500]" ;
 	ent:zinc_thickness_loss "[4.2,8.4]" ;
-	ent:zinc_mass_loss "[30,60]" .
+	ent:zinc_mass_loss "[30,60]"  ;
+        ent:unit "micron/yr".
+
+
+ent:corrosion_rural ent:locale ent:ElEscorialSpain ;
+                    ent:corrosive_atmosphere "rural";
+                    ent:corrosion_class ent:C2 .
+
+ent:corrosion_urban ent:locale ent:MadridSpain ;
+                    ent:corrosive_atmosphere "urban" ;
+                    ent:corrosion_class ent:C3 .
+
+ent:corrosion_industrial ent:locale ent:BilbaoSpain ;
+                    ent:corrosive_atmosphere "industrial" ;
+                    ent:corrosion_class ent:C4 .
+
+ent:corrosion_marine_mild ent:locale ent:BarcelonaSpain ;
+                    ent:corrosive_atmosphere "marine_mild" ;
+                    ent:corrosion_class ent:C4 .
+
+ent:corrosion_marine_severe ent:locale ent:AlicanteSpain ;
+                    ent:corrosive_atmosphere "marine_severe" ;
+                    ent:corrosion_class ent:C5-M .
+

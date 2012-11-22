@@ -32,36 +32,35 @@
 	Context R should be split out, use the XYZ untuple call
 	TOPS has particle size classes, see raindrop model
 	Do humid storage which is linked to requirements
-	Use same_length predicate
+x	Use same_length predicate
 	Explanation of FFT, how to filter window or use default
-	Unit tests
 	context_solar, planck's law
 	entroplet.com/terms# --> rdf_server in html/data.ttl
 	river flow current example
 	switch graphs to native format whenever possible
-	map infor on click once zoomed in
-	coefficient of friction to RDF, needs units
-	hover on various liks
-
-	
-
-	
-	
-	
-
-	
-
-	
-	
+	coefficient of friction to RDF and Corrosion Table, needs units
+	hover on various links
 
 
-	
 
 
+
+general work
+	Unit tests
+
+
+
+
+
+
+
+
+
+if time available
 	Named notation for graph
 	Put CSIR data as an extra tuple
 	Simulated data for DEM application
-	Name for temprary R files
+	Name for temporary R files
 	Sometimes graph needs more sig figs
 	DEM meta data
 	Land,Terrain,Aquatic terms
@@ -77,6 +76,7 @@
 	FFT on SOS
 	shaded-relief, geohack
 	Links to Graphviz dot circles
+	map infor on click once zoomed in
 
 
 
@@ -86,5 +86,5 @@
 
 
 
-	
-	
+
+

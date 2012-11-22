@@ -1,6 +1,7 @@
 :- multifile(rdf_/3).
 :- multifile(ref_/3).
 
+
 ref_('/context_select/navigate?category=fine_terrain',  target_iframe, '/html/static_pages/gems/fine_terrain.png').
 ref_('/context_select/navigate?category=gross_terrain', target_iframe, '/html/static_pages/gems/gross_terrain.png').
 ref_('/context_select/navigate?category=wave',          target_iframe, '/html/static_pages/gems/wave_statistics.png').
@@ -32,6 +33,8 @@ ref_(_, IName, Page) :-
     atomic_list_concat(['/html/',IName,'.html'], Page).
 
 % ----------------------------------------------------
+
+
 
 rdf_(fine_terrain, ent:image, 'fine_terrain_icon.png').
 rdf_(fine_terrain, ent:description, 'Fine terrain: course and obstacle models').

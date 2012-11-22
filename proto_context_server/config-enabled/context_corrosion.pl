@@ -21,6 +21,8 @@ collect_unit_options(Functor, List) :-
 */
 
 
+
+
 navigate(_Request) :-
    collect_unit_options(ent:length, Lunits),
    collect_unit_options(ent:time, Tunits),
@@ -43,7 +45,8 @@ navigate(_Request) :-
 			  \(con_text:radio_toggles(
 					 'evaluate',
 					 [['Dry rural area', 'rural'],
-                                          ['Marine environment', 'marine'],
+                                          ['Marine (severe)', 'marine_severe'],
+                                          ['Marine (mild)', 'marine_mild'],
                                           ['Industrial area', 'industrial'],
                                           ['Urban area', 'urban']
                                          ])),
@@ -65,6 +68,17 @@ check_margin(Z, Limit, 'Margin failed') :-
     Last < Limit,
 check_margin(_Z, _Limit, 'Margin OK').
 
+get_location(Characteristic, Lat, Lon, Location_Name, Class, EC, Examples) :-
+    rdfS(U, ent:corrosive_atmosphere, Characteristic),
+    rdf(U, ent:locale, Loc),
+    rdf(U, ent:corrosion_class, CC),
+    rdfS(CC, ent:corrosion_scale, Class),
+    rdfS(CC, ent:environmental_conditions, EC),
+    rdfS(CC, ent:exterior_examples, Examples),
+    rdfR(Loc, ent:lat, Lat),
+    rdfR(Loc, ent:lon, Lon),
+    rdfS(Loc, ent:title, Location_Name).
+
 plot(Request) :-
     http_parameters(Request, [kind(Kind, []),
 			      limit(Limit, [number]),
@@ -80,7 +94,10 @@ plot(Request) :-
        Characteristic = rural ->
 	 Z mapdot corrosionModel(1000, 0.1, 1.0, LUnits) ~> T
      ;
-       Characteristic = marine ->
+       Characteristic = marine_mild ->
+	 Z mapdot corrosionModel(1000000, 0.01, 1.0, LUnits) ~> T
+      ;
+       Characteristic = marine_severe ->
 	 Z mapdot corrosionModel(1000000, 0.01, 1.0, LUnits) ~> T
       ;
        Characteristic = industrial ->
@@ -97,13 +114,18 @@ plot(Request) :-
     ZZ = 'Limit',
     XUnits = TUnits,
     YUnits = LUnits,
+    get_location(Characteristic, Lat, Lon, Location_Name, Class, EC, Examples),
     reply_html_page([title('Corrosion Models'),
                      \(con_text:style)],
                     [
+		     p(i(['Corrosion category : ', EC, ' ', b(Class), ' examples include ', Examples])),
 		     \(context_graphing:dygraph_native(Kind, [X, Y, ZZ],
 						       [X,XUnits], [Y, YUnits],
 						       'Corrosion vs Time', Data)),
 		     %, \(con_text:alert('Check Margin', Result ))
+		     b([]),
+		     hr([]),
+		     b([]),
                      \(con_text:inline_button(
 		       \(con_text:button_link(
 				      'Link to references',
@@ -112,6 +134,17 @@ plot(Request) :-
 				      [[name,'procChemical:Corrosion']]))
 				)
                       ),
+                     \(con_text:inline_button(
+		      \(con_text:button_link('Display Map',
+					   '/context_map/navigate',
+					   render,
+					   [[lat, Lat],
+					    [lon, Lon],
+					    [title, Location_Name]
+					   ]))
+					     )
+		      ),
+
                      \(con_text:inline_button(
 		       \(con_text:button_link(
 				      'Corrosion categories',
@@ -137,13 +170,14 @@ standard(Names) :-
     findall(p(Name), (rdf(UID, ent:standard, ent:corrosion),
                    rdfS(UID, ent:name, Name)), Names).
 
-scale([Value, Env, Ext, Int, Steel, Zinc]) :-
+scale([Value, Env, Ext, Int, Steel, Zinc, Units]) :-
     rdfS(UID, ent:corrosion_scale, Value),
     rdfS(UID, ent:environmental_conditions, Env),
     rdfS(UID, ent:exterior_examples, Ext),
     rdfS(UID, ent:interior_examples, Int),
     rdfS(UID, ent:carbon_steel_thickness_loss, Steel),
-    rdfS(UID, ent:zinc_thickness_loss, Zinc).
+    rdfS(UID, ent:zinc_thickness_loss, Zinc),
+    rdfS(UID, ent:unit, Units).
 
 
 corrosion_scale_table(_Request) :-
@@ -156,7 +190,7 @@ corrosion_scale_table(_Request) :-
 		    p(['Several sliding categories of corrosive environments, from ' | Name]),
 		    \(con_text:table_multiple_entries(
 				   [[b(class), b(env), b(exterior), b(interior),
-                                     b('carbon steel'), b(zinc)]],
+                                     b('carbon steel'), b(zinc), b(units)]],
 				    Rows
 						     )
 		     )
