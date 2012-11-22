@@ -19,7 +19,7 @@ get_all_course_files(List) :-
 		rdf(URI, ent:name, literal(Name))
 	    ),
 	    List).
-
+/*
 navigate(_) :-
    get_all_course_files(List),
    reply_html_page(
@@ -72,6 +72,44 @@ navigate(_) :-
              )
        ]
                   ).
+
+*/
+
+navigate(Request) :-
+   get_all_course_files(List),
+   reply_html_page(
+       cliopatria(default),
+       [title('CSV files')],
+       [
+	\(con_text:table_with_iframe_target(
+		       Request,
+			[h1(b(i('Choose Course Profile'))),
+			 form([action('process_profile'), target('target_iframe')],
+                          [select([name('file_name')], List),
+                           hr([]),
+                           h2('Evaluate:'),
+                           \(con_text:radio_box_input_two(
+					  'characteristic',
+					  ['power spectral density (PSD)', 'psd'],
+					  ['micro profile', 'profile']
+							 )),
+                           hr([]),
+                           h2('Scaling:'),
+                           \(con_text:radio_box_input_two(
+					  'plot_scaling',
+					  ['log (best for PSD)', 'log'],
+					  ['linear (best for profile)', 'lin'])),
+                           hr([]),
+                           input([type('submit'), value('Plot characteristic')])
+                          ]),
+			 \(render_iframe(render) )
+
+			]
+					   )
+	 )
+       ]
+		  ).
+
 
 % Monte carlo generated from semiMarkov
 
@@ -183,7 +221,7 @@ process_profile(Request) :-
 
                     \(con_text:button_link('Display Map',
 					   '/context_map/navigate',
-					   target_iframe,
+					   render,
 					   [[lat, Lat],
 					    [lon, Lon],
 					    [title, U]

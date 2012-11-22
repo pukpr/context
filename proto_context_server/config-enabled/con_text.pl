@@ -267,34 +267,6 @@ button_link(Name, Action, Target, Contents) -->
         ).
 
 
-ref_('/context_select/navigate?category=fine_terrain',  target_iframe, '/html/static_pages/gems/fine_terrain.png').
-ref_('/context_select/navigate?category=gross_terrain', target_iframe, '/html/static_pages/gems/gross_terrain.png').
-ref_('/context_select/navigate?category=wave',          target_iframe, '/html/static_pages/gems/wave_statistics.png').
-ref_('/context_select/navigate?category=wind',          target_iframe, '/html/static_pages/gems/wind_statistics.png').
-ref_('/context_select/navigate?category=clutter',       target_iframe, '/html/static_pages/gems/clutter_modeling.png').
-ref_('/context_select/navigate?category=lakes',         target_iframe, '/html/static_pages/gems/lake_sizes.png').
-ref_('/context_select/navigate?category=particles',     target_iframe, '/html/static_pages/gems/particle_sizes.png').
-ref_('/context_select/navigate?category=thermal',       target_iframe, '/html/static_pages/gems/thermal_dispersion.png').
-ref_('/context_select/navigate?category=rainfall',      target_iframe, '/html/static_pages/gems/rain_statistics.png').
-ref_('/context_select/navigate?category=corrosion',     target_iframe, '/html/static_pages/gems/corrosion_oxidation.png').
-ref_('/app',                                            target_iframe, '/html/static_pages/gems/').
-ref_('/context_require/navigate',                       target_iframe, '/html/images/requirements_flow.gif').
-ref_('/context_ref/navigate',                           target_iframe, '/html/citations.html').
-ref_('/context_map/search',                             target_iframe, '/html/map.html').
-ref_('/context_resources/navigate',                     target_iframe, '/html/resources.html').
-ref_('/context_workflow/workflows',                     target_iframe, '/html/workflow.html').
-ref_('/context_search/search',                          target_iframe, '/html/search.html').
-ref_('/context_climate_AR7038/navigate',                target_iframe, '/html/images/climateconditions.gif').
-
-ref_('/context_browse/browse',                          target_iframe, '/html/browse.html').
-ref_('/context_browse/browse?term=requirements',        target_iframe, '/html/browse.html#requirements').
-
-ref_(URL, target_iframe, Page) :-
-    atom_concat('/context_browse/browse?term=', Term, URL),
-    atom_concat('/html/browse.html#', Term, Page), !.
-
-ref_(_, IName, Page) :-
-    atomic_list_concat(['/html/',IName,'.html'], Page).
 
 table_with_iframe_target(Request, Left_Content) -->
     {

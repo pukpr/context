@@ -60,6 +60,7 @@ cliopatria:menu_item(query/'/context_ont_utils/find_ent_subjects', 'Subjects').
 cliopatria:menu_item(query/'/context_ont_utils/find_ent_predicates', 'Predicates').
 cliopatria:menu_item(query/'/context_ont_utils/find_ent_objects', 'Objects').
 cliopatria:menu_item(query/'/context_file_reading/crawl', 'Models').
+cliopatria:menu_item(query/'/terms#', 'Terminology').
 
 
 

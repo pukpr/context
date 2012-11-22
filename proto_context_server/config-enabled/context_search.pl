@@ -29,7 +29,8 @@ my_search_filter(Request) :-
 
 search(Request) :-
    findall(Name, find_requirement_topics(Name), Names),
-   findall(Character, find_characteristics(Character), Characteristics),  % use setof instead
+   findall(Character, find_characteristics(Character), Chs),  % use setof instead
+   sort(Chs, Characteristics),
    reply_html_page(cliopatria(default),
                    [title('Search Context')],
       [

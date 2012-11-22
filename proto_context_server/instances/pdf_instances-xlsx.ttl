@@ -90,6 +90,44 @@ ent:Michigan_waves a rdfs:Resource ;
 	ent:min_extent "0.0010"^^xsd:double ;
 	ent:max_extent "20.0"^^xsd:double .
 
+ent:Superior_waves a rdfs:Resource ;
+	ent:model "Superior_waves" ;
+	ent:locale ent:LakeSuperior ;
+	ent:characteristic "waveHeight" ;
+	ent:title "Wave height Distribution" ;
+	ent:x_axis "m" ;
+	ent:pdf "1.0*bessel_seastate(0,0.5,13.0,Dist)" ;
+	ent:moments "[mean, depth]" ;
+	ent:interval "1.1"^^xsd:double ;
+	ent:min_extent "0.0010"^^xsd:double ;
+	ent:max_extent "20.0"^^xsd:double .
+
+ent:Atlantic_seaboard_waves a rdfs:Resource ;
+	ent:model "Atlantic_seaboard_waves" ;
+	ent:locale ent:Atlantic ;
+	ent:characteristic "waveHeight" ;
+	ent:title "Wave height Distribution" ;
+	ent:x_axis "m" ;
+	ent:pdf "1.0*bessel_seastate(0,0.5,19.0,Dist)" ;
+	ent:moments "[mean, depth]" ;
+	ent:interval "1.1"^^xsd:double ;
+	ent:min_extent "0.0010"^^xsd:double ;
+	ent:max_extent "20.0"^^xsd:double .
+
+ent:San_Diego_waves a rdfs:Resource ;
+	ent:model "San_Diego_waves" ;
+	ent:locale ent:PointLomaSouth ;
+	ent:locale ent:SanNicolasIslandNorth ;
+	ent:characteristic "waveFrequency" ;
+	ent:title "Wave frequency Distribution" ;
+	ent:x_axis "hz" ;
+	ent:pdf "1.0*pierson_moskowitz(0.1,Dist)" ;
+	ent:moments "[mean]" ;
+	ent:interval "1.01"^^xsd:double ;
+	ent:min_extent "0.050"^^xsd:double ;
+	ent:max_extent "0.6"^^xsd:double .
+
+
 ent:particles a rdfs:Resource ;
 	ent:model "particles" ;
 	ent:locale ent:volcano ;
@@ -101,6 +139,31 @@ ent:particles a rdfs:Resource ;
 	ent:interval "1.1"^^xsd:double ;
 	ent:min_extent "0.0010"^^xsd:double ;
 	ent:max_extent "10.0"^^xsd:double .
+
+ent:rain_drops a rdfs:Resource ;
+	ent:model "rain_drops_standard" ;
+	ent:locale ent:CONUS ;
+	ent:characteristic "particleSizes" ;
+	ent:title "water droplet size distribution" ;
+	ent:x_axis "mm" ;
+	ent:pdf "[0.5*exp(3.0,Dist), 0.5*exp(0.1,Dist)]" ;
+	ent:moments "[[mean], [mean]]" ;
+	ent:interval "1.1"^^xsd:double ;
+	ent:min_extent "0.0010"^^xsd:double ;
+	ent:max_extent "10.0"^^xsd:double .
+
+ent:lightning_rate a rdfs:Resource ;
+	ent:model "lightning_rate" ;
+	ent:locale ent:CONUS ;
+	ent:characteristic "rateNumber" ;
+	ent:title "lightning rate distribution" ;
+	ent:x_axis "num/min" ;
+	ent:pdf "1.0*diffusion_accel(16,5.5,Dist)" ;
+	ent:moments "[[diff], [accel]]" ;
+	ent:interval "1.1"^^xsd:double ;
+	ent:min_extent "0.10"^^xsd:double ;
+	ent:max_extent "100.0"^^xsd:double .
+
 
 _:node178edpcmsx1 a ent:pattern ;
 	ent:moment_name "1" ;

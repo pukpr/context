@@ -21,6 +21,11 @@ ent:LakeMichigan a rdfs:Resource ;
 	ent:lon "-87.0"^^xsd:double ;
 	ent:lat "43.0"^^xsd:double.
 
+ent:LakeSuperior  a rdfs:Resource ;
+        ent:title "Lake Superior" ;
+	ent:lon "-90.0"^^xsd:double ;
+	ent:lat "49.0"^^xsd:double.
+
 ent:volcano a rdfs:Resource ;
         ent:title "A Volcanic area";
 	ent:lat "63.0"^^xsd:double ;
@@ -80,3 +85,13 @@ ent:AlicanteSpain a rdfs:Resource ;
         ent:title "Alicante, Spain";
 	ent:lat "38.35"^^xsd:double ;
 	ent:lon "-0.48"^^xsd:double.
+
+ent:PointLomaSouth a rdfs:Resource ;
+        ent:title "Point Loma South";
+	ent:lat "32.67"^^xsd:double ;
+	ent:lon "-117.2419"^^xsd:double.
+
+ent:SanNicolasIslandNorth a rdfs:Resource ;
+        ent:title "San Nicolas Island North";
+	ent:lat "32.25"^^xsd:double ;
+	ent:lon "-119.5"^^xsd:double.

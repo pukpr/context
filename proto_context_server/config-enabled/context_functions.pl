@@ -11,8 +11,10 @@
                               besselk0/4,
                               besselk0_sqrt/4,
                               bessel_seastate/6,
-
+			      diffusion_accel/5,
                               corrected_bessel/4,
+			      pierson_moskowitz/4,
+			      % utility
                               exp/3
                               ]).
 
@@ -95,7 +97,7 @@ exp(Mean, symbolic, X, Y) :-
 
 power_law_2(Median, pdf, X, Y) :-
    nonvar(X),
-   Y = 1.0/Median/(1.0+(X/Median)^2).
+   Y = 1.0/Median/(1.0+(X/Median)^2).  % This is symbolic but ends up being evaluated correctly
 
 power_law_2(Median, cdf, X, Y) :-
    nonvar(X),
@@ -151,6 +153,41 @@ besselk0_sqrt(Mean, sample, X, Sample) :-
     random(R1),
     random(R2),
     Sample is Mean * log(R1) * log(R2).
+
+% Diffusion Acceleration
+%
+diffusion_accel(Diff, Accel, pdf, X, Y) :-
+    nonvar(X),  % $C$1/(1+$C$2*SQRT($B4)+$C$3*$B4^2)
+    Y is 1.0/(1+Diff*sqrt(X)+Accel*(X^2)).
+
+diffusion_accel(Diff, Accel, cdf, X, Y) :-
+    nonvar(X),  % -(D/(2 sqrt(X))+2 A X)/(1+D sqrt(X)+A X^2)^2
+    Y is Diff/(2*sqrt(X)+2*Accel*X)/((1+Diff*sqrt(X)+Accel*(X^2)))^2.
+
+diffusion_accel(Diff, Accel, sample, X, Sample) :-
+    var(X),
+    random(R1),
+    random(R2),
+    Sample is R1*Diff + R2*Accel.  % Not done -----------------------------------
+
+
+
+% pierson_moskowitz
+
+pierson_moskowitz(Mean, pdf, X, Y) :-
+    nonvar(X),  % 1/f^5*exp(-c/f^4)
+    Y is 4.0*((Mean/X)^5)/Mean*exp(-((Mean/X)^4)).
+
+pierson_moskowitz(Mean, cdf, X, Y) :-
+    nonvar(X),  %
+    Y is 1-exp(-Mean/(X^4)).
+
+pierson_moskowitz(Mean, sample, X, Sample) :-
+    var(X),
+    random(R),
+    Sample is (-Mean/log(R))^0.25.
+
+
 
 % ---------------------------------------------------------------------------------
 %
