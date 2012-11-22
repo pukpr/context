@@ -13,12 +13,12 @@ ent:CONUS a rdfs:Resource ;
 
 ent:Iowa a rdfs:Resource ;
         ent:title "Iowa state";
-	ent:lon "-91.0"^^xsd:double ;
-	ent:lat "41.0"^^xsd:double.
+	ent:lon "-91.5480"^^xsd:double ;
+	ent:lat "41.6580"^^xsd:double.
 
 ent:LakeMichigan a rdfs:Resource ;
         ent:title "Lake Michigan";
-	ent:lon "-85.0"^^xsd:double ;
+	ent:lon "-87.0"^^xsd:double ;
 	ent:lat "43.0"^^xsd:double.
 
 ent:volcano a rdfs:Resource ;
@@ -39,7 +39,7 @@ ent:Canada a rdfs:Resource ;
 ent:Atlantic a rdfs:Resource ;
         ent:title "Atlantic area";
 	ent:lon "-75.0"^^xsd:double ;
-	ent:lat "33.0"^^xsd:double.
+	ent:lat "35.0"^^xsd:double.
 
 ent:Baltimore a rdfs:Resource ;
         ent:title "Baltimore area";
@@ -56,3 +56,27 @@ ent:world a rdfs:Resource ;
 	ent:lat "0.0"^^xsd:double ;
 	ent:lon "0.0"^^xsd:double.
 
+ent:ElEscorialSpain a rdfs:Resource ;
+        ent:title "El Escorial, Spain";
+	ent:lat "40.589"^^xsd:double ;
+	ent:lon "-4.1480"^^xsd:double.
+
+ent:MadridSpain a rdfs:Resource ;
+        ent:title "Madrid, Spain";
+	ent:lat "40.4"^^xsd:double ;
+	ent:lon "-3.6833"^^xsd:double.
+
+ent:BilbaoSpain a rdfs:Resource ;
+        ent:title "Bilbao, Spain";
+	ent:lat "43.25"^^xsd:double ;
+	ent:lon "-2.9667"^^xsd:double.
+
+ent:BarcelonaSpain a rdfs:Resource ;
+        ent:title "Barcelona, Spain";
+	ent:lat "41.3857"^^xsd:double ;
+	ent:lon "2.1699"^^xsd:double.
+
+ent:AlicanteSpain a rdfs:Resource ;
+        ent:title "Alicante, Spain";
+	ent:lat "38.35"^^xsd:double ;
+	ent:lon "-0.48"^^xsd:double.

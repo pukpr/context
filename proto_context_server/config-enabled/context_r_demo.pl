@@ -16,7 +16,6 @@
 % Note that [with(non_interactive)] is required for Linux but not Windows
 
 :- context:register(context_r_demo:r_app).
-:- context:register(context_r_demo:complex_psd).
 
 % :- http_handler(root(r_app), rcplx, []).
 % :- U = 'complex_psd', http_handler(root(U), U, []).
@@ -241,62 +240,6 @@ r_app(_) :-
                      img(src(FN))
                    ]).
 
-delayed_exponent(L, Alpha, S, R) :-
-    Theta is -L*S,
-    Num isx 1.0*exp(i*Theta),
-    R isx Num / (Alpha & S).
-
-two_level_model(L1, Alpha1, L2, Alpha2, S, R) :-
-    delayed_exponent(L1, Alpha1, S, P),
-    delayed_exponent(L2, Alpha2, S, Q),
-    One isx 1.0 & 0.0,
-    K   isx S   & 0.0,
-    R & _ isx (One-P)*(One-Q)/(One-P*Q)/K^2.
-
-two_level_spectrum(_, _, _, _, S, Result, Result) :-
-    S < 0.01.
-two_level_spectrum(L1, Alpha1, L2, Alpha2, S, L, Result) :-
-    two_level_model(L1, Alpha1, L2, Alpha2, S, R),
-    S1 is 0.95*S,
-    % LogR is log(R),
-    LogR is R,
-    two_level_spectrum(L1, Alpha1, L2, Alpha2, S1, [LogR|L], Result).
-
-builtin_complex(Length, Scale, F, Result) :-
-    S is 100.0,
-    Alpha1 is 1.0,
-    L1 = Length,
-    Alpha2 is 1.0,
-    L2 = Length,
-    frequencies(S, Scale, [], F),
-    two_level_spectrum(L1, Alpha1, L2, Alpha2, S, [], Result).
-
-
-construct_psd([], [], Out, Out).
-construct_psd([F|FR], [R|RR], In, Out) :-
-    atomic_list_concat([In, '+ "', F, ',', R, '\\n"'], Next),
-    construct_psd(FR, RR, Next, Out).
-
-complex_psd(Request) :-
-    http_parameters(Request, [length(Value, [float])]),
-    builtin_complex(Value, log, F, Result),
-    construct_psd(F, Result, '"S, Intensity\\n"', Out),
-    reply_html_page(% cliopatria(default),
-                   [title('PSD'),
-                    \(con_text:style_cliopatria)
-                    % \(context_graphing:dygraph_script_load)
-                   ],
-                   [
-                     \(context_graphing:dygraph_plot( true,
-                                                      '',
-                                                      'log of wave number',
-                                                      'PSD',
-                                                      'Constructed PSD from two-level',
-                                                      Out ))
-                   ]).
-
-test_complex_math(A,B) :-
-   A&B isx ((1&1) + (1&1))/((1&1) + (1&1)).
 
 
 

@@ -11,6 +11,7 @@
 :- context:register(context_demos:gross_terrain).
 :- context:register(context_demos:dygraph_test).
 :- context:register(context_demos:get_elevation).
+:- context:register(context_demos:complex_psd).
 
 :- use_module(context_math).
 
@@ -53,7 +54,7 @@ navigate(_) :-
                  ),
                li(a([href('/context_r_demo/r_app'), target(target_iframe)],
                     'Use R to generate a PSD')),
-               li(a([href('/context_r_demo/complex_psd?length=1.0'), target(target_iframe)],
+               li(a([href('complex_psd?length=1.0'), target(target_iframe)],
                     'Built-in PSD')),
                li(a([href('/context_psd/complex_psd?course=corrugations'),target(target_iframe)],
                     'PSD lookup')),
@@ -394,7 +395,7 @@ reference_link(Name, Dest, Link) :-
    % reference_server(Server),
    % reference_dir(Dir),
    reference_name(Name, File),
-   format(atom(Link), '/ref/~s#nameddest=~s', [File,Dest]).
+   format(atom(Link), '/ref/foundation/~s#nameddest=~s', [File,Dest]).
 
 % %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 % %%%%%% Domain rules with respect to the data store %%%%%%%
@@ -446,6 +447,73 @@ sample_alg_example(_) :-
                    [ h1('Models'),
                      h2(a(href(NamedDest), 'Example Derivation')) ]).
 
+% -----------------------------------------
+:- use_module(context_complex).
 
+
+frequencies(S, _, Result, Result) :-
+    S < 0.01.
+frequencies(S, linear, L, Result) :-
+    S1 is 0.95*S,
+    frequencies(S1, linear, [S|L], Result).
+frequencies(S, log, L, Result) :-
+    S1 is 0.95*S,
+    LogS is log(S1),
+    frequencies(S1, log, [LogS|L], Result).
+
+
+delayed_exponent(L, Alpha, S, R) :-
+    Theta is -L*S,
+    Num isx 1.0*exp(i*Theta),
+    R isx Num / (Alpha & S).
+
+two_level_model(L1, Alpha1, L2, Alpha2, S, R) :-
+    delayed_exponent(L1, Alpha1, S, P),
+    delayed_exponent(L2, Alpha2, S, Q),
+    One isx 1.0 & 0.0,
+    K   isx S   & 0.0,
+    R & _ isx (One-P)*(One-Q)/(One-P*Q)/K^2.
+
+two_level_spectrum(_, _, _, _, S, Result, Result) :-
+    S < 0.01.
+two_level_spectrum(L1, Alpha1, L2, Alpha2, S, L, Result) :-
+    two_level_model(L1, Alpha1, L2, Alpha2, S, R),
+    S1 is 0.95*S,
+    % LogR is log(R),
+    LogR is R,
+    two_level_spectrum(L1, Alpha1, L2, Alpha2, S1, [LogR|L], Result).
+
+builtin_complex(Length, Scale, F, Result) :-
+    S is 100.0,
+    Alpha1 is 1.0,
+    L1 = Length,
+    Alpha2 is 1.0,
+    L2 = Length,
+    frequencies(S, Scale, [], F),
+    two_level_spectrum(L1, Alpha1, L2, Alpha2, S, [], Result).
+
+
+construct_psd([], [], Out, Out).
+construct_psd([F|FR], [R|RR], In, Out) :-
+    atomic_list_concat([In, '+ "', F, ',', R, '\\n"'], Next),
+    construct_psd(FR, RR, Next, Out).
+
+complex_psd(Request) :-
+    http_parameters(Request, [length(Value, [float])]),
+    builtin_complex(Value, log, F, Result),
+    construct_psd(F, Result, '"S, Intensity\\n"', Out),
+    reply_html_page(% cliopatria(default),
+                   [title('PSD'),
+                    \(con_text:style_cliopatria)
+                    % \(context_graphing:dygraph_script_load)
+                   ],
+                   [
+                     \(context_graphing:dygraph_plot( true,
+                                                      '',
+                                                      'log of wave number',
+                                                      'PSD',
+                                                      'Constructed PSD from two-level',
+                                                      Out ))
+                   ]).
 
 

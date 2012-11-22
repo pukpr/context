@@ -262,8 +262,9 @@ convert([F|L], To, Output) :-
 check_lengths(From, To) :-
     findall(K1,sub_term(K1,From), F),
     findall(K2,sub_term(K2,To), T),
-    length(F, N),
-    length(T, N).
+    same_length(F,T).
+    % length(F, N),
+    % length(T, N).
 check_lengths(_, _) :-
     print(user_error, 'expressions must have same number of unit terms'),
     fail.

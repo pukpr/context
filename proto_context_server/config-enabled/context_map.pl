@@ -35,11 +35,16 @@ navigate_locale(Request) :-
    Action = 'Map',
    rdfR(Locale, ent:lat, Lat),
    rdfR(Locale, ent:lon, Lon),
-   print(user_error, [Lat, Lon, Locale]),
+   (
+      rdfS(Locale, ent:title, Title)
+   ;
+      Title = Locale
+   ),
+   % print(user_error, [Lat, Lon, Locale]),
    reply_html_page(
 	    [title('Map Home')],
 	    [
-	     \(context_graphing:map_native(Lat, Lon, Locale))
+	     \(context_graphing:map_native(Lat, Lon, Title))
 	    ]
                   ).
 
@@ -67,7 +72,9 @@ search(Request) :-
     setof(Loc, Loc ^ find_locs(Loc), List),
     reply_html_page(
         cliopatria(default),
-        [title('Map Search')],
+        [title('Map Search'),
+	 script([type('text/javascript'),src('/html/js/submit.js')], [])
+	],
         [
          \(con_text:table_with_iframe_target(
                Request,
@@ -77,8 +84,10 @@ search(Request) :-
 			  form([action('navigate_locale'), target(target_iframe)],
 			       [
 				select([name('locale')], List),
-				input([type('submit'), name('action'), value('Map')]),
-				input([type('submit'), name('action'), value('Available')])
+				input([type('submit'), name('action'), value('Map'),
+				       onclick('subm(this.form,"target_iframe");')]),
+				input([type('submit'), name('action'), value('Available'),
+				       onclick('subm(this.form,"render");')])
 			       ]
 			      )
 			 ]

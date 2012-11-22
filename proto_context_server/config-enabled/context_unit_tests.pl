@@ -228,7 +228,8 @@ test(complex_math) :-
     2.0&0.0 isx (2&2) / (1&1),
     [1&0.0, 1&0.0, 2&0.0] mapx [1,1,2],  % list constructor for complex numbers
     0&0 isx 10&10 - 10&10,
-    10&20 isx 5 &* 2&4.
+    10&20 isx 5 &* 2&4,
+    1.0&0.0 isx ((1&1) + (1&1))/((1&1) + (1&1)).
 
 test(water_density) :-
     Input = '20*c',

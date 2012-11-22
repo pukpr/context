@@ -15,12 +15,16 @@ list_climate_design_types(Target) -->
         form([action(plot), target(Target)],
 			 [
 			  select([name('climate_type')], Selects),
+			  %  br([]),
+			  % \(con_text:radio_box_input_two( 'storage', ['environment', 1], ['storage', 0])),
 			  br([]),
 			  \(con_text:radio_toggles(
 					 'evaluate',
 					 [['temperature', 'ent:hourly_temperature'],
 					 ['humidity', 'ent:hourly_relative_humidity'],
-					 ['solar', 'ent:solar_radiation']
+					 ['solar', 'ent:solar_radiation'],
+					 ['storage temperature', 'ent:storage_temperature'],
+					 ['storage humidity', 'ent:storage_humidity']
                                          ])),
 
                           input([type('submit'), name(kind), value('Discrete')]),
@@ -175,6 +179,8 @@ rdf_(ent:ar7038_spec, ent:condition_type, ent:storageTransit).
 
 rdf_(ent:hourly_temperature, ent:unit, ent:f).
 rdf_(ent:hourly_relative_humidity, ent:unit, ent:percent).
+rdf_(ent:storage_temperature, ent:unit, ent:f).
+rdf_(ent:storage_humidity, ent:unit, ent:percent).
 rdf_(ent:solar_radiation, ent:unit, ent:w_m2).
 
 % Temperature units
@@ -332,8 +338,7 @@ rdf_(ent:basicCold,  ent:elevation, [0,0,0,0] ).
 rdf_(ent:basicCold,  ent:storage_temperature, [-27.0, -28.0, -28.0, -28.0, -28.0, -28.0, -27.0, -27.0,
                                       -26.0, -24.0, -22.0, -19.0, -17.0, -15.0, -13.0, -15.0,
                                       -18.0, -20.0, -22.0, -24.0, -26.0, -27.0, -27.0, -27.0]).
-rdf_(ent:basicCold,  ent:storage_humidity,  List) :-
-    List mapdot 0.0 .* [1,24].
+rdf_(ent:basicCold,  ent:storage_humidity,  Values) :- List range [1,24]/1, Values mapdot 0.0 ~> List.
 
 % --------           cold
 
@@ -350,7 +355,7 @@ rdf_(ent:cold,  ent:elevation, [0,0,0,0] ).
 rdf_(ent:cold,  ent:storage_temperature, List) :-
     rdf_(ent:basicCold,  ent:storage_temperature, List).
 rdf_(ent:cold,  ent:storage_humidity,  List) :-
-    rdf_(ent:basicCold,  ent:storage_temperature, List).
+    rdf_(ent:basicCold,  ent:storage_humidity, List).
 
 
 % --------       severeCold
@@ -368,7 +373,7 @@ rdf_(ent:severeCold,  ent:elevation, [0,0,0,0] ).
 rdf_(ent:severeCold,  ent:storage_temperature, List) :-
     rdf_(ent:basicCold,  ent:storage_temperature, List).
 rdf_(ent:severeCold,  ent:storage_humidity, List) :-
-    rdf_(ent:basicCold,  ent:storage_temperature, List).
+    rdf_(ent:basicCold,  ent:storage_humidity, List).
 
 
 
