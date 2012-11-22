@@ -316,9 +316,3 @@ getElevation = function(Lat, Lon) {
     }
  )
 }
-
-
-
-
-
-
