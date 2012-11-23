@@ -29,6 +29,7 @@
                      <instances/lightning_indirect_effects.ttl>,
                      <instances/corrosion_iso_12944-2__iso_14713.ttl>,
                      <instances/surface_friction-xlsx.ttl>,
+                     <instances/river_flow.ttl>,
                      <terms/defs.ttl>,
                      <terms/swore.rdf>,
                      <terms/biblio.ttl>,
@@ -130,6 +131,11 @@
         a lib:Schema ;
         a lib:CloudNode ;
 	dc:title "Average coefficients of friction of various roadway surfaces.".
+
+<instances/river_flow.ttl>
+        a lib:Schema ;
+        a lib:CloudNode ;
+	dc:title "Flow rates for various USA rivers.".
 
 <terms/defs.ttl>
         a lib:Schema ;

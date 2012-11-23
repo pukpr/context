@@ -37,6 +37,7 @@ x	coefficient of friction to RDF and Corrosion Table, needs units
 	EMI links for Rockwell
 	Cloud has land plus ocean.
 	Have to fix the slopes so it actually reflects the USA
+	convert rdf_ to entailments
 
 
 

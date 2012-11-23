@@ -10,8 +10,9 @@
 
 % http://waterdata.usgs.gov/nwis/dv?referred_module=sw&site_no=01100000
 collect_names_options(List) :-
-    findall(option([value(Name)],[Name]),
-            (   rdf_(Name, ent:river, _Data)
+    findall(option([value(ID)],[Name]),
+            (   rdf(ID, ent:river, _Data),
+	        rdf(ID, ent:title, Name)
             ),
             List).
 
@@ -64,13 +65,16 @@ power_raise(X, Y) :-
 
 log_factor(0.1).
 
+
+
 plot(Request) :-
     http_parameters(Request, [kind(log, []),
 			      cross_section(CrossSection, [number]),
                               a_units(AUnits, []),
                               rivers(River, [])]),
 
-    rdf_(River, ent:river, Flow_Data), % ft^3/s
+    rdfL(River, ent:river, Flow_Data), % ft^3/s
+    get_location(River, Lat, Lon, Title),
     atom_to_term(AUnits, A, []),
     log_factor(Fraction),
     length(Flow_Data, L),
@@ -87,7 +91,15 @@ plot(Request) :-
                     [
 		     \(context_graphing:dygraph_native(log, [X, Y],
 						       [X,XUnits], [Y, YUnits],
-						       'Margin for flow', Data))
+						       'Margin for flow', Data)),
+		     \(con_text:button_link('Display Map',
+					   '/context_map/navigate',
+					   render,
+					   [[lat, Lat],
+					    [lon, Lon],
+					    [title, Title]
+					   ]))
+
                     ]
 		  ).
 
@@ -97,7 +109,8 @@ plot(Request) :-
                               a_units(AUnits, []),
                               rivers(River, [])]),
 
-    rdf_(River, ent:river, Flow_Data), % ft^3/s
+    rdfL(River, ent:river, Flow_Data), % ft^3/s
+    get_location(River, Lat, Lon, Title),
     atom_to_term(AUnits, A, []),
     log_factor(Fraction),
     length(Flow_Data, L),
@@ -119,7 +132,14 @@ plot(Request) :-
                     [
 		     \(context_graphing:dygraph_native(log, [X, Y],
 						       [X,XUnits], [Y, YUnits],
-						       'PDF Margin for flow', Data))
+						       'PDF Margin for flow', Data)),
+		     \(con_text:button_link('Display Map',
+					   '/context_map/navigate',
+					   render,
+					   [[lat, Lat],
+					    [lon, Lon],
+					    [title, Title]
+					   ]))
                     ]
 		  ).
 

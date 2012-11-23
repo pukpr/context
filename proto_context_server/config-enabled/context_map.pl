@@ -1,4 +1,4 @@
-:- module(context_map, []).
+:- module(context_map, [get_location/4]).
 
 /** <module> Context model map display
     * Uses marker to center locale
@@ -10,6 +10,24 @@
 :- context:register(context_map:navigate).
 :- context:register(context_map:search).
 :- context:register(context_map:navigate_locale).
+
+minutes_to_degrees((Deg,Min,Sec), Degrees) :-
+     (	 Deg < 0.0 ->
+         Degrees is Deg - Min/60 - Sec/3600
+     ;
+        Degrees is Deg + Min/60 + Sec/3600
+     ).
+
+get_location(URI, Lat, Lon, Title) :-
+    rdfR(URI, ent:lat, Lat),
+    rdfR(URI, ent:lon, Lon),
+    rdfS(URI, ent:title, Title), !.
+get_location(URI, Lat, Lon, Title) :-
+    rdfL(URI, ent:lat, Lat0), minutes_to_degrees(Lat0, Lat),
+    rdfL(URI, ent:lon, Lon0), minutes_to_degrees(Lon0, Lon),
+    rdfS(URI, ent:title, Title), !.
+get_location(URI, 0.0, 0.0, Title) :-
+    rdfS(URI, ent:title, Title).
 
 
 navigate(Request) :-
@@ -33,6 +51,8 @@ navigate_locale(Request) :-
 			     action(Action, [])
 			    ]),
    Action = 'Map',
+   get_location(Locale, Lat, Lon, Title),
+/*
    rdfR(Locale, ent:lat, Lat),
    rdfR(Locale, ent:lon, Lon),
    (
@@ -40,6 +60,7 @@ navigate_locale(Request) :-
    ;
       Title = Locale
    ),
+*/
    % print(user_error, [Lat, Lon, Locale]),
    reply_html_page(
 	    [title('Map Home')],
