@@ -26,13 +26,13 @@ get_all_sections(List) :-
     findall(option([value(Name)],[Name]), rdf_data(Name), RawList),
     sort(RawList, List).
 
-navigate(_) :-
+navigate(Request) :-
    get_all_sections(List),
    reply_html_page(
      cliopatria(default),
      [title('Topographic data sets')],
      [\(con_text:table_with_iframe_target(
-		    target_iframe,
+		    Request,
 		     [h1('Available topographic sets'),
                       b(['Select 1', sup(small(o)), ' digital elevation model section of USA']),
                       \(con_text:two_columns(
@@ -61,7 +61,6 @@ navigate(_) :-
                                        )
                                             )
                        ),
-                      p('Marginal probabilities shown on a log scale indicating likelihood of an elevation change given a surface translation'),
                       br([]),
 		      \(con_text:render_iframe(render))
                      ]

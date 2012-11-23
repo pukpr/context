@@ -9,13 +9,13 @@
 :- context:register(context_clutter:navigate).
 :- context:register(context_clutter:plot).
 
-navigate(_Request) :-
+navigate(Request) :-
    collect_unit_options(ent:time, Tunits),
 
    reply_html_page(cliopatria(default),
                    [title('Clutter model')],
                    [\(con_text:table_with_iframe_target(
-                                    target_iframe,
+                                    Request,
 		     [
                       h1('Time to cold-start with clutter'),
                       p('In noisy environment noise is integrated'),

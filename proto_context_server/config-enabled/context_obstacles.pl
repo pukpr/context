@@ -18,17 +18,17 @@ rdf_data(ID, Name) :-
 get_all_obstacle_sets(List) :-
     findall(option([value(ID)],[Name]), rdf_data(ID, Name), List).
 
-navigate(_) :-
+navigate(Request) :-
    get_all_obstacle_sets(List),
    reply_html_page(
        cliopatria(default),
      [title('Obstacle data sets')],
      [
-      table([border=0, width('100%'), height('600')],
-	    [tr([td([width('45%'), height('100%'), valign(top)],
+      \(con_text:table_with_iframe_target(
+                                    Request,
 		    [h1('Select obstacle for evaluation'),
                       b('Available obstacle profile sets'),
-		     form([action('read_rdf_data'), target('results')],
+		     form([action('read_rdf_data'), target('target_iframe')],
 			 [
 			  select([name('data_set')], List),
 			  br([]),
@@ -41,26 +41,15 @@ navigate(_) :-
 			 ]),
 		     p(['Obstacle profiles are either single or doubly tracked. Double tracks are shown as alternating colors.']),
 		     br([]),
-		     iframe([name(render),
-			     width('100%'),
-			     height('400')
-			    ],
-			    [])
+		     br([]),
+		     br([]),
+		     \(con_text:render_iframe(render))
 		    ]
-		   ),
-		 td([iframe([name(results),
-			     width('100%'),
-			     height('100%')
-			    ],
-			    [])]
 		   )
+       )
 		]
-	       )
-	    ]
-	   )
+	       ).
 
-      ]
-     ).
 
 read_rdf(URI, UX, UY, [DataX, DataY, DataZ], 'X,Z1,Z2') :-
     rdfS(URI, ent:units_x, UX),

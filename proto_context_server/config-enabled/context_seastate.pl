@@ -8,13 +8,13 @@
 :- context:register(context_seastate:plot).
 :- context:register(context_seastate:seastate_table).
 
-navigate(_Request) :-
+navigate(Request) :-
    collect_unit_options(ent:length, Lunits),
 
    reply_html_page(cliopatria(default),
                    [title('Seastate Probabilities')],
                    [\(con_text:table_with_iframe_target(
-                                    target_iframe,
+                                    Request,
 		     [
                       h1('Seastate as Significant Wave Height'),
                       p('Likelihood of specific sea state depends on region'),

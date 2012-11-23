@@ -1,4 +1,14 @@
-body {background-color:white;}
+body {
+  background-color:ghostwhite;
+  /*
+  border-style: groove;
+  border-color: navyblue;
+  */
+  background-image: url('/html/images/information.gif');
+  background-repeat:no-repeat;
+  margin-left: 30pt;
+  margin-top: 20pt;
+}
 p {font-family:arial;
    color:slategray;
    font-size:18px;}

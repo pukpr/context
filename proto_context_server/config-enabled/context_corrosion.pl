@@ -23,14 +23,14 @@ collect_unit_options(Functor, List) :-
 
 
 
-navigate(_Request) :-
+navigate(Request) :-
    collect_unit_options(ent:length, Lunits),
    collect_unit_options(ent:time, Tunits),
 
    reply_html_page(cliopatria(default),
                    [title('Corrosive Atmosphere')],
                    [\(con_text:table_with_iframe_target(
-                                    target_iframe,
+                                    Request,
 		     [
                       h1('Corrosive Atmosphere Models'),
                       p('Mild steel in selected environments'),

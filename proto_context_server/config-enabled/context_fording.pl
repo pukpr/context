@@ -16,14 +16,14 @@ collect_names_options(List) :-
             ),
             List).
 
-navigate(_Request) :-
+navigate(Request) :-
    collect_unit_options(ent:area, Lunits),
    collect_names_options(Rivers),
 
    reply_html_page(cliopatria(default),
                    [title('Fording models')],
                    [\(con_text:table_with_iframe_target(
-                                    target_iframe,
+                                    Request,
 		     [
                       h1('Fording model'),
                       p(['A body of water has a statistical size and flow. ',

@@ -11,12 +11,12 @@
 
 % /ref/cable_EMI_susceptibility.pdf#nameddest=CS_BCI
 
-navigate(_Request) :-
+navigate(Request) :-
 
    reply_html_page(cliopatria(default),
                    [title('general EMI models')],
                    [\(con_text:table_with_iframe_target(
-                                    target_iframe,
+                                    Request,
 		     [
                       h1('Links to EMI models'),
                       p('Linked specifications provided for EMI models'),

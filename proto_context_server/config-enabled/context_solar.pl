@@ -33,12 +33,12 @@ list_solar_models(Target) -->
         ).
 
 
-navigate(_Request) :-
+navigate(Request) :-
    % rdf_(ent:ar7038_spec, ent:description, Description),
    reply_html_page(cliopatria(default),
                    [title('Solar Insolation')],
                    [\(con_text:table_with_iframe_target(
-                                    target_iframe,
+                                    Request,
 		     [
                       h1('Solar radiation specifications'),
                       % p(Description),

@@ -89,7 +89,7 @@ chart(_Request) :-
 
 
 
-navigate(_Request) :-
+navigate(Request) :-
    collect_unit_options(ent:mass, Munits),
    collect_unit_options(ent:volume, Vunits),
    collect_unit_options(ent:temperature, Tunits),
@@ -97,7 +97,7 @@ navigate(_Request) :-
    reply_html_page(cliopatria(default),
                    [title('Buoyancy calculation')],
                    [\(con_text:table_with_iframe_target(
-                                    target_iframe,
+                                    Request,
 		     [
                       h1('Buoyancy calculation'),
                       p('Compare immersed volume and mass to water density'),

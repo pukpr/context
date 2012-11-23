@@ -10,13 +10,13 @@
 :- context:register(context_lightning:plot).
 :- context:register(context_lightning:lightning_indirect_effects_table).
 
-navigate(_Request) :-
+navigate(Request) :-
    collect_unit_options(ent:time, Tunits),
 
    reply_html_page(cliopatria(default),
                    [title('Lightning indirect effects')],
                    [\(con_text:table_with_iframe_target(
-                                    target_iframe,
+                                    Request,
 		     [
                       h1('Plot a lightning current waveform'),
                       p('Stages A through H describe the waveform'),

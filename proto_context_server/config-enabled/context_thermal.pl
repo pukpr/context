@@ -8,14 +8,14 @@
 :- context:register(context_thermal:plot).
 
 
-navigate(_Request) :-
+navigate(Request) :-
    collect_unit_options(ent:temperature, Hunits),
    collect_unit_options(ent:time, Tunits),
 
    reply_html_page(cliopatria(default),
                    [title('Thermal Environment')],
                    [\(con_text:table_with_iframe_target(
-                                    target_iframe,
+                                    Request,
 		     [
                       h1('Thermal Environment Models'),
                       p('Dispersed diffusion into an environmental heat sink'),

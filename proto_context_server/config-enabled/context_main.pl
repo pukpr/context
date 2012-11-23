@@ -54,7 +54,7 @@ cliopatria:menu_item(help/'/context_demos/navigate', 'Example Demos').
 cliopatria:menu_item(places/'https://babelfish.arc.nasa.gov/confluence/display/AVMPROJ/BAE', 'Wiki').
 cliopatria:menu_item(places/'https://babelfish.arc.nasa.gov/trac/avm_performers/browser/context', 'Source').
 cliopatria:menu_item(places/'https://babelfish.arc.nasa.gov/jira/browse/AVM', 'Tracking').
-cliopatria:menu_item(places/'http://podaac.jpl.nasa.gov/', 'OSCAR').
+cliopatria:menu_item(places/'/html/oscar.html', 'OSCAR').
 cliopatria:menu_item(admin/'/context_main/run_unit_tests', 'Tests').
 cliopatria:menu_item(query/'/context_ont_utils/find_ent_subjects', 'Subjects').
 cliopatria:menu_item(query/'/context_ont_utils/find_ent_predicates', 'Predicates').

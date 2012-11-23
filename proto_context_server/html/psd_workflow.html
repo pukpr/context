@@ -1,0 +1,43 @@
+<html>
+<head>
+<title>PSD Workflow info</title>
+<link rel="stylesheet" type="text/css" href="/html/css/info.css">
+</head>
+<body>
+
+<h3 id="FineTerrainFeatures-PowerSpectralDensitiesofTerrain">Power Spectral Densities of Terrain</h3>
+
+<h4 id="FineTerrainFeatures-Models">Models</h4>
+
+<p>Two approaches to generating terrain profiles based on power spectral densities (PSD)</p>
+
+<ol>
+  <li>Superposition of randomly phased sine waves to accomplish a pseudo inverse Fourier transform of the PSD</li>
+  <li>Fitting a semi-Markov autocorrelation model of random walk to the PSD (via the <a href="http://en.wikipedia.org/wiki/Wiener%E2%80%93Khinchin_theorem" class="external-link" rel="nofollow">Weiner-Khinchin theorem</a>)</li>
+</ol>
+
+<p>Each approach has benefits and drawbacks</p><p><strong>Benefits</strong></p>
+
+<ul>
+  <li>The superposition approach is fast and automatic as it works as a rough heuristic</li>
+  <li>The semi-Markov autocorrelation function approach is based on stochastic properties of the terrain so can model phase and skew</li>
+</ul>
+
+<p><strong>Drawbacks</strong></p>
+<ul>
+  <li>The superposition approach will show a repeat sequence based on the lowest spatial frequency and needs to approximate phase (no asymmetries possible)</li>
+  <li>The semi-Markov autocorrelation function approach requires a fitting process, and gets the most benefit from prior knowledge in addition to that provided by the PSD.&nbsp; However, once the models are created, new models can easily be composed from the old ones.</li>
+</ul>
+
+<p>The terrain profile context models include both variants.</p>
+
+<h4 id="FineTerrainFeatures-Data">Data</h4>
+
+<p>The figure below shows a prototype of a semantic web indexing renderer. This will index against an ontologically categorized set of terrain PSD data cataloged from Test Operating Procedures (TOPS). The data file will contain header information necessary to calibrate the scales.</p>
+
+
+
+
+
+</body>
+</html>

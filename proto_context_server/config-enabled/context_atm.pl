@@ -20,7 +20,7 @@
 
 %  decorate(X, option([value(X)],[X])).
 
-navigate(_Request) :-
+navigate(Request) :-
    rdf_(ent:standardAtmosphere, ent:description, Description),
    /*
    t_units(Tlist),
@@ -35,7 +35,7 @@ navigate(_Request) :-
    reply_html_page(cliopatria(default),
                    [title('Standard Atmosphere')],
                    [\(con_text:table_with_iframe_target(
-                                    target_iframe,
+                                    Request,
 		     [
                       h1('Standard Atmosphere Specifications'),
                       p(Description),

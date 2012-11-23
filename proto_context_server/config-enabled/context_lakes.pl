@@ -13,13 +13,13 @@
 
 :- use_module(components(messages)).
 
-navigate(_) :-
+navigate(Request) :-
     reply_html_page(
         cliopatria(default),
         [title('Lake Home')],
         [
          \(con_text:table_with_iframe_target(
-               target_iframe,
+               Request,
                [
                 h2('Lake query examples'),
                 \(con_text:table_form_target(

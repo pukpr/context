@@ -159,6 +159,8 @@ dispatch(particles) -->
 dispatch(clutter) -->
 	html([h1('EMI and clutter models'),
 	      \g(resources,
+		 a([href='/context_emi/navigate'],'EMI resources')),
+	      \g(resources,
 		 a([href='/context_lightning/navigate'],'Lightning indirect effects model')),
 	      \g(example,
 		 a([href='/context_clutter/navigate'],'Clutter integrate model')),
