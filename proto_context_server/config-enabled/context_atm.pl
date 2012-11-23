@@ -6,7 +6,9 @@
                         idealDensity/5,
                         idealPressure/5,
                         idealTemperature/5,
-                        plancks_law/4
+                        plancks_law/4,
+                        plancks_law_wavenumber/4,
+                        plancks_law_frequency/4
 		       ]).
 
 :- use_module(context_math).
@@ -220,18 +222,36 @@ plancks_law(T*Temperature, Lambda*Wavelength, P/Wavelength) :-
    rdf_(ent:physicalConstants, ent:speedLight, C*m/s),
    rdf_(ent:physicalConstants, ent:boltzmannConstant, K*j/k),
    Exp is exp(H*C/(WL*K*T1))-1.0,
-/*
-   print(user_error, [Exp]),
-   A is 3*H*C^2,
-   % print(user_error, [A]),
-   B is WL^5.0*Exp,
-   print(user_error, [B]),
-*/
    P1 is 3*H*C^2/WL^5/Exp,
-   % print(user_error, [P1]),
    context_units:convert(P1/m, P/Wavelength, P), !.
 plancks_law(Wavelength, T*Temperature, Lambda*Wavelength, P) :-
    plancks_law(T*Temperature, Lambda*Wavelength, P/Wavelength).
+
+plancks_law_wavenumber(T*Temperature, WN*Wavenumber, P/Wavenumber) :-
+   context_units:convert(T*Temperature, T1*k, T1),
+   context_units:convert(WN*Wavenumber, S*m, S),
+   rdf_(ent:physicalConstants, ent:planckConstant, H*j*s),
+   rdf_(ent:physicalConstants, ent:speedLight, C*m/s),
+   rdf_(ent:physicalConstants, ent:boltzmannConstant, K*j/k),
+   Exp is exp(H*S*C/(K*T1))-1.0,
+   P1 is 2*H*C^2*S^3/Exp,
+   context_units:convert(P1/m, P/Wavenumber, P), !.
+plancks_law_wavenumber(Wavenumber, T*Temperature, WN*Wavenumber, P) :-
+   plancks_law_wavenumber(T*Temperature, WN*Wavenumber, P/Wavenumber).
+
+plancks_law_frequency(T*Temperature, WN*Wavenumber, P/Wavenumber) :-
+   context_units:convert(T*Temperature, T1*k, T1),
+   context_units:convert(WN*Wavenumber, S*m, S),
+   rdf_(ent:physicalConstants, ent:planckConstant, H*j*s),
+   rdf_(ent:physicalConstants, ent:speedLight, C*m/s),
+   rdf_(ent:physicalConstants, ent:boltzmannConstant, K*j/k),
+   Exp is exp(H*S*C/(K*T1))-1.0,
+   P1 is 2*H*C^2*S^3/Exp,
+   context_units:convert(P1/m, P/Wavenumber, P), !.
+plancks_law_frequency(Wavenumber, T*Temperature, WN*Wavenumber, P) :-
+   plancks_law_frequency(T*Temperature, WN*Wavenumber, P/Wavenumber).
+
+
 
 generate_pressure_curve(T,P) :-
    T range [0.0, 100.0]/10.0,

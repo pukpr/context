@@ -16,6 +16,16 @@ ref_search(Term, Description) -->
 	   ])
 	).
 
+
+g(Type, Contents) -->
+    html(p([
+	     \(con_text:gif(Type)),
+	     Contents
+	   ]
+	  )
+	).
+
+
 icon_cell_link(Highlight,
                td(a(href(Select+Obj),
                     img([height(Size),src(Path+Icon),
@@ -39,36 +49,46 @@ icon_bar(Highlight) -->
 
 dispatch(lakes) -->
 	html([h1('Inland water models'),
-	      p(a([href('/context_model/navigate?characteristics=lakeSize&render=render'),
+	      \g(search,
+		 a([href('/context_model/navigate?characteristics=lakeSize&render=render'),
 		   target(target_iframe)], 'Lake size PDF models')),
-	      p(a([href='/context_fording/navigate'],'Fording model')),
+	      \g(example,
+		 a([href='/context_fording/navigate'],'Fording model')),
 	      \(ref_search('realmHydroBody:Lake', 'Lake references')),
-	      p(a([href('/context_lakes/navigate')],
-		  [img(src('/html/images/example.gif')),
-		   'Example seasonal lake ice data']))
+	      \g(example,
+		 a([href('/context_lakes/navigate')],
+		  'Example seasonal lake ice data'))
 	     ]
 	    ).
 
 dispatch(corrosion) -->
 	html([h1('Corrosion models'),
-	       p(a([href('/context_corrosion/navigate')], 'Corrosion models')),
+	      \g(workflow,
+		  a([href('/context_corrosion/navigate')], 'Corrosion models')),
 	      \(ref_search('procChemical:Corrosion', 'Corrosion references')),
-	       p(a([href('/context_corrosion/corrosion_scale_table'),
+	      \g(resources,
+		 a([href('/context_corrosion/corrosion_scale_table'),
 		    target=render], 'Corrosion table'))
 	     ]
 	    ).
 
 dispatch(fine_terrain) -->
 	html([h1('Fine terrain models'),
-              p(a([href('/context_psd_workflow/navigate')], 'PSD workflow')),
-              p(a([href('/context_obstacles/navigate')], 'Obstacle workflow')),
-	      p(a([href('/context_profile/navigate')], 'Recently profiled terrains')),
-	      \(ref_search('realmBiolBiome:Terrain', 'Terrain references')),
-	      p(a([href='/context_soil/soil_table',
+              \g(workflow,
+		 a([href('/context_psd_workflow/navigate')], 'PSD workflow')),
+              \g(workflow,
+		 a([href('/context_obstacles/navigate')], 'Obstacle workflow')),
+	      \g(workflow,
+		 a([href('/context_profile/navigate')], 'Recently profiled terrains')),
+	      \ref_search('realmBiolBiome:Terrain', 'Terrain references'),
+	      \g(resources,
+		 a([href='/context_soil/soil_table',
 		    target=target_iframe],'Soil classification table')),
-	      \(ref_search('realmSoil:SoilLayer', 'Soil references')),
-              p(a([href('/context_friction/coefficient_friction_table'),
-                   target=target_iframe], 'Coefficient of Friction table')),
+	      \ref_search('realmSoil:SoilLayer', 'Soil references'),
+              \g(resources,
+		  a([href('/context_friction/coefficient_friction_table'),
+                   target=target_iframe], 'Coefficient of Friction table')
+	       ),
 	      \(ref_search('propMass:Roughness', 'Friction references'))
 
 	     ]
@@ -76,19 +96,22 @@ dispatch(fine_terrain) -->
 
 dispatch(gross_terrain) -->
 	html([h1('Gross terrain (topographic) models'),
-	      p(a([href('/context_autocorr/navigate')], 'Terrain elevation correlation')),
-	      p(a([href('/context_model/navigate?characteristics=slopes&render=render'),
+	      \g(workflow,
+		 a([href('/context_autocorr/navigate')], 'Terrain elevation correlation')),
+	      \g(search,
+		 a([href('/context_model/navigate?characteristics=slopes&render=render'),
 		   target(target_iframe)], 'Slope PDF models')),
-	      p([ img(src('/html/images/example.jpg')),
-		  \(context_pdf:example)
-		]),
+	      \g(example,
+		 \(context_pdf:example)
+		),
 	      \(ref_search('propSpaceHeight:Topography', 'Topography references'))
 	     ]
 	    ).
 
 dispatch(wind) -->
 	html([h1('Wind models'),
-	      p(a([href('/context_model/navigate?characteristics=windSpeed&render=render'),
+	      \g(search,
+		 a([href('/context_model/navigate?characteristics=windSpeed&render=render'),
 		   target(target_iframe)], 'Wind PDF models')),
 	      \(ref_search('phenAtmoWind:Wind', 'Wind references'))
 	     ]
@@ -96,24 +119,29 @@ dispatch(wind) -->
 
 dispatch(wave) -->
 	html([h1('Aquatic wave models'),
-	      p(a([href('/context_model/navigate?characteristics=waveHeight&render=render'),
+	      \g(search,
+		 a([href('/context_model/navigate?characteristics=waveHeight&render=render'),
 		   target(target_iframe)], 'Aquatic wave PDF models')),
-	      p(a([href='/context_water/chart',
+	     \g(resources,
+		a([href='/context_water/chart',
 		    target=target_iframe],'Water properties')),
-	      p(a([href='/context_water/navigate'],'Water buoyancy')),
-	      p(a([href='/context_seastate/seastate_table',
+	     \g(example,
+		a([href='/context_water/navigate'],'Water buoyancy')),
+	      \g(resources,
+		 a([href='/context_seastate/seastate_table',
 		    target=target_iframe],'Sea-state ranges')),
-	      p(a([href('/context_seastate/navigate')], 'Wave/sea state model')), % own page
+	      \g(workflow,
+		 a([href('/context_seastate/navigate')], 'Wave/sea state model')), % own page
 	      \(ref_search('phenWave:GravityWave', 'Wave references'))
 	     ]
 	    ).
 
 dispatch(thermal) -->
 	html([h1('Thermal and temperature models'),
-	      p(a([href='/context_thermal/navigate'],'Thermal diffusion model')),
-	      p([ img(src('/html/images/example.jpg')),
-		   \(context_temperature:navigate)]
-	       ),
+	      \g(example,
+		 a([href='/context_thermal/navigate'],'Thermal diffusion model')),
+	      \g(example,
+		 \(context_temperature:navigate)),
 	      \(ref_search('propConductivity:ThermalConductivity', 'Thermal conductivity references')),
 	      \(ref_search('propTemperature:Temperature', 'Temperature references'))
 	     ]
@@ -121,7 +149,8 @@ dispatch(thermal) -->
 
 dispatch(particles) -->
 	html([h1('Particle and aerosol models'),
-	      p(a([href('/context_model/navigate?characteristics=particleSizes&render=render'),
+	      \g(search,
+		 a([href('/context_model/navigate?characteristics=particleSizes&render=render'),
 		   target(target_iframe)], 'Particle size PDF models')),
 	      \(ref_search('matrAerosol:Particulate', 'Particle references'))
 	     ]
@@ -129,9 +158,12 @@ dispatch(particles) -->
 
 dispatch(clutter) -->
 	html([h1('EMI and clutter models'),
-	      p(a([href='/context_lightning/navigate'],'Lightning indirect effects model')),
-	      p(a([href='/context_clutter/navigate'],'Clutter integrate model')),
-	      p(a([href('/context_model/navigate?characteristics=clutterPower&render=render'),
+	      \g(resources,
+		 a([href='/context_lightning/navigate'],'Lightning indirect effects model')),
+	      \g(example,
+		 a([href='/context_clutter/navigate'],'Clutter integrate model')),
+	      \g(search,
+		 a([href('/context_model/navigate?characteristics=clutterPower&render=render'),
 		   target(target_iframe)], 'EMI clutter pdf models')),
 	      \(ref_search('phenElecMag:ElectricField', 'EMI references')),
 	      \(ref_search('phenAtmoLightning:Lightning', 'Lightning references'))
@@ -140,9 +172,11 @@ dispatch(clutter) -->
 
 dispatch(rainfall) -->
 	html([h1('Rainfall models'),
-	      p(a([href('/context_model/navigate?characteristics=rainfall&render=render'),
+	      \g(search,
+		 a([href('/context_model/navigate?characteristics=rainfall&render=render'),
 		   target(target_iframe)], 'Rainfall PDF models')),
-	      p(a([href('/context_model/navigate?characteristics=cloudArea&render=render'),
+	      \g(search,
+		 a([href('/context_model/navigate?characteristics=cloudArea&render=render'),
 		   target(target_iframe)], 'Cloud PDF models')),
 	      \(ref_search('phenAtmoPrecipitation:Rainfall', 'Rainfall references'))
 	     ]

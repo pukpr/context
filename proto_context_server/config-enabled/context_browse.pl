@@ -50,7 +50,7 @@ view_tree(Request, Subject) -->
 				  [ p(Comment),
 				    p(a([href(Link),
 					 target(Target)],
-					[ img(src('/html/images/rarrow.gif')), 'Invoke ', Subject])
+					[ img(src('/html/images/rarrow.gif')), 'Go to ', Subject, ' models'])
 				     )			])
 			      ]),
 			   tr([

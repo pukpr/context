@@ -14,13 +14,20 @@ list_solar_models(Target) -->
     html(
         form([action(plot), target(Target)],
 			 [
-			  select([name('solar_type')], [value(bb)],[bb]),
-			  \(con_text:radio_box_input_two(
+			  % select([name('solar_type')], [value(bb)],[bb]),
+			  \(con_text:radio_toggles('evaluate',
+					 [['by wavelength', 'wavelength'],
+					 ['by wavenumber', 'wavenumber'],
+					 ['by frequency', 'frequency']])),
+			  /* \(con_text:radio_box_input_two(
 					 'evaluate',
-					 ['black body 1', 'blackbody'],
-					 ['black body 2', 'blackbody']
+					 ['by wavelength', 'wavelength'],
+					 ['by wavenumber', 'wavenumber'],
+					 ['by frequency', 'frequency']
                                                         )),
-			  input([type('submit'), name(kind), value('Compute')])
+			  */
+			  br([]),
+			  input([type('submit'), name(kind), value('Plot')])
 			 ]
             )
         ).
@@ -55,8 +62,17 @@ plot(Request) :-
 
     % context:create_global_term(Characteristic, Ch),
     % atom_to_term(Characteristic, Ch, []),
-    WL range [0.1, 20.0]/0.1*micron,
-    Pr mapdot plancks_law(micron, 5000*k) ~> WL,
+    (	Characteristic = wavelength ->
+        WL range [0.1, 20.0]/0.1*micron,
+        Pr mapdot plancks_law(micron, 5000*k) ~> WL
+    ;
+        Characteristic = wavenumber ->
+        WL range [0.1, 20.0]/0.1*micron,
+        Pr mapdot plancks_law_wavenumber(micron, 5000*k) ~> WL
+    ;
+        WL range [0.1, 20.0]/0.1*micron,
+        Pr mapdot plancks_law_frequency(micron, 5000*k) ~> WL
+    ),
     Data tuple WL + Pr,
     reply_html_page([title('Solar'),
                      \(con_text:style)],

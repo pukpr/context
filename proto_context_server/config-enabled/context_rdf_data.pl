@@ -73,6 +73,8 @@ rdf_(resources, ent:description, 'Supplemental data resources for context models
 rdf_(resources, ent:narrative, 'A supplemental knowledge-based system will provide semantic web discovery capability. The OSCAR (Ontological System for Context Artifacts and Resources) portal will guide discovery for users to find context models and associated metadata to enable their simulation.  The context models can include collections of PDFs and PSDs.  Context modeling resources include interactive links to tables and supporting doucments, such as environmental regulations, standards, specifications, and typical operational profiles.').
 rdf_(features, ent:description, 'This home page contains environmental features along the top icon bar, and process steps as links.').
 rdf_(features, ent:narrative, '/html/static_pages/gems/index.html').
+rdf_(example, ent:description, 'Examples of use.').
+rdf_(example, ent:narrative, 'Examples of model use').
 
 
 rdf_(context, child, land).

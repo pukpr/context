@@ -24,12 +24,12 @@ navigate(_Request) :-
 			  select([name('t_units')], Tunits),
 			  input([type('text'),
 				 name('limit'),
-				 value('3')]), i(' <= time limit'),
+				 value('300')]), i(' <= time deadline'),
 			  br([]),
 			  \(con_text:radio_toggles(
 					 'evaluate',
-					 [['Integrate', 'integrate'],
-                                          ['Name3', 'id3']
+					 [['Integrate', 'integrate']
+                                           % ,['Name3', 'id3']
                                          ])),
                           br([]),
 			  input([type('submit'), name(kind), value('lin')]),
@@ -45,9 +45,9 @@ navigate(_Request) :-
 		  ).
 
 
-clutter_integrate(Parameter,X*_Units,Y) :-
-   Y is sin(Parameter*X).
-other_fxn(Parameter,X*_Units,Y) :-
+clutter_integrate(Parameter,X,Y) :-
+   Y is Parameter*sqrt(X/(1-X)).
+other_fxn(Parameter,X,Y) :-
    Y is Parameter*X.
 
 
@@ -57,25 +57,27 @@ plot(Request) :-
                               t_units(TUnits, []),
                               evaluate(Characteristic, [])]),
 
-    H range [0.1, 10.0]^0.9*TUnits,
+    Prob range [0.01, 0.999]^0.99,  % *TUnits,
+    context_units:convert(62.0*s, Scale*TUnits, Scale),
     (
        Characteristic = integrate ->
-	 Z mapdot clutter_integrate(Limit) ~> H
+	 Time mapdot clutter_integrate(Scale) ~> Prob
      ;
-       Characteristic = id3 ->
-	 Z mapdot other_fxn(Limit) ~> H
+       Characteristic = others ->
+	 Time mapdot other_fxn(Limit) ~> Prob
     ),
-    Data tuple H + Z,
-    X = 'xname',
-    Y = 'yname',
-    XUnits = 'units',
+    Lim mapdot Limit ~> Prob,
+    Data tuple Prob + Time + Lim,
+    X = 'probability of occuring',
+    Y = 'time to cold start',
+    XUnits = 'normalized to one',
     YUnits = TUnits,
-    reply_html_page([title('PlotTitle'),
+    reply_html_page([title('GPS Cold Start acquire'),
                      \(con_text:style)],
                     [
-		     \(context_graphing:dygraph_native(Kind, [X, Y],
+		     \(context_graphing:dygraph_native(Kind, [X, Y, 'deadline for occurrence'],
 						       [X,XUnits], [Y, YUnits],
-						       'plot_title', Data))
+						       'GPS Cold Start acquire', Data))
                     ]
 		  ).
 
