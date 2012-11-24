@@ -55,7 +55,7 @@ plot(Request) :-
     http_parameters(Request, [kind(Kind, []),
 			      limit(Limit, [number]),
                               t_units(TUnits, []),
-                              evaluate(Characteristic, [])]),
+                              evaluate(Characteristic, [default(integrate)])]),
 
     Prob range [0.01, 0.999]^0.99,  % *TUnits,
     context_units:convert(62.0*s, Scale*TUnits, Scale),

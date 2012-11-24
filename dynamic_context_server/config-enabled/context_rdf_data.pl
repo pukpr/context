@@ -2,43 +2,82 @@
 :- multifile(ref_/3).
 
 
-ref_('/context_select/navigate?category=fine_terrain',  target_iframe, '/html/static_pages/gems/fine_terrain.png').
-ref_('/context_select/navigate?category=gross_terrain', target_iframe, '/html/static_pages/gems/gross_terrain.png').
-ref_('/context_select/navigate?category=wave',          target_iframe, '/html/static_pages/gems/wave_statistics.png').
-ref_('/context_select/navigate?category=wind',          target_iframe, '/html/static_pages/gems/wind_statistics.png').
-ref_('/context_select/navigate?category=clutter',       target_iframe, '/html/static_pages/gems/clutter_modeling.png').
-ref_('/context_select/navigate?category=lakes',         target_iframe, '/html/static_pages/gems/lake_sizes.png').
-ref_('/context_select/navigate?category=particles',     target_iframe, '/html/static_pages/gems/particle_sizes.png').
-ref_('/context_select/navigate?category=thermal',       target_iframe, '/html/static_pages/gems/thermal_dispersion.png').
-ref_('/context_select/navigate?category=rainfall',      target_iframe, '/html/static_pages/gems/rain_statistics.png').
-ref_('/context_select/navigate?category=corrosion',     target_iframe, '/html/static_pages/gems/corrosion_oxidation.png').
-ref_('/app',                                            target_iframe, '/html/static_pages/gems/').
-ref_('/context_require/navigate',                       target_iframe, '/html/requirements.html').
-ref_('/context_ref/navigate',                           target_iframe, '/html/citations.html').
-ref_('/context_map/search',                             target_iframe, '/html/map.html').
-ref_('/context_resources/navigate',                     target_iframe, '/html/resources.html').
-ref_('/context_workflow/workflows',                     target_iframe, '/html/workflow.html').
-ref_('/context_search/search',                          target_iframe, '/html/search.html').
-ref_('/context_climate_AR7038/navigate',                target_iframe, '/html/climate_AR7038.html').
-ref_('/context_profile/navigate',                       target_iframe, '/html/profile.html').
-ref_('/context_psd_workflow/navigate',			target_iframe, '/html/psd_workflow.html').
-ref_('/context_obstacles/navigate',			target_iframe, '/html/obstacles.html').
-ref_('/context_autocorr/navigate',			target_iframe, '/html/autocorr.html').
-ref_('/context_water/navigate',			        target_iframe, '/html/water.html').
-ref_('/context_seastate/navigate',			target_iframe, '/html/seastate.html').
-ref_('/context_lightning/navigate',			target_iframe, '/html/lightning.html').
-ref_('/context_emi/navigate',			        target_iframe, '/html/emi.html').
-ref_('/context_clutter/navigate',		        target_iframe, '/html/clutter.html').
-ref_('/context_fording/navigate',			target_iframe, '/html/fording.html').
-ref_('/context_lakes/navigate',			        target_iframe, '/html/lakes.html').
-ref_('/context_thermal/navigate',			target_iframe, '/html/thermal.html').
-ref_('/context_corrosion/navigate',			target_iframe, '/html/corrosion.html').
-ref_('/context_demos/navigate',				target_iframe, '/html/demos.html').
-ref_('/context_atm/navigate',				target_iframe, '/html/atm.html').
-ref_('/context_solar/navigate',			        target_iframe, '/html/solar.html').
+ref_m('fine terrain features',     model, '/context_select/navigate?category=fine_terrain').
+ref_m('fine terrain features',     target_iframe, '/html/static_pages/gems/fine_terrain.png').
+ref_m('gross terrain features',     model, '/context_select/navigate?category=gross_terrain').
+ref_m('gross terrain features',     target_iframe, '/html/static_pages/gems/gross_terrain.png').
+ref_m('wave features',     model, '/context_select/navigate?category=wave').
+ref_m('wave features',     target_iframe, '/html/static_pages/gems/wave_statistics.png').
+ref_m('wind features',     model, '/context_select/navigate?category=wind').
+ref_m('wind features',     target_iframe, '/html/static_pages/gems/wind_statistics.png').
+ref_m('clutter features',     model, '/context_select/navigate?category=clutter').
+ref_m('clutter features',     target_iframe, '/html/static_pages/gems/clutter_modeling.png').
+ref_m('lakes features',     model, '/context_select/navigate?category=lakes').
+ref_m('lakes features',     target_iframe, '/html/static_pages/gems/lake_sizes.png').
+ref_m('particle features',     model, '/context_select/navigate?category=particles').
+ref_m('particle features',     target_iframe, '/html/static_pages/gems/particle_sizes.png').
+ref_m('thermal features',     model, '/context_select/navigate?category=thermal').
+ref_m('thermal features',     target_iframe, '/html/static_pages/gems/thermal_dispersion.png').
+ref_m('rain features',     model, '/context_select/navigate?category=rainfall').
+ref_m('rain features',     target_iframe, '/html/static_pages/gems/rain_statistics.png').
+ref_m('corrosion features',     model, '/context_select/navigate?category=corrosion').
+ref_m('corrosion features',     target_iframe, '/html/static_pages/gems/corrosion_oxidation.png').
+ref_m('Dynamic Context Server',     model, '/app').
+ref_m('Dynamic Context Server',     target_iframe, '/html/static_pages/gems/').
+ref_m('requirements',     model, '/context_require/navigate').
+ref_m('requirements',     target_iframe, '/html/requirements.html').
+ref_m('references',     model, '/context_ref/navigate').
+ref_m('references',     target_iframe, '/html/citations.html').
+ref_m('map',     model, '/context_map/search').
+ref_m('map',     target_iframe, '/html/map.html').
+ref_m('resources',     model, '/context_resources/navigate').
+ref_m('resources',     target_iframe, '/html/resources.html').
+ref_m('workflow',     model, '/context_workflow/workflows').
+ref_m('workflow',     target_iframe, '/html/workflow.html').
+ref_m('search',     model, '/context_search/search').
+ref_m('search',     target_iframe, '/html/search.html').
+ref_m('AR7038',     model, '/context_climate_AR7038/navigate').
+ref_m('AR7038',     target_iframe, '/html/climate_AR7038.html').
+ref_m('profiles',     model, '/context_profile/navigate').
+ref_m('profiles',     target_iframe, '/html/profile.html').
+ref_m('PSD',     model, '/context_psd_workflow/navigate').
+ref_m('PSD',     target_iframe, '/html/psd_workflow.html').
+ref_m('obstacles',     model, '/context_obstacles/navigate').
+ref_m('obstacles',     target_iframe, '/html/obstacles.html').
+ref_m('autocorrelation',     model, '/context_autocorr/navigate').
+ref_m('autocorrelation',     target_iframe, '/html/autocorr.html').
+ref_m('water',     model, '/context_water/navigate').
+ref_m('water',     target_iframe, '/html/water.html').
+ref_m('seastate',     model, '/context_seastate/navigate').
+ref_m('seastate',     target_iframe, '/html/seastate.html').
+ref_m('lightning',     model, '/context_lightning/navigate').
+ref_m('lightning',     target_iframe, '/html/lightning.html').
+ref_m('electro-magnetic',     model, '/context_emi/navigate').
+ref_m('electro-magnetic',     target_iframe, '/html/emi.html').
+ref_m('clutter',     model, '/context_clutter/navigate').
+ref_m('clutter',     target_iframe, '/html/clutter.html').
+ref_m('fording',     model, '/context_fording/navigate').
+ref_m('fording',     target_iframe, '/html/fording.html').
+ref_m('lakes',     model, '/context_lakes/navigate').
+ref_m('lakes',     target_iframe, '/html/lakes.html').
+ref_m('thermal',     model, '/context_thermal/navigate').
+ref_m('thermal',     target_iframe, '/html/thermal.html').
+ref_m('corrosion',     model, '/context_corrosion/navigate').
+ref_m('corrosion',     target_iframe, '/html/corrosion.html').
+ref_m('demos',     model, '/context_demos/navigate').
+ref_m('demos',     target_iframe, '/html/demos.html').
+ref_m('atmosphere',     model, '/context_atm/navigate').
+ref_m('atmosphere',     target_iframe, '/html/atm.html').
+ref_m('solar',     model, '/context_solar/navigate').
+ref_m('solar',     target_iframe, '/html/solar.html').
+ref_m('browse',     model, '/context_browse/browse').
+ref_m('browse',     target_iframe, '/html/browse.html').
+% ref_m('',     model, '/context_browse/browse?term=requirements').
+% ref_m('',     target_iframe, '/html/browse.html#requirements').
 
-ref_('/context_browse/browse',                          target_iframe, '/html/browse.html').
-ref_('/context_browse/browse?term=requirements',        target_iframe, '/html/browse.html#requirements').
+ref_(URL, target_iframe, Page) :-
+    ref_m(ID, model, URL),
+    ref_m(ID, target_iframe, Page), !.
 
 ref_(URL, target_iframe, Page) :-
     atom_concat('/context_browse/browse?term=', Term, URL),
@@ -46,6 +85,8 @@ ref_(URL, target_iframe, Page) :-
 
 ref_(_, IName, Page) :-
     atomic_list_concat(['/html/',IName,'.html'], Page).
+
+
 
 % ----------------------------------------------------
 
