@@ -3,7 +3,6 @@ W	Deliver buoyancy model
 W	Index the papers for PDF
 W	Set up a rainfall drop distro too
 W	Collect all XLS and PPT files
-	Search on all models
 	Map with refresh that shows explanation and Google Maps
 	context_solar, planck's law
 	Aquatic wave height model, plus connection to Sea-State, significant wave height
@@ -19,6 +18,7 @@ W	Collect all XLS and PPT files
 	Different data format generators
 	Units page for resources, use repr:sciUnits
 	List of phys constants
+x	Search on all models
 x	Add defaults to radio buttons
 x	Have to fix the slopes so it actually reflects the USA
 x	Explanation of FFT, how to filter window or use default

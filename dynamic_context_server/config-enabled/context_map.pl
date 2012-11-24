@@ -44,6 +44,12 @@ navigate(Request) :-
 	    ]
 		       ).
 
+available_location(Locale, Title, Model, Feature) :-
+     rdfS(Locale, ent:title, Title),
+     rdf(URI, ent:locale, Locale),
+     rdfS(URI, ent:feature, Feature),
+     ref_m(Feature, model, Model).
+available_location(Locale, Locale, '#', Locale).
 
 
 navigate_locale(Request) :-
@@ -69,6 +75,7 @@ navigate_locale(Request) :-
 	    ]
                   ).
 
+
 navigate_locale(Request) :-
    http_parameters(Request, [locale(Locale, [string]),
 			     action(Action, [])
@@ -76,11 +83,39 @@ navigate_locale(Request) :-
    Action = 'Available',
    rdfR(Locale, ent:lat, Lat),
    rdfR(Locale, ent:lon, Lon),
+   available_location(Locale, Title, _, _),
+   findall(li(a([href(Model),
+	      target('_parent')],
+	     Feature)),
+	   available_location(Locale, _, Model, Feature),
+	   Models),
+   /*
+   (
+     rdfS(Locale, ent:title, T),
+     rdf(URI, ent:locale, Locale),
+     rdfS(URI, ent:feature, F),
+     ref_m(F, model, M)
+   ->
+     Model = M,
+     Feature = F,
+     Title = T
+   ;
+     Model='#',
+     Feature = 'not found',
+     Title = Locale
+   ),
+   */
+   % ref_m(UID, target_iframe, Path),
+
    print(user_error, [Lat, Lon, Locale]),
    reply_html_page(
 	    [title('Map Home')],
 	    [
-	     p([Locale, ' is used here:'])
+	     p(b(i([Title, ' location is used in the context of :']))),
+	     % h2([a([href(Model),target('_parent')],  Feature)] )
+	     ul(
+	        Models
+	       )
 	    ]
                   ).
 
