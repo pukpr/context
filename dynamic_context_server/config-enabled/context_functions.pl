@@ -259,7 +259,7 @@ exponential_sampling(Mean,_,Variate) :-
 % %%%%%%
 
 besselk_1_cdf(Mean, X_Array, Y_Array) :-
-    context_r_demo:r_open_session,
+    context_r:r_open_session,
     Input mapdot sqrt ~> (2/Mean) .* X_Array,
     y <- besselK(Input,1),
     Y <- y,
@@ -267,7 +267,7 @@ besselk_1_cdf(Mean, X_Array, Y_Array) :-
     r_close.
 
 besselk_0_pdf(Mean, X_Array, Y_Array) :-
-    context_r_demo:r_open_session,
+    context_r:r_open_session,
     Input mapdot sqrt ~> (2/Mean) .* X_Array,
     y <- besselK(Input,0),
     Y <- y,

@@ -649,7 +649,7 @@ label_elevs(N) :-
     findall([Dist,Elev], label_elev(Dist, Elev), Elevs),
     length(Elevs, N),
     context_file_reading:parse(Elevs, [], X, [], Y),
-    context_r_demo:rhist2d(X,Y).
+    context_r:rhist2d(X,Y).
 
 count_elevs :-
     Distance in 1..40,
@@ -740,9 +740,9 @@ plot_ac :-
 	        Z > 0
 	    ),
 	    L),
-    context_r_demo:xyz(L,[_|A],[_|B],[_|C]),
+    [[_|A],[_|B],[_|C]] split L,
     ZZ mapdot log10 ~> C,
-    context_r_demo:rcontour(A,B,ZZ).
+    context_autocorr:rcontour(A,B,ZZ).
 
 % TESTING
 %
@@ -792,7 +792,7 @@ test_google(L,Length,Elev) :-
     X range [Delta,Distance]/Delta,
     length(X, Length),
     asserta(profile_elev(Elev)),
-    context_r_demo:rplot(X,Elev).
+    context_r:rplot(X,Elev).
 
 
 test_google_dunes :-
@@ -807,7 +807,7 @@ test_google_dunes :-
     X range [Delta,Distance]/Delta,
     length(X, Length),
     % asserta(profile_elev(Elev)),
-    context_r_demo:rplot(X,Elev).
+    context_r:rplot(X,Elev).
 
 test_google_bluffs :-
     N1 = 41.6,
@@ -821,7 +821,7 @@ test_google_bluffs :-
     X range [Delta,Distance]/Delta,
     length(X, Length),
     % asserta(profile_elev(Elev)),
-    context_r_demo:rplot(X,Elev).
+    context_r:rplot(X,Elev).
 
 test_google_ravines :-
     L1 = -102.4,
@@ -835,7 +835,7 @@ test_google_ravines :-
     X range [Delta,Distance]/Delta,
     length(X, Length),
     % asserta(profile_elev(Elev)),
-    context_r_demo:rplot(X,Elev).
+    context_r:rplot(X,Elev).
 
 
 

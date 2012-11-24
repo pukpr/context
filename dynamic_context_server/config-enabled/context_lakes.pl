@@ -127,7 +127,7 @@ lat_list(FN, Lat, Years, Times, N, Slope) :-
     findall(Y, temperature_lat(Lat,Y,T), Years),
     findall(T, temperature_lat(Lat,Y,T), Times),
     format(atom(Title), '"Minnesota Latitude : ~D N"', [Lat]),
-    context_r_demo:rplot_with_regression(FN, Years, Times, Title, '"year"', '"iceOutDay"', Slope),
+    context_r:rplot_with_regression(FN, Years, Times, Title, '"year"', '"iceOutDay"', Slope),
     length(Years,N).
 
 get_all_records(1843).

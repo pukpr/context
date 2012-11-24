@@ -12,29 +12,8 @@ gen_ou(D,L,N,Z) :-
    Scale is 1.0,
    context_random_walk:ou_random_walker(D0, Scale, L0, X, Z),
    assert(a(Z)),
-   % context_r_demo:rplot(X,Z),
    !.
 
-/*
-rw_trial(0, _D0, _L0, _X, _Start_Elev, List, List).
-rw_trial(N, D0, L0, X, Start_Elev, List, Out) :-
-   context_random_walk:ou_random_walker(D0, 1.0, L0, X, Start_Elev, Z),
-   M is N-1,
-   last(Z, New_Elev), !,
-   rw_trial(M, D0, L0, X, New_Elev, [New_Elev|List], Out).
-
-short_ou(D,L,N,Z) :-
-   retractall(a(_)),
-   NN is N*N,
-   % X range [1,NN]/1,
-   X0 range [1,90]/1,
-   % X range [1,NN]/1,
-   D0 is D/2,  %% should be 65 because E-W post data is shorter
-   L0 is 1.0*L,
-   rw_trial(NN, D0, L0, X0, 0.0, [], Z),
-   assert(a(Z)), !.
-   % context_r_demo:rplot(X,Z),!.
-*/
 
 save_ou :-
     a(Z),tell('aaa_16_16_test.csv'),maplist(writeln,Z), told, !.
@@ -70,8 +49,6 @@ godiff(N) :-
 	List=[_|L1],
 	diff(N, List, L1).
 
-%   context_r_demo:rplot(X,Z).
-
 
 collect_range_info(Lat, Lon, List) :-
     Lon in -112 .. -102,
@@ -86,11 +63,10 @@ print_collect_range_info :-
     fail.
 
 print_collect_all_info :-
-    context_autocorr:collect_info(URI, ['D'=Df, 'theta'=Lf, 'Q'=Quality]),
-    format(atom(S), '~w, ~2f, ~6f, ~1f', [URI, Df, Lf, Quality]),
-    print(S), nl,
+    context_autocorr:collect_info(_URI), % , ['D'=Df, 'theta'=Lf, 'Q'=Quality]),
+    % format(atom(S), '~w, ~2f, ~6f, ~1f', [URI, Df, Lf, Quality]),
+    % print(S), nl,
     fail.
-
 
 
 /*
@@ -151,7 +127,7 @@ iterate_yuma(DeltaX, Xi, Yi, X, Y) :-
 
 plot_yuma :-
     iterate_yuma(180.0, [],[], X, Y),
-    context_r_demo:rplot(X, Y).
+    context_r:rplot(X, Y).
 
 % Faster Google Maps as it aggergates data
 sample_yuma_delta(DeltaX, _, [E1,E2]) :-
@@ -197,7 +173,7 @@ iterate_yuma_array(Num, DeltaX, Xi, Yi, X, Y) :-
 plot_yuma_array :-
     iterate_yuma_array(20, 2700.0, [],[], X, Y),
     % iterate_yuma_array(2, 90.0, [],[], X, Y),
-    context_r_demo:rhist2d(X, Y), !.
+    context_r:rhist2d(X, Y), !.
 
 
 reversi([])    --> [].

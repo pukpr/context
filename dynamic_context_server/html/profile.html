@@ -7,17 +7,23 @@
 
 <p>The fine terrain profiles can be modeled effectively by Markov and semi-Markov processes.
 
-<p>Both CSIR data and a model fit will be plotted.
+<p>Markov processes such as Ornstein-Uhlenbeck model rough random terrain, while semi-Markov processes capture pseudo-random features with subtle periodicities.
 <br>
-For a profile, the model is Monte Carlo generated.
+For a profile, the model is Monte Carlo generated from the Markov or semi-Markov sequence.
 <br>
-For a PSD, the model includes:
+For a PSD, the plot includes:
 <ul>
-<li>a semi-Markov stochastic representation
+<li>a Markov or semi-Markov stochastic representation
 <li>a windowed FFT of the Monte Carlo profile.
+<li>the FFT of the data.
 </ul>
+<p>High-resolution data from CSIR is stored in the database (see the sets labelled GEROTEK and Rough Track) as well as a few other test sets.
 
-<p>The FFT can show quite a bit of noise, so use the moving average filter to reduce the noisy values so that the underlying spectrum is clearly delineated.
+<p>The FFT can show quite a bit of noise, so use the moving average filter to reduce the noisy values so that the underlying spectrum is clearly delineated. The graph can be stretched and then filtered to reveal the signal.
+<p>
+<img width="700" src="/html/images/fft_filter.gif"/>
+
+
 
 
 </body>

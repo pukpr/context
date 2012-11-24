@@ -631,13 +631,14 @@ splitter(N, Tuples, List, Output) :-
     splitter(M, Tuples, [FL|List], Output).
 
 splitter(Tuples, Output) :-
+    is_list(Tuples),
     Tuples = [F|_],
     length(F, N),
     splitter(N, Tuples, [], Output), !.
 
 [] split [].
 X split Y :-
-   splitter(Y, X), !.
+   splitter(Y,X), !.
 
 
 

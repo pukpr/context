@@ -2,29 +2,28 @@ W	EMI links for Rockwell
 W	Deliver buoyancy model
 W	Index the papers for PDF
 W	Set up a rainfall drop distro too
-	add defaults to radio buttons
+W	Collect all XLS and PPT files
+	Context R should be split out, use the XYZ untuple call
+	Search on all models
+	Map with refresh that shows explanation and Google Maps
+	Add defaults to radio buttons
+	Cloud has land plus ocean.
 	Aquatic wave height model, plus connection to Sea-State, significant wave height
 	Particle size Monte-Carlo, TOPS has particle size classes
 	Calibrate corrosive model
 	Units page for resources, use repr:sciUnits
-	Map with refresh that shows explanation and Google Maps
+	Dimensions need more granular ranges, not micron with meters
 	Index models to SWEET terms, use capital letters for terminology
-	Search on all models
 	ENT classification system tied to SWEET
 	Each entry should have short narrative
 	Add browser tree to individual features
-	Collect all XLS and PPT files
-	use phenAtmo:Thermal, phenAtmo:Weather, phenAtmo:Sunlight
 	Thermal heat sink model
-	Different data format generators
 	Semi-Markov sync function to scale
-	Context R should be split out, use the XYZ untuple call
-	Explanation of FFT, how to filter window or use default
 	context_solar, planck's law
-	Dimensions need more granular ranges, not micron with meters
-	Cloud has land plus ocean.
 	Have to fix the slopes so it actually reflects the USA
 	convert rdf_ to entailments
+	Different data format generators
+x	Explanation of FFT, how to filter window or use default
 x	Lightning PDF
 x	O-U into profiles
 x	coefficient of friction to RDF and Corrosion Table, needs units
@@ -39,6 +38,7 @@ x	Remove ref to cryosphere
 x	Req=humanDecision:Allocation,Pub=humanResearch:Publication,Spec=humanDecison:Objective
 x	use realm:Land, realm:Ocean,realm:Atmosphere,realmLandform:Land
 x	river flow current example
+x	use phenAtmo:Thermal, phenAtmo:Weather, phenAtmo:Sunlight
 
 
 

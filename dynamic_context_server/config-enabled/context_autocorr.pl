@@ -397,6 +397,26 @@ model_options([F|R], URI, Opt, Contour)  -->
        ),
    model_options(R, URI, Opt, Contour).
 
+rcontour(Image, X,Y,Z, Contour) -->
+     {
+     Vector range [3.0,6.0]/0.1,
+     r_open_session,
+     y <- Y,
+     x <- X,
+     z <- Z,
+     at <- Vector,
+     r_in( library(lattice) ),
+     dquote(Image, FN),
+     r_in( bmp(filename=FN)),
+     (   Contour = true,
+         r_in( 'contourplot(z~x*y, cuts=10)' )
+     ;
+         r_in( 'levelplot(z~x*y, col.regions=terrain.colors, at=at)' )
+     ),
+     r_print( 'dev.off()' ),
+     r_close
+     },
+     html(img(src(Image))).
 
 
 contour_display(Opt, URI, Contour, Lat, Lon, Info) :-
@@ -406,7 +426,7 @@ contour_display(Opt, URI, Contour, Lat, Lon, Info) :-
 	        Z > 0
 	    ),
 	    L),
-    context_r_demo:xyz(L,[_|DX],[_|DY],[_|DZ]),
+    [[_|DX],[_|DY],[_|DZ]] split L,
     ZZ mapdot log10 ~> DZ,
 
     (	Opt = 'MaxEnt' ->
@@ -470,10 +490,10 @@ contour_display(Opt, URI, Contour, Lat, Lon, Info) :-
                      table([border=0],
                            [tr([th(data),th('marginal PDF model')]),
                             tr([td(
-                                    \(context_r_demo:rcontour('/contour.bmp',DX,DY,ZZ,Contour))
+                                    \(rcontour('/contour.bmp',DX,DY,ZZ,Contour))
                                   ),
                                 td(
-                                    \(context_r_demo:rcontour('/level.bmp',DX,DY,ZM, Contour))
+                                    \(rcontour('/level.bmp',DX,DY,ZM, Contour))
                                   )])]
                           ),
 		    \(con_text:table_multiple_entries(
@@ -599,7 +619,7 @@ collect_info(Lat, Lon, ['U'=URI, 'D'=Df, 'theta'=Lf, 'Q'=Q, 'E'=Err,
         Z > 0
     ),
     L),
-    context_r_demo:xyz(L,[_|DX],[_|DY],[_|_DZ]),
+    [[_|DX],[_|DY],[_|_DZ]] split L,
     generate_model_stats(ou_mixent, URI, N, Df, Lf, DX, DY, Fraction, 0.0, Err),
     Q is (exp(Quality/20/40)-1)*100, !.
 
@@ -615,7 +635,7 @@ collect_info(URI) :-
         Z > 0
     ),
     L),
-    context_r_demo:xyz(L,[_|DX],[_|DY],[_|_DZ]),
+    [[_|DX],[_|DY],[_|_DZ]] split L,
     generate_model_stats(ou_mixent, URI, N, Df, Lf, DX, DY, Fraction, 0.0, Err),
     Q is (exp(Quality/20/40)-1)*100,
     writeln([URI, Lat, Lon, Df, Lf, Fraction, Flatness,  Q, Err]),

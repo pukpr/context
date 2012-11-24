@@ -21,6 +21,8 @@
 :- context:register(context_demos:model_characteristic).
 :- context:register(context_demos:model_values).
 :- context:register(context_demos:model_index).
+:- context:register(context_demos:sos).
+:- context:register(context_demos:sos_config).
 
 
 
@@ -81,9 +83,9 @@ navigate(Request) :-
                      'Random walk example using Google Charts')),
                li(a([href('dygraph'), target(target_iframe)],
                     '2 Random walkers example using Dynagraph')),
-               li(a([href('/context_sos/sos'), target(target_iframe)],
+               li(a([href('sos'), target(target_iframe)],
                    'Random walk example using sum of sines')),
-               li(a([href('/context_sos/sos_config?length=1.0'), target(target_iframe)],
+               li(a([href('sos_config?length=1.0'), target(target_iframe)],
                    'Random walk using sum of sines applied to semi-Markov')),
 	       li(a([href='/context_model/apply?model=Canadian_lakes',
                     target=target_iframe],'Example PDF')),
@@ -799,3 +801,69 @@ model_characteristic(Request) :-
 	     )
        ]
      ).
+
+% --------------------------
+
+generate_random_walk_1(X, Z) :-
+   % Real space
+   linear_range(0, 999, Dx),
+   X mapdot 0.01 .* Dx,
+
+   % Reciprocal space
+   % Create a log frequency range and apply a PSD & Phase
+   % Apply sqrt to intensity density
+   log_range(0.01, 10.0, 0.6, Sx),
+   PSD mapdot power_law_2_pdf(100.0) ~> Sx,
+   Phi mapdot random_phase ~> Sx,
+   Amp mapdot sqrt ~> PSD * Sx,
+   context_sos:sos(X, Sx, Phi, Amp, [], Z).
+
+generate_random_walk_2(Period, X, Z) :-
+   % Real space
+   linear_range(0, 999, Dx),
+   X mapdot 0.01 .* Dx,
+
+   % Reciprocal space
+   builtin_complex(Period, linear, Sx, PSD),
+   Phi mapdot random_phase ~> Sx,
+   Amp mapdot sqrt ~> PSD * Sx,
+   context_sos:sos(X, Sx, Phi, Amp, [], Z).
+
+% param(length, [float]).
+
+sos(Request) :-
+   http_parameters(Request, []),
+   generate_random_walk_1(X, Z),
+   construct_psd(X, Z, '"X, Z\\n"', Out),
+   reply_html_page(% cliopatria(default),
+                   [title('Superposition of sines from PSD'),
+                    \(con_text:style_cliopatria)
+                    % \(context_graphing:dygraph_script_load)
+                   ],
+                   [
+                    \(context_graphing:dygraph_plot( false,
+                                                     '',
+                                                     'x',
+                                                     'z',
+                                                     'Superposition of sines from PSD',
+                                                     Out ))
+                   ]).
+
+sos_config(Request) :-
+   http_parameters(Request, [length(Length, [float])]),
+   generate_random_walk_2(Length, X, Z),
+   construct_psd(X, Z, '"X, Z\\n"', Out),
+   reply_html_page(% cliopatria(default),
+                   [title('Superposition of sines from semi-Markov PSD'),
+                    \(con_text:style_cliopatria)
+                    % \(context_graphing:dygraph_script_load)
+                   ],
+                   [
+                    \(context_graphing:dygraph_plot(false,
+                                                    '',
+                                                    'x',
+                                                    'z',
+                             'Superposition of sines from semi-Markov PSD',
+                                                    Out ))
+                   ]).
+

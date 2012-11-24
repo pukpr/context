@@ -65,7 +65,7 @@ surface(Request) :-
 	        Z > 0
 	    ),
 	    L),
-    context_r_demo:xyz(L,[_|DX],[_|DY],[_|DZ]),
+    [[_|DX],[_|DY],[_|DZ]] split L,
     ZZ mapdot log10 ~> DZ,
     context:max_min(DX, Max_X, Min_X),
     context:max_min(DY, Max_Y, Min_Y),
