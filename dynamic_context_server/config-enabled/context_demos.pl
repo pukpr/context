@@ -12,6 +12,17 @@
 :- context:register(context_demos:dygraph_test).
 :- context:register(context_demos:get_elevation).
 :- context:register(context_demos:complex_psd).
+:- context:register(context_demos:complex_psd_semi_markov).
+:- context:register(context_demos:semi).
+:- context:register(context_demos:semi_fft).
+:- context:register(context_demos:demo).
+:- context:register(context_demos:demo_ou).
+:- context:register(context_demos:model_format).
+:- context:register(context_demos:model_characteristic).
+:- context:register(context_demos:model_values).
+:- context:register(context_demos:model_index).
+
+
 
 :- use_module(context_math).
 
@@ -32,13 +43,13 @@ terrain_selection(Name) -->
          ])])).
 
 
-navigate(_) :-
+navigate(Request) :-
    reply_html_page(
        cliopatria(default),
        [title('Home')],
        [
          \(con_text:table_with_iframe_target(
-                        target_iframe,
+                        Request,
          [
            h2('Query Ontology demos'),
            ul([
@@ -56,15 +67,15 @@ navigate(_) :-
                     'Use R to generate a PSD')),
                li(a([href('complex_psd?length=1.0'), target(target_iframe)],
                     'Built-in PSD')),
-               li(a([href('/context_psd/complex_psd?course=corrugations'),target(target_iframe)],
+               li(a([href('complex_psd_semi_markov?course=corrugations'),target(target_iframe)],
                     'PSD lookup')),
-               li(a([href('/context_random_walk/demo'),target(target_iframe)],
+               li(a([href('demo'),target(target_iframe)],
                     'Classic Random walk example using Dynagraph')),
-               li(a([href('/context_random_walk/demo_ou'), target(target_iframe)],
+               li(a([href('demo_ou'), target(target_iframe)],
                    'Ornstein-Uhlenbeck Random walk example using Dynagraph')),
-               li(a([href('/context_random_walk/semi'), target(target_iframe)],
+               li(a([href('semi'), target(target_iframe)],
                    'Semi-Markov Random walk example using Dynagraph')),
-               li(a([href('/context_random_walk/semi_fft'), target(target_iframe)],
+               li(a([href('semi_fft'), target(target_iframe)],
                    'Semi-Markov Random walk FFT example using Dynagraph')),
                li(a([href('charting'), target(target_iframe)],
                      'Random walk example using Google Charts')),
@@ -78,6 +89,9 @@ navigate(_) :-
                     target=target_iframe],'Example PDF')),
 	       li(a([href='/context_demos/get_elevation?lat=44.0&lon=-120.0',
                     target=target_iframe],'Example Elevation')),
+	       li([\(con_text:gif(workflow)),
+		   a(href('model_index'),
+		     'Invoke a workflow to access model PDF artifacts (experimental)')]),
 
                li(a([href('max_density_example'),target(target_iframe)],   'Query data example')),
                li(a([href('find_wind_ref_example'),target(target_iframe)], 'Query wind reference')),
@@ -88,7 +102,8 @@ navigate(_) :-
                li(a([href('/context_psd_workflow_json/psd_index'),
                      target=target_iframe],
                     'Invoke a workflow to access model PSD artifacts from JSON (deprecated)')),
-               li(a([href('/context_obstacles_csv/navigate'),target=target_iframe],
+               li(a([href('/context_obstacles_csv/navigate'),
+		     target=target_iframe],
 	           'Invoke a workflow to use obstacle artifacts (CSV format deprecated)')),
                li([a(href('/context_ont_utils/navigate'),
                      'Navigate to ontology administration (deprecated)')]),
@@ -516,4 +531,271 @@ complex_psd(Request) :-
                                                       Out ))
                    ]).
 
+complex_psd_semi_markov(Request) :-
+    http_parameters(Request, [course(Course, [])]),
+    F range [0.002, 2.0]/0.002,
+    Out mapdot two_level(Course) ~> F,
+    R tuple F + Out,
+    reply_html_page(% cliopatria(default),
+                   [title('PSD'),
+                   \(con_text:style_cliopatria)],
+                   [
+                     \(context_graphing:dygraph_native( true,
+							['x', 'y'],
+                                                      'wave number',
+                                                      'PSD',
+                                                      'PSD from two-level model',
+                                                      R))
+                   ]).
 
+
+
+% ---------------
+
+semi(_) :-
+    X range [1,32768]/1,
+    Z0 mapdot 0.0 .* X,
+    semi_random_walker(X, 1.2, [18.0,3.0], [2.0,2.0], Z0, Z1),
+    semi_random_walker(X, 0.6, [20.0,20.0], [12.0,12.0], Z1, Z2),
+    semi_random_walker(X, 3.0, [20.0,20.0], [80.0,80.0], Z2, Z3),
+    semi_random_walker(X, 1.0, [200.0,200.0], [800.0,800.0], Z3, Z4),
+    % context_complex:tuple_list(X, Z4, [], Data),
+    % convert X to real scaled value
+    Data tuple X + Z4,
+
+    reply_html_page(% cliopatria(default),
+                    [title('chart'),\(con_text:style_cliopatria)],
+                    [
+                     \(context_graphing:dygraph_native(
+                                            false,
+                                            ['X','Z'],
+                                            'surface distance (m)',
+                                            'elevation change (m)',
+                                            'random walk profile',
+                                            Data ))
+                    ]).
+
+semi_fft(_) :-
+    % X range [1,16384]/1,
+    X range [1,32768]/1,
+    Z0 mapdot 0.0 .* X,
+    %                          L_up L_dn  A_up A_dn
+    semi_random_walker(X, 1.2, [18.0,3.0], [2.0,2.0], Z0, Z1),
+    semi_random_walker(X, 0.6, [20.0,20.0], [12.0,12.0], Z1, Z2),
+    semi_random_walker(X, 3.0, [20.0,20.0], [80.0,80.0], Z2, Z3),
+    semi_random_walker(X, 1.0, [200.0,200.0], [800.0,800.0], Z3, Z4),
+    context_complex:fft_squared([X, Z4], Array),!,
+
+    reply_html_page(% cliopatria(default),
+                    [title('chart'),\(con_text:style_cliopatria)],
+                    [
+                     \(context_graphing:dygraph_native(
+                                            true,
+                                            ['Sx','Sz'],
+                                            'wavenumber (1/m)',
+                                            'PSD (m^2/m)',
+                                            'Semi-Markov random walk FFT PSD',
+                                            Array ))
+                    ]).
+
+% --------------------------------------
+
+demo(_) :-
+    X range [1,2000]/1,
+    context_random_walk:random_walker(X, 0.0, [], Z),
+    reply_html_page(% cliopatria(default),
+                    [title('chart'),\(con_text:style_cliopatria)],
+                    [
+                     \(context_graphing:dygraph_plot(
+                                            false,
+                                            'X,Z',
+                                            'surface distance (m)',
+                                            'elevation change (m)',
+                                            'random walk profile',
+                                            [X,Z] ))
+                    ]).
+
+demo_ou(_) :-
+    X range [1,2000]/1,
+    context_random_walk:ou_random_walker(0.028, 1.0, 0.05, X, Z),
+    reply_html_page(% cliopatria(default),
+                    [title('OU chart'),\(con_text:style_cliopatria)],
+                    [
+                     \(context_graphing:dygraph_plot(
+                                            false,
+                                            'X,Z',
+                                            'surface distance (m)',
+                                            'elevation change (m)',
+                                            'Ornstein-Uhlenbeck random walk profile',
+                                            [X,Z] ))
+                    ]).
+
+
+% ---------------------------------
+
+
+
+model_index(_) :-
+   reply_html_page(
+     cliopatria(default),
+     title('domains'),
+     [h1('Domain Feature'),
+      form([action('model_format')], % target('format')],
+           [
+            select([name('domain')],
+               [option([value('slopes')],['terrain slopes']),
+                option([value('wind')],  [wind]),
+                option([value('lakes')], ['lake sizes']),
+                option([value('particles')],['particle sizes']),
+                option([value('rain')],  [rainfall]),
+                option([value('clutter')],[clutter])]
+            ),
+            br([]),
+            input([type('radio'),name('query_type'),value('pdf')]),b(pdf),
+            input([type('radio'),name('query_type'),value('sample')]),b(sample),
+            br([]),
+            input([type('submit'), value('Select Domain')])
+           ])
+      ]
+     ).
+
+
+model_format(Request) :-
+   http_parameters(Request, [domain(Domain),
+                             query_type(Query)
+                             ],
+                             [attribute_declarations(rdf_load:param)]),
+   Query = pdf,
+   reply_html_page(
+     cliopatria(default),
+     title('format'),
+     [h1('Format'),
+      p(['domain: ', b(Domain)]),
+      p(['query:  ', b(Query)]),
+      form([action('model_characteristic')], % target('characteristic')],
+           [
+            select([name('format')],
+               [option([value('html')],['HTML table']),
+                option([value('xml')],  [xml]),
+                option([value('json')], [json]),
+                option([value('graph')],[graph]),
+                option([value('fmi')],  [fmi])]
+            ),
+            br([]),
+            input([type('checkbox'),name('cdf'),value(true)]),b('Cumulative'),
+            input([type('hidden'),name(domain),value(Domain)]),
+            input([type('hidden'),name(query_type),value(Query)]),
+            input([type('hidden'),name(distribution),value(exponential)]),
+            br([]),
+            input([type('submit'), value('Select PDF Format')])
+           ])
+
+      ]
+     ).
+
+model_format(Request) :-
+   http_parameters(Request, [domain(Domain),
+                             query_type(Query)
+                             ],
+                             [attribute_declarations(param)]),
+   Query = sample,
+   reply_html_page(
+     cliopatria(default),
+     title('format'),
+     [h1('Format'),
+      p(['domain: ', b(Domain)]),
+      p(['query:  ', b(Query)]),
+      form([action('model_characteristic')], % target('characteristic')],
+           [
+            select([name('sampling')],
+               [option([value('single')],['single value']),
+                option([value('range')], ['range values'])]
+            ),
+            input([type('hidden'),name(domain),value(Domain)]),
+            input([type('hidden'),name(query_type),value(Query)]),
+            input([type('hidden'),name(distribution),value(exponential)]),
+            br([]),
+            input([type('submit'), value('Select Sampling Format')])
+           ])
+
+      ]
+     ).
+
+
+model_characteristic(Request) :-
+   http_parameters(Request, [domain(Domain),
+                             query_type(Query),
+                             cdf(CDF),
+                             format(Format),
+                             distribution(Distribution)
+                             ],
+                             [attribute_declarations(param)]),
+   Query = pdf,
+   reply_html_page(
+     cliopatria(default),
+     title('Characteristic'),
+     [table([border=0, width('100%'), height('600')],
+	    [tr([td([width('20%'),height('100%'), valign(top)],
+							       [
+      h1('Characteristic'),
+      p(['domain:       ', b(Domain)]),
+      p(['query:        ', b(Query)]),
+      p(['format:       ', b(Format)]),
+      p(['cumulative:   ', b(CDF)]),
+      p(['distribution: ', b(Distribution)]),
+      form([action('gross_terrain'), target('results')],
+           [
+            input([type('hidden'),name(query_type),value(Query)]),
+            input([type('hidden'),name(mean),value(1.0)]),
+            input([type('hidden'),name(area_scale),value(local)]),
+            input([type('hidden'),name(utm),value("none")]),
+            input([type('hidden'),name(seed),value(1.0)]),
+            br([]),
+            input([type('submit'), value('Generate Distribution')])
+           ])
+				]),
+			     td([iframe([name(results),
+					 width('100%'),
+					 height('100%')
+					],
+					[])])
+			    ]
+			   )
+
+			]
+	   )
+      ]
+     ).
+
+
+model_characteristic(Request) :-
+   http_parameters(Request, [domain(Domain),
+                             query_type(Query),
+                             sampling(Sampling),
+                             distribution(Distribution)
+                             ],
+                             [attribute_declarations(param)]),
+   Query = sample,
+   reply_html_page(
+     cliopatria(default),
+     title('Characteristic'),
+       [table([border=0, width('100%'), height('600')],
+	      [tr([td([width('20%'),height('100%'), valign(top)],
+		      [h1('Characteristic'),
+		       p(['domain:       ', b(Domain)]),
+		       p(['query:        ', b(Query)]),
+		       p(['sampling:     ', b(Sampling)]),
+		       p(['distribution: ', b(Distribution)])
+		      ]
+		     ),
+		   td([iframe([name(results),
+			       width('100%'),
+			       height('100%')
+			      ],
+			      [])])
+		  ]
+		 )
+	      ]
+	     )
+       ]
+     ).

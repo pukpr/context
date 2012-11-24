@@ -19,74 +19,19 @@ get_all_course_files(List) :-
 		rdf(URI, ent:name, literal(Name))
 	    ),
 	    List).
-/*
-navigate(_) :-
-   get_all_course_files(List),
-   reply_html_page(
-       cliopatria(default),
-       [title('CSV files')],
-       [table(
-            [tr(
-                 [td([valign(top), align(left)],
-                      [h1(b(i('Choose Course Profile'))),
-                     form([action('process_profile'), target('results')],
-                          [select([name('file_name')], List),
-                           hr([]),
-                           h2('Evaluate:'),
-                           \(con_text:radio_box_input_two(
-					  'characteristic',
-					  ['power spectral density (PSD)', 'psd'],
-					  ['micro profile', 'profile']
-							 )),
-                           hr([]),
-                           h2('Scaling:'),
-                           \(con_text:radio_box_input_two(
-					  'plot_scaling',
-					  ['log (best for PSD)', 'log'],
-					  ['linear (best for profile)', 'lin'])),
-                           hr([]),
-                           input([type('submit'), value('Plot characteristic')])
-                          ]),
-
-
-                       br([]),'Both CSIR data and a model fit will be plotted.',
-                       br([]),'For a profile, the model is Monte Carlo generated.',
-                       br([]),'For a PSD, the model includes:',
-                       ul([li('a semi-Markov stochastic representation '),
-                           li('a windowed FFT of the Monte Carlo profile.')]),
-
-                       iframe([name('target_iframe'),
-                             width(300),
-                             height(200)
-                            ], [p(status)])
-                      ]
-                   ),
-                 td([iframe([name('results'),
-                             align('right'),
-                             width(700),
-                             height(700)
-                            ], [p(status)])])
-                ]
-               )
-            ]
-             )
-       ]
-                  ).
-
-*/
 
 navigate(Request) :-
    get_all_course_files(List),
    reply_html_page(
        cliopatria(default),
-       [title('CSV files')],
+       [title('Course daya sets')],
        [
 	\(con_text:table_with_iframe_target(
 		       Request,
 			[h1(b(i('Choose Course Profile'))),
 			 form([action('process_profile'), target('target_iframe')],
                           [select([name('file_name')], List),
-                           hr([]),
+			   input([type('submit'), value('Plot characteristic')]),
                            h2('Evaluate:'),
                            \(con_text:radio_box_input_two(
 					  'characteristic',
@@ -99,8 +44,8 @@ navigate(Request) :-
 					  'plot_scaling',
 					  ['log (best for PSD)', 'log'],
 					  ['linear (best for profile)', 'lin'])),
-                           hr([]),
-                           input([type('submit'), value('Plot characteristic')])
+                           hr([])
+                           % input([type('submit'), value('Plot characteristic')])
                           ]),
 			 \(render_iframe(render) )
 
@@ -209,10 +154,8 @@ process_profile(Request) :-
    reply_html_page([title('terrain profile')],
                    [
                     dl([b(dt('Data')),dd(U),
-                        b(dt('X units')),dd(X),
-                        b(dt('Z units')),dd(Z),
-                        b(dt('Latitude')),dd(Lat),
-                        b(dt('Longitude')),dd(Lon),
+                        b(dt('X units / Z units')),dd([X, ' / ', Z]),
+                        b(dt('Latitude / Longitude')),dd([Lat, ' / ', Lon]),
                         b(dt('Components')),dd(
                                                 \(con_text:space_list(Model_List))
                                               )
@@ -231,19 +174,6 @@ process_profile(Request) :-
 						      Profile))
                    ]).
 
-
-
-/*
-semi_markov_model(List, 50, XV, SX, Filtered) :-
-    W mapdot 0.0 .* XV,
-    semi_markov_model_component(List, XV, W, Model), !,
-    Filtered mapdot Model * (sync(0.02677) ~> SX).
-semi_markov_model(List, 40, XV, SX, Filtered) :-
-    W mapdot 0.0 .* XV,
-    semi_markov_model_component(List, XV, W, Model), !,
-    Filtered mapdot Model * (hat(0.064) ~> SX).
-
-*/
 
 
 

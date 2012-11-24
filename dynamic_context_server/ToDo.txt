@@ -1,11 +1,11 @@
-	Lightning PDF
+W	EMI links for Rockwell
+W	Deliver buoyancy model
+W	Index the papers for PDF
+W	Set up a rainfall drop distro too
+	add defaults to radio buttons
 	Aquatic wave height model, plus connection to Sea-State, significant wave height
-	O-U into profiles
 	Particle size Monte-Carlo, TOPS has particle size classes
-	Set up a rainfall drop distro too
-x	Wavevector frequency PDF model
 	Calibrate corrosive model
-	Index the papers for PDF
 	Units page for resources, use repr:sciUnits
 	Map with refresh that shows explanation and Google Maps
 	Index models to SWEET terms, use capital letters for terminology
@@ -13,31 +13,32 @@ x	Wavevector frequency PDF model
 	ENT classification system tied to SWEET
 	Each entry should have short narrative
 	Add browser tree to individual features
-	Deliver buoyancy model
-x	Correct Map locations, do it for corrosion in spain
-x	Create a few Python tests
 	Collect all XLS and PPT files
-	Remove ref to cryosphere
-	Req=humanDecision:Allocation, Pub=humanResearch:Publication, Spec=humanDecison:Objective
-	use realm:Land, realm:Ocean, realm:Atmosphere, realmLandform:Land
 	use phenAtmo:Thermal, phenAtmo:Weather, phenAtmo:Sunlight
 	Thermal heat sink model
-x	Complete GPS example
 	Different data format generators
 	Semi-Markov sync function to scale
 	Context R should be split out, use the XYZ untuple call
-x	Do humid storage which is linked to requirements
-x	Use same_length predicate
 	Explanation of FFT, how to filter window or use default
 	context_solar, planck's law
-x	entroplet.com/terms# --> rdf_server in html/data.ttl
-	river flow current example
-x	coefficient of friction to RDF and Corrosion Table, needs units
 	Dimensions need more granular ranges, not micron with meters
-	EMI links for Rockwell
 	Cloud has land plus ocean.
 	Have to fix the slopes so it actually reflects the USA
 	convert rdf_ to entailments
+x	Lightning PDF
+x	O-U into profiles
+x	coefficient of friction to RDF and Corrosion Table, needs units
+x	Do humid storage which is linked to requirements
+x	Use same_length predicate
+x	Complete GPS example
+x	Wavevector frequency PDF model
+x	Correct Map locations, do it for corrosion in spain
+x	Create a few Python tests
+x	entroplet.com/terms# --> rdf_server in html/data.ttl
+x	Remove ref to cryosphere
+x	Req=humanDecision:Allocation,Pub=humanResearch:Publication,Spec=humanDecison:Objective
+x	use realm:Land, realm:Ocean,realm:Atmosphere,realmLandform:Land
+x	river flow current example
 
 
 

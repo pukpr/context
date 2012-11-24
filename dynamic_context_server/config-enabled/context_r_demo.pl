@@ -17,10 +17,6 @@
 
 :- context:register(context_r_demo:r_app).
 
-% :- http_handler(root(r_app), rcplx, []).
-% :- U = 'complex_psd', http_handler(root(U), U, []).
-
-
 xy([], Xc, X, Yc, Y) :- reverse(Xc, X), reverse(Yc, Y).
 xy([[X,Y]|Rest], Ix, Xc, Iy, Yc) :-
     xy(Rest, [X|Ix], Xc, [Y|Iy], Yc).

@@ -109,7 +109,7 @@
 	ent:label_y "elevation" ;
 	ent:lat -25.7513 ;
 	ent:lon 28.01197 ;
-	ent:model "[rock_roughness]" ;
+	ent:model "[rock_roughness_ou]" ;
 	ent:name "Rough_Track_Rock_Bed" ;
 	ent:src_file "Rough_Track_Rock_Bed.mat" ;
 	ent:title "CSIR track profile, Rock Bed" ;

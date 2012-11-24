@@ -125,21 +125,22 @@ rdf_(atmospheric, child, particulates).
 rdf_(particulates, child, 'particle size').
 rdf_(particulates, child, 'particle density').
 rdf_(atmospheric, child, 'EMI').
-rdf_('EMI', child, 'external EM').
-rdf_('EMI', child, 'induced EM').
+% rdf_('EMI', child, 'external EM').
+% rdf_('EMI', child, 'induced EM').
 rdf_('EMI', child, 'EMI clutter').
-rdf_('external EM', child, 'RF EM').
-rdf_('external EM', child, 'EM pulse').
-rdf_('external EM', child, 'lightning effects').
-rdf_('external EM', child, 'high power microwave').
-rdf_('external EM', child, 'electrostatic discharge').
-rdf_('external EM', child, 'internally generated EM energy').
-
+rdf_('EMI', child, 'RF EM').
+rdf_('EMI', child, 'EM pulse').
+rdf_('EMI', child, 'lightning effects').
+rdf_('EMI', child, 'microwave').
+rdf_('EMI', child, 'ESD').
+rdf_('EMI', child, 'internal EM energy').
+/*
 rdf_('induced EM', child, 'conducted susceptibility, RF').
 rdf_('induced EM', child, 'conducted susceptibility, bulk cable').
 rdf_('induced EM', child, 'conducted susceptibility, transients').
 rdf_('induced EM', child, 'radiated susceptibility, EF').
 rdf_('induced EM', child, 'radiated susceptibility, EMP').
+*/
 
 rdf_(context, comment, 'This hierachy describes the categorization of models considered for the context library.').
 
@@ -511,16 +512,195 @@ rdf_(ent:physicalConstants, ent:faradaysConstant, 96485.3383*coulombs/mol).
 rdf_(ent:physicalConstants, ent:dielectricConstant, 8.854187e-12*fd/m).
 rdf_(ent:physicalConstants, ent:speedLight, 3.0e8*m/s).
 
+% ------------- SemiMarkov
+
+rdf_(corrugations, alpha1, 1.0).
+rdf_(corrugations, l1, 5.0).
+rdf_(corrugations, alpha2, 1.0).
+rdf_(corrugations, l2, 27.5).
+rdf_(corrugations, weight, 1.0).
+
 /*
-rdf_('allegheny', ent:river, [0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 1, 8, 101, 363, 556, 555, 560, 609, 632, 693, 761, 937, 978, 984, 775, 941, 864, 784, 662, 602, 416, 289, 168, 141, 59, 36, 10, 2, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0]).
-rdf_('arkansas', ent:river, [0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 6, 50, 40, 137, 29, 36, 50, 10, 4, 2, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0]).
-rdf_('chattooga', ent:river, [0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 2, 71, 616, 1987, 3304, 3425, 3064, 2555, 2345, 2150, 1971, 1577, 1197, 944, 712, 415, 337, 222, 147, 120, 85, 54, 36, 27, 16, 8, 4, 2, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0]).
-rdf_('hudson', ent:river, [0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 2, 2, 1, 11, 9, 32, 58, 180, 392, 768, 1170, 1970, 3086, 4431, 4819, 4367, 3944, 3422, 3027, 2399, 1644, 1158, 721, 335, 109, 29, 7, 2, 2, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0]).
-rdf_('merrimack', ent:river, [0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 6, 31, 64, 121, 159, 174, 347, 671, 1283, 1849, 2251, 2473, 2742, 3044, 3109, 3131, 2607, 2319, 2057, 1601, 1086, 754, 413, 154, 38, 11, 8, 3, 1, 1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0]).
-rdf_('mississippi', ent:river, [0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 4, 7, 123, 380, 1162, 2627, 5230, 6138, 6834, 7081, 6424, 6320, 4547, 3598, 2559, 1248, 424, 100, 7, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0]).
-rdf_('mississippi_anoka', ent:river, [0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 6, 59, 199, 549, 565, 885, 1316, 2186, 2674, 3810, 3697, 3164, 2801, 2101, 1728, 1496, 1108, 669, 338, 146, 44, 26, 5, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0]).
-rdf_('ohio', ent:river, [0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 3, 22, 109, 160, 328, 661, 1263, 1838, 2776, 3023, 2845, 2641, 2775, 2472, 2331, 2152, 2101, 1837, 1003, 296, 17, 15, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0]).
-rdf_('salt', ent:river, [0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 40, 343, 799, 1853, 4069, 5350, 3824, 2619, 2268, 1945, 1550, 1335, 1237, 1007, 864, 804, 709, 521, 429, 258, 124, 82, 32, 24, 16, 10, 16, 7, 5, 2, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0]).
-rdf_('stcroix', ent:river, [0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 1, 52, 286, 636, 1879, 2708, 2447, 1589, 1141, 787, 533, 502, 409, 341, 237, 149, 87, 44, 18, 5, 2, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0]).
-rdf_('umpqua', ent:river, [0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 312, 2409, 4540, 4164, 2242, 1668, 1750, 1997, 2384, 2597, 2765, 2646, 2330, 1896, 1552, 952, 636, 452, 285, 188, 99, 70, 21, 20, 7, 0, 1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0]).
+rdf_(gero_corrugations, alpha1, 0.01).
+rdf_(gero_corrugations, l1, 0.11).
+rdf_(gero_corrugations, alpha2, 0.01).
+rdf_(gero_corrugations, l2, 0.605).
+rdf_(gero_corrugations, weight, 0.01).
 */
+
+rdf_(gero_corrugations, alpha1, 0.02).
+rdf_(gero_corrugations, l1, 0.11).
+rdf_(gero_corrugations, alpha2, 0.02).
+rdf_(gero_corrugations, l2, 0.61).
+rdf_(gero_corrugations, weight, 0.01).
+
+rdf_(gero_corrugations_r, alpha1, 40.0).
+rdf_(gero_corrugations_r, l1, 0.0).
+rdf_(gero_corrugations_r, alpha2, 40.0).
+rdf_(gero_corrugations_r, l2, 0.0).
+rdf_(gero_corrugations_r, weight, 0.005).
+
+rdf_(gero_corrugations_s, alpha1, 0.3).
+rdf_(gero_corrugations_s, l1, 0.3).
+rdf_(gero_corrugations_s, alpha2, 0.3).
+rdf_(gero_corrugations_s, l2, 0.315).
+rdf_(gero_corrugations_s, weight, 0.002).
+
+rdf_(gero_corrugations_x, alpha1, 0.009).
+rdf_(gero_corrugations_x, l1, 0.009).
+rdf_(gero_corrugations_x, alpha2, 0.009).
+rdf_(gero_corrugations_x, l2, 0.009).
+rdf_(gero_corrugations_x, weight, 0.003).
+
+
+rdf_(gero_belgian, alpha1, 0.0133).
+rdf_(gero_belgian, l1, 0.13).
+rdf_(gero_belgian, alpha2, 0.0133).
+rdf_(gero_belgian, l2, 0.02).
+rdf_(gero_belgian, weight, 0.006).
+
+rdf_(gero_belgian_1, alpha1, 0.08).
+rdf_(gero_belgian_1, l1, 0.133).
+rdf_(gero_belgian_1, alpha2, 0.08).
+rdf_(gero_belgian_1, l2, 0.133).
+rdf_(gero_belgian_1, weight, 0.003).
+
+rdf_(gero_belgian_2, alpha1, 0.54).
+rdf_(gero_belgian_2, l1, 0.133).
+rdf_(gero_belgian_2, alpha2, 0.54).
+rdf_(gero_belgian_2, l2, 0.133).
+rdf_(gero_belgian_2, weight, 0.005).
+
+rdf_(gero_belgian_3, alpha1, 5.4).
+rdf_(gero_belgian_3, l1, 0.133).
+rdf_(gero_belgian_3, alpha2, 5.4).
+rdf_(gero_belgian_3, l2, 0.133).
+rdf_(gero_belgian_3, weight, 0.005).
+
+
+rdf_(gero_fatigue, alpha1, 0.75).
+rdf_(gero_fatigue, l1, 0.5).
+rdf_(gero_fatigue, alpha2, 0.75).
+rdf_(gero_fatigue, l2, 0.5).
+rdf_(gero_fatigue, weight, 0.015). %
+
+rdf_(gero_fatigue_s, alpha1, 1.4).
+rdf_(gero_fatigue_s, l1, 2.0).  %2x
+rdf_(gero_fatigue_s, alpha2, 0.04).
+rdf_(gero_fatigue_s, l2, 0.2).
+rdf_(gero_fatigue_s, weight, 0.012).
+
+rdf_(gero_fatigue_p, alpha1, 0.04).
+rdf_(gero_fatigue_p, l1, 0.2).
+rdf_(gero_fatigue_p, alpha2, 1.4).
+rdf_(gero_fatigue_p, l2, 2.0).
+rdf_(gero_fatigue_p, weight, 0.012).
+
+rdf_(gero_fatigue_x, alpha1, 0.006).
+rdf_(gero_fatigue_x, l1, 0.008).
+rdf_(gero_fatigue_x, alpha2, 0.006).
+rdf_(gero_fatigue_x, l2, 0.008).
+rdf_(gero_fatigue_x, weight, 0.01). %
+
+rdf_(gero_fatigue_r, alpha1, 10.0).
+rdf_(gero_fatigue_r, l1, 0.0).
+rdf_(gero_fatigue_r, alpha2, 10.0).
+rdf_(gero_fatigue_r, l2, 0.0).
+rdf_(gero_fatigue_r, weight, 0.015).
+
+/*
+rdf_(gero_pothole, alpha1, 0.1). %1.5
+rdf_(gero_pothole, l1, 0.9). %7.5
+rdf_(gero_pothole, alpha2, 0.1). % 0.02
+rdf_(gero_pothole, l2, 0.9).
+rdf_(gero_pothole, weight, 0.06).
+*/
+rdf_(gero_pothole, alpha1, 1.5). %1.5
+rdf_(gero_pothole, l1, 7.5). %7.5
+rdf_(gero_pothole, alpha2, 0.03). % 0.02
+rdf_(gero_pothole, l2, 0.57).  % 0.55
+rdf_(gero_pothole, weight, 0.05).
+
+rdf_(gero_pothole_r, alpha1, 40.0).
+rdf_(gero_pothole_r, l1, 0.0).
+rdf_(gero_pothole_r, alpha2, 40.0).
+rdf_(gero_pothole_r, l2, 0.0).
+rdf_(gero_pothole_r, weight, 0.01).
+
+rdf_(gero_pothole_s, alpha1, 5.0).
+rdf_(gero_pothole_s, l1, 1.0).
+rdf_(gero_pothole_s, alpha2, 5.0).
+rdf_(gero_pothole_s, l2, 1.0).
+rdf_(gero_pothole_s, weight, 0.005).
+
+rdf_(gero_pothole_x, alpha1, 0.5).
+rdf_(gero_pothole_x, l1, 0.1).
+rdf_(gero_pothole_x, alpha2, 0.5).
+rdf_(gero_pothole_x, l2, 0.1).
+rdf_(gero_pothole_x, weight, 0.002).
+
+
+rdf_(mercedes_benz, alpha1, 0.0133).
+rdf_(mercedes_benz, l1, 0.13).
+rdf_(mercedes_benz, alpha2, 0.0133).
+rdf_(mercedes_benz, l2, 0.02).
+rdf_(mercedes_benz, weight, 0.002).
+
+rdf_(mercedes_benz_2, alpha1, 0.54).
+rdf_(mercedes_benz_2, l1, 0.133).
+rdf_(mercedes_benz_2, alpha2, 0.54).
+rdf_(mercedes_benz_2, l2, 0.133).
+rdf_(mercedes_benz_2, weight, 0.002).
+
+rdf_(mercedes_benz_3, alpha1, 20.0).
+rdf_(mercedes_benz_3, l1, 0.133).
+rdf_(mercedes_benz_3, alpha2, 20.0).
+rdf_(mercedes_benz_3, l2, 0.133).
+rdf_(mercedes_benz_3, weight, 0.015).
+
+
+
+
+rdf_(mn_big_ravines, alpha1, 2000.0).
+rdf_(mn_big_ravines, l1, 800.0).
+rdf_(mn_big_ravines, alpha2, 80.0).
+rdf_(mn_big_ravines, l2, 80.0).
+rdf_(mn_big_ravines, weight, 8.0).
+
+rdf_(mn_small_ravines, alpha1, 500.0).
+rdf_(mn_small_ravines, l1, 200.0).
+rdf_(mn_small_ravines, alpha2, 20.0).
+rdf_(mn_small_ravines, l2, 20.0).
+rdf_(mn_small_ravines, weight, 8.0).
+
+rdf_(mn_roughness, alpha1, 30.0).
+rdf_(mn_roughness, l1, 2.0).
+rdf_(mn_roughness, alpha2, 30.0).
+rdf_(mn_roughness, l2, 10.0).
+rdf_(mn_roughness, weight, 0.5).
+
+
+rdf_(ou_roughness, alpha1, 71.5).
+rdf_(ou_roughness, l1, 0.0).
+rdf_(ou_roughness, alpha2, 71.5).
+rdf_(ou_roughness, l2, 0.0).
+rdf_(ou_roughness, weight, 50.0).
+
+rdf_(sm_roughness, alpha1, 71.5).
+rdf_(sm_roughness, l1, 0.0).
+rdf_(sm_roughness, alpha2, 71.5).
+rdf_(sm_roughness, l2, 0.0).
+rdf_(sm_roughness, weight, 1.0).
+
+
+rdf_(rock_roughness_semi, alpha1, 0.5).
+rdf_(rock_roughness_semi, l1, 0.0).
+rdf_(rock_roughness_semi, alpha2, 0.5).
+rdf_(rock_roughness_semi, l2, 0.0).
+rdf_(rock_roughness_semi, weight, 0.1).
+
+rdf_(rock_roughness_ou, diffusion, 0.0002).
+rdf_(rock_roughness_ou, drag, 0.01).
+rdf_(rock_roughness_ou, spacing, 1.0).
+rdf_(rock_roughness_ou, weight, 1.0).
+

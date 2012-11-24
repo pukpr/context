@@ -33,9 +33,6 @@ workflows(Request) :-
                                  a([href='/context_model/navigate'],
                                    'Invoke workflow to access PDF models')]),
                              li([\(con_text:gif(workflow)),
-                                 a(href('/context_pdf_workflow/model_index'),
-                                   'Invoke a workflow to access model PDF artifacts (experimental)')]),
-                             li([\(con_text:gif(workflow)),
                                  'Example workflow artifact:'])
                             ]),
                          \(context_pdf:example)
