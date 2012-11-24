@@ -51,7 +51,7 @@ plot(Request) :-
 			      limit(Limit, [number]),
                               t_units(TUnits, []),
                               h_units(HUnits, []),
-                              evaluate(Characteristic, [])]),
+                              evaluate(Characteristic, [default(heat)])]),
 
     context_units:convert(0.01*day, T1*TUnits, T1),
     context_units:convert(100.0*day, T2*TUnits, T2),

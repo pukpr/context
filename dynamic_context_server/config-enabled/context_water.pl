@@ -106,7 +106,7 @@ navigate(Request) :-
 			  input([type('text'),
 				 name('mass'),
 				 size(6),
-				 value('3')]),
+				 value('3000')]),
 			  select([name('m_units')], Munits),
 			  input([type('text'),
 				 name('volume'),
@@ -147,7 +147,7 @@ plot(Request) :-
                               m_units(MUnits, []),
                               v_units(VUnits, []),
                               v_units(TUnits, []),
-                              evaluate(Characteristic, [])]),
+                              evaluate(Characteristic, [default(salt)])]),
 
     Density is Mass/Volume,
     H range [0.0, 100.0]/1.0*TUnits,
@@ -171,6 +171,6 @@ plot(Request) :-
                     [
 		     \(context_graphing:dygraph_native(Kind, [X, Y1, Y2],
 						       [X,XUnits], ['density',YUnits],
-						       'plot_title', Data))
+						       'DEnsity', Data))
                     ]
 		  ).

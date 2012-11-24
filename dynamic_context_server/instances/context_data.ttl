@@ -3,14 +3,14 @@
 @prefix owl: <http://www.w3.org/2002/07/owl#> .
 
 ent:conus
-	a 			ent:locale;
+	a			ent:locale;
 	ent:nickname		"conus";
 	ent:property		ent:terrain_slopes;
 	ent:characterization	ent:conus_terrain_slope_distro
 	.
 
 ent:terrain_slopes
-	a 			ent:property;
+	a			ent:property;
 	ent:nickname		"terrain_slopes";
 	ent:characterized_by	ent:pdf_distribution
 	.
@@ -23,14 +23,14 @@ ent:terrain_slope_distribution
 
 ent:conus_terrain_slope_distro
 	a			ent:terrain_slope_distribution;
-        ent:mean		1.0;
+        ent:mean		0.039;
 	ent:distribution_type	"besselk1";
-	ent:min_extent		0.1;
-	ent:max_extent		10000.0;
+	ent:min_extent		0.01;
+	ent:max_extent		100.0;
 	ent:interval_size	"0.1/decade";
 	ent:x_axis		"rise/run";
 	ent:title		"slope distribution over continental USA";
 	ent:logarithmic		"true";
 	ent:monte_carlo_model	"true"
 	.
-	
+

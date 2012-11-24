@@ -21,12 +21,13 @@ param(query_type, [oneof(['pdf',  'sample']),
 param(utm, [optional(true)]).
 param(seed, [optional(true)]).
 param(plot_scaling, [oneof([log, lin]),
-                     default(log)]).
+                     default(lin)]).
 param(plot_type, [oneof([dynamic, scatter]),
                      default(dynamic)]).
 param(file_name, []).
 param(data_set, []).
-param(characteristic, [profile, psd]).
+param(characteristic, [oneof([profile, psd]),
+		       default(profile)]).
 
 
 

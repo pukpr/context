@@ -94,8 +94,10 @@ sampling_power_law(Median,_,V) :-
 */
 
 sample_from_pdf(besselk1, Mean, 1, X, Title, _) :-
-    Sampling mapdot power_law_2_sampling(Mean) ~> [1],
-    reply_html_page([title('Power Law Sampling')],
+    % Sampling mapdot power_law_2_sampling(Mean) ~> [1],
+    besselk0_sqrt(Mean,sample, _, Sampling),
+    reply_html_page([title('Power Law Sampling'),
+		     \(con_text:style)],
                    [
                     table([tr([th(Title)]),
                            tr([td(Sampling),td(X)])
@@ -105,9 +107,11 @@ sample_from_pdf(besselk1, Mean, 1, X, Title, _) :-
 
 sample_from_pdf(besselk1, Mean, Quantity, X_Axis, Title, _Log) :-
     X_array range [1,Quantity]/1,
-    Sampling mapdot power_law_2_sampling(Mean) ~> X_array,
-    reply_html_page(cliopatria(default),
-                   [title('Power Law Sampling')],
+    % Sampling mapdot power_law_2_sampling(Mean) ~> X_array,
+    Sampling mapdot besselk0_sqrt(Mean,sample) ~> X_array,
+    reply_html_page(% cliopatria(default),
+                   [title('Power Law Sampling'),
+		    \(con_text:style)],
                    [
                     \(context_graphing:dygraph_plot(
                                            true,
@@ -150,7 +154,8 @@ process(Property_Nickname, Locale_Nickname, Operation*Quantity) :-
     rdfx(Distro, ent:title, Title),
     rdfx(Distro, ent:logarithmic, Log),
     atom_concat(D, '/decade', Delta),
-    print(user_error, ['decade',D]),
+    print(user_error, ['decade',D]),!,
+    r_open_session,
 
     (    % A select alternative mode
     Operation = graph ->   plot_pdf(Type, Mean, Min, Max, 0.1, X, Title, Log);
@@ -161,7 +166,8 @@ process(Property_Nickname, Locale_Nickname, Operation*Quantity) :-
     Operation = codegen -> reply_html_page([title('Context')],[p('under construction')]);
 
     Operation = map ->     plot_directed_graph
-    ).
+    ),
+    r_close.
 
 
 process(Request) :-
@@ -173,18 +179,20 @@ process(Request) :-
 
 
 loglin(Request) :-
-    http_parameters(Request, [loglin(Loglin, [boolean])]),
+    http_parameters(Request, [loglin(Loglin, [boolean,
+					      default(true)])]),
     retractall(log_scale(_)),
     asserta(log_scale(Loglin)),
     check_log(Loglin, OutputLogical, _OutputNumeric),
-    Mean = 1.0,
+    Mean = 0.039,
     Delta = 0.5,
-    Min = 0.1,
-    Max = 10000.0,
+    Min = 0.01,
+    Max = 10.0,
     Power is 1.0/(1.0-Delta),
     Range range [Min,Max]^Power,
     X = 'rise/run',
-    PDF mapdot power_law_2_pdf(Mean) ~> Range,
+    % PDF mapdot power_law_2_pdf(Mean) ~> Range,
+    PDF mapdot besselk0_sqrt(Mean,pdf) ~> Range,
     reply_html_page([title('slopes'),
                      \(con_text:style)],
                     [
@@ -217,8 +225,9 @@ generate_service(Request) :-
 
 example -->
        html(
-	   \(con_text:table_form('What artifacts are available? >> ',
-                              '/context_pdf/process',
+	   \(con_text:table_form_target('What artifacts are available? >> ',
+					'/context_pdf/process',
+					'_blank',
                               [['locale', 'conus'],
                                ['property', 'terrain_slopes'],
                                ['operation', 'graph'],

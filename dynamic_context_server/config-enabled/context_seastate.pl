@@ -49,10 +49,10 @@ check_margin(Z, Limit, 'Margin failed') :-
     Last < Limit,
 check_margin(_Z, _Limit, 'Margin OK').
 
-find_cumulative_point(Variant, [F*m|_], Input, Output) :-
+find_cumulative_point(Variant, [F*_|_], Input, Output) :-
     F > Variant,
     !, reverse(Input, Output).
-find_cumulative_point(Variant, [F*m|R], Input, Output) :-
+find_cumulative_point(Variant, [F*_|R], Input, Output) :-
     % atom_number(F, N),
     !, find_cumulative_point(Variant, R, [F|Input], Output).
 
@@ -61,13 +61,15 @@ find_cumulative_point(Variant, [F*m|R], Input, Output) :-
 plot(Request) :-
     http_parameters(Request, [kind(Kind, []),
 			      limit(Limit, [atom]),
-                              l_units(LUnits, []),
-                              evaluate(Characteristic, [])]),
+                              l_units(LUnits, [atom]),
+                              evaluate(Characteristic, [default(atlantic)])]),
 
-    sea_state_high(Limit, High*LUnits),
-    sea_state_low(Limit, Low*LUnits),
+    sea_state_high(Limit, High*m),
+    sea_state_low(Limit, Low*m),
     context_units:convert(0.01*m, H1*LUnits, H1),
-    context_units:convert(20.0*m, H2*TUnits, H2),
+    context_units:convert(20.0*m, H2*LUnits, H2),
+    context_units:convert(Low*m, H1*LUnits, Lo),
+    context_units:convert(High*m, H2*LUnits, Hi),
 
     H range [H1, H2]^0.9*LUnits,
     (
@@ -81,8 +83,8 @@ plot(Request) :-
 	 Z mapdot waveHeight(cdf, 0.5, 1.0) ~> H
     ),
     %  switch this to get info
-    find_cumulative_point(Low, H, [], H_low),
-    find_cumulative_point(High, H, [], H_high),
+    find_cumulative_point(Lo, H, [], H_low),
+    find_cumulative_point(Hi, H, [], H_high),
     % Margins1 mapdot 0.0 ~> Z,
     % Margins2 mapdot 0.1 ~> Z,
 
@@ -99,8 +101,8 @@ plot(Request) :-
     Y = 'Cumulative Probability',
     YL = 'Sea State Limit Low',
     YH = 'Sea State Limit High',
-    XUnits = TUnits,
-    YUnits = LUnits,
+    XUnits = LUnits,
+    YUnits = 'fraction',
     reply_html_page([title('Sea State at Wave Height'),
                      \(con_text:style)],
                     [

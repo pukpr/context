@@ -148,8 +148,8 @@ besselk0_sqrt(Mean, cdf, X, Y) :-
     Output <- output,
     Y is Input*Output.
 
-besselk0_sqrt(Mean, sample, X, Sample) :-
-    var(X),
+besselk0_sqrt(Mean, sample, _X, Sample) :-
+    % var(X),
     random(R1),
     random(R2),
     Sample is Mean * log(R1) * log(R2).

@@ -84,7 +84,7 @@ plot(Request) :-
 			      limit(Limit, [number]),
                               t_units(TUnits, []),
                               l_units(LUnits, []),
-                              evaluate(Characteristic, [])]),
+                              evaluate(Characteristic, [default(rural)])]),
 
     context_units:convert(0.01*yr, T1*TUnits, T1),
     context_units:convert(100.0*yr, T2*TUnits, T2),

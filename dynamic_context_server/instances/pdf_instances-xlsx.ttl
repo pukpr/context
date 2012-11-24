@@ -66,9 +66,21 @@ ent:Canadian_lakes a rdfs:Resource ;
 	ent:min_extent "0.0010"^^xsd:double ;
 	ent:max_extent "10000.0"^^xsd:double .
 
-ent:World_clouds a rdfs:Resource ;
-	ent:model "World_clouds" ;
+ent:Ocean_clouds a rdfs:Resource ;
+	ent:model "Ocean_clouds" ;
 	ent:locale ent:Atlantic ;
+	ent:characteristic "cloudArea" ;
+	ent:title "cloud area distribution" ;
+	ent:x_axis "m^2" ;
+	ent:pdf "1.0*power_law_2(1.0,Dist)" ;
+	ent:moments "[median]" ;
+	ent:interval "1.1"^^xsd:double ;
+	ent:min_extent "0.0010"^^xsd:double ;
+	ent:max_extent "1000.0"^^xsd:double .
+
+ent:Land_clouds a rdfs:Resource ;
+	ent:model "Land_clouds" ;
+	ent:locale ent:CONUS ;
 	ent:characteristic "cloudArea" ;
 	ent:title "cloud area distribution" ;
 	ent:x_axis "m^2" ;

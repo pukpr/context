@@ -3,16 +3,12 @@ W	Deliver buoyancy model
 W	Index the papers for PDF
 W	Set up a rainfall drop distro too
 W	Collect all XLS and PPT files
-	Context R should be split out, use the XYZ untuple call
 	Search on all models
 	Map with refresh that shows explanation and Google Maps
-	Add defaults to radio buttons
-	Cloud has land plus ocean.
 	Aquatic wave height model, plus connection to Sea-State, significant wave height
 	Particle size Monte-Carlo, TOPS has particle size classes
 	Calibrate corrosive model
 	Units page for resources, use repr:sciUnits
-	Dimensions need more granular ranges, not micron with meters
 	Index models to SWEET terms, use capital letters for terminology
 	ENT classification system tied to SWEET
 	Each entry should have short narrative
@@ -20,9 +16,10 @@ W	Collect all XLS and PPT files
 	Thermal heat sink model
 	Semi-Markov sync function to scale
 	context_solar, planck's law
-	Have to fix the slopes so it actually reflects the USA
 	convert rdf_ to entailments
 	Different data format generators
+x	Add defaults to radio buttons
+x	Have to fix the slopes so it actually reflects the USA
 x	Explanation of FFT, how to filter window or use default
 x	Lightning PDF
 x	O-U into profiles
@@ -39,6 +36,8 @@ x	Req=humanDecision:Allocation,Pub=humanResearch:Publication,Spec=humanDecison:O
 x	use realm:Land, realm:Ocean,realm:Atmosphere,realmLandform:Land
 x	river flow current example
 x	use phenAtmo:Thermal, phenAtmo:Weather, phenAtmo:Sunlight
+x	Context R should be split out, use the XYZ untuple call
+x	Cloud has land plus ocean.
 
 
 
@@ -49,6 +48,7 @@ general work
 	switch graphs to native format whenever possible
 	Use target=_parent or target=_top
 	hover on various links
+	Dimensions need more granular ranges, not micron with meters
 
 
 
@@ -66,10 +66,10 @@ if time available
 	Add average elevation to DEM
 	ID does not exist warning
 	Concat obstacles
+	Math representation for obstacles
 	Error margins on graphs
 	Auto-completion
 	Random number session seed
-	Math representation for obstacles
 	Altitude/pressure graph
 	FFT on SOS
 	shaded-relief, geohack
