@@ -90,10 +90,16 @@ ref_m('references',     category, 'humanDecision:Allocation').
 ref_m('references',     category, 'humanDecision:Objective').
 ref_m('references',     category, 'repr:Knowledge').
 
-ref_m('map',     model, '/context_map/search').
+ref_m('map',     model, '/context_map/navigate').
 ref_m('map',     target_iframe, '/html/map.html').
 ref_m('map',     category, 'realmLandform:LandRegion').
 ref_m('map',     category, 'reprDataServiceGeospatial:WebFeatureServer').
+
+ref_m('query',     model, '/context_query/navigate').
+ref_m('query',     target_iframe, '/html/query.html').
+ref_m('query',     category, 'reprDataServiceGeospatial:WebFeatureServer').
+ref_m('query',     category, 'reprDataService:DataService').
+ref_m('query',     category, 'repr:Knowledge').
 
 ref_m('resources',     model, '/context_resources/navigate').
 ref_m('resources',     target_iframe, '/html/resources.html').
@@ -103,7 +109,7 @@ ref_m('resources',     category, 'phenAtmo:Weather').
 ref_m('resources',     category, 'repr:sciUnits').
 ref_m('resources',     category, 'reprDataService:DataService').
 
-ref_m('workflow',     model, '/context_workflow/workflows').
+ref_m('workflow',     model, '/context_workflow/navigate').
 ref_m('workflow',     target_iframe, '/html/workflow.html').
 ref_m('workflow',     category, 'reprDataService:DataService').
 ref_m('workflow',     category, 'phenSystemComplexity:Pattern').
@@ -111,7 +117,7 @@ ref_m('workflow',     category, 'humanDecision:Objective').
 ref_m('workflow',     category, 'humanDecision:Allocation').
 ref_m('workflow',     category, 'humanEnvirStandards:EnvironmentalStandard').
 
-ref_m('search',     model, '/context_search/search').
+ref_m('search',     model, '/context_search/navigate').
 ref_m('search',     target_iframe, '/html/search.html').
 ref_m('search',     category, 'reprDataService:DataService').
 ref_m('search',     category, 'reprMathFunction:ProbabilityDensityFunction').
@@ -223,7 +229,7 @@ ref_m('solar',     target_iframe, '/html/solar.html').
 ref_m('solar',     category, 'phenAtmo:Sunlight').
 ref_m('solar',     category, 'phenElecMag:ElectricField').
 
-ref_m('browse',     model, '/context_browse/browse').
+ref_m('browse',     model, '/context_browse/navigate').
 ref_m('browse',     target_iframe, '/html/browse.html').
 ref_m('browse',     category, 'realm:Land').
 ref_m('browse',     category, 'realm:Atmosphere').
@@ -246,7 +252,7 @@ ref_(URL, target_iframe, Page) :-
     ref_m(ID, target_iframe, Page), !.
 
 ref_(URL, target_iframe, Page) :-
-    atom_concat('/context_browse/browse?term=', Term, URL),
+    atom_concat('/context_browse/navigate?term=', Term, URL),
     atom_concat('/html/browse.html#', Term, Page), !.
 
 ref_(_, IName, Page) :-
@@ -294,7 +300,9 @@ rdf_(ref, ent:narrative, 'Each model has supporting documentation in the form of
 rdf_(resources, ent:description, 'Supplemental data resources for context models.').
 rdf_(resources, ent:narrative, 'A supplemental knowledge-based system will provide semantic web discovery capability. The OSCAR (Ontological System for Context Artifacts and Resources) portal will guide discovery for users to find context models and associated metadata to enable their simulation.  The context models can include collections of PDFs and PSDs.  Context modeling resources include interactive links to tables and supporting doucments, such as environmental regulations, standards, specifications, and typical operational profiles.').
 rdf_(features, ent:description, 'This home page contains environmental features along the top icon bar, and process steps as links.').
-rdf_(features, ent:narrative, '/html/static_pages/gems/index.html').
+rdf_(features, ent:narrative, 'Home page contains environmental features along the top icon bar, and process steps as links along the vertical bulet list.').
+rdf_(query, ent:description, 'Generic queries for SPARQL and Prolog.').
+rdf_(query, ent:narrative, 'The knowledgebase has SPARQL and native Prolog query support.').
 rdf_(example, ent:description, 'Examples of use.').
 rdf_(example, ent:narrative, 'Examples of model use').
 

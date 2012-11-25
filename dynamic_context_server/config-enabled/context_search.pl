@@ -8,7 +8,7 @@
 :- use_module(components(simple_search)).
 :- use_module(components(messages)).
 
-:- context:register(context_search:search).
+:- context:register(context_search:navigate).
 :- context:register(context_search:my_search_filter).
 :- context:register(context_search:list_pages).
 :- context:register(context_search:list_cats).
@@ -38,7 +38,7 @@ my_search_filter(Request) :-
        []
 			).
 
-search(Request) :-
+navigate(Request) :-
    % findall(Name, find_requirement_topics(Name), Ns),
    % sort(Ns, Names),
    findall(Character, find_characteristics(Character), Chs),  % use setof instead

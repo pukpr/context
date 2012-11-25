@@ -8,7 +8,7 @@
 */
 
 :- context:register(context_map:navigate).
-:- context:register(context_map:search).
+:- context:register(context_map:view).
 :- context:register(context_map:navigate_locale).
 
 minutes_to_degrees((Deg,Min,Sec), Degrees) :-
@@ -30,7 +30,7 @@ get_location(URI, 0.0, 0.0, Title) :-
     rdfS(URI, ent:title, Title).
 
 
-navigate(Request) :-
+view(Request) :-
    http_parameters(Request, [lat(Lat, [float]),
 			     lon(Lon, [float]),
 			     title(Title, [string])
@@ -124,7 +124,7 @@ find_locs(option([value(Out)],[Name])) :-
    rdf(Out, ent:lon, _),
    rdf(Out, ent:title, Name).
 
-search(Request) :-
+navigate(Request) :-
     setof(Loc, Loc ^ find_locs(Loc), List),
     reply_html_page(
         cliopatria(default),

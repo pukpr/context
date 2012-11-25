@@ -4,13 +4,13 @@
     * Uses ontological classification scheme
 */
 
-:- context:register(context_browse:browse).
+:- context:register(context_browse:navigate).
 
 
 create_list([]) --> [].
 create_list([First|Rest]) -->
     { findall(Next, rdf_(First, child, Next), List) },
-    html([ li([a(href('browse?term='+First), First),
+    html([ li([a(href('navigate?term='+First), First),
 	       ul([class(tree)],
 		   \(create_list(List))
 		  )
@@ -35,7 +35,7 @@ view_tree(Request, Subject) -->
 		      [table([border=0, width='100%'],
 			  [tr([
 			       td([valign(top), width('45%')],
-				  [a([href=browse],
+				  [a([href=navigate],
 				     [
 				      \(con_text:gif(browse)),
 				      b(Subject)
@@ -71,7 +71,7 @@ view_tree(Request, Subject) -->
          ]
         ).
 
-browse(Request) :-
+navigate(Request) :-
     http_parameters(Request, [term(Term, [string, default(context)])]),
     reply_html_page(
         cliopatria(default),

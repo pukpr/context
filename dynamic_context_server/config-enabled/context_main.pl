@@ -33,12 +33,13 @@ cliopatria:server_address -->
 
 % cliopatria:menu_item(places/'/app', 'Context Main').  % Return to main page
 cliopatria:menu_popup_order(context, 10).
-cliopatria:menu_item(context/'/context_search/search', 'Search').
-cliopatria:menu_item(context/'/context_browse/browse', 'Browse').
-cliopatria:menu_item(context/'/context_workflow/workflows', 'Work Flow').
+cliopatria:menu_item(context/'/context_search/navigate', 'Search').
+cliopatria:menu_item(context/'/context_browse/navigate', 'Browse').
+cliopatria:menu_item(context/'/context_workflow/navigate', 'Work Flow').
 cliopatria:menu_item(context/'/context_ref/navigate', 'References').
 cliopatria:menu_item(context/'/context_require/navigate', 'User Req').
-cliopatria:menu_item(context/'/context_map/search', 'Map').
+cliopatria:menu_item(context/'/context_map/navigate', 'Map').
+cliopatria:menu_item(context/'/context_map/query', 'Generic Query').
 cliopatria:menu_item(context/'/app', 'Features').
 cliopatria:menu_item(context/'/context_resources/navigate', 'Resources').
 cliopatria:menu_item(repository/'/context_sweet_utils/import_sweet?all=false',
@@ -56,20 +57,15 @@ cliopatria:menu_item(places/'https://babelfish.arc.nasa.gov/trac/avm_performers/
 cliopatria:menu_item(places/'https://babelfish.arc.nasa.gov/jira/browse/AVM', 'Tracking').
 cliopatria:menu_item(places/'/html/oscar.html', 'OSCAR').
 cliopatria:menu_item(admin/'/context_main/run_unit_tests', 'Tests').
-cliopatria:menu_item(query/'/context_ont_utils/find_ent_subjects', 'Subjects').
-cliopatria:menu_item(query/'/context_ont_utils/find_ent_predicates', 'Predicates').
-cliopatria:menu_item(query/'/context_ont_utils/find_ent_objects', 'Objects').
-cliopatria:menu_item(query/'/context_file_reading/crawl', 'Models').
+ % cliopatria:menu_item(query/'/context_ont_utils/find_ent_subjects', 'Subjects').
+ % cliopatria:menu_item(query/'/context_ont_utils/find_ent_predicates', 'Predicates').
+ % cliopatria:menu_item(query/'/context_ont_utils/find_ent_objects', 'Objects').
+ % cliopatria:menu_item(query/'/context_file_reading/crawl', 'Models').
 cliopatria:menu_item(query/'/terms#', 'Terminology').
-
-
 
 :- http_handler(root('.'), index_page, []).
 :- http_handler(root(app), index_page, []).
 
-% :- http_handler(root(browse), 'browse?', []).
-
-:- context:register(context_main:pquery).
 :- context:register(context_main:run_unit_tests).
 
 nav_aids(Key, Path, Title) -->
@@ -90,7 +86,7 @@ nav_aids(Key, Path, Title) -->
              small([
              ' - ',
              a([href(Doc),
-                target=target_iframe],
+                target=render],
                img([src('/html/images/magnify-clip.png'),
 		    title('more info')]))
                    ]
@@ -103,37 +99,24 @@ index_page(Request) :-
         cliopatria(default),
         [title('Home')],
         [
-          \(context_select:icon_bar(none)),
           \(con_text:table_with_iframe_target(
                 Request,
                 [
+                 \(context_select:icon_bar(none)),
                  h2('Dynamic Context Server - Features'),
                  ul([
                      \(context_main:nav_aids(require, '/context_require/navigate', 'Requirements')),
-                     \(context_main:nav_aids(search, '/context_search/search', 'Search')),
-                     \(context_main:nav_aids(browse, '/context_browse/browse', 'Browse')),
-                     \(context_main:nav_aids(workflow, '/context_workflow/workflows', 'Workflows')),
+                     \(context_main:nav_aids(search, '/context_search/navigate', 'Search')), %
+                     \(context_main:nav_aids(browse, '/context_browse/navigate', 'Browse')), %
+                     \(context_main:nav_aids(workflow, '/context_workflow/navigate', 'Workflows')), %
                      \(context_main:nav_aids(ref, '/context_ref/navigate', 'References')),
                      \(context_main:nav_aids(resources,'/context_resources/navigate','Resources / Artifacts')),
-                     \(context_main:nav_aids(map, '/context_map/search', 'Map View')),
+                     \(context_main:nav_aids(map, '/context_map/navigate', 'Map View')), %
+                     \(context_main:nav_aids(query, '/context_query/navigate', 'Generic Query')),
                      \(context_main:nav_aids(features, '/app', 'Features Home'))
 		    ]),
 		 br([]),
-		 h2('Other links'),
-		 ul([
-		     % li([a(href('context_demos/navigate'),
-                     %      'Navigate to other ontology demos')]),
-		     li(a([href('/sparql/?query=select * where{?s relaSci:hasNumericValue ?o}')],
-                          'SPARQL query syntax')),
-		     li([
-                         \(con_text:form('/context_main/pquery',
-				 target_iframe,
-				 [[input,'t(Subject,dc:title,Object)',35]]
-				)),
-                         'prolog query'
-                        ]
-		       )
-                    ])
+		 \(con_text:render_iframe(render))
 
                 ]
                                     )
@@ -141,37 +124,6 @@ index_page(Request) :-
         ]
                    ).
 
-t(S,P,O) :-
-    (	callable(P) ->
-        rdf_global_term(P, P1)
-    ;
-        P1 = P
-    ),
-    (	callable(S) ->
-        rdf_global_term(S, S1)
-    ;
-        S1 = S
-    ),
-    (	callable(O) ->
-        rdf_global_term(O, O1)
-    ;
-        O1 = O
-    ),
-    rdf(S1,P1,O1).
-
-
-pquery(Request) :-
-    http_parameters(Request, [input(Input, [])]),
-    atom_to_term(Input, Terms, Var),
-    call(Terms),
-    % with_output_to(atom(Text), write(Var)),
-    reply_html_page(
-        [title('Prolog query'),
-	 \(con_text:style)],
-        [% p(\(con_text:flist(Var))),
-	 % p(Text),
-	\(con_text:paragraphs(Var))]
-                   ).
 
 run_unit_tests(_Request) :-
     call_showing_messages(

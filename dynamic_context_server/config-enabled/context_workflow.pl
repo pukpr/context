@@ -6,9 +6,9 @@
     * Link to deterministic profile workflow
 */
 
-:- context:register(context_workflow:workflows).
+:- context:register(context_workflow:navigate).
 
-workflows(Request) :-
+navigate(Request) :-
    reply_html_page(cliopatria(default),
                    [title('Workflow navigate')],
       [

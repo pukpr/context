@@ -506,7 +506,7 @@ contour_display(Opt, URI, Contour, Lat, Lon, Info) :-
                      br([]),
                      \(con_text:inline_button(
                                    \(con_text:button_link('Display Map',
-					   '/context_map/navigate',
+					   '/context_map/view',
 					   render,
 					   [[lat, Lat],
 					    [lon, Lon],

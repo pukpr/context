@@ -74,6 +74,8 @@
 :- use_module(context_soil).
 :- use_module(context_friction).
 :- use_module(context_solar).
+:- use_module(context_physical).
+:- use_module(context_query).
 
 
 
