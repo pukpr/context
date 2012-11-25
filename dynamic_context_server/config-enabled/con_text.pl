@@ -272,12 +272,28 @@ table_with_iframe_target(Request, Left_Content) -->
     {
       IName = target_iframe,
       context:holder(Request, Name),
-      ref_(Name, IName, Page)
+      ref_(Name, IName, Page),
+      (
+        ref_(Name, feature, Feature),
+        rdf_(Feature, ent:image, Img)
+      ->
+        atomic_concat('/html/static_pages/gems/',Img, I),
+        Image = img([src(I),
+		     height(32),
+		     title(Feature)]
+		      )
+      ;
+        Image = ''
+      )
     },
-    html(
+    html([
+	% Image,
         table([border(0), width('100%')],
           [tr(
-	       [td( [width('40%'),valign(top)],
+	       [
+		td( [valign(top)],
+                    Image ),
+	        td( [width('40%'),valign(top)],
                     Left_Content ),
                 td([width('60%'),valign(top)],
                    [iframe([name(IName),
@@ -293,7 +309,7 @@ table_with_iframe_target(Request, Left_Content) -->
                ]
              )
           ]
-         )
+         )]
         ).
 
 

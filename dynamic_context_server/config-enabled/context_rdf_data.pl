@@ -69,6 +69,7 @@ ref_m('corrosion features',     category, 'matrElement:Fe').
 ref_m('corrosion features',     category, 'phenSolid:Ablation').
 
 ref_m('Dynamic Context Server',     model, '/app').
+ref_m('Dynamic Context Server',     model, '/').
 ref_m('Dynamic Context Server',     target_iframe, '/html/static_pages/gems/').
 ref_m('Dynamic Context Server',     category, 'realm:Land').
 ref_m('Dynamic Context Server',     category, 'realm:Atmosphere').
@@ -136,6 +137,7 @@ ref_m('AR7038',     category, 'humanDecision:Objective').
 
 ref_m('profiles',     model, '/context_profile/navigate').
 ref_m('profiles',     target_iframe, '/html/profile.html').
+ref_m('profiles',     feature, 'fine_terrain').
 ref_m('profiles',     category, 'reprSpaceGeometry:Surface').
 ref_m('profiles',     category, 'propMass:Roughness').
 ref_m('profiles',     category, 'realmBiolBiome:Terrain').
@@ -145,6 +147,7 @@ ref_m('profiles',     category, 'reprDataServiceAnalysis:SpectralAnalysis').
 
 ref_m('PSD',     model, '/context_psd_workflow/navigate').
 ref_m('PSD',     target_iframe, '/html/psd_workflow.html').
+ref_m('PSD',     feature, 'fine_terrain').
 ref_m('PSD',     category, 'realmSoil:SoilLayer').
 ref_m('PSD',     category, 'propMass:Roughness').
 ref_m('PSD',     category, 'reprDataServiceAnalysis:FourierTransform').
@@ -153,10 +156,12 @@ ref_m('PSD',     category, 'reprDataServiceAnalysis:SpectralAnalysis').
 
 ref_m('obstacles',     model, '/context_obstacles/navigate').
 ref_m('obstacles',     target_iframe, '/html/obstacles.html').
+ref_m('obstacles',     feature, 'fine_terrain').
 ref_m('obstacles',     category, 'reprSpaceGeometry:Surface').
 
 ref_m('autocorrelation',     model, '/context_autocorr/navigate').
 ref_m('autocorrelation',     target_iframe, '/html/autocorr.html').
+ref_m('autocorrelation',     feature, 'gross_terrain').
 ref_m('autocorrelation',     category, 'propSpaceHeight:Topography').
 ref_m('autocorrelation',     category, 'propFraction:Correlation').
 ref_m('autocorrelation',     category, 'reprMathFunction:ProbabilityDensityFunction').
@@ -164,6 +169,7 @@ ref_m('autocorrelation',     category, 'propFraction:Probability').
 
 ref_m('water',     model, '/context_water/navigate').
 ref_m('water',     target_iframe, '/html/water.html').
+ref_m('water',     feature, 'wave').
 ref_m('water',     category, 'phenOcean:OceanPhenomena').
 ref_m('water',     category, 'realm:Hydrosphere').
 ref_m('water',     category, 'statePhysical:Droplet').
@@ -171,34 +177,41 @@ ref_m('water',     category, 'matrWater:WaterSubstance').
 
 ref_m('seastate',     model, '/context_seastate/navigate').
 ref_m('seastate',     target_iframe, '/html/seastate.html').
+ref_m('seastate',     feature, 'wave').
 ref_m('seastate',     category, 'phenWave:GravityWave').
 ref_m('seastate',     category, 'propSpaceHeight:SeaState').
 ref_m('seastate',     category, 'phenOcean:OceanPhenomena').
 
 ref_m('lightning',     model, '/context_lightning/navigate').
 ref_m('lightning',     target_iframe, '/html/lightning.html').
+ref_m('lightning',     feature, 'clutter').
 ref_m('lightning',     category, 'phenAtmoLightning:Lightning').
 
 ref_m('electro-magnetic',     model, '/context_emi/navigate').
 ref_m('electro-magnetic',     target_iframe, '/html/emi.html').
+ref_m('electro-magnetic',     feature, 'clutter').
 ref_m('electro-magnetic',     category, 'phenElecMag:ElectricField').
 ref_m('electro-magnetic',     category, 'matrEquipment:Communications').
 
 ref_m('clutter',     model, '/context_clutter/navigate').
 ref_m('clutter',     target_iframe, '/html/clutter.html').
+ref_m('clutter',     feature, 'clutter').
 ref_m('clutter',     category, 'phenWaveNoise:Noise').
 ref_m('clutter',     category, 'matrEquipment:Communications').
 
 ref_m('fording',     model, '/context_fording/navigate').
 ref_m('fording',     target_iframe, '/html/fording.html').
+ref_m('fording',     feature, 'lakes').
 ref_m('fording',     category, 'phenHydro:WaterFlow').
 
 ref_m('lakes',     model, '/context_lakes/navigate').
 ref_m('lakes',     target_iframe, '/html/lakes.html').
+ref_m('lakes',     feature, 'lakes').
 ref_m('lakes',     category, 'realmHydroBody:Lake').
 
 ref_m('thermal',     model, '/context_thermal/navigate').
 ref_m('thermal',     target_iframe, '/html/thermal.html').
+ref_m('thermal',     feature, 'thermal').
 ref_m('thermal',     category, 'phenMixing:Diffusion').
 ref_m('thermal',     category, 'propConductivity:ThermalConductivity').
 ref_m('thermal',     category, 'propDiffusivity:ThermalDiffusivity').
@@ -207,6 +220,7 @@ ref_m('thermal',     category, 'phenAtmo:Thermal').
 
 ref_m('corrosion',     model, '/context_corrosion/navigate').
 ref_m('corrosion',     target_iframe, '/html/corrosion.html').
+ref_m('corrosion',     feature, 'corrosion').
 ref_m('corrosion',     category, 'procChemical:Corrosion').
 ref_m('corrosion',     category, 'procChemical:Oxidation').
 ref_m('corrosion',     category, 'matrElement:Fe').
@@ -217,6 +231,7 @@ ref_m('demos',     target_iframe, '/html/demos.html').
 
 ref_m('atmosphere',     model, '/context_atm/navigate').
 ref_m('atmosphere',     target_iframe, '/html/atm.html').
+ref_m('atmosphere',     feature, 'thermal').
 ref_m('atmosphere',     category, 'phenAtmo:Weather').
 ref_m('atmosphere',     category, 'phenAtmoPressure:Barometric').
 ref_m('atmosphere',     category, 'propFraction:Humidity').
@@ -226,6 +241,7 @@ ref_m('atmosphere',     category, 'propTemperature:Temperature').
 
 ref_m('solar',     model, '/context_solar/navigate').
 ref_m('solar',     target_iframe, '/html/solar.html').
+ref_m('solar',     feature, 'thermal').
 ref_m('solar',     category, 'phenAtmo:Sunlight').
 ref_m('solar',     category, 'phenElecMag:ElectricField').
 
@@ -246,6 +262,10 @@ ref_m('physical',     category, 'phenAtmo:Weather').
 ref_m('physical',     category, 'repr:sciUnits').
 ref_m('physical',     category, 'reprDataService:DataService').
 
+
+ref_(URL, feature, Feature) :-
+    ref_m(ID, model, URL),
+    ref_m(ID, feature, Feature), !.
 
 ref_(URL, target_iframe, Page) :-
     ref_m(ID, model, URL),

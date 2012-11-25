@@ -16,9 +16,13 @@
 
 :-  working_directory(W,W),
     http_handler(root(.), http_reply_from_files(W, []), [prefix]).
-
+/*
 :- http_handler('/html/images/sphere.pbm',
 		http_reply_file(icons('favicon.ico'), []),
+		[]).
+*/
+:- http_handler('/favicon.ico',
+		http_reply_file('/html/images/favicon.gif', []),
 		[]).
 
 server(Port) :-
@@ -39,7 +43,6 @@ cliopatria:menu_item(context/'/context_workflow/navigate', 'Work Flow').
 cliopatria:menu_item(context/'/context_ref/navigate', 'References').
 cliopatria:menu_item(context/'/context_require/navigate', 'User Req').
 cliopatria:menu_item(context/'/context_map/navigate', 'Map').
-cliopatria:menu_item(context/'/context_map/query', 'Generic Query').
 cliopatria:menu_item(context/'/app', 'Features').
 cliopatria:menu_item(context/'/context_resources/navigate', 'Resources').
 cliopatria:menu_item(repository/'/context_sweet_utils/import_sweet?all=false',
@@ -51,7 +54,7 @@ cliopatria:menu_item(repository/'https://www.zotero.org/user/login/',
 cliopatria:menu_item(help/'/html/static_pages/gems/', 'Intro Slides').
 cliopatria:menu_item(help/'/html/basic_terms.html', 'Vocabularies').
 cliopatria:menu_item(help/'http://sweet.jpl.nasa.gov/', 'SWEET').
-cliopatria:menu_item(help/'/context_demos/navigate', 'Example Demos').
+cliopatria:menu_item(help/'/context_demos/navigate', 'Eval Demos').
 cliopatria:menu_item(places/'https://babelfish.arc.nasa.gov/confluence/display/AVMPROJ/BAE', 'Wiki').
 cliopatria:menu_item(places/'https://babelfish.arc.nasa.gov/trac/avm_performers/browser/context', 'Source').
 cliopatria:menu_item(places/'https://babelfish.arc.nasa.gov/jira/browse/AVM', 'Tracking').
@@ -61,7 +64,8 @@ cliopatria:menu_item(admin/'/context_main/run_unit_tests', 'Tests').
  % cliopatria:menu_item(query/'/context_ont_utils/find_ent_predicates', 'Predicates').
  % cliopatria:menu_item(query/'/context_ont_utils/find_ent_objects', 'Objects').
  % cliopatria:menu_item(query/'/context_file_reading/crawl', 'Models').
-cliopatria:menu_item(query/'/terms#', 'Terminology').
+cliopatria:menu_item(query/'/terms#', 'Terms').
+cliopatria:menu_item(query/'/context_query/navigate', 'Generic').
 
 :- http_handler(root('.'), index_page, []).
 :- http_handler(root(app), index_page, []).

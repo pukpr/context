@@ -76,12 +76,11 @@ navigate(Request) :-
 			    ])
 			       ])
 			    ),
-			  li(p([\(con_text:gif(query)),
+			  li(p([\(con_text:gif(query)),'Query via Prolog',
 				\(con_text:form('/context_query/pquery',
 						target_iframe,
 						[[input,'t(Subject,dc:title,Object)',35]]
-					       )),
-				'prolog query'
+					       ))
 			       ]
 			      )
 			    ),

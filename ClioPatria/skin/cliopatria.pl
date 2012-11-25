@@ -102,7 +102,7 @@ user:body(cliopatria(_), Body) -->
 user:body(cliopatria(_), Body) -->
 	html_requires(cliopatria),
 	html(body(class(['yui-skin-sam', cliopatria]),
-		  [ div(class(menu), \cp_menu),
+		  [ div(class(menu), \cp_menu),a([href('/'),title(home)],img([src('/html/images/dcs.gif'), height(30)])),
 		    \simple_search_form([value(p(q))]),
 		    br(clear(all)),
 		    div(class(content), Body),
@@ -134,9 +134,9 @@ address -->
 %	by calling:
 %
 %	    ==
-%	    	...,
-%	    	server_address('ClioPatria'),
-%	    	...
+%		...,
+%		server_address('ClioPatria'),
+%		...
 %	    ==
 %
 %	@see register_git_module/2 for registering a GIT module.

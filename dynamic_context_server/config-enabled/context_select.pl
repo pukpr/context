@@ -138,7 +138,7 @@ dispatch(wave) -->
 
 dispatch(thermal) -->
 	html([h1('Thermal and temperature models'),
-	      \g(example,
+	      \g(workflow,
 		 a([href='/context_thermal/navigate'],'Thermal diffusion model')),
 	      \g(example,
 		 \(context_temperature:navigate)),
@@ -194,7 +194,7 @@ navigate(Request) :-
     http_parameters(Request, [category(Cat, [default(others)])]),
     reply_html_page(
 	cliopatria(default),
-	[title('PDF')],
+	[title('Feature Selection')],
 	\(con_text:table_with_iframe_target(
                        Request,
                        [

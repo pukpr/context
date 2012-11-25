@@ -21,7 +21,8 @@ get_all_course_files(List) :-
 	    List).
 
 navigate(Request) :-
-   get_all_course_files(List),
+   get_all_course_files(L),
+   sort(L,List),
    reply_html_page(
        cliopatria(default),
        [title('Course daya sets')],

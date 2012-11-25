@@ -10,6 +10,7 @@
 
 navigate(Request) :-
    collect_unit_options(ent:length, Lunits),
+   SS = a([href(seastate_table), target(render)], 'sea-state'),
 
    reply_html_page(cliopatria(default),
                    [title('Seastate Probabilities')],
@@ -23,7 +24,8 @@ navigate(Request) :-
 			  select([name('l_units')], Lunits),
 			  input([type('text'),
 				 name('limit'),
-				 value('3')]), i(' <= seastate'),
+				 value('3'),
+				 size(5)]), i([' <= ',  SS]),
 			  br([]),
 			  \(con_text:radio_toggles(
 					 'evaluate',
@@ -114,7 +116,7 @@ plot(Request) :-
 
 
 waveHeight(Mean, Depth,  H*Height, P*cdf) :-
-   context_units:convert(H*Height, H1*m, H1),
+   context_units:convert(H*Height, H1*m, H1), % Fix this for actual wave height
    P is exp(-H1/Mean*Depth/Depth),
    !.
 waveHeight(cdf, Mean, Depth,  H*Height, P) :-
