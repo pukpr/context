@@ -3,12 +3,10 @@ W	Deliver buoyancy model
 W	Index the papers for PDF
 W	Set up a rainfall drop distro too
 W	Collect all XLS and PPT files
-	Map with refresh that shows explanation and Google Maps
 	context_solar, planck's law
 	Aquatic wave height model, plus connection to Sea-State, significant wave height
 	Particle size Monte-Carlo, TOPS has particle size classes
 	Calibrate corrosive model
-	Index models to SWEET terms, use capital letters for terminology
 	ENT classification system tied to SWEET
 	Each browse entry should have short narrative and one link
 	Add browser tree to individual features
@@ -16,8 +14,10 @@ W	Collect all XLS and PPT files
 	Semi-Markov sync function to scale
 	convert rdf_ to entailments
 	Different data format generators
-	Units page for resources, use repr:sciUnits
-	List of phys constants
+x	Map with refresh that shows explanation and Google Maps
+x	Units page for resources, use repr:sciUnits
+x	List of phys constants
+x	Index models to SWEET terms, use capital letters for terminology
 x	Search on all models
 x	Add defaults to radio buttons
 x	Have to fix the slopes so it actually reflects the USA

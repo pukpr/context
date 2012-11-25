@@ -37,8 +37,13 @@ navigate(Request) :-
                                  a(href('/context_solar/navigate'),
                                    'Access standard solar artifacts')
                                 ]
+                               ),
+                             li([\(con_text:gif(resources)),
+                                 a(href('/context_physical/navigate'),
+                                   'Access physical constants and units')
+                                ]
                                )
-                            ])
+                             ])
                         ]
                                             )
           )

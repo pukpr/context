@@ -155,26 +155,32 @@ list_cats(Request) :-
 		UID)),
 	   available_pages(Cat, Model, UID),
 	   Models),
-   % context:create_global_term(Cat, Graph),
+   context:create_global_term(Cat, Graph),
    % uri_normalized(Graph, Literal),
    % context:create_global_term(Literal, Graph),
+   context:uri_index_link(Graph, 'definition', render, GraphLink),
    reply_html_page(% cliopatria(default),
                    [title('Available Page'),
                     \(con_text:style)
                    ],
                    [
-		    p('Models available for:'),
-		    blockquote(h3([Cat, ' : ',
-				   a([href(['/context_ref_search/graph?name=',Cat]),
-				      target(render)],
-				     'Semantic Graph'
-				    )
+
+		    p([\(con_text:gif(search)) ,
+			' Models available for:']),
+		    blockquote(h2([Cat, ' : ', GraphLink
 				  ]
 				 )
 			      ),
 		    ul(
 			Models
-		      )
+		      ),
+		    iframe([
+			width('100%'),
+			height('400'),
+			frameborder(0),
+			src(['/context_ref_search/graph?name=',Cat])
+			   ],
+			   [])
 		   ]
 		  ).
 

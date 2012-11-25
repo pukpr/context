@@ -398,6 +398,14 @@ multi_columns(Content) -->
 	     )
        ).
 
+paragraphs([]) --> !.
+paragraphs([F|R]) -->
+   {with_output_to(atom(Text), write(F))},
+   html(p(Text)),
+   paragraphs(R).
+
+
+
 each_entry([]) --> !.
 each_entry([[Name,Value]|R]) -->
    html(tr([
@@ -446,8 +454,10 @@ table_multiple_entries(Header, Content) -->
 
 gif(Name) -->
    {
-     rdf_(Name, ent:description, Title);
+     rdf_(Name, ent:description, Title) ->
      true
+    ;
+     Title = Name
    },
    html(img([src('/html/images/'+Name+'.gif'),
              title(Title)])).

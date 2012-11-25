@@ -99,6 +99,19 @@ navigate(Request) :-
                li(a([href('find_wind_ref_example'),target(target_iframe)], 'Query wind reference')),
                li(a([href('find_requirement_example'),target(target_iframe)], 'Query requirement')),
                li(a([href('sample_alg_example'),target(target_iframe)], 'Query an algorithm for references')),
+	       li([a([href('/context_map/navigate?lat=48.786&lon=9.235&title="Mercedes-Benz TT"'),
+			    target(target_iframe)],
+                           'Display map')]),
+	       li( [
+                         \(con_text:form('/context_water/density_test',
+				 target_iframe,
+				 [[input,'20', 6],
+				  [iunits,'c', 6],
+				  [ounits,'g/cm^3', 6]]
+				)),
+                         'units conversion'
+                         ]),
+
 
                li(h2('Other links')),
                li(a([href('/context_psd_workflow_json/psd_index'),

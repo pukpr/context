@@ -92,6 +92,10 @@ uri_index_link(URI, Link) :-
 uri_index_link(URI, Title, Link) :-
    uri_encoded(path, URI, U),
    Link = a(href('/browse/list_resource?r='+U),Title).
+uri_index_link(URI, Title, Target, Link) :-
+   uri_encoded(path, URI, U),
+   Link = a([href('/browse/list_resource?r='+U),
+	    target(Target)],Title).
 
 /** register(-ModuleHandler:string) is det
  *

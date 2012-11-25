@@ -121,30 +121,18 @@ index_page(Request) :-
 		 br([]),
 		 h2('Other links'),
 		 ul([
-		     li([a(href('context_demos/navigate'),
-                           'Navigate to other ontology demos')]),
-		     li([a([href('context_map/navigate?lat=48.786&lon=9.235&title="Mercedes-Benz TT"'),
-			    target(target_iframe)],
-                           'Display map')]),
+		     % li([a(href('context_demos/navigate'),
+                     %      'Navigate to other ontology demos')]),
 		     li(a([href('/sparql/?query=select * where{?s relaSci:hasNumericValue ?o}')],
                           'SPARQL query syntax')),
 		     li([
                          \(con_text:form('/context_main/pquery',
 				 target_iframe,
-				 [[input,'t(Subject,dc:title,Object)']]
+				 [[input,'t(Subject,dc:title,Object)',35]]
 				)),
                          'prolog query'
                         ]
-		       ),
-		     li( [
-                         \(con_text:form('/context_water/density_test',
-				 target_iframe,
-				 [[input,'20', 6],
-				  [iunits,'c', 6],
-				  [ounits,'g/cm^3', 6]]
-				)),
-                         'units conversion'
-                         ])
+		       )
                     ])
 
                 ]
@@ -154,17 +142,35 @@ index_page(Request) :-
                    ).
 
 t(S,P,O) :-
-    rdf_global_term(P, T),
-    rdf(S,T,O).
+    (	callable(P) ->
+        rdf_global_term(P, P1)
+    ;
+        P1 = P
+    ),
+    (	callable(S) ->
+        rdf_global_term(S, S1)
+    ;
+        S1 = S
+    ),
+    (	callable(O) ->
+        rdf_global_term(O, O1)
+    ;
+        O1 = O
+    ),
+    rdf(S1,P1,O1).
 
 
 pquery(Request) :-
     http_parameters(Request, [input(Input, [])]),
     atom_to_term(Input, Terms, Var),
     call(Terms),
+    % with_output_to(atom(Text), write(Var)),
     reply_html_page(
-        [title('Prolog query')],
-        [p(\(con_text:flist(Var)))]
+        [title('Prolog query'),
+	 \(con_text:style)],
+        [% p(\(con_text:flist(Var))),
+	 % p(Text),
+	\(con_text:paragraphs(Var))]
                    ).
 
 run_unit_tests(_Request) :-

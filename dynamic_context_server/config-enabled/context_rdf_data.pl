@@ -232,6 +232,14 @@ ref_m('browse',     category, 'humanEnvirStandards:EnvironmentalStandard').
 ref_m('browse',     category, 'reprDataService:DataService').
 ref_m('browse',     category, 'phen:StochasticProcess').
 
+ref_m('physical',     model, '/context_physical/navigate').
+ref_m('physical',     target_iframe, '/html/physical.html').
+ref_m('physical',     category, 'phenAtmo:Sunlight').
+ref_m('physical',     category, 'humanEnvirStandards:EnvironmentalStandard').
+ref_m('physical',     category, 'phenAtmo:Weather').
+ref_m('physical',     category, 'repr:sciUnits').
+ref_m('physical',     category, 'reprDataService:DataService').
+
 
 ref_(URL, target_iframe, Page) :-
     ref_m(ID, model, URL),
@@ -439,7 +447,7 @@ rdf_('requirements', comment, 'Navigate to source requirements.').
 
 
 % Fall-back info
-rdf_(_, comment, 'Not finished.').
+rdf_(_, comment, '').
 rdf_(_, link, '').
 rdf_(_, target, '').
 
@@ -487,7 +495,10 @@ temperature_records :-
 
 */
 
-
+%  ---- Units symbology
+%
+rdf_(ent:'All Units', ent:units, ent:'units category').
+rdf_(ent:'units category', ent:unit, 'Symbolic Notation').
 
 % length units
 rdf_(ent:length, ent:units, ent:micron).
@@ -673,12 +684,13 @@ rdf_(ent:kg_liter, ent:unit, 'kg/dm^3').
 rdf_(ent:kg_liter, ent:description, 'kilos/liter').
 
 % Scientific
-
+rdf_(ent:water, comment, 'fresh water properties').
 rdf_(ent:water, ent:molecular_weight, 18.015268*au).
 rdf_(ent:water, ent:deltaHvap, 9717.1*cal).
 rdf_(ent:water, ent:deltaSvap, 26.04*cal/k).
 
 rdf_(ent:standardAtmosphere, ent:description, 'Specification of standard atmosphere').
+rdf_(ent:standardAtmosphere, comment, 'standard temperature and pressure (STP)').
 
 rdf_(ent:standardAtmosphere, ent:temperature, 70*f).
 rdf_(ent:standardAtmosphere, ent:temperature, 273.15*k).
@@ -693,10 +705,11 @@ rdf_(ent:standardAtmosphere, ent:specificHeatRatio, 1.4).
 rdf_(ent:standardAtmosphere, ent:specificGasConstantDryAir, 287*j/kg/k).
 rdf_(ent:standardAtmosphere, ent:specificGasConstantWaterVapor, 462*j/kg/k).
 
+rdf_(ent:solar, comment, 'average sunshine').
 rdf_(ent:solar, ent:averageSolarInsolation, 1366*w/m^2).
 rdf_(ent:solar, ent:averageAlbedo, 0.31).
 
-
+rdf_(ent:physicalConstants, comment, 'commonly used physical constants').
 rdf_(ent:physicalConstants, ent:gasConstant, 1.9858775*cal/k/mol).
 rdf_(ent:physicalConstants, ent:gasConstant, 8.314472*j/k/mol).
 rdf_(ent:physicalConstants, ent:atomicUnit, 1.66053886e-24*g).
