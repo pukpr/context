@@ -192,7 +192,9 @@ loglin(Request) :-
     Range range [Min,Max]^Power,
     X = 'rise/run',
     % PDF mapdot power_law_2_pdf(Mean) ~> Range,
+    r_open_session,
     PDF mapdot besselk0_sqrt(Mean,pdf) ~> Range,
+    r_close,
     reply_html_page([title('slopes'),
                      \(con_text:style)],
                     [
