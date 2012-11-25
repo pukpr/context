@@ -249,6 +249,12 @@ test(json) :-
     atom_json_term(T, json([a=b]), [as(atom)]),
     T ='{"a":"b"}' .
 
+test(sweet) :-
+	findall(Out,
+		context_sweet_utils:find_sweet_pairs([_Name,Out]),
+		L),
+	length(L, N),
+	N>10.
 
 
 

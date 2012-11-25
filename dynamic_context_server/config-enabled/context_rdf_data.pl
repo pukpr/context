@@ -4,76 +4,234 @@
 
 ref_m('fine terrain features',     model, '/context_select/navigate?category=fine_terrain').
 ref_m('fine terrain features',     target_iframe, '/html/static_pages/gems/fine_terrain.png').
+ref_m('fine terrain features',     category, 'propMass:Roughness').
+ref_m('fine terrain features',     category, 'realmSoil:SoilLayer').
+ref_m('fine terrain features',     category, 'realmBiolBiome:Terrain').
+ref_m('fine terrain features',     category, 'reprSpaceGeometry:Surface').
+
 ref_m('gross terrain features',     model, '/context_select/navigate?category=gross_terrain').
 ref_m('gross terrain features',     target_iframe, '/html/static_pages/gems/gross_terrain.png').
+ref_m('gross terrain features',     category, 'propSpaceHeight:Topography').
+ref_m('gross terrain features',     category, 'realmBiolBiome:Terrain').
+ref_m('gross terrain features',     category, 'reprSpaceGeometry:Surface').
+
 ref_m('wave features',     model, '/context_select/navigate?category=wave').
 ref_m('wave features',     target_iframe, '/html/static_pages/gems/wave_statistics.png').
+ref_m('wave features',     category, 'phenWave:GravityWave').
+ref_m('wave features',     category, 'propSpaceHeight:SeaState').
+ref_m('wave features',     category, 'phenOcean:OceanPhenomena').
+ref_m('wave features',     category, 'phenFluidDynamics:FluidPhenomena').
+
 ref_m('wind features',     model, '/context_select/navigate?category=wind').
 ref_m('wind features',     target_iframe, '/html/static_pages/gems/wind_statistics.png').
+ref_m('wind features',     category, 'phenAtmoWind:Wind').
+ref_m('wind features',     category, 'phenAtmo:Weather').
+ref_m('wind features',     category, 'phenFluidDynamics:FluidPhenomena').
+
 ref_m('clutter features',     model, '/context_select/navigate?category=clutter').
 ref_m('clutter features',     target_iframe, '/html/static_pages/gems/clutter_modeling.png').
+ref_m('clutter features',     category, 'phenAtmoLightning:Lightning').
+ref_m('clutter features',     category, 'phenElecMag:ElectricField').
+ref_m('clutter features',     category, 'phenWaveNoise:Noise').
+ref_m('clutter features',     category, 'matrEquipment:Communications').
+
 ref_m('lakes features',     model, '/context_select/navigate?category=lakes').
 ref_m('lakes features',     target_iframe, '/html/static_pages/gems/lake_sizes.png').
+ref_m('lakes features',     category, 'phenHydro:WaterFlow').
+ref_m('lakes features',     category, 'realmHydroBody:Lake').
+
 ref_m('particle features',     model, '/context_select/navigate?category=particles').
 ref_m('particle features',     target_iframe, '/html/static_pages/gems/particle_sizes.png').
+ref_m('particle features',     category, 'matrAerosol:Particulate').
+ref_m('particle features',     category, 'phenAtmoPrecipitation:Rainfall').
+ref_m('particle features',     category, 'phenGeolVolcano:VolcanicPlume').
+ref_m('particle features',     category, 'statePhysical:Droplet').
+
 ref_m('thermal features',     model, '/context_select/navigate?category=thermal').
 ref_m('thermal features',     target_iframe, '/html/static_pages/gems/thermal_dispersion.png').
+ref_m('thermal features',     category, 'phenMixing:Diffusion').
+ref_m('thermal features',     category, 'propConductivity:ThermalConductivity').
+ref_m('thermal features',     category, 'propDiffusivity:ThermalDiffusivity').
+ref_m('thermal features',     category, 'propTemperature:Temperature').
+ref_m('thermal features',     category, 'phenAtmo:Thermal').
+
 ref_m('rain features',     model, '/context_select/navigate?category=rainfall').
 ref_m('rain features',     target_iframe, '/html/static_pages/gems/rain_statistics.png').
+ref_m('rain features',     category, 'phenAtmoCloud:Cloud').
+ref_m('rain features',     category, 'phenAtmo:Weather').
+ref_m('rain features',     category, 'phenAtmoPrecipitation:Rainfall').
+
 ref_m('corrosion features',     model, '/context_select/navigate?category=corrosion').
 ref_m('corrosion features',     target_iframe, '/html/static_pages/gems/corrosion_oxidation.png').
+ref_m('corrosion features',     category, 'procChemical:Corrosion').
+ref_m('corrosion features',     category, 'procChemical:Oxidation').
+ref_m('corrosion features',     category, 'matrElement:Fe').
+ref_m('corrosion features',     category, 'phenSolid:Ablation').
+
 ref_m('Dynamic Context Server',     model, '/app').
 ref_m('Dynamic Context Server',     target_iframe, '/html/static_pages/gems/').
+ref_m('Dynamic Context Server',     category, 'realm:Land').
+ref_m('Dynamic Context Server',     category, 'realm:Atmosphere').
+ref_m('Dynamic Context Server',     category, 'realm:Ocean').
+ref_m('Dynamic Context Server',     category, 'phenSystemComplexity:Pattern').
+ref_m('Dynamic Context Server',     category, 'reprMathStatistics:Statistics').
+ref_m('Dynamic Context Server',     category, 'stateThermodynamic:MaximumEntropy').
+
 ref_m('requirements',     model, '/context_require/navigate').
 ref_m('requirements',     target_iframe, '/html/requirements.html').
+ref_m('requirements',     category, 'humanDecision:Allocation').
+ref_m('requirements',     category, 'humanDecision:Objective').
+
 ref_m('references',     model, '/context_ref/navigate').
 ref_m('references',     target_iframe, '/html/citations.html').
+ref_m('references',     category, 'humanResearch:Publication').
+ref_m('references',     category, 'humanEnvirStandards:EnvironmentalStandard').
+ref_m('references',     category, 'humanDecision:Allocation').
+ref_m('references',     category, 'humanDecision:Objective').
+ref_m('references',     category, 'repr:Knowledge').
+
 ref_m('map',     model, '/context_map/search').
 ref_m('map',     target_iframe, '/html/map.html').
+ref_m('map',     category, 'realmLandform:LandRegion').
+ref_m('map',     category, 'reprDataServiceGeospatial:WebFeatureServer').
+
 ref_m('resources',     model, '/context_resources/navigate').
 ref_m('resources',     target_iframe, '/html/resources.html').
+ref_m('resources',     category, 'phenAtmo:Sunlight').
+ref_m('resources',     category, 'humanEnvirStandards:EnvironmentalStandard').
+ref_m('resources',     category, 'phenAtmo:Weather').
+ref_m('resources',     category, 'repr:sciUnits').
+ref_m('resources',     category, 'reprDataService:DataService').
+
 ref_m('workflow',     model, '/context_workflow/workflows').
 ref_m('workflow',     target_iframe, '/html/workflow.html').
+ref_m('workflow',     category, 'reprDataService:DataService').
+ref_m('workflow',     category, 'phenSystemComplexity:Pattern').
+ref_m('workflow',     category, 'humanDecision:Objective').
+ref_m('workflow',     category, 'humanDecision:Allocation').
+ref_m('workflow',     category, 'humanEnvirStandards:EnvironmentalStandard').
+
 ref_m('search',     model, '/context_search/search').
 ref_m('search',     target_iframe, '/html/search.html').
+ref_m('search',     category, 'reprDataService:DataService').
+ref_m('search',     category, 'reprMathFunction:ProbabilityDensityFunction').
+ref_m('search',     category, 'phenSystemComplexity:Pattern').
+ref_m('search',     category, 'humanDecision:Objective').
+ref_m('search',     category, 'humanDecision:Allocation').
+ref_m('search',     category, 'humanEnvirStandards:EnvironmentalStandard').
+
 ref_m('AR7038',     model, '/context_climate_AR7038/navigate').
 ref_m('AR7038',     target_iframe, '/html/climate_AR7038.html').
+ref_m('AR7038',     category, 'phenAtmo:Weather').
+ref_m('AR7038',     category, 'realm:Atmosphere').
+ref_m('AR7038',     category, 'realm:Cryosphere').
+ref_m('AR7038',     category, 'humanEnvirStandards:EnvironmentalStandard').
+ref_m('AR7038',     category, 'humanDecision:Objective').
+
 ref_m('profiles',     model, '/context_profile/navigate').
 ref_m('profiles',     target_iframe, '/html/profile.html').
+ref_m('profiles',     category, 'reprSpaceGeometry:Surface').
+ref_m('profiles',     category, 'propMass:Roughness').
+ref_m('profiles',     category, 'realmBiolBiome:Terrain').
+ref_m('profiles',     category, 'reprDataServiceAnalysis:FourierTransform').
+ref_m('profiles',     category, 'reprDataServiceAnalysis:PowerSpectrum').
+ref_m('profiles',     category, 'reprDataServiceAnalysis:SpectralAnalysis').
+
 ref_m('PSD',     model, '/context_psd_workflow/navigate').
 ref_m('PSD',     target_iframe, '/html/psd_workflow.html').
+ref_m('PSD',     category, 'realmSoil:SoilLayer').
+ref_m('PSD',     category, 'propMass:Roughness').
+ref_m('PSD',     category, 'reprDataServiceAnalysis:FourierTransform').
+ref_m('PSD',     category, 'reprDataServiceAnalysis:PowerSpectrum').
+ref_m('PSD',     category, 'reprDataServiceAnalysis:SpectralAnalysis').
+
 ref_m('obstacles',     model, '/context_obstacles/navigate').
 ref_m('obstacles',     target_iframe, '/html/obstacles.html').
+ref_m('obstacles',     category, 'reprSpaceGeometry:Surface').
+
 ref_m('autocorrelation',     model, '/context_autocorr/navigate').
 ref_m('autocorrelation',     target_iframe, '/html/autocorr.html').
+ref_m('autocorrelation',     category, 'propSpaceHeight:Topography').
+ref_m('autocorrelation',     category, 'propFraction:Correlation').
+ref_m('autocorrelation',     category, 'reprMathFunction:ProbabilityDensityFunction').
+ref_m('autocorrelation',     category, 'propFraction:Probability').
+
 ref_m('water',     model, '/context_water/navigate').
 ref_m('water',     target_iframe, '/html/water.html').
+ref_m('water',     category, 'phenOcean:OceanPhenomena').
+ref_m('water',     category, 'realm:Hydrosphere').
+ref_m('water',     category, 'statePhysical:Droplet').
+ref_m('water',     category, 'matrWater:WaterSubstance').
+
 ref_m('seastate',     model, '/context_seastate/navigate').
 ref_m('seastate',     target_iframe, '/html/seastate.html').
+ref_m('seastate',     category, 'phenWave:GravityWave').
+ref_m('seastate',     category, 'propSpaceHeight:SeaState').
+ref_m('seastate',     category, 'phenOcean:OceanPhenomena').
+
 ref_m('lightning',     model, '/context_lightning/navigate').
 ref_m('lightning',     target_iframe, '/html/lightning.html').
+ref_m('lightning',     category, 'phenAtmoLightning:Lightning').
+
 ref_m('electro-magnetic',     model, '/context_emi/navigate').
 ref_m('electro-magnetic',     target_iframe, '/html/emi.html').
+ref_m('electro-magnetic',     category, 'phenElecMag:ElectricField').
+ref_m('electro-magnetic',     category, 'matrEquipment:Communications').
+
 ref_m('clutter',     model, '/context_clutter/navigate').
 ref_m('clutter',     target_iframe, '/html/clutter.html').
+ref_m('clutter',     category, 'phenWaveNoise:Noise').
+ref_m('clutter',     category, 'matrEquipment:Communications').
+
 ref_m('fording',     model, '/context_fording/navigate').
 ref_m('fording',     target_iframe, '/html/fording.html').
+ref_m('fording',     category, 'phenHydro:WaterFlow').
+
 ref_m('lakes',     model, '/context_lakes/navigate').
 ref_m('lakes',     target_iframe, '/html/lakes.html').
+ref_m('lakes',     category, 'realmHydroBody:Lake').
+
 ref_m('thermal',     model, '/context_thermal/navigate').
 ref_m('thermal',     target_iframe, '/html/thermal.html').
+ref_m('thermal',     category, 'phenMixing:Diffusion').
+ref_m('thermal',     category, 'propConductivity:ThermalConductivity').
+ref_m('thermal',     category, 'propDiffusivity:ThermalDiffusivity').
+ref_m('thermal',     category, 'propTemperature:Temperature').
+ref_m('thermal',     category, 'phenAtmo:Thermal').
+
 ref_m('corrosion',     model, '/context_corrosion/navigate').
 ref_m('corrosion',     target_iframe, '/html/corrosion.html').
+ref_m('corrosion',     category, 'procChemical:Corrosion').
+ref_m('corrosion',     category, 'procChemical:Oxidation').
+ref_m('corrosion',     category, 'matrElement:Fe').
+ref_m('corrosion',     category, 'phenSolid:Ablation').
+
 ref_m('demos',     model, '/context_demos/navigate').
 ref_m('demos',     target_iframe, '/html/demos.html').
+
 ref_m('atmosphere',     model, '/context_atm/navigate').
 ref_m('atmosphere',     target_iframe, '/html/atm.html').
+ref_m('atmosphere',     category, 'phenAtmo:Weather').
+ref_m('atmosphere',     category, 'phenAtmoPressure:Barometric').
+ref_m('atmosphere',     category, 'propFraction:Humidity').
+ref_m('atmosphere',     category, 'propPressure:BarometricPressure').
+ref_m('atmosphere',     category, 'phenAtmo:Thermal').
+ref_m('atmosphere',     category, 'propTemperature:Temperature').
+
 ref_m('solar',     model, '/context_solar/navigate').
 ref_m('solar',     target_iframe, '/html/solar.html').
+ref_m('solar',     category, 'phenAtmo:Sunlight').
+ref_m('solar',     category, 'phenElecMag:ElectricField').
+
 ref_m('browse',     model, '/context_browse/browse').
 ref_m('browse',     target_iframe, '/html/browse.html').
-% ref_m('',     model, '/context_browse/browse?term=requirements').
-% ref_m('',     target_iframe, '/html/browse.html#requirements').
+ref_m('browse',     category, 'realm:Land').
+ref_m('browse',     category, 'realm:Atmosphere').
+ref_m('browse',     category, 'realm:Ocean').
+ref_m('browse',     category, 'humanEnvirStandards:EnvironmentalStandard').
+ref_m('browse',     category, 'reprDataService:DataService').
+ref_m('browse',     category, 'phen:StochasticProcess').
+
 
 ref_(URL, target_iframe, Page) :-
     ref_m(ID, model, URL),

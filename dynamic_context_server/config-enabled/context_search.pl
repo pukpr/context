@@ -11,6 +11,7 @@
 :- context:register(context_search:search).
 :- context:register(context_search:my_search_filter).
 :- context:register(context_search:list_pages).
+:- context:register(context_search:list_cats).
 
 find_requirement_topics(option([value(Name)],[Local])) :-
    rdf(Name, rdf:type, req:'Requirement'),
@@ -24,6 +25,11 @@ find_pages(option([value(UID)],[UID])) :-
    ref_m(UID, model, _Model),
    ref_m(UID, target_iframe, _Path).
 
+find_categories(option([value(Cat)],[NS, ' :: ', Local])) :-
+   ref_m(UID, category, Cat),
+   ref_m(UID, model, _Model),
+   atomic_list_concat([NS,Local], ':', Cat).
+
 
 my_search_filter(Request) :-
    http_parameters(Request, [q(Q, [string])]),
@@ -33,12 +39,14 @@ my_search_filter(Request) :-
 			).
 
 search(Request) :-
-   findall(Name, find_requirement_topics(Name), Ns),
-   sort(Ns, Names),
+   % findall(Name, find_requirement_topics(Name), Ns),
+   % sort(Ns, Names),
    findall(Character, find_characteristics(Character), Chs),  % use setof instead
    sort(Chs, Characteristics),
    findall(Page, find_pages(Page), Pgs),
    sort(Pgs, Pages),
+   findall(Cat, find_categories(Cat), Cats),
+   sort(Cats, Categories),
    reply_html_page(cliopatria(default),
                    [title('Search Context')],
       [
@@ -60,6 +68,7 @@ search(Request) :-
                             )
                         ])
                        ),
+		     /*
                      li(p([\(con_text:gif(search)),
 			   'Search for requirements to establish workflow',
 			   form([action('/context_ref_search/list_requirements')
@@ -70,8 +79,9 @@ search(Request) :-
                                input([type('submit')])]
                              )])
                        ),
+		     */
                      li(p([\(con_text:gif(search)),
-			   'Search for pages',
+			   'Search feature pages',
 			   form([action('list_pages')
                               , target=target_iframe
                               ],
@@ -79,8 +89,18 @@ search(Request) :-
                                select([name('name')], Pages),
                                input([type('submit')])]
                              )])
+                       ),
+                     li(p([\(con_text:gif(search)),
+			   'Search SWEET categories for models',
+			   form([action('list_cats')
+                              , target=target_iframe
+                              ],
+                              [
+                               select([name('name')], Categories),
+                               input([type('submit')])]
+                             )])
                        )
-                    ]),
+                     ]),
 		 \(con_text:render_iframe(render))
 
 
@@ -121,6 +141,43 @@ list_pages(Request) :-
 			   [])
 		   ]
                    ).
+
+available_pages(Cat, Model, UID) :-
+   ref_m(UID, category, Cat),
+   ref_m(UID, model, Model).
+
+list_cats(Request) :-
+   http_parameters(Request, [name(Cat, [])]),
+   % ref_m(UID, category, Cat),
+   % ref_m(UID, model, Model),
+   findall(li(a([href(Model),
+		 target('_parent')],
+		UID)),
+	   available_pages(Cat, Model, UID),
+	   Models),
+   % context:create_global_term(Cat, Graph),
+   % uri_normalized(Graph, Literal),
+   % context:create_global_term(Literal, Graph),
+   reply_html_page(% cliopatria(default),
+                   [title('Available Page'),
+                    \(con_text:style)
+                   ],
+                   [
+		    p('Models available for:'),
+		    blockquote(h3([Cat, ' : ',
+				   a([href(['/context_ref_search/graph?name=',Cat]),
+				      target(render)],
+				     'Semantic Graph'
+				    )
+				  ]
+				 )
+			      ),
+		    ul(
+			Models
+		      )
+		   ]
+		  ).
+
 
 
 
