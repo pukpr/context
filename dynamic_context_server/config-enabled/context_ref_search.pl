@@ -15,6 +15,8 @@
 
 spec('humanEnvirStandards:EnvironmentalStandard').
 foundation('humanResearch:Publication').
+requirement('humanDecision:Allocation').
+objective('humanDecision:Objective').
 
 author_order('_1', 'lead author') :- !.
 author_order('_2', 'second author') :- !.
@@ -41,7 +43,7 @@ find_title(Name, tr([td(Full_Name), td(Order),td(b(Doc)), td(b(Link))])) :-
    rdf(Article, rdf:type, Ref),
    rdf(Article, bib:authors, Authors),
    rdf(Authors, RefNum, NamedAuthor),
-   rdf(NamedAuthor, foaf:surname, literal(exact(Name), Ref_Name)),
+   rdf(NamedAuthor, foaf:surname, literal(substring(Name), Ref_Name)),
    (
    rdf(NamedAuthor, foaf:givenname, literal(First_Name)) ->
    true;
@@ -55,18 +57,32 @@ find_title(Name, tr([td(Full_Name), td(Order),td(b(Doc)), td(b(Link))])) :-
    author_order(R, Order).
 
 % Search for subjects
-find_title(Name, tr([td(Name),td(Author_List), % [Author, ' : ', i(Order)]
+find_title(N, tr([td(Name),td(Author_List), % [Author, ' : ', i(Order)]
 			      td(Doc), td(b(Link))])) :-
    spec(Spec),
    foundation(Foundation),
-   rdf(Part, dc:subject, literal(Name)),
+   requirement(Requirement),
+   objective(Target),
+   rdf(Part, dc:subject, literal(substring(N),Name)),
    (    rdf(Part, dc:subject, literal(Foundation)) ->
-	Doc = [img(src('/html/images/priority.gif')), 'model']
+	Doc = [img([src('/html/images/priority.gif'),
+                    title('A foundational research document or model')]),
+               i(sub('model'))]
    ;
         rdf(Part, dc:subject, literal(Spec)) ->
-	Doc = [img(src('/html/images/spec.gif')),'spec']
+	Doc = [img([src('/html/images/spec.gif'),
+                    title('A specification, testing, or standards document')]),i(sub('spec'))]
    ;
-        Doc = 'ref'
+        rdf(Part, dc:subject, literal(Requirement)) ->
+	Doc = [img([src('/html/images/require.gif'),
+                    title('A requirements document for allocation')]),i(sub('req'))]
+   ;
+        rdf(Part, dc:subject, literal(Target)) ->
+	Doc = [img([src('/html/images/target.gif'),
+                    title('A project-specific document or model forming an objective')]),i(sub('target'))]
+   ;
+	Doc = [img([src('/html/images/cite.gif'),
+                    title('A citation or reference document')]),i(sub('cite'))]
    ),
    rdf(Part, dc:title, literal(Title)),
    article_link(Part, Title, Link),

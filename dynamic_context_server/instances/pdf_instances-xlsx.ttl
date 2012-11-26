@@ -171,7 +171,7 @@ ent:rain_drops a rdfs:Resource ;
 	ent:characteristic "particleSizes" ;
 	ent:title "water droplet size distribution" ;
 	ent:x_axis "mm" ;
-	ent:pdf "[0.5*exp(3.0,Dist), 0.5*exp(0.1,Dist)]" ;
+	ent:pdf "[0.9951*exp(0.489,Dist), 0.0049*exp(0.996,Dist)]" ;
 	ent:moments "[[mean], [mean]]" ;
 	ent:interval "1.1"^^xsd:double ;
 	ent:min_extent "0.0010"^^xsd:double ;

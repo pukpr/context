@@ -73,10 +73,16 @@ navigate(Request) :-
 distribution(pdf, 'Probability Density').
 distribution(cdf, 'Cumulative Probability').
 
-present_and_next_state(Present, Title, Next) :-
-    distribution(Present, Title),
+present_and_next_state(Present, Units, Dist, DistUnits, Next) :-
+    distribution(Present, Dist),
+    (   Present = pdf ->
+        % atomic_list_concat([Dist, ' (1/', Units, ')'], DistUnits)
+        DistUnits = [Dist, ' (1/', Units, ')']
+    ;
+        DistUnits = Dist
+    ),
     distribution(_, Next),
-    Title \= Next.
+    Dist \= Next.
 
 
 display(Model, Render, Dist, Scale*Xaxis) :-
@@ -93,7 +99,7 @@ display(Model, Render, Dist, Scale*Xaxis) :-
     rdfS(U, ent:title, Title),
     rdfV(U, ent:pdf, Distribution_Function,  ['Dist'=State]),
     rdfS(U, ent:x_axis, X_0),
-    present_and_next_state(State, Dist, Flip),
+    present_and_next_state(State, Xaxis, Dist, Yaxis, Flip),
     http_current_request(Request),
     context:create_url(Request, '/context_model/data_generator', [[model,Model]], Sampling_URL),
 
@@ -128,7 +134,7 @@ display(Model, Render, Dist, Scale*Xaxis) :-
                                            true,
                                            'X, Y',
                                            Xaxis,
-                                           Dist,
+                                           Yaxis,
                                            [Title, ' : ', State],
                                            [XS,Y] )),
                      br([]),

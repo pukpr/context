@@ -139,8 +139,9 @@ table.block tr.skip th
 }
 
 table.block td, table.block th
-{ border-width: 1px 1px 0 1px;
-  border-style: dotted;
+{ border-width: thin thin thin thin;
+  /* border-style: dotted; */
+  border-color: lightgray;
   padding: 0 2px;
 }
 

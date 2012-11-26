@@ -21,7 +21,7 @@ navigate(Request) :-
           ul([
               li(p([\(con_text:gif(ref)),
 		    %a([href('/context_ref_search/cite?name=Confluence'),target(target_iframe)],
-                    'Search for a citation relevant to context modeling',
+                    'Search for an author or tag indexed within the citation ontology',
                   form([action('/context_ref_search/cite'), target(target_iframe)],
                        [input([type('text'),name('name'),value('Confluence')]),
                         input([type('submit')])])
@@ -29,7 +29,7 @@ navigate(Request) :-
               ),
 
             li(p([\(con_text:gif(ref)),
-		  'Search based on SWEET terminology',
+		  'Search for references based on SWEET terminology',
                form([action('/context_ref_search/search_sweet'),target(target_iframe)],
                    [
                     select([name('name')], Sweets),
