@@ -79,6 +79,18 @@ get_location(Characteristic, Lat, Lon, Location_Name, Class, EC, Examples) :-
     rdfR(Loc, ent:lon, Lon),
     rdfS(Loc, ent:title, Location_Name).
 
+corrosionModel(Diff, Drag, X0, T*Time, Z*Thickness) :-
+   context_units:convert(T*Time, T1*yr, T1),
+   Tau is (1 - exp(-T1*Drag))/Drag,
+   % Z1 is Diff * Tau/(X0+sqrt(Diff*Tau)),
+   Z1 is sqrt(Diff*Tau)*sqrt(Tau/X0)/(1+sqrt(Tau/X0)),
+   context_units:convert(Z1*micron, Z*Thickness, Z), !.
+corrosionModel(Diff, Drag, X0, Thickness, T*Time, Z) :-
+   corrosionModel(Diff, Drag, X0, T*Time, Z*Thickness).
+
+% Tau = (1-EXP(-f*t))/f
+% k*SQRT(D*Tau)*SQRT(Tau/X)/(1+SQRT(Tau/X))
+
 plot(Request) :-
     http_parameters(Request, [kind(Kind, []),
 			      limit(Limit, [number]),
@@ -92,19 +104,19 @@ plot(Request) :-
     T range [T1, T2]^0.8*TUnits,
     (
        Characteristic = rural ->
-	 Z mapdot corrosionModel(1000, 0.1, 1.0, LUnits) ~> T
+	 Z mapdot corrosionModel(14000, 0.2, 150.0, LUnits) ~> T
      ;
        Characteristic = marine_mild ->
-	 Z mapdot corrosionModel(1000000, 0.01, 1.0, LUnits) ~> T
+	 Z mapdot corrosionModel(18000, 1e-8, 2.0, LUnits) ~> T
       ;
        Characteristic = marine_severe ->
-	 Z mapdot corrosionModel(1000000, 0.01, 1.0, LUnits) ~> T
+	 Z mapdot corrosionModel(65000, 1e-8, 2.0, LUnits) ~> T
       ;
        Characteristic = industrial ->
-	 Z mapdot corrosionModel( 800000, 0.01, 1.0, LUnits) ~> T
+	 Z mapdot corrosionModel(40000, 1e-8, 3.0, LUnits) ~> T
       ;
        Characteristic = urban ->
-	 Z mapdot corrosionModel(10000, 0.05, 1.0, LUnits) ~> T
+	 Z mapdot corrosionModel(14000, 0.4, 2.0, LUnits) ~> T
     ),
     Top mapdot Limit ~> T,
     % context_math:ones_list(T, Limit, [], Top),
@@ -156,14 +168,6 @@ plot(Request) :-
 
                     ]
 		  ).
-
-corrosionModel(Diff, Drag, X0, T*Time, Z*Thickness) :-
-   context_units:convert(T*Time, T1*yr, T1),
-   Tau is 1 - exp(-T1*Drag),
-   Z1 is Diff * Tau/(X0+sqrt(Diff*Tau)),
-   context_units:convert(Z1*micron, Z*Thickness, Z), !.
-corrosionModel(Diff, Drag, X0, Thickness, T*Time, Z) :-
-   corrosionModel(Diff, Drag, X0, T*Time, Z*Thickness).
 
 
 standard(Names) :-

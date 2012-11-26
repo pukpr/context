@@ -16,8 +16,6 @@
 :- use_module(library(http/http_host)).
 :- use_module(library(http/http_wrapper)).
 
-
-
 :- rdf_meta
    rdfx(o,o,o),
    rdfR(o,o,?),
@@ -25,6 +23,9 @@
    rdfS(o,o,?),
    rdfL(o,o,?),
    rdfV(o,o,?,?).
+
+ref_link_to_pdf(FileName, Dest, Link) :-
+   format(atom(Link), '/ref/~s#nameddest=~s', [FileName,Dest]).
 
 cgi_pairs([[Key,Value]], Input, Output) :-
     atomic_list_concat([Input, Key, '=', Value], Output).

@@ -44,7 +44,7 @@ navigate(Request) :-
 			  br([]),
 			  input([type('submit'), value('Plot Data Set')])
 			 ]),
-                      p('For each course, identifying characteristics are shown along with a PSD plot of the course profile'),
+                      % p('For each course, identifying characteristics are shown along with a PSD plot of the course profile'),
 		      br([]),
 
                       \(con_text:render_iframe(render))
