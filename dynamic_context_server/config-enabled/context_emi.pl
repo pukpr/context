@@ -10,63 +10,57 @@
 :- context:register(context_emi:plot).
 
 % /ref/cable_EMI_susceptibility.pdf#nameddest=CS_BCI
+emi_doc('foundation/cable_EMI_susceptibility.pdf').
+
+ref(Key, Contents) -->
+    {
+     emi_doc(FileName),
+     context:ref_link_to_pdf(FileName, Key, Link)
+    },
+    html(p([
+	     \(con_text:gif(ref)),
+             a([href=Link,target=target_iframe,
+               type='application/pdf'], Contents)
+	   ]
+	  )
+	).
+
 
 navigate(Request) :-
-
    reply_html_page(cliopatria(default),
                    [title('general EMI models')],
                    [\(con_text:table_with_iframe_target(
                                     Request,
 		     [
-                      h1('Links to EMI models'),
+                      h1(a(href('navigate'),'Links to EMI models')),
                       p('Linked specifications provided for EMI models'),
+
+                      h2('Electromagnetic environments, externally stimulated'),
+	             \(context_emi:ref('RF_EME','Radiated Radio Frequency (RF) Electromagnetic Environment (RF EME)')),
+	             \(context_emi:ref('EMP','Electromagnetic Pulse (EMP)')),
+	             \(context_emi:ref('LE','Lightning Effects')),
+	             \(context_emi:ref('HPM','High Power Microwave')),
+	             \(context_emi:ref('ED','Electrostatic Discharge')),
+	             \(context_emi:ref('IGEE','Internally Generated Electromagnetic Energy')),
+
+                      h2('Induced EM environment for internal equipment'),
+                      p('The following are internal design considerations'),
+
+                      h3('Conducted Susceptibility'),
+	             \(context_emi:ref('CS_RF','RF')),
+	             \(context_emi:ref('CS_BCI','Bulk Cable Injection, Impulses')),
+	             \(context_emi:ref('CS_DST','Damped Sinusoidal Transients')),
+
+                      h3('Radiated Susceptibility'),
+	             \(context_emi:ref('RS_EF','Electric Field')),
+	             \(context_emi:ref('RS_TSEF','EMP')),
 
                       br([]),
 		      \(con_text:render_iframe(render))
                      ]
 						       ))
-     ]
-		  ).
-
-
-fxn1(Parameter,X*_Units,Y) :-
-   Y is sin(Parameter*X).
-fxn2(Parameter,X*_Units,Y) :-
-   exp(Parameter, X, Y).
-fxn3(Parameter,X*_Units,Y) :-
-   Y is Parameter*X.
-
-
-plot(Request) :-
-    http_parameters(Request, [kind(Kind, []),
-			      limit(Limit, [number]),
-                              l_units(LUnits, []),
-                              evaluate(Characteristic, [])]),
-
-    H range [0.1, 10.0]^0.9*LUnits,
-    (
-       Characteristic = id1 ->
-	 Z mapdot fxn1(Limit) ~> H
-     ;
-       Characteristic = id2 ->
-	 Z mapdot fxn2(Limit) ~> H
-      ;
-       Characteristic = id3 ->
-	 Z mapdot fxn3(Limit) ~> H
-    ),
-    Data tuple H + Z,
-    X = 'xname',
-    Y = 'yname',
-    XUnits = 'units',
-    YUnits = LUnits,
-    reply_html_page([title('PlotTitle'),
-                     \(con_text:style)],
-                    [
-		     \(context_graphing:dygraph_native(Kind, [X, Y],
-						       [X,XUnits], [Y, YUnits],
-						       'plot_title', Data))
-                    ]
-		  ).
+                   ]
+                  ).
 
 
 

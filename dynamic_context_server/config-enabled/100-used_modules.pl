@@ -76,6 +76,8 @@
 :- use_module(context_solar).
 :- use_module(context_physical).
 :- use_module(context_query).
+:- use_module(context_emi).
+:- use_module(context_standard_atmosphere).
 
 
 

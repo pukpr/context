@@ -1,12 +1,10 @@
-W	EMI links for Rockwell
 W	Deliver buoyancy model
-W	Index the papers for PDF
-W	Set up a rainfall drop distro too
 W	Collect all XLS and PPT files
+	Particle, aerosol, droplet, particulates, debris
+	add particle ref from wafer-scale
 	context_solar, planck's law
 	Aquatic wave height model, plus connection to Sea-State, significant wave height
-	Particle size Monte-Carlo, TOPS has particle size classes
-	Calibrate corrosive model
+	Dual model Particle size Monte-Carlo, TOPS has particle size classes
 	ENT classification system tied to SWEET
 	Each browse entry should have short narrative and one link
 	Add browser tree to individual features
@@ -14,6 +12,13 @@ W	Collect all XLS and PPT files
 	Semi-Markov sync function to scale
 	convert rdf_ to entailments
 	Different data format generators
+	std atmo table
+	lightning stroke plot
+        window needs normalizing
+x	EMI links for Rockwell
+x	Calibrate corrosive model
+x	PDF models should have doc link
+x	Set up a rainfall drop distro too
 x	Map with refresh that shows explanation and Google Maps
 x	Units page for resources, use repr:sciUnits
 x	List of phys constants
@@ -42,16 +47,14 @@ x	Cloud has land plus ocean.
 
 
 
-
-
 general work
+	Index the papers for PDF
+	Acronyms
 	Unit tests
 	switch graphs to native format whenever possible
 	Use target=_parent or target=_top
 	hover on various links
 	Dimensions need more granular ranges, not micron with meters
-
-
 
 
 if time available

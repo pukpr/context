@@ -1,6 +1,6 @@
 :- module(context_lightning, [
-			      lightningA/3,
-			      lightningB/3,
+			      lightningA/5,
+			      lightningB/5,
 			      lightningC/3
 			    ]).
 
@@ -14,7 +14,9 @@ navigate(Request) :-
    collect_unit_options(ent:time, Tunits),
 
    reply_html_page(cliopatria(default),
-                   [title('Lightning indirect effects')],
+                   [title('Lightning indirect effects'),
+	           script([type('text/javascript'),src('/html/js/submit.js')], [])
+                   ],
                    [\(con_text:table_with_iframe_target(
                                     Request,
 		     [
@@ -30,11 +32,13 @@ navigate(Request) :-
 			  \(con_text:radio_toggles(
 					 'evaluate',
 					 [['Single', 'single'],
-                                          ['Multiple', 'multiple'],
-					  [ 'Table', 'table']
+                                          ['Multiple', 'multiple']
                                          ])),
                           br([]),
-			  input([type('submit'), name(kind), value('lin')])
+			  input([type('submit'), name(kind), value('waveform'),
+                                 onclick('subm(this.form,"render");')]),
+			  input([type('submit'), name(kind), value('table'),
+                                 onclick('subm(this.form,"target_iframe");')])
 			 ]
                           ),
 
@@ -46,18 +50,19 @@ navigate(Request) :-
 		  ).
 
 
-lightningA(Parameter,X*_Units,Y) :-
-   Y is sin(Parameter*X).
-lightningB(Parameter,X*_Units,Y) :-
-   exp(Parameter, X, Y).
+lightningA(I0,Alpha,Beta,X*_Units,Y) :-
+   Y is I0*(exp(-Alpha*X)-exp(-Beta*X)).
+lightningB(I0,Alpha,Beta,X*_Units,Y) :-
+   I0 is Alpha+Beta,
+   exp(Alpha, X, Y).
 lightningC(Parameter,X*_Units,Y) :-
    Y is Parameter*X.
 
 plot(Request) :-
-    http_parameters(Request, [kind(_Kind, []),
+    http_parameters(Request, [kind(table, []),
 			      limit(_Limit, [number]),
                               t_units(_TUnits, []),
-                              evaluate(table, [])]),
+                              evaluate(_Table, [])]),
     findall(Row,effects_table(Row), Rows),
     reply_html_page([title('Lightning Indirect Effects Table'),
 		     \(con_text:style)],
@@ -75,30 +80,33 @@ plot(Request) :-
                    ]).
 
 plot(Request) :-
-    http_parameters(Request, [kind(Kind, []),
+    http_parameters(Request, [kind(waveform, []),
 			      limit(Limit, [number]),
                               t_units(TUnits, []),
                               evaluate(Characteristic, [])]),
 
-    Time range [0.0, 10.0]/1.0*TUnits,
+    Time range [0.0, 0.0001]/0.000001*TUnits,
+    rdfL(UID, ent:i0, I0*Current),
+    rdfL(UID, ent:alpha, Alpha/TS ),
+    rdfL(UID, ent:beta, Beta/TS),
     (
        Characteristic  = single ->
-	 I mapdot lightningA(Limit) ~> Time
-     ;
+	 I mapdot lightningA(I0,Alpha,Beta) ~> Time
+    ;
        Characteristic = multiple  ->
 	 I mapdot lightningB(Limit) ~> Time
-      ;
+    ;
 	 I mapdot lightningB(Limit) ~> Time
     ),
     Data tuple Time + I,
-    X = 'xname',
-    Y = 'yname',
-    XUnits = 'units',
-    YUnits = TUnits,
+    X = 'time',
+    Y = 'current',
+    XUnits = TUnits,
+    YUnits = Current,
     reply_html_page([title('Lightning Profile'),
                      \(con_text:style)],
                     [
-		     \(context_graphing:dygraph_native(Kind, [X, Y],
+		     \(context_graphing:dygraph_native(lin, [X, Y],
 						       [X,XUnits], [Y, YUnits],
 						       'Lightning Profile', Data))
                     ]

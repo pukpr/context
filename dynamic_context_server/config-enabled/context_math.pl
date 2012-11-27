@@ -551,15 +551,17 @@ sconvolution([_|YR],Window,Initial,Final) :-
 X window Y/Z :-  % lag window
    Y1 window Y,
    Z1 window Z,
+   Z2 normalize Z1,
    ones_list(Z, 0.0, [], Empty),
    append(Empty, Y1, Y2),
-   sconvolution(Y2, Z1, [], X).
+   sconvolution(Y2, Z2, [], X).
 
 X window Y*Z :-  % centered window
    Y1 window Y,
    Z1 window Z,
-   X1 convolve Y1*Z1,
-   length(Z1, N),
+   Z2 normalize Z1,
+   X1 convolve Y1*Z2,
+   length(Z2, N),
    M is integer((N+1)/2)-1,
    X2 offset X1 - M,
    X shrink X2/Y.

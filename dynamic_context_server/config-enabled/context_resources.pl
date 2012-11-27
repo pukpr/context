@@ -29,8 +29,8 @@ navigate(Request) :-
                                 ]
                                ),
                              li([\(con_text:gif(resources)),
-                                 a(href('/context_atm/navigate'),
-                                   'Access standard atmosphere resource artifacts')
+                                 a(href('/context_physical/navigate'),
+                                   'Access physical constants and units')
                                 ]
                                ),
                              li([\(con_text:gif(resources)),
@@ -39,8 +39,13 @@ navigate(Request) :-
                                 ]
                                ),
                              li([\(con_text:gif(resources)),
-                                 a(href('/context_physical/navigate'),
-                                   'Access physical constants and units')
+                                 a(href('/context_atm/navigate'),
+                                   'Access standard atmosphere resource artifacts')
+                                ]
+                               ),
+                             li([\(con_text:gif(resources)),
+                                 a(href('/context_standard_atmosphere/navigate'),
+                                   'Access standard atmosphere table')
                                 ]
                                )
                              ])
