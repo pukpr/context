@@ -293,13 +293,13 @@ rdf_(wave, ent:description, 'Wave and sea state models').
 rdf_(wind, ent:image, 'wind_statistics_icon.png').
 rdf_(wind, ent:description, 'Wind models').
 rdf_(clutter, ent:image, 'clutter_modeling_icon.png').
-rdf_(clutter, ent:description, 'EMI and clutter models').
+rdf_(clutter, ent:description, 'EMI and noise clutter models').
 rdf_(lakes, ent:image, 'lake_sizes_icon.png').
-rdf_(lakes, ent:description, 'Lake, river models').
+rdf_(lakes, ent:description, 'Lake, river and inland water models').
 rdf_(particles, ent:image, 'particle_sizes_icon.png').
-rdf_(particles, ent:description, 'Particle and debris models').
+rdf_(particles, ent:description, 'Particulate (droplets, aerosols, etc) models').
 rdf_(thermal, ent:image, 'thermal_dispersion_icon.jpg').
-rdf_(thermal, ent:description, 'Thermal models').
+rdf_(thermal, ent:description, 'Thermal, solar, and temperature models').
 rdf_(rainfall, ent:image, 'rain_statistics_icon.png').
 rdf_(rainfall, ent:description, 'Rainfall, cloud models').
 rdf_(corrosion, ent:image, 'corrosion_oxidation_icon.jpg').

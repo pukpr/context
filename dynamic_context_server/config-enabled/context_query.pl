@@ -1,5 +1,4 @@
-:- module(context_query, [
-			    ]).
+:- module(context_query, [  ]).
 
 :- use_module(context_math).
 % :- use_module(autocompletion).
@@ -17,7 +16,7 @@ cliopatria:menu_item(query/'/context_file_reading/crawl', 'Models').
 cliopatria:menu_item(query/'/terms#', 'Terminology').
 */
 
-t(S,P,O) :-
+triple(S,P,O) :-
     (	callable(P) ->
         rdf_global_term(P, P1)
     ;
@@ -33,20 +32,21 @@ t(S,P,O) :-
     ;
         O1 = O
     ),
-    rdf(S1,P1,O1).
+    rdf(S1,P1,O1),
+    !.
 
 
 pquery(Request) :-
     http_parameters(Request, [input(Input, [])]),
     atom_to_term(Input, Terms, Var),
-    call(Terms),
+    setof(Var, call(Terms),  Vars),
     % with_output_to(atom(Text), write(Var)),
     reply_html_page(
         [title('Prolog query'),
 	 \(con_text:style)],
         [% p(\(con_text:flist(Var))),
 	 % p(Text),
-	\(con_text:paragraphs(Var))]
+	\(con_text:paragraphs(Vars))]
                    ).
 
 
@@ -82,7 +82,7 @@ navigate(Request) :-
 			  li(p([\(con_text:gif(query)),'Query via Prolog',
 				\(con_text:form('/context_query/pquery',
 						target_iframe,
-						[[input,'t(Subject,dc:title,Object)',35]]
+						[[input,'triple(Subject, dc:title, Object)',45]]
 					       ))
 			       ]
 			      )

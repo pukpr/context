@@ -17,6 +17,7 @@
 :- context:register(context_water:chart).
 :- context:register(context_water:density_test).
 :- context:register(context_water:plot).
+:- context:register(context_water:densities).
 
 
 freshwater_density(
@@ -88,12 +89,27 @@ chart(_Request) :-
                    ]).
 
 
+density_cells([Liquid,Temperature,Density]) :-
+    rdfS(UID, ent:liquid, Liquid),
+    rdfS(UID, ent:temperature, Temperature),
+    rdfS(UID, ent:density, Density).
+
+densities(_Request) :-
+    findall(Row, density_cells(Row), Rows),
+    reply_html_page([title('Liquid Densities Table'),
+                     \(con_text:style)],
+                   [
+                    \(con_text:table_multiple_entries(
+                          [['Liquid','Temperature','Density']],
+                          Rows))
+                   ]).
 
 navigate(Request) :-
    collect_unit_options(ent:mass, Munits),
    collect_unit_options(ent:volume, Vunits),
    collect_unit_options(ent:temperature, Tunits),
-
+   context_file_reading:find('stability curve calculations.xlsx', Stability_File),
+   % context_file_reading:find('density.xlsx', Stability_File),
    reply_html_page(cliopatria(default),
                    [title('Buoyancy calculation')],
                    [\(con_text:table_with_iframe_target(
@@ -125,7 +141,13 @@ navigate(Request) :-
 			  input([type('submit'), name(kind), value('log')])
 			 ]
                           ),
-
+                      br([]),
+                      \(con_text:button_link('Liquid Densities', 'densities', 'render')),
+                      \(con_text:button_link('Download Stability Spreadsheet',
+                                             '/context_file_reading/download',
+                                             render,
+                                             [[uri, Stability_File],
+                                              [type, 'application/excel']])),
                       br([]),
 		      \(con_text:render_iframe(render))
                      ]

@@ -1,0 +1,629 @@
+﻿@prefix rdfs: <http://www.w3.org/2000/01/rdf-schema#> .
+@prefix foaf: <http://xmlns.com/foaf/0.1/> .
+@prefix owl: <http://www.w3.org/2002/07/owl#> .
+@prefix xsd: <http://www.w3.org/2001/XMLSchema#> .
+@prefix rdf: <http://www.w3.org/1999/02/22-rdf-syntax-ns#> .
+@prefix ent: <http://entroplet.com/terms#> .
+
+
+<http://entroplet.com/terms#1,1,2-Trichlorotrifluoroethane> ent:liquid "1,1,2-Trichlorotrifluoroethane" ;
+	ent:temperature "25*c" ;
+	ent:density "1564.0*kg/m^3" .
+
+<http://entroplet.com/terms#1,2,4-Trichlorobenzene> ent:liquid "1,2,4-Trichlorobenzene" ;
+	ent:temperature "20*c" ;
+	ent:density "1454.0*kg/m^3" .
+
+<http://entroplet.com/terms#1,4-Dioxane> ent:liquid "1,4-Dioxane" ;
+	ent:temperature "20*c" ;
+	ent:density "1033.6*kg/m^3" .
+
+<http://entroplet.com/terms#2-Methoxyethanol> ent:liquid "2-Methoxyethanol" ;
+	ent:temperature "20*c" ;
+	ent:density "964.6*kg/m^3" .
+
+<http://entroplet.com/terms#Acetic+Acid+> ent:liquid "Acetic Acid" ;
+	ent:temperature "25*c" ;
+	ent:density "1049.1*kg/m^3" .
+
+ent:Acetone ent:liquid "Acetone" ;
+	ent:temperature "25*c" ;
+	ent:density "784.58*kg/m^3" .
+
+ent:Acetonitrile ent:liquid "Acetonitrile" ;
+	ent:temperature "20*c" ;
+	ent:density "782.2*kg/m^3" .
+
+<http://entroplet.com/terms#Alcohol%2C+ethyl> ent:liquid "Alcohol, ethyl" ;
+	ent:temperature "25*c" ;
+	ent:density "785.06*kg/m^3" .
+
+<http://entroplet.com/terms#Alcohol%2C+methyl> ent:liquid "Alcohol, methyl" ;
+	ent:temperature "25*c" ;
+	ent:density "786.51*kg/m^3" .
+
+<http://entroplet.com/terms#Alcohol%2C+propyl> ent:liquid "Alcohol, propyl" ;
+	ent:temperature "25*c" ;
+	ent:density "799.96*kg/m^3" .
+
+<http://entroplet.com/terms#Ammonia+%28aqua%29> ent:liquid "Ammonia (aqua)" ;
+	ent:temperature "25*c" ;
+	ent:density "823.35*kg/m^3" .
+
+ent:Analine ent:liquid "Analine" ;
+	ent:temperature "25*c" ;
+	ent:density "1018.93*kg/m^3" .
+
+<http://entroplet.com/terms#Automobile+oils> ent:liquid "Automobile oils" ;
+	ent:temperature "15*c" ;
+	ent:density "[880 ,940]*kg/m^3" .
+
+<http://entroplet.com/terms#Beer+%28varies%29> ent:liquid "Beer (varies)" ;
+	ent:temperature "10*c" ;
+	ent:density "1010.0*kg/m^3" .
+
+ent:Benzene ent:liquid "Benzene" ;
+	ent:temperature "25*c" ;
+	ent:density "873.81*kg/m^3" .
+
+ent:Benzil ent:liquid "Benzil" ;
+	ent:temperature "25*c" ;
+	ent:density "1079.64*kg/m^3" .
+
+ent:Brine ent:liquid "Brine" ;
+	ent:temperature "15*c" ;
+	ent:density "1230.0*kg/m^3" .
+
+ent:Bromine ent:liquid "Bromine" ;
+	ent:temperature "25*c" ;
+	ent:density "3120.4*kg/m^3" .
+
+<http://entroplet.com/terms#Butyric+Acid> ent:liquid "Butyric Acid" ;
+	ent:temperature "20*c" ;
+	ent:density "959.0*kg/m^3" .
+
+ent:Butane ent:liquid "Butane" ;
+	ent:temperature "25*c" ;
+	ent:density "599.09*kg/m^3" .
+
+<http://entroplet.com/terms#n-Butyl+Acetate> ent:liquid "n-Butyl Acetate" ;
+	ent:temperature "20*c" ;
+	ent:density "879.6*kg/m^3" .
+
+<http://entroplet.com/terms#n-Butyl+Alcohol> ent:liquid "n-Butyl Alcohol" ;
+	ent:temperature "20*c" ;
+	ent:density "809.7*kg/m^3" .
+
+<http://entroplet.com/terms#n-Butyl+Chloride> ent:liquid "n-Butyl Chloride" ;
+	ent:temperature "20*c" ;
+	ent:density "886.2*kg/m^3" .
+
+<http://entroplet.com/terms#Caproic+acid> ent:liquid "Caproic acid" ;
+	ent:temperature "25*c" ;
+	ent:density "921.06*kg/m^3" .
+
+<http://entroplet.com/terms#Carbolic+acid> ent:liquid "Carbolic acid" ;
+	ent:temperature "15*c" ;
+	ent:density "956.3*kg/m^3" .
+
+<http://entroplet.com/terms#Carbon+disulfide> ent:liquid "Carbon disulfide" ;
+	ent:temperature "25*c" ;
+	ent:density "1260.97*kg/m^3" .
+
+<http://entroplet.com/terms#Carbon+tetrachloride> ent:liquid "Carbon tetrachloride" ;
+	ent:temperature "25*c" ;
+	ent:density "1584.39*kg/m^3" .
+
+ent:Carene ent:liquid "Carene" ;
+	ent:temperature "25*c" ;
+	ent:density "856.99*kg/m^3" .
+
+<http://entroplet.com/terms#Castor+oil> ent:liquid "Castor oil" ;
+	ent:temperature "25*c" ;
+	ent:density "956.14*kg/m^3" .
+
+ent:Chloride ent:liquid "Chloride" ;
+	ent:temperature "25*c" ;
+	ent:density "1559.88*kg/m^3" .
+
+ent:Chlorobenzene ent:liquid "Chlorobenzene" ;
+	ent:temperature "20*c" ;
+	ent:density "1105.8*kg/m^3" .
+
+ent:Chloroform ent:liquid "Chloroform" ;
+	ent:temperature "20*c" ;
+	ent:density "1489.2" ;
+	ent:temperature "25*c" ;
+	ent:density "1464.73*kg/m^3" .
+
+<http://entroplet.com/terms#Citric+acid> ent:liquid "Citric acid" ;
+	ent:temperature "25*c" ;
+	ent:density "1659.51*kg/m^3" .
+
+<http://entroplet.com/terms#Coconut+oil> ent:liquid "Coconut oil" ;
+	ent:temperature "15*c" ;
+	ent:density "924.27*kg/m^3" .
+
+<http://entroplet.com/terms#Cotton+seed+oil> ent:liquid "Cotton seed oil" ;
+	ent:temperature "15*c" ;
+	ent:density "925.87*kg/m^3" .
+
+ent:Cresol ent:liquid "Cresol" ;
+	ent:temperature "25*c" ;
+	ent:density "1023.58*kg/m^3" .
+
+ent:Creosote ent:liquid "Creosote" ;
+	ent:temperature "15*c" ;
+	ent:density "1066.83*kg/m^3" .
+
+<http://entroplet.com/terms#Crude+oil%2C+48%C2%B0+API> ent:liquid "Crude oil, 48° API" ;
+	ent:temperature "60*f" ;
+	ent:density "790.0*kg/m^3" .
+
+<http://entroplet.com/terms#Crude+oil%2C+40%C2%B0+API> ent:liquid "Crude oil, 40° API" ;
+	ent:temperature "60*f" ;
+	ent:density "825.0*kg/m^3" .
+
+<http://entroplet.com/terms#Crude+oil%2C+35.6%C2%B0+API> ent:liquid "Crude oil, 35.6° API" ;
+	ent:temperature "60*f" ;
+	ent:density "847.0*kg/m^3" .
+
+<http://entroplet.com/terms#Crude+oil%2C+32.6%C2%B0+API> ent:liquid "Crude oil, 32.6° API" ;
+	ent:temperature "60*f" ;
+	ent:density "862.0*kg/m^3" .
+
+<http://entroplet.com/terms#Crude+oil%2C+California> ent:liquid "Crude oil, California" ;
+	ent:temperature "60*f" ;
+	ent:density "915.0*kg/m^3" .
+
+<http://entroplet.com/terms#Crude+oil%2C+Mexican> ent:liquid "Crude oil, Mexican" ;
+	ent:temperature "60*f" ;
+	ent:density "973.0*kg/m^3" .
+
+<http://entroplet.com/terms#Crude+oil%2C+Texas> ent:liquid "Crude oil, Texas" ;
+	ent:temperature "60*f" ;
+	ent:density "873.0*kg/m^3" .
+
+ent:Cumene ent:liquid "Cumene" ;
+	ent:temperature "25*c" ;
+	ent:density "860.19*kg/m^3" .
+
+ent:Cyclohexane ent:liquid "Cyclohexane" ;
+	ent:temperature "20*c" ;
+	ent:density "778.5*kg/m^3" .
+
+ent:Cyclopentane ent:liquid "Cyclopentane" ;
+	ent:temperature "20*c" ;
+	ent:density "745.4*kg/m^3" .
+
+ent:Decane ent:liquid "Decane" ;
+	ent:temperature "25*c" ;
+	ent:density "726.28*kg/m^3" .
+
+<http://entroplet.com/terms#Diesel+fuel+oil+20+to+60> ent:liquid "Diesel fuel oil 20 to 60" ;
+	ent:temperature "15*c" ;
+	ent:density "[820, 950]*kg/m^3" .
+
+<http://entroplet.com/terms#Diethyl+ether> ent:liquid "Diethyl ether" ;
+	ent:temperature "20*c" ;
+	ent:density "714.0*kg/m^3" .
+
+ent:o-Dichlorobenzene ent:liquid "o-Dichlorobenzene" ;
+	ent:temperature "20*c" ;
+	ent:density "1305.8*kg/m^3" .
+
+ent:Dichloromethane ent:liquid "Dichloromethane" ;
+	ent:temperature "20*c" ;
+	ent:density "1326.0*kg/m^3" .
+
+<http://entroplet.com/terms#Diethylene+glycol> ent:liquid "Diethylene glycol" ;
+	ent:temperature "15*c" ;
+	ent:density "1120.0*kg/m^3" .
+
+<http://entroplet.com/terms#Dimethyl+Acetamide> ent:liquid "Dimethyl Acetamide" ;
+	ent:temperature "20*c" ;
+	ent:density "941.5*kg/m^3" .
+
+<http://entroplet.com/terms#N,N-Dimethylformamide> ent:liquid "N,N-Dimethylformamide" ;
+	ent:temperature "20*c" ;
+	ent:density "948.7*kg/m^3" .
+
+<http://entroplet.com/terms#Dimethyl+Sulfoxide> ent:liquid "Dimethyl Sulfoxide" ;
+	ent:temperature "20*c" ;
+	ent:density "1100.4*kg/m^3" .
+
+ent:Dodecane ent:liquid "Dodecane" ;
+	ent:temperature "25*c" ;
+	ent:density "754.63*kg/m^3" .
+
+ent:Ethane ent:liquid "Ethane" ;
+	ent:temperature "-89*c" ;
+	ent:density "570.26*kg/m^3" .
+
+ent:Ether ent:liquid "Ether" ;
+	ent:temperature "25*c" ;
+	ent:density "72.72*kg/m^3" .
+
+ent:Ethylamine ent:liquid "Ethylamine" ;
+	ent:temperature "16*c" ;
+	ent:density "680.78*kg/m^3" .
+
+<http://entroplet.com/terms#Ethyl+Acetate> ent:liquid "Ethyl Acetate" ;
+	ent:temperature "20*c" ;
+	ent:density "900.6*kg/m^3" .
+
+<http://entroplet.com/terms#Ethyl+Alcohol> ent:liquid "Ethyl Alcohol" ;
+	ent:temperature "20*c" ;
+	ent:density "789.2*kg/m^3" .
+
+<http://entroplet.com/terms#Ethyl+Ether> ent:liquid "Ethyl Ether" ;
+	ent:temperature "20*c" ;
+	ent:density "713.3*kg/m^3" .
+
+<http://entroplet.com/terms#Ethylene+Dichloride> ent:liquid "Ethylene Dichloride" ;
+	ent:temperature "20*c" ;
+	ent:density "1253.0*kg/m^3" .
+
+<http://entroplet.com/terms#Ethylene+glycol> ent:liquid "Ethylene glycol" ;
+	ent:temperature "25*c" ;
+	ent:density "1096.78*kg/m^3" .
+
+<http://entroplet.com/terms#Fluorine+refrigerant+R-12> ent:liquid "Fluorine refrigerant R-12" ;
+	ent:temperature "25*c" ;
+	ent:density "1310.95*kg/m^3" .
+
+ent:Formaldehyde ent:liquid "Formaldehyde" ;
+	ent:temperature "45*c" ;
+	ent:density "812.14*kg/m^3" .
+
+<http://entroplet.com/terms#Formic+acid+10%25+concentration> ent:liquid "Formic acid 10% concentration" ;
+	ent:temperature "20*c" ;
+	ent:density "1025.0*kg/m^3" .
+
+<http://entroplet.com/terms#Formic+acid+80%25+concentration> ent:liquid "Formic acid 80% concentration" ;
+	ent:temperature "20*c" ;
+	ent:density "1221.0*kg/m^3" .
+
+<http://entroplet.com/terms#Freon+-+11> ent:liquid "Freon - 11" ;
+	ent:temperature "21*c" ;
+	ent:density "1490.0*kg/m^3" .
+
+<http://entroplet.com/terms#Freon+-+21> ent:liquid "Freon - 21" ;
+	ent:temperature "21*c" ;
+	ent:density "1370.0*kg/m^3" .
+
+<http://entroplet.com/terms#Fuel+oil> ent:liquid "Fuel oil" ;
+	ent:temperature "60*f" ;
+	ent:density "890.13*kg/m^3" .
+
+ent:Furan ent:liquid "Furan" ;
+	ent:temperature "25*c" ;
+	ent:density "1416.03*kg/m^3" .
+
+ent:Furforol ent:liquid "Furforol" ;
+	ent:temperature "25*c" ;
+	ent:density "1154.93*kg/m^3" .
+
+<http://entroplet.com/terms#Gasoline%2C+natural> ent:liquid "Gasoline, natural" ;
+	ent:temperature "60*f" ;
+	ent:density "711.22*kg/m^3" .
+
+<http://entroplet.com/terms#Gasoline%2C+Vehicle> ent:liquid "Gasoline, Vehicle" ;
+	ent:temperature "60*f" ;
+	ent:density "737.22*kg/m^3" .
+
+<http://entroplet.com/terms#Gas+oils> ent:liquid "Gas oils" ;
+	ent:temperature "60*f" ;
+	ent:density "890.0*kg/m^3" .
+
+ent:Glucose ent:liquid "Glucose" ;
+	ent:temperature "60*f" ;
+	ent:density "[1350,1440]*kg/m^3" .
+
+ent:Glycerin ent:liquid "Glycerin" ;
+	ent:temperature "25*c" ;
+	ent:density "1259.37*kg/m^3" .
+
+ent:Glyme ent:liquid "Glyme" ;
+	ent:temperature "20*c" ;
+	ent:density "869.1*kg/m^3" .
+
+ent:Glycerol ent:liquid "Glycerol" ;
+	ent:temperature "25*c" ;
+	ent:density "1126.1*kg/m^3" .
+
+ent:Heptane ent:liquid "Heptane" ;
+	ent:temperature "25*c" ;
+	ent:density "679.5*kg/m^3" .
+
+ent:Hexane ent:liquid "Hexane" ;
+	ent:temperature "25*c" ;
+	ent:density "654.83*kg/m^3" .
+
+ent:Hexanol ent:liquid "Hexanol" ;
+	ent:temperature "25*c" ;
+	ent:density "810.53*kg/m^3" .
+
+ent:Hexene ent:liquid "Hexene" ;
+	ent:temperature "25*c" ;
+	ent:density "671.17*kg/m^3" .
+
+ent:Hydrazine ent:liquid "Hydrazine" ;
+	ent:temperature "25*c" ;
+	ent:density "794.52*kg/m^3" .
+
+ent:Iodine ent:liquid "Iodine" ;
+	ent:temperature "25*c" ;
+	ent:density "4927.28*kg/m^3" .
+
+ent:Ionene ent:liquid "Ionene" ;
+	ent:temperature "25*c" ;
+	ent:density "932.27*kg/m^3" .
+
+<http://entroplet.com/terms#Isobutyl+Alcohol> ent:liquid "Isobutyl Alcohol" ;
+	ent:temperature "20*c" ;
+	ent:density "801.6*kg/m^3" .
+
+ent:Iso-Octane ent:liquid "Iso-Octane" ;
+	ent:temperature "20*c" ;
+	ent:density "691.9*kg/m^3" .
+
+<http://entroplet.com/terms#Isopropyl+Alcohol> ent:liquid "Isopropyl Alcohol" ;
+	ent:temperature "20*c" ;
+	ent:density "785.4*kg/m^3" .
+
+<http://entroplet.com/terms#Isopropyl+Myristate> ent:liquid "Isopropyl Myristate" ;
+	ent:temperature "20*c" ;
+	ent:density "853.2*kg/m^3" .
+
+ent:Kerosene ent:liquid "Kerosene" ;
+	ent:temperature "60*f" ;
+	ent:density "817.15*kg/m^3" .
+
+<http://entroplet.com/terms#Linolenic+Acid> ent:liquid "Linolenic Acid" ;
+	ent:temperature "25*c" ;
+	ent:density "898.64*kg/m^3" .
+
+<http://entroplet.com/terms#Linseed+oil> ent:liquid "Linseed oil" ;
+	ent:temperature "25*c" ;
+	ent:density "929.07*kg/m^3" .
+
+ent:Methane ent:liquid "Methane" ;
+	ent:temperature "-164*c" ;
+	ent:density "464.54*kg/m^3" .
+
+ent:Methanol ent:liquid "Methanol" ;
+	ent:temperature "20*c" ;
+	ent:density "791.3*kg/m^3" .
+
+<http://entroplet.com/terms#Methyl+Isoamyl+Ketone> ent:liquid "Methyl Isoamyl Ketone" ;
+	ent:temperature "20*c" ;
+	ent:density "888.0*kg/m^3" .
+
+<http://entroplet.com/terms#Methyl+Isobutyl+Ketone> ent:liquid "Methyl Isobutyl Ketone" ;
+	ent:temperature "20*c" ;
+	ent:density "800.8*kg/m^3" .
+
+<http://entroplet.com/terms#Methyl+n-Propyl+Ketone> ent:liquid "Methyl n-Propyl Ketone" ;
+	ent:temperature "20*c" ;
+	ent:density "808.2*kg/m^3" .
+
+<http://entroplet.com/terms#Methyl+t-Butyl+Ether> ent:liquid "Methyl t-Butyl Ether" ;
+	ent:temperature "20*c" ;
+	ent:density "740.5*kg/m^3" .
+
+ent:N-Methylpyrrolidone ent:liquid "N-Methylpyrrolidone" ;
+	ent:temperature "20*c" ;
+	ent:density "1030.4*kg/m^3" .
+
+<http://entroplet.com/terms#Methyl+Ethyl+Ketone+%28MEK%29> ent:liquid "Methyl Ethyl Ketone (MEK)" ;
+	ent:temperature "20*c" ;
+	ent:density "804.9*kg/m^3" .
+
+ent:MEK ent:liquid "MEK" ;
+	ent:temperature "25*c" ;
+	ent:density "802.52*kg/m^3" .
+
+ent:Milk ent:liquid "Milk" ;
+	ent:temperature "15*c" ;
+	ent:density "[1020,1050]*kg/m^3" .
+
+ent:Naphtha ent:liquid "Naphtha" ;
+	ent:temperature "15*c" ;
+	ent:density "664.77*kg/m^3" .
+
+<http://entroplet.com/terms#Naphtha%2C+wood> ent:liquid "Naphtha, wood" ;
+	ent:temperature "25*c" ;
+	ent:density "959.51*kg/m^3" .
+
+ent:Napthalene ent:liquid "Napthalene" ;
+	ent:temperature "25*c" ;
+	ent:density "820.15*kg/m^3" .
+
+ent:Ocimene ent:liquid "Ocimene" ;
+	ent:temperature "25*c" ;
+	ent:density "797.72*kg/m^3" .
+
+ent:Octane ent:liquid "Octane" ;
+	ent:temperature "15*c" ;
+	ent:density "917.86*kg/m^3" .
+
+<http://entroplet.com/terms#Olive+oil> ent:liquid "Olive oil" ;
+	ent:temperature "20*c" ;
+	ent:density "[800, 920]*kg/m^3" .
+
+<http://entroplet.com/terms#Oxygen+%28liquid%29> ent:liquid "Oxygen (liquid)" ;
+	ent:temperature "-183*c" ;
+	ent:density "1140.0*kg/m^3" .
+
+<http://entroplet.com/terms#Palmitic+Acid> ent:liquid "Palmitic Acid" ;
+	ent:temperature "25*c" ;
+	ent:density "850.58*kg/m^3" .
+
+ent:Pentane ent:liquid "Pentane" ;
+	ent:temperature "20*c" ;
+	ent:density "626.2*kg/m^3" ;
+	ent:temperature "25*c" ;
+	ent:density "624.82*kg/m^3" .
+
+<http://entroplet.com/terms#Petroleum+Ether> ent:liquid "Petroleum Ether" ;
+	ent:temperature "20*c" ;
+	ent:density "640.0*kg/m^3" .
+
+<http://entroplet.com/terms#Petrol%2C+natural> ent:liquid "Petrol, natural" ;
+	ent:temperature "60*f" ;
+	ent:density "711.22*kg/m^3" .
+
+<http://entroplet.com/terms#Petrol%2C+Vehicle> ent:liquid "Petrol, Vehicle" ;
+	ent:temperature "60*f" ;
+	ent:density "737.22*kg/m^3" .
+
+ent:Phenol ent:liquid "Phenol" ;
+	ent:temperature "25*c" ;
+	ent:density "1072.28*kg/m^3" .
+
+ent:Phosgene ent:liquid "Phosgene" ;
+	ent:temperature "0*c" ;
+	ent:density "1377.59*kg/m^3" .
+
+ent:Phytadiene ent:liquid "Phytadiene" ;
+	ent:temperature "25*c" ;
+	ent:density "823.35*kg/m^3" .
+
+ent:Pinene ent:liquid "Pinene" ;
+	ent:temperature "25*c" ;
+	ent:density "856.99*kg/m^3" .
+
+ent:Propane ent:liquid "Propane" ;
+	ent:temperature "-40*c" ;
+	ent:density "583.07*kg/m^3" .
+
+<http://entroplet.com/terms#Propane%2C+R-290> ent:liquid "Propane, R-290" ;
+	ent:temperature "25*c" ;
+	ent:density "493.53*kg/m^3" .
+
+ent:Propanol ent:liquid "Propanol" ;
+	ent:temperature "25*c" ;
+	ent:density "804.13*kg/m^3" .
+
+<http://entroplet.com/terms#Propylene+Carbonate> ent:liquid "Propylene Carbonate" ;
+	ent:temperature "20*c" ;
+	ent:density "1200.6*kg/m^3" .
+
+ent:Propylene ent:liquid "Propylene" ;
+	ent:temperature "25*c" ;
+	ent:density "514.35*kg/m^3" .
+
+<http://entroplet.com/terms#n-Propyl+Alcohol> ent:liquid "n-Propyl Alcohol" ;
+	ent:temperature "20*c" ;
+	ent:density "803.7*kg/m^3" .
+
+<http://entroplet.com/terms#Propylene+glycol> ent:liquid "Propylene glycol" ;
+	ent:temperature "25*c" ;
+	ent:density "965.27*kg/m^3" .
+
+ent:Pyridine ent:liquid "Pyridine" ;
+	ent:temperature "25*c" ;
+	ent:density "978.73*kg/m^3" .
+
+ent:Pyrrole ent:liquid "Pyrrole" ;
+	ent:temperature "25*c" ;
+	ent:density "965.91*kg/m^3" .
+
+<http://entroplet.com/terms#Rape+seed+oil> ent:liquid "Rape seed oil" ;
+	ent:temperature "20*c" ;
+	ent:density "920.0*kg/m^3" .
+
+ent:Resorcinol ent:liquid "Resorcinol" ;
+	ent:temperature "25*c" ;
+	ent:density "1268.66*kg/m^3" .
+
+<http://entroplet.com/terms#Rosin+oil> ent:liquid "Rosin oil" ;
+	ent:temperature "15*c" ;
+	ent:density "980.0*kg/m^3" .
+
+ent:Sabiname ent:liquid "Sabiname" ;
+	ent:temperature "25*c" ;
+	ent:density "812.14*kg/m^3" .
+
+<http://entroplet.com/terms#Sea+water> ent:liquid "Sea water" ;
+	ent:temperature "25*c" ;
+	ent:density "1025.18*kg/m^3" .
+
+ent:Silane ent:liquid "Silane" ;
+	ent:temperature "25*c" ;
+	ent:density "717.63*kg/m^3" .
+
+<http://entroplet.com/terms#Sodium+Hydroxide+%28caustic+soda%29> ent:liquid "Sodium Hydroxide (caustic soda)" ;
+	ent:temperature "15*c" ;
+	ent:density "1250.0*kg/m^3" .
+
+ent:Sorbaldehyde ent:liquid "Sorbaldehyde" ;
+	ent:temperature "25*c" ;
+	ent:density "895.43*kg/m^3" .
+
+<http://entroplet.com/terms#Soya+bean+oil> ent:liquid "Soya bean oil" ;
+	ent:temperature "15*c" ;
+	ent:density "[924, 928]*kg/m^3" .
+
+<http://entroplet.com/terms#Stearic+Acid> ent:liquid "Stearic Acid" ;
+	ent:temperature "25*c" ;
+	ent:density "890.63*kg/m^3" .
+
+<http://entroplet.com/terms#Sulphuric+Acid+95%25+conc.> ent:liquid "Sulphuric Acid 95% conc." ;
+	ent:temperature "20*c" ;
+	ent:density "1839.0*kg/m^3" .
+
+<http://entroplet.com/terms#Sugar+solution+68+brix> ent:liquid "Sugar solution 68 brix" ;
+	ent:temperature "15*c" ;
+	ent:density "1338.0*kg/m^3" .
+
+<http://entroplet.com/terms#Sunflower+oil+> ent:liquid "Sunflower oil" ;
+	ent:temperature "20*c" ;
+	ent:density "920.0*kg/m^3" .
+
+ent:Styrene ent:liquid "Styrene" ;
+	ent:temperature "25*c" ;
+	ent:density "903.44*kg/m^3" .
+
+ent:Terpinene ent:liquid "Terpinene" ;
+	ent:temperature "25*c" ;
+	ent:density "847.38*kg/m^3" .
+
+ent:Tetrahydrofuran ent:liquid "Tetrahydrofuran" ;
+	ent:temperature "20*c" ;
+	ent:density "888.0*kg/m^3" .
+
+ent:Toluene ent:liquid "Toluene" ;
+	ent:temperature "20*c" ;
+	ent:density "866.9*kg/m^3" ;
+	ent:temperature "25*c" ;
+	ent:density "862.27*kg/m^3" .
+
+ent:Triethylamine ent:liquid "Triethylamine" ;
+	ent:temperature "20*c" ;
+	ent:density "727.6*kg/m^3" .
+
+<http://entroplet.com/terms#Trifluoroacetic+Acid> ent:liquid "Trifluoroacetic Acid" ;
+	ent:temperature "20*c" ;
+	ent:density "1489.0*kg/m^3" .
+
+ent:Turpentine ent:liquid "Turpentine" ;
+	ent:temperature "25*c" ;
+	ent:density "868.2*kg/m^3" .
+
+<http://entroplet.com/terms#Water%2C+pure+> ent:liquid "Water, pure" ;
+	ent:temperature "4*c" ;
+	ent:density "1000.0*kg/m^3" .
+
+<http://entroplet.com/terms#Water%2C+sea> ent:liquid "Water, sea" ;
+	ent:temperature "77*f" ;
+	ent:density "1021.98*kg/m^3" .
+
+<http://entroplet.com/terms#Whale+oil+> ent:liquid "Whale oil" ;
+	ent:temperature "15*c" ;
+	ent:density "925.0*kg/m^3" .
+
+ent:o-Xylene ent:liquid "o-Xylene" ;
+	ent:temperature "20*c" ;
+	ent:density "880.2*kg/m^3" .

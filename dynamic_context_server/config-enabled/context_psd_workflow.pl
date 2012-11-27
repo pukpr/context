@@ -136,19 +136,15 @@ read_rdf_data(Request) :-
                      ]
                   ) .
 
-
+/*
 sos([], _, _, _, Final, Final).
 sos([X|Rest], Sx, Phi, Amp, Initial, Final) :-
    Data mapdot sin ~> (X .* Sx + Phi),
    Z dot Data * Amp,
    !,
    sos(Rest, Sx, Phi, Amp, [Z|Initial], Final).
+*/
 
-
-generate_sos_random_walk(X, Sx, Sz, Z) :-
-   Phi mapdot random_phase ~> Sx,
-   Amp mapdot sqrt ~> Sz * Sx,
-   sos(X, Sx, Phi, Amp, [], Z).
 
 simulate_walk(Request) :-
    http_parameters(Request,
@@ -160,7 +156,7 @@ simulate_walk(Request) :-
    X range [1,N]/1,
    print(user_error, [N,M]),!,
    % Y = X,
-   generate_sos_random_walk(X, SX, SY, Y),
+   generate_sos_profile(X, psd(SX, SY), Y),
    reply_html_page([title(sos)],
 		   [
 		    \(context_graphing:plot(dynamic, lin, Header, 'x', 'y',

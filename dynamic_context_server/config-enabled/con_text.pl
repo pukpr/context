@@ -414,10 +414,18 @@ multi_columns(Content) -->
 	     )
        ).
 
+def_list(A=B) -->
+    html(dl([dt(A),dd(B)])).
+
 paragraphs([]) --> !.
 paragraphs([F|R]) -->
    {with_output_to(atom(Text), write(F))},
    html(p(Text)),
+   (   {is_list(F)} ->
+       paragraphs(F)
+   ;
+       def_list(F)
+   ),
    paragraphs(R).
 
 

@@ -5,7 +5,7 @@ W	Collect all XLS and PPT files
 	context_solar, planck's law
 	Aquatic wave height model, plus connection to Sea-State, significant wave height
 	Dual model Particle size Monte-Carlo, TOPS has particle size classes
-	ENT classification system tied to SWEET
+	ENT classification system tied to SWEET, show as GraphViz?
 	Each browse entry should have short narrative and one link
 	Add browser tree to individual features
 	Thermal heat sink model
@@ -14,7 +14,7 @@ W	Collect all XLS and PPT files
 	Different data format generators
 	std atmo table
 	lightning stroke plot
-        window needs normalizing
+x	window needs normalizing
 x	EMI links for Rockwell
 x	Calibrate corrosive model
 x	PDF models should have doc link

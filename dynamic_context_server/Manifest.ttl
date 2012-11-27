@@ -30,6 +30,7 @@
                      <instances/corrosion_iso_12944-2__iso_14713.ttl>,
                      <instances/surface_friction-xlsx.ttl>,
                      <instances/river_flow.ttl>,
+                     <instances/density-xlsx.ttl>,
                      <terms/defs.ttl>,
                      <terms/swore.rdf>,
                      <terms/biblio.ttl>,
@@ -136,6 +137,11 @@
         a lib:Schema ;
         a lib:CloudNode ;
 	dc:title "Flow rates for various USA rivers.".
+
+<instances/density-xlsx.ttl>
+        a lib:Schema ;
+        a lib:CloudNode ;
+	dc:title "Densities of various liquids near room temperature.".
 
 <terms/defs.ttl>
         a lib:Schema ;
