@@ -43,7 +43,7 @@ navigate(Request) :-
 	             \(context_emi:ref('ED','Electrostatic Discharge')),
 	             \(context_emi:ref('IGEE','Internally Generated Electromagnetic Energy')),
 
-                      h2('Induced electromagnetic environment for internal equipment'),
+                      h2('Induced EM environment for internal equipment'),
                       p('The following are internal design considerations'),
 
                       h3('Conducted Susceptibility'),
