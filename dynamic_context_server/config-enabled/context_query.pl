@@ -2,6 +2,9 @@
 			    ]).
 
 :- use_module(context_math).
+% :- use_module(autocompletion).
+
+% :-init_autocomplete.
 
 :- context:register(context_query:navigate).
 :- context:register(context_query:pquery).
