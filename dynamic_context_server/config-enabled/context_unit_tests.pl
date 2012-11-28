@@ -256,6 +256,9 @@ test(sweet) :-
 	length(L, N),
 	N>10.
 
+test(context_ontology_not_loaded) :-
+        rdf(_Subject, dc:title, _Object),
+        !.
 
 
 

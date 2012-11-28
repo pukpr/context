@@ -1,7 +1,8 @@
-W	Deliver buoyancy model
 W	Collect all XLS and PPT files
-	Particle, aerosol, droplet, particulates, debris
-	add particle ref from wafer-scale
+	test will indicate whether the triples are loaded
+	std atmo table
+	lightning stroke plot
+	GPS trout-v ref, and SWS
 	context_solar, planck's law
 	Aquatic wave height model, plus connection to Sea-State, significant wave height
 	Dual model Particle size Monte-Carlo, TOPS has particle size classes
@@ -12,8 +13,7 @@ W	Collect all XLS and PPT files
 	Semi-Markov sync function to scale
 	convert rdf_ to entailments
 	Different data format generators
-	std atmo table
-	lightning stroke plot
+x	Deliver buoyancy model
 x	window needs normalizing
 x	EMI links for Rockwell
 x	Calibrate corrosive model
@@ -55,6 +55,7 @@ general work
 	Use target=_parent or target=_top
 	hover on various links
 	Dimensions need more granular ranges, not micron with meters
+	Finish up the locales for models
 
 
 if time available

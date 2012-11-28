@@ -1,5 +1,4 @@
-:- module(context_standard_atmosphere, [
-			    ]).
+:- module(context_standard_atmosphere, [ ]).
 
 :- use_module(context_math).
 
@@ -37,8 +36,8 @@ navigate(Request) :-
                                           ['Ratio KV/SoS', 'kv_sos']
                                          ])),
                           br([]),
-			  input([type('submit'), name(kind), value('lin')]),
-			  input([type('submit'), name(kind), value('log')])
+			  input([type('submit'), name(kind), value('graph')]),
+			  input([type('submit'), name(kind), value('table')])
 			 ]
                           ),
 
@@ -50,42 +49,85 @@ navigate(Request) :-
 		  ).
 
 /*
-fxn1(Parameter,X*_Units,Y) :-
+standard_atmosphere(Parameter,X*_Units,Y) :-
    Y is sin(Parameter*X).
-fxn2(Parameter,X*_Units,Y) :-
-   exp(Parameter, X, Y).
-fxn3(Parameter,X*_Units,Y) :-
-   Y is Parameter*X.
 */
 
+
 plot(Request) :-
-    http_parameters(Request, [kind(Kind, []),
-			      limit(Limit, [number]),
+    http_parameters(Request, [kind(graph, []),
+			      % limit(Limit, [number]),
                               l_units(LUnits, []),
                               evaluate(Characteristic, [])]),
 
-    H range [0.1, 10.0]^0.9*LUnits,
+    STD = 'ent:standard_atmosphere_table',
+    findall(Val, rdfR(STD, ent:altitude, Val), H),
     (
-       Characteristic = id1 ->
-	 Z mapdot fxn1(Limit) ~> H
+       Characteristic = sigma ->
+         findall(Val, rdfR(STD, ent:sigma_density, Val), Vals),
+         Y = 'sigma Density',
+         YUnits = density
      ;
-       Characteristic = id2 ->
-	 Z mapdot fxn2(Limit) ~> H
+       Characteristic = dP ->
+         findall(Val, rdfR(STD, ent:delta_pressure, Val), Vals),
+         Y = 'delta Pressure',
+         YUnits = pressure
       ;
-       Characteristic = id3 ->
-	 Z mapdot fxn3(Limit) ~> H
+       Characteristic = dT ->
+         findall(Val, rdfR(STD, ent:delta_temperature, Val), Vals),
+         Y = 'delta Temperature',
+         YUnits = c
+      ;
+       Characteristic = temperature ->
+         findall(Val, rdfR(STD, ent:temperature_rankine, Val), Vals),
+         Y = 'Temperature',
+         YUnits = c
+      ;
+       Characteristic = pressure ->
+         findall(Val, rdfR(STD, ent:pressure_psi, Val), Vals),
+         Y = 'Pressure',
+         YUnits = psi
+      ;
+       Characteristic = density ->
+         findall(Val, rdfR(STD, ent:density_slugs, Val), Vals),
+         Y = 'Density',
+         YUnits = slugs
+      ;
+       Characteristic = sos ->
+         findall(Val, rdfR(STD, ent:speed_of_sound, Val), Vals),
+         Y = 'Speed of Sound',
+         YUnits = 'm/s'
+      ;
+       Characteristic = visc ->
+         findall(Val, rdfR(STD, ent:viscosity_slugs, Val), Vals),
+         Y = 'Viscosity',
+         YUnits = slugs
+      ;
+       Characteristic = sos ->
+         findall(Val, rdfR(STD, ent:speed_of_sound, Val), Vals),
+         Y = 'Speed of Sound',
+         YUnits = 'm/s'
+      ;
+       Characteristic = kv ->
+         findall(Val, rdfR(STD, ent:kinematic_velocity, Val), Vals),
+         Y = 'Kinematic Velocity',
+         YUnits = 'm/s'
+      ;
+       Characteristic = kv_sos ->
+         findall(Val, rdfR(STD, ent:ratio_kv_sos, Val), Vals),
+         Y = 'Ratio of KV/SoS',
+         YUnits = ''
     ),
-    Data tuple H + Z,
-    X = 'xname',
-    Y = 'yname',
-    XUnits = 'units',
-    YUnits = LUnits,
-    reply_html_page([title('PlotTitle'),
+    H1 shrink H/Vals,
+    Data tuple H1 + Vals,
+    X = 'altitude',
+    XUnits = LUnits, % 'km',
+    reply_html_page([title('Stanadard Atmosphere'),
                      \(con_text:style)],
                     [
-		     \(context_graphing:dygraph_native(Kind, [X, Y],
+		     \(context_graphing:dygraph_native(lin, [X, Y],
 						       [X,XUnits], [Y, YUnits],
-						       'plot_title', Data))
+						       YUnits, Data))
                     ]
 		  ).
 
