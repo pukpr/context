@@ -445,7 +445,9 @@
         <bib:authors>
             <rdf:Seq>
                 <rdf:li>
-                   <foaf:Person><foaf:surname>Wiki</foaf:surname></foaf:Person>
+                    <foaf:Person>
+                       <foaf:surname>Wikipedia</foaf:surname>
+                    </foaf:Person>
                 </rdf:li>
             </rdf:Seq>
         </bib:authors>
@@ -1805,18 +1807,6 @@
     <bib:Memo rdf:about="#item_671">
        <rdf:value>&lt;p>Has info on window functions&lt;/p></rdf:value>
     </bib:Memo>
-    <bib:Article rdf:about="http://docs.lib.noaa.gov/rescue/mwr/089/mwr-089-09-0357.pdf">
-        <z:itemType>journalArticle</z:itemType>
-        <dcterms:isPartOf>
-           <bib:Journal></bib:Journal>
-        </dcterms:isPartOf>
-        <dc:title>DISTRIBUTIONS OF WEEKLY AVERAGES OF DIURNAL TEMPERATURE MEANS AND RANGES ABOUT HARMONIC CURVES</dc:title>
-        <dc:identifier>
-            <dcterms:URI>
-                <rdf:value>http://docs.lib.noaa.gov/rescue/mwr/089/mwr-089-09-0357.pdf</rdf:value>
-            </dcterms:URI>
-        </dc:identifier>
-    </bib:Article>
     <bib:Book rdf:about="urn:isbn:978-1-56881-579-4">
         <z:itemType>book</z:itemType>
         <dc:publisher>
@@ -2303,6 +2293,7 @@
                 </rdf:li>
             </rdf:Seq>
         </bib:authors>
+        <dc:subject>phenHydro:WaterFlow</dc:subject>
         <dc:title>Karst Groundwater Management through Science and Education</dc:title>
         <bib:pages>45-50</bib:pages>
         <dc:date>2011</dc:date>
@@ -2324,7 +2315,6 @@
         </bib:authors>
         <link:link rdf:resource="#item_482"/>
         <dc:subject>humanDecision:Allocation</dc:subject>
-        <dc:subject>humanDecision:Objective</dc:subject>
         <dc:subject>phenAtmoPressure:Barometric</dc:subject>
         <dc:subject>phenWave:GravityWave</dc:subject>
         <dc:subject>propConductivity:ThermalConductivity</dc:subject>
@@ -2808,7 +2798,9 @@
         <bib:authors>
             <rdf:Seq>
                 <rdf:li>
-                   <foaf:Person><foaf:surname>Wiki</foaf:surname></foaf:Person>
+                    <foaf:Person>
+                       <foaf:surname>Wikipedia</foaf:surname>
+                    </foaf:Person>
                 </rdf:li>
             </rdf:Seq>
         </bib:authors>
@@ -3263,7 +3255,9 @@ systems. The cost savings of such an approach are significant.</dcterms:abstract
         <bib:authors>
             <rdf:Seq>
                 <rdf:li>
-                   <foaf:Person><foaf:surname>Wiki</foaf:surname></foaf:Person>
+                    <foaf:Person>
+                       <foaf:surname>Wikipedia</foaf:surname>
+                    </foaf:Person>
                 </rdf:li>
             </rdf:Seq>
         </bib:authors>
@@ -3815,7 +3809,7 @@ systems. The cost savings of such an approach are significant.</dcterms:abstract
             </rdf:Seq>
         </bib:authors>
         <link:link rdf:resource="#item_674"/>
-        <dc:subject>humanDecision:Objective</dc:subject>
+        <dc:subject>humanEnvirStandards:EnvironmentalStandard</dc:subject>
         <dc:subject>matrEquipment:Vehicle</dc:subject>
         <dc:subject>phen:StochasticProcess</dc:subject>
         <dc:title>Stochastic Vehicle Mobility Forecasts Using the NATO Reference Mobility Model. Report 1. Basic Concepts and Procedures</dc:title>
@@ -3889,7 +3883,9 @@ systems. The cost savings of such an approach are significant.</dcterms:abstract
         <bib:authors>
             <rdf:Seq>
                 <rdf:li>
-                   <foaf:Person><foaf:surname>Wiki</foaf:surname></foaf:Person>
+                    <foaf:Person>
+                       <foaf:surname>Wikipedia</foaf:surname>
+                    </foaf:Person>
                 </rdf:li>
             </rdf:Seq>
         </bib:authors>
@@ -4075,7 +4071,6 @@ systems. The cost savings of such an approach are significant.</dcterms:abstract
             </rdf:Seq>
         </bib:authors>
         <link:link rdf:resource="#item_523"/>
-        <dc:subject>humanDecision:Allocation</dc:subject>
         <dc:subject>humanDecision:Objective</dc:subject>
         <dc:title>TOPS - AVM Project - Confluence</dc:title>
         <dc:identifier>
@@ -4241,7 +4236,7 @@ systems. The cost savings of such an approach are significant.</dcterms:abstract
             </rdf:Seq>
         </bib:authors>
         <dc:subject>phenMixing:Diffusion</dc:subject>
-        <dc:subject>waves</dc:subject>
+        <dc:subject>phenWave:GravityWave</dc:subject>
         <dc:title>On quasi-diffusional processes</dc:title>
         <bib:pages>424-443</bib:pages>
         <dc:date>1966</dc:date>
@@ -4511,7 +4506,9 @@ systems. The cost savings of such an approach are significant.</dcterms:abstract
         <bib:authors>
             <rdf:Seq>
                 <rdf:li>
-                   <foaf:Person><foaf:surname>Wiki</foaf:surname></foaf:Person>
+                    <foaf:Person>
+                       <foaf:surname>Wikipedia</foaf:surname>
+                    </foaf:Person>
                 </rdf:li>
             </rdf:Seq>
         </bib:authors>
@@ -4753,7 +4750,9 @@ systems. The cost savings of such an approach are significant.</dcterms:abstract
         <bib:authors>
             <rdf:Seq>
                 <rdf:li>
-                   <foaf:Person><foaf:surname>Wiki</foaf:surname></foaf:Person>
+                    <foaf:Person>
+                       <foaf:surname>Wikipedia</foaf:surname>
+                    </foaf:Person>
                 </rdf:li>
             </rdf:Seq>
         </bib:authors>
@@ -5530,7 +5529,7 @@ systems. The cost savings of such an approach are significant.</dcterms:abstract
                 </rdf:li>
             </rdf:Seq>
         </bib:authors>
-        <dc:subject>humanDecision:Objective</dc:subject>
+        <dc:subject>humanEnvirStandards:EnvironmentalStandard</dc:subject>
         <dc:subject>matrEquipment:Vehicle</dc:subject>
         <dc:subject>phen:StochasticProcess</dc:subject>
         <dc:title>Stochastic Vehicle Mobility Forecasts Using the NATO Reference Mobility Model. Report 2 Extension of Procedures and Application to Historic Studies</dc:title>
@@ -5630,39 +5629,6 @@ systems. The cost savings of such an approach are significant.</dcterms:abstract
         <dc:identifier>DOI 10.1098/rsta.2010.0280</dc:identifier>
         <dc:identifier>ISSN 1364-503X, 1471-2962</dc:identifier>
     </bib:Journal>
-    <bib:Report rdf:about="http://www.dtic.mil/cgi-bin/GetTRDoc?AD=ADA103325">
-        <z:itemType>report</z:itemType>
-        <bib:authors>
-            <rdf:Seq>
-                <rdf:li>
-                   <foaf:Person><foaf:surname>ATEC</foaf:surname></foaf:Person>
-                </rdf:li>
-            </rdf:Seq>
-        </bib:authors>
-        <link:link rdf:resource="#item_622"/>
-        <dc:subject>humanDecision:Objective</dc:subject>
-        <dc:subject>humanEnvirStandards:EnvironmentalStandard</dc:subject>
-        <dc:subject>realmLandform:LandRegion</dc:subject>
-        <dc:title>US Army Test and Evaluation Command Test Operations Procedure 1-1-011</dc:title>
-        <dcterms:abstract>Describes Aberdein Proving Ground facilities for testing wheeled and tracked including vehicular weapon facilities. Includes photographs and
-drawings showing test course dimensions and characteristics. Does not cover
-equipment and instrumentation used on the courses, nor laboratory facilities
-except for climatic test chambers.</dcterms:abstract>
-        <dc:date>1981</dc:date>
-        <z:shortTitle>TOP-1-1-011</z:shortTitle>
-        <dc:identifier>
-            <dcterms:URI>
-                <rdf:value>http://www.dtic.mil/cgi-bin/GetTRDoc?AD=ADA103325</rdf:value>
-            </dcterms:URI>
-        </dc:identifier>
-        <z:archive>DTIC</z:archive>
-        <dc:coverage>ADA103325</dc:coverage>
-    </bib:Report>
-    <z:Attachment rdf:about="#item_622">
-        <z:itemType>attachment</z:itemType>
-        <dc:title>TOP_1_1_011.pdf</dc:title>
-        <link:type>application/pdf</link:type>
-    </z:Attachment>
     <bib:Article rdf:about="#item_215">
         <z:itemType>journalArticle</z:itemType>
         <dcterms:isPartOf rdf:resource="urn:issn:1364-5021"/>
@@ -6235,7 +6201,7 @@ d. Foster design standardization within and among systems.</dcterms:abstract>
             </rdf:Seq>
         </bib:authors>
         <dcterms:isReferencedBy rdf:resource="#item_590"/>
-        <dc:subject>humanDecision:Objective</dc:subject>
+        <dc:subject>humanEnvirStandards:EnvironmentalStandard</dc:subject>
         <dc:subject>matrEquipment:Vehicle</dc:subject>
         <dc:subject>phen:StochasticProcess</dc:subject>
         <dc:title>Stochastic Vehicle Mobility Forecasts Using the NATO Reference Mobility Model. Report 3. Database Development for Statistical Analysis of the NRMM II cross-Country Traction Empirical Relationships</dc:title>
@@ -6252,12 +6218,14 @@ d. Foster design standardization within and among systems.</dcterms:abstract>
         <bib:authors>
             <rdf:Seq>
                 <rdf:li>
-                   <foaf:Person><foaf:surname>Wiki</foaf:surname></foaf:Person>
+                    <foaf:Person>
+                       <foaf:surname>Wikipedia</foaf:surname>
+                    </foaf:Person>
                 </rdf:li>
             </rdf:Seq>
         </bib:authors>
         <link:link rdf:resource="#item_632"/>
-        <dc:subject>humanDecision:Allocation</dc:subject>
+        <dc:subject>repr:Knowledge</dc:subject>
         <dc:title>SoftWiki : SWORE</dc:title>
         <dc:identifier>
             <dcterms:URI>
@@ -6722,6 +6690,8 @@ d. Foster design standardization within and among systems.</dcterms:abstract>
             </rdf:Seq>
         </bib:authors>
         <link:link rdf:resource="#item_531"/>
+        <dc:subject>humanEnvirStandards:EnvironmentalStandard</dc:subject>
+        <dc:subject>phen:StochasticProcess</dc:subject>
         <dc:subject>propOrdinal:Trust</dc:subject>
         <dc:title>BIPM - GUM : Guide to the Expression of Uncertainty in Measurement</dc:title>
         <dc:identifier>
@@ -6875,7 +6845,6 @@ d. Foster design standardization within and among systems.</dcterms:abstract>
                 </rdf:li>
             </rdf:Seq>
         </bib:authors>
-        <dc:subject>humanDecision:Objective</dc:subject>
         <dc:subject>matrEquipment:Vehicle</dc:subject>
         <dc:title>Proceedings, Second North American Workshop on Modeling the Mechanics of Off-Road Mobility.</dc:title>
         <dc:date>1997</dc:date>
@@ -7063,7 +7032,7 @@ d. Foster design standardization within and among systems.</dcterms:abstract>
             </rdf:Seq>
         </bib:authors>
         <link:link rdf:resource="#item_605"/>
-        <dc:subject>humanDecision:Allocation</dc:subject>
+        <dc:subject>repr:Knowledge</dc:subject>
         <dc:title>PRISM Basic Namespace (prism:)</dc:title>
         <dc:identifier>
             <dcterms:URI>
@@ -7564,7 +7533,9 @@ d. Foster design standardization within and among systems.</dcterms:abstract>
         <bib:authors>
             <rdf:Seq>
                 <rdf:li>
-                   <foaf:Person><foaf:surname>Wiki</foaf:surname></foaf:Person>
+                    <foaf:Person>
+                       <foaf:surname>Wikipedia</foaf:surname>
+                    </foaf:Person>
                 </rdf:li>
             </rdf:Seq>
         </bib:authors>
@@ -7832,6 +7803,16 @@ for a given vehicle, running over a specific profile at a certain.speed, the bet
         <dcterms:isPartOf>
            <z:Blog></z:Blog>
         </dcterms:isPartOf>
+        <bib:authors>
+            <rdf:Seq>
+                <rdf:li>
+                    <foaf:Person>
+                        <foaf:surname>Smith</foaf:surname>
+                        <foaf:givenname>David</foaf:givenname>
+                    </foaf:Person>
+                </rdf:li>
+            </rdf:Seq>
+        </bib:authors>
         <link:link rdf:resource="#item_581"/>
         <dc:subject>reprMathStatistics:Statistics</dc:subject>
         <dc:title>Revolutions: A big list of the things R can do</dc:title>
@@ -8070,6 +8051,14 @@ for a given vehicle, running over a specific profile at a certain.speed, the bet
         <dcterms:isPartOf>
            <z:Website></z:Website>
         </dcterms:isPartOf>
+        <bib:authors>
+            <rdf:Seq>
+                <rdf:li>
+                   <foaf:Person><foaf:surname>NOAA</foaf:surname></foaf:Person>
+                </rdf:li>
+            </rdf:Seq>
+        </bib:authors>
+        <dc:subject>propTemperature:Temperature</dc:subject>
         <dc:title>Baltimore/Washington</dc:title>
         <dc:identifier>
             <dcterms:URI>
@@ -8252,6 +8241,7 @@ for a given vehicle, running over a specific profile at a certain.speed, the bet
             </rdf:Seq>
         </bib:authors>
         <link:link rdf:resource="#item_630"/>
+        <dc:subject>humanEnvirStandards:EnvironmentalStandard</dc:subject>
         <dc:subject>propOrdinal:Trust</dc:subject>
         <dc:title>Evaluation of measurement data — Guide to the expression of uncertainty in measurement</dc:title>
         <dc:identifier>
@@ -9023,7 +9013,6 @@ endurance test courses at DTC Test Centers.</dcterms:abstract>
             </rdf:Seq>
         </bib:authors>
         <link:link rdf:resource="#item_698"/>
-        <dc:subject>humanDecision:Objective</dc:subject>
         <dc:subject>humanEnvirStandards:EnvironmentalStandard</dc:subject>
         <dc:subject>matrEquipment:Vehicle</dc:subject>
         <dc:subject>realmLandform:Land</dc:subject>
@@ -9510,7 +9499,9 @@ common backgrounds.</dcterms:abstract>
         <bib:authors>
             <rdf:Seq>
                 <rdf:li>
-                   <foaf:Person><foaf:surname>Wiki</foaf:surname></foaf:Person>
+                    <foaf:Person>
+                       <foaf:surname>Wikipedia</foaf:surname>
+                    </foaf:Person>
                 </rdf:li>
             </rdf:Seq>
         </bib:authors>
@@ -12115,7 +12106,6 @@ use. The goal of this effort is to provide two synthetic sand formulas capable o
             </rdf:Seq>
         </bib:authors>
         <link:link rdf:resource="#item_701"/>
-        <dc:subject>humanDecision:Objective</dc:subject>
         <dc:subject>reprDataServiceAnalysis:PowerSpectrum</dc:subject>
         <dc:subject>reprDataServiceAnalysis:SpectralAnalysis</dc:subject>
         <dc:title>TARADCOM Signal Analysis Program</dc:title>
@@ -12140,6 +12130,8 @@ use. The goal of this effort is to provide two synthetic sand formulas capable o
             </rdf:Seq>
         </bib:authors>
         <link:link rdf:resource="#item_498"/>
+        <dc:subject>phenAtmo:Thermal</dc:subject>
+        <dc:subject>phenAtmo:Weather</dc:subject>
         <dc:subject>realm:Atmosphere</dc:subject>
         <dc:subject>realm:Cryosphere</dc:subject>
         <dc:title>ERA 40 Years Re-Analysis, Monthly Means of Daily Means</dc:title>
@@ -12721,6 +12713,15 @@ use. The goal of this effort is to provide two synthetic sand formulas capable o
         <dcterms:isPartOf>
            <z:Website></z:Website>
         </dcterms:isPartOf>
+        <bib:authors>
+            <rdf:Seq>
+                <rdf:li>
+                    <foaf:Person>
+                       <foaf:surname>Scholarpedia</foaf:surname>
+                    </foaf:Person>
+                </rdf:li>
+            </rdf:Seq>
+        </bib:authors>
         <link:link rdf:resource="#item_772"/>
         <dc:subject>phen:StochasticProcess</dc:subject>
         <dc:subject>propSpaceHeight:Topography</dc:subject>
@@ -12744,20 +12745,38 @@ use. The goal of this effort is to provide two synthetic sand formulas capable o
         <link:type>text/html</link:type>
         <link:charset>1</link:charset>
     </z:Attachment>
-    <bib:Document rdf:about="http://www.scribd.com/doc/91813236/7/Ornstein-and-Uhlenbeck">
-        <z:itemType>webpage</z:itemType>
-        <dcterms:isPartOf>
-           <z:Website></z:Website>
-        </dcterms:isPartOf>
+    <bib:Book rdf:about="http://www.scribd.com/doc/91813236/7/Ornstein-and-Uhlenbeck">
+        <z:itemType>book</z:itemType>
+        <bib:authors>
+            <rdf:Seq>
+                <rdf:li>
+                    <foaf:Person>
+                        <foaf:surname>Scott</foaf:surname>
+                        <foaf:givenname>M</foaf:givenname>
+                    </foaf:Person>
+                </rdf:li>
+            </rdf:Seq>
+        </bib:authors>
+        <dcterms:isReferencedBy rdf:resource="#item_1065"/>
         <link:link rdf:resource="#item_782"/>
-        <dc:title>1.2.4 Ornstein and Uhlenbeck for Applied Stochastis</dc:title>
+        <dc:subject>phen:StochasticProcess</dc:subject>
+        <dc:subject>phenWaveNoise:Noise</dc:subject>
+        <dc:subject>propFraction:Correlation</dc:subject>
+        <dc:subject>propFraction:Probability</dc:subject>
+        <dc:subject>reprMathStatistics:Statistics</dc:subject>
+        <dc:title>Applied StochasticProcesses in science and engineering</dc:title>
+        <dc:date>2012</dc:date>
         <dc:identifier>
             <dcterms:URI>
                 <rdf:value>http://www.scribd.com/doc/91813236/7/Ornstein-and-Uhlenbeck</rdf:value>
             </dcterms:URI>
         </dc:identifier>
         <dcterms:dateSubmitted>2012-10-20 06:47:34</dcterms:dateSubmitted>
-    </bib:Document>
+    </bib:Book>
+    <bib:Memo rdf:about="#item_1065">
+        <rdf:value>&lt;p>1.2.4 Ornstein and Uhlenbeck for Applied Stochastics&lt;/p>
+&lt;p>&amp;nbsp;&lt;/p></rdf:value>
+    </bib:Memo>
     <z:Attachment rdf:about="#item_782">
         <z:itemType>attachment</z:itemType>
         <dc:title>1.2.4 Ornstein and Uhlenbeck for Applied Stochastis</dc:title>
@@ -12775,9 +12794,33 @@ use. The goal of this effort is to provide two synthetic sand formulas capable o
         <dcterms:isPartOf>
            <z:Website></z:Website>
         </dcterms:isPartOf>
+        <bib:authors>
+            <rdf:Seq>
+                <rdf:li>
+                    <foaf:Person>
+                        <foaf:surname>Kroese</foaf:surname>
+                        <foaf:givenname>D.P.</foaf:givenname>
+                    </foaf:Person>
+                </rdf:li>
+                <rdf:li>
+                    <foaf:Person>
+                        <foaf:surname>Taimre</foaf:surname>
+                        <foaf:givenname>T</foaf:givenname>
+                    </foaf:Person>
+                </rdf:li>
+                <rdf:li>
+                    <foaf:Person>
+                        <foaf:surname>Botev</foaf:surname>
+                        <foaf:givenname>Z.I.</foaf:givenname>
+                    </foaf:Person>
+                </rdf:li>
+            </rdf:Seq>
+        </bib:authors>
+        <dcterms:isReferencedBy rdf:resource="#item_1070"/>
         <link:link rdf:resource="#item_786"/>
         <dc:subject>phen:StochasticProcess</dc:subject>
-        <dc:title>5.9 ORNSTEIN-UHLENBECK PROCESS for Handbook of Monte Carlo Methods</dc:title>
+        <dc:subject>reprMathStatistics:Statistics</dc:subject>
+        <dc:title>Handbook of Monte Carlo Methods</dc:title>
         <dc:identifier>
             <dcterms:URI>
                 <rdf:value>http://www.scribd.com/doc/95024612/77/ORNSTEIN-UHLENBECK-PROCESS</rdf:value>
@@ -12785,6 +12828,9 @@ use. The goal of this effort is to provide two synthetic sand formulas capable o
         </dc:identifier>
         <dcterms:dateSubmitted>2012-10-20 19:51:32</dcterms:dateSubmitted>
     </bib:Document>
+    <bib:Memo rdf:about="#item_1070">
+        <rdf:value>&lt;p>5.9 ORNSTEIN-UHLENBECK PROCESS for Handbook of Monte Carlo Methods&lt;/p></rdf:value>
+    </bib:Memo>
     <z:Attachment rdf:about="#item_786">
         <z:itemType>attachment</z:itemType>
         <dc:title>5.9 ORNSTEIN-UHLENBECK PROCESS for Handbook of Monte Carlo Methods</dc:title>
@@ -12920,6 +12966,16 @@ use. The goal of this effort is to provide two synthetic sand formulas capable o
         <dcterms:isPartOf>
            <z:Website></z:Website>
         </dcterms:isPartOf>
+        <bib:authors>
+            <rdf:Seq>
+                <rdf:li>
+                    <foaf:Person>
+                        <foaf:surname>DMI</foaf:surname>
+                        <foaf:givenname>COI</foaf:givenname>
+                    </foaf:Person>
+                </rdf:li>
+            </rdf:Seq>
+        </bib:authors>
         <link:link rdf:resource="#item_961"/>
         <dc:subject>phenWave:GravityWave</dc:subject>
         <dc:title>DMI / COI [Wave statistics]</dc:title>
@@ -12973,9 +13029,18 @@ use. The goal of this effort is to provide two synthetic sand formulas capable o
         <dcterms:isPartOf>
            <z:Website></z:Website>
         </dcterms:isPartOf>
+        <bib:authors>
+            <rdf:Seq>
+                <rdf:li>
+                    <foaf:Person>
+                        <foaf:surname>Thomas Riechert, Kim Lauenroth, Jens Lehmann, Sören Auer</foaf:surname>
+                    </foaf:Person>
+                </rdf:li>
+            </rdf:Seq>
+        </bib:authors>
         <link:link rdf:resource="#item_951"/>
-        <dc:subject>humanDecision:Allocation</dc:subject>
-        <dc:title>Semantic based Req Eng</dc:title>
+        <dc:subject>repr:Knowledge</dc:subject>
+        <dc:title>Towards Semantic based Requirements Engineering</dc:title>
         <dc:identifier>
             <dcterms:URI>
                 <rdf:value>http://faculty.ksu.edu.sa/chikh/Documents/Thomas-Riechert.pdf</rdf:value>
@@ -13037,6 +13102,16 @@ than an equipment rack, electrical interconnections that are discrete wiring har
         <dcterms:isPartOf>
            <z:Website></z:Website>
         </dcterms:isPartOf>
+        <bib:authors>
+            <rdf:Seq>
+                <rdf:li>
+                    <foaf:Person>
+                        <foaf:surname>Taylor</foaf:surname>
+                        <foaf:givenname>Chuck</foaf:givenname>
+                    </foaf:Person>
+                </rdf:li>
+            </rdf:Seq>
+        </bib:authors>
         <link:link rdf:resource="#item_933"/>
         <dc:subject>reprSpaceGeometry:Surface</dc:subject>
         <dc:title>Geographic/UTM Coordinate Converter</dc:title>
@@ -13064,7 +13139,16 @@ than an equipment rack, electrical interconnections that are discrete wiring har
         <dcterms:isPartOf>
            <z:Website><dc:title>Vehicle Forge</dc:title></z:Website>
         </dcterms:isPartOf>
+        <bib:authors>
+            <rdf:Seq>
+                <rdf:li>
+                   <foaf:Person><foaf:surname>DARPA</foaf:surname></foaf:Person>
+                </rdf:li>
+            </rdf:Seq>
+        </bib:authors>
         <link:link rdf:resource="#item_982"/>
+        <dc:subject>repr:Knowledge</dc:subject>
+        <dc:subject>reprDataService:DataService</dc:subject>
         <dc:title>All Projects - VF::Discover, Create and Share Open Source Vehicle Designs</dc:title>
         <dc:identifier>
             <dcterms:URI>
@@ -13090,7 +13174,15 @@ than an equipment rack, electrical interconnections that are discrete wiring har
         <dcterms:isPartOf>
            <z:Website></z:Website>
         </dcterms:isPartOf>
+        <bib:authors>
+            <rdf:Seq>
+                <rdf:li>
+                   <foaf:Person><foaf:surname>NOAA</foaf:surname></foaf:Person>
+                </rdf:li>
+            </rdf:Seq>
+        </bib:authors>
         <link:link rdf:resource="#item_973"/>
+        <dc:subject>propTemperature:Temperature</dc:subject>
         <dc:title>National Weather Service Sterling</dc:title>
         <dc:identifier>
             <dcterms:URI>
@@ -13229,37 +13321,20 @@ than an equipment rack, electrical interconnections that are discrete wiring har
         <link:type>application/pdf</link:type>
         <link:charset>25</link:charset>
     </z:Attachment>
-    <bib:Document rdf:about="http://arxiv.org/pdf/cond-mat/0407198.pdf">
-        <z:itemType>webpage</z:itemType>
-        <dcterms:isPartOf>
-           <z:Website></z:Website>
-        </dcterms:isPartOf>
-        <link:link rdf:resource="#item_963"/>
-        <dc:title>Stochastic problem with O-U noise</dc:title>
-        <dc:identifier>
-            <dcterms:URI>
-               <rdf:value>http://arxiv.org/pdf/cond-mat/0407198.pdf</rdf:value>
-            </dcterms:URI>
-        </dc:identifier>
-        <dcterms:dateSubmitted>2012-10-19 18:48:07</dcterms:dateSubmitted>
-    </bib:Document>
-    <z:Attachment rdf:about="#item_963">
-        <z:itemType>attachment</z:itemType>
-        <dc:title>0407198.pdf</dc:title>
-        <dcterms:dateSubmitted>2012-10-19 18:48:07</dcterms:dateSubmitted>
-        <dc:identifier>
-            <dcterms:URI>
-               <rdf:value>http://arxiv.org/pdf/cond-mat/0407198.pdf</rdf:value>
-            </dcterms:URI>
-        </dc:identifier>
-        <link:type>application/pdf</link:type>
-        <link:charset>25</link:charset>
-    </z:Attachment>
     <bib:Document rdf:about="http://en.wikipedia.org/wiki/Ornstein%E2%80%93Uhlenbeck_process">
         <z:itemType>webpage</z:itemType>
         <dcterms:isPartOf>
            <z:Website></z:Website>
         </dcterms:isPartOf>
+        <bib:authors>
+            <rdf:Seq>
+                <rdf:li>
+                    <foaf:Person>
+                       <foaf:surname>Wikipedia</foaf:surname>
+                    </foaf:Person>
+                </rdf:li>
+            </rdf:Seq>
+        </bib:authors>
         <link:link rdf:resource="#item_986"/>
         <dc:subject>phenMixing:Diffusion</dc:subject>
         <dc:subject>procChemical:Corrosion</dc:subject>
@@ -13296,6 +13371,10 @@ than an equipment rack, electrical interconnections that are discrete wiring har
             </rdf:Seq>
         </bib:authors>
         <link:link rdf:resource="#item_916"/>
+        <dc:subject>humanDecision:Objective</dc:subject>
+        <dc:subject>realm:Atmosphere</dc:subject>
+        <dc:subject>realm:Land</dc:subject>
+        <dc:subject>realm:Ocean</dc:subject>
         <dc:title>AVM Model Library (C2M2L)</dc:title>
         <dc:identifier>
             <dcterms:URI>
@@ -13337,7 +13416,8 @@ than an equipment rack, electrical interconnections that are discrete wiring har
             </rdf:Seq>
         </bib:authors>
         <link:link rdf:resource="#item_953"/>
-        <dc:title>DISTRIBUTIONS OF WEEKLY AVERAGES OF DIURNAL TEMPERATURE MEANS AND RANGES ABOUT HARMONIC CURVES 1</dc:title>
+        <dc:subject>propTemperature:Temperature</dc:subject>
+        <dc:title>Distributions of Weekly Averages of Diurnal Temperature Means and Ranges About Harmonic Curves 1</dc:title>
         <bib:pages>357-367</bib:pages>
         <dc:date>1961</dc:date>
     </bib:Article>
@@ -13392,8 +13472,16 @@ than an equipment rack, electrical interconnections that are discrete wiring har
         <dcterms:isPartOf>
            <z:Website></z:Website>
         </dcterms:isPartOf>
+        <bib:authors>
+            <rdf:Seq>
+                <rdf:li>
+                   <foaf:Person><foaf:surname>NOAA</foaf:surname></foaf:Person>
+                </rdf:li>
+            </rdf:Seq>
+        </bib:authors>
         <link:link rdf:resource="#item_972"/>
         <link:link rdf:resource="#item_957"/>
+        <dc:subject>phenAtmo:Weather</dc:subject>
         <dc:subject>propTemperature:Temperature</dc:subject>
         <dc:title>U.S. Surface Climate Observing Reference Networks</dc:title>
         <dc:identifier>
@@ -13440,6 +13528,8 @@ than an equipment rack, electrical interconnections that are discrete wiring har
             </rdf:Seq>
         </bib:authors>
         <link:link rdf:resource="#item_902"/>
+        <dc:subject>repr:Knowledge</dc:subject>
+        <dc:subject>reprDataService:DataService</dc:subject>
         <dc:title>VehicleForge.MIL :: Landing</dc:title>
         <dc:identifier>
             <dcterms:URI>
@@ -13519,7 +13609,17 @@ than an equipment rack, electrical interconnections that are discrete wiring har
         <dcterms:isPartOf>
            <z:Website></z:Website>
         </dcterms:isPartOf>
+        <bib:authors>
+            <rdf:Seq>
+                <rdf:li>
+                    <foaf:Person>
+                        <foaf:surname>A. Acra, M. Jurdi, H. Mu'allem, Y. Karahagopian, and Z. Raffoul</foaf:surname>
+                    </foaf:Person>
+                </rdf:li>
+            </rdf:Seq>
+        </bib:authors>
         <link:link rdf:resource="#item_994"/>
+        <dc:subject>phenAtmo:Sunlight</dc:subject>
         <dc:subject>propTemperature:Temperature</dc:subject>
         <dc:title>Water Disinfection by Solar Radiation - Table of Contents</dc:title>
         <dc:identifier>
@@ -13640,7 +13740,17 @@ a salient property of the cascade multiplicative multifractal model, which is am
         <dcterms:isPartOf>
            <z:Website></z:Website>
         </dcterms:isPartOf>
+        <bib:authors>
+            <rdf:Seq>
+                <rdf:li>
+                    <foaf:Person>
+                       <foaf:surname>Wikipedia</foaf:surname>
+                    </foaf:Person>
+                </rdf:li>
+            </rdf:Seq>
+        </bib:authors>
         <link:link rdf:resource="#item_1015"/>
+        <dc:subject>phenHydro:WaterFlow</dc:subject>
         <dc:title>Rating curve - Wikipedia, the free encyclopedia</dc:title>
         <dc:identifier>
             <dcterms:URI>
@@ -13666,6 +13776,15 @@ a salient property of the cascade multiplicative multifractal model, which is am
         <dcterms:isPartOf>
            <z:Website></z:Website>
         </dcterms:isPartOf>
+        <bib:authors>
+            <rdf:Seq>
+                <rdf:li>
+                    <foaf:Person>
+                       <foaf:surname>Wikipedia</foaf:surname>
+                    </foaf:Person>
+                </rdf:li>
+            </rdf:Seq>
+        </bib:authors>
         <link:link rdf:resource="#item_1017"/>
         <dc:subject>humanEnvirStandards:EnvironmentalStandard</dc:subject>
         <dc:subject>realmBiolBiome:Terrain</dc:subject>
@@ -13695,7 +13814,18 @@ a salient property of the cascade multiplicative multifractal model, which is am
         <dcterms:isPartOf>
            <z:Website></z:Website>
         </dcterms:isPartOf>
+        <bib:authors>
+            <rdf:Seq>
+                <rdf:li>
+                    <foaf:Person>
+                        <foaf:surname>LivingSteel</foaf:surname>
+                        <foaf:givenname>Org</foaf:givenname>
+                    </foaf:Person>
+                </rdf:li>
+            </rdf:Seq>
+        </bib:authors>
         <link:link rdf:resource="#item_1024"/>
+        <dc:subject>procChemical:Corrosion</dc:subject>
         <dc:title>Corrosion - Living Steel - Living Steel</dc:title>
         <dc:identifier>
             <dcterms:URI>
@@ -13724,7 +13854,9 @@ a salient property of the cascade multiplicative multifractal model, which is am
         <bib:authors>
             <rdf:Seq>
                 <rdf:li>
-                   <foaf:Person><foaf:surname>Wiki</foaf:surname></foaf:Person>
+                    <foaf:Person>
+                       <foaf:surname>Wikipedia</foaf:surname>
+                    </foaf:Person>
                 </rdf:li>
             </rdf:Seq>
         </bib:authors>
@@ -13756,7 +13888,17 @@ a salient property of the cascade multiplicative multifractal model, which is am
         <dcterms:isPartOf>
            <z:Website></z:Website>
         </dcterms:isPartOf>
+        <bib:authors>
+            <rdf:Seq>
+                <rdf:li>
+                    <foaf:Person>
+                       <foaf:surname>Wikipedia</foaf:surname>
+                    </foaf:Person>
+                </rdf:li>
+            </rdf:Seq>
+        </bib:authors>
         <link:link rdf:resource="#item_1019"/>
+        <dc:subject>phenHydro:WaterFlow</dc:subject>
         <dc:title>Discharge (hydrology) - Wikipedia, the free encyclopedia</dc:title>
         <dc:identifier>
             <dcterms:URI>
@@ -13782,7 +13924,15 @@ a salient property of the cascade multiplicative multifractal model, which is am
         <dcterms:isPartOf>
            <z:Website></z:Website>
         </dcterms:isPartOf>
+        <bib:authors>
+            <rdf:Seq>
+                <rdf:li>
+                   <foaf:Person><foaf:surname>ISO</foaf:surname></foaf:Person>
+                </rdf:li>
+            </rdf:Seq>
+        </bib:authors>
         <link:link rdf:resource="#item_1023"/>
+        <dc:subject>procChemical:Corrosion</dc:subject>
         <dc:title>ISO 12944-5-2007</dc:title>
         <dc:identifier>
             <dcterms:URI>
@@ -13808,7 +13958,18 @@ a salient property of the cascade multiplicative multifractal model, which is am
         <dcterms:isPartOf>
            <z:Website></z:Website>
         </dcterms:isPartOf>
+        <bib:authors>
+            <rdf:Seq>
+                <rdf:li>
+                    <foaf:Person>
+                       <foaf:surname>Wikipedia</foaf:surname>
+                    </foaf:Person>
+                </rdf:li>
+            </rdf:Seq>
+        </bib:authors>
         <link:link rdf:resource="#item_1013"/>
+        <dc:subject>phen:StochasticProcess</dc:subject>
+        <dc:subject>phenAtmo:Sunlight</dc:subject>
         <dc:title>Planck's law - Wikipedia, the free encyclopedia</dc:title>
         <dc:identifier>
             <dcterms:URI>
@@ -13966,7 +14127,16 @@ a salient property of the cascade multiplicative multifractal model, which is am
         <dcterms:isPartOf>
            <z:Website></z:Website>
         </dcterms:isPartOf>
+        <bib:authors>
+            <rdf:Seq>
+                <rdf:li>
+                   <foaf:Person><foaf:surname>OpenRDF</foaf:surname></foaf:Person>
+                </rdf:li>
+            </rdf:Seq>
+        </bib:authors>
         <link:link rdf:resource="#item_1021"/>
+        <dc:subject>repr:Knowledge</dc:subject>
+        <dc:subject>reprDataService:DataService</dc:subject>
         <dc:title>Chapter 6. The SeRQL query language (revision 1.2)</dc:title>
         <dc:identifier>
             <dcterms:URI>
@@ -14270,6 +14440,7 @@ a salient property of the cascade multiplicative multifractal model, which is am
         </bib:authors>
         <dcterms:isReferencedBy rdf:resource="#item_1040"/>
         <link:link rdf:resource="#item_1038"/>
+        <dc:subject>humanDecision:Allocation</dc:subject>
         <dc:title>FANG_reqts_to_BAE</dc:title>
         <dc:identifier>
             <dcterms:URI>
@@ -14303,7 +14474,7 @@ a salient property of the cascade multiplicative multifractal model, which is am
             </rdf:Seq>
         </bib:authors>
         <link:link rdf:resource="#item_1039"/>
-        <dc:subject>humanDecision:Objective</dc:subject>
+        <dc:subject>humanDecision:Allocation</dc:subject>
         <dc:subject>phenWave:GravityWave</dc:subject>
         <dc:subject>realmBiolBiome:Terrain</dc:subject>
         <dc:title>RemainingReqtsHighlighted_Oct11.htm</dc:title>
@@ -14455,6 +14626,13 @@ a salient property of the cascade multiplicative multifractal model, which is am
         <dcterms:isPartOf>
            <z:Website></z:Website>
         </dcterms:isPartOf>
+        <bib:authors>
+            <rdf:Seq>
+                <rdf:li>
+                   <foaf:Person><foaf:surname>VTP</foaf:surname></foaf:Person>
+                </rdf:li>
+            </rdf:Seq>
+        </bib:authors>
         <link:link rdf:resource="#item_1048"/>
         <dc:subject>propSpaceHeight:Topography</dc:subject>
         <dc:title>DEM (digital elevation model)</dc:title>
@@ -14521,33 +14699,6 @@ a salient property of the cascade multiplicative multifractal model, which is am
         <link:type>text/html</link:type>
         <link:charset>1</link:charset>
     </z:Attachment>
-    <bib:Document rdf:about="http://arxiv.org/abs/1206.2452">
-        <z:itemType>webpage</z:itemType>
-        <dcterms:isPartOf>
-           <z:Website></z:Website>
-        </dcterms:isPartOf>
-        <link:link rdf:resource="#item_1053"/>
-        <dc:subject>phenAtmoWind:Wind</dc:subject>
-        <dc:title>[1206.2452] First and second order semi-Markov chains for wind speed modeling</dc:title>
-        <dc:identifier>
-            <dcterms:URI>
-               <rdf:value>http://arxiv.org/abs/1206.2452</rdf:value>
-            </dcterms:URI>
-        </dc:identifier>
-        <dcterms:dateSubmitted>2012-11-20 20:50:08</dcterms:dateSubmitted>
-    </bib:Document>
-    <z:Attachment rdf:about="#item_1053">
-        <z:itemType>attachment</z:itemType>
-        <dc:title>[1206.2452] First and second order semi-Markov chains for wind speed modeling</dc:title>
-        <dcterms:dateSubmitted>2012-11-20 20:50:09</dcterms:dateSubmitted>
-        <dc:identifier>
-            <dcterms:URI>
-               <rdf:value>http://arxiv.org/abs/1206.2452</rdf:value>
-            </dcterms:URI>
-        </dc:identifier>
-        <link:type>text/html</link:type>
-        <link:charset>1</link:charset>
-    </z:Attachment>
     <bib:Article rdf:about="http://wind.nrel.gov/public/SeaCon/Proceedings/Copenhagen.Offshore.Wind.2005/documents/papers/Critical_design_aspects/K.Muhlberg_corrosion_protection_for_windmills.pdf">
         <z:itemType>journalArticle</z:itemType>
         <dcterms:isPartOf>
@@ -14590,4 +14741,260 @@ a salient property of the cascade multiplicative multifractal model, which is am
         <link:type>application/pdf</link:type>
         <link:charset>25</link:charset>
     </z:Attachment>
+    <bib:Article rdf:about="#item_1055">
+        <z:itemType>journalArticle</z:itemType>
+        <dcterms:isPartOf rdf:resource="urn:issn:0894-6507"/>
+        <bib:authors>
+            <rdf:Seq>
+                <rdf:li>
+                    <foaf:Person>
+                        <foaf:surname>Pukite</foaf:surname>
+                        <foaf:givenname>P.R.</foaf:givenname>
+                    </foaf:Person>
+                </rdf:li>
+                <rdf:li>
+                    <foaf:Person>
+                        <foaf:surname>Berman</foaf:surname>
+                        <foaf:givenname>C.L.</foaf:givenname>
+                    </foaf:Person>
+                </rdf:li>
+            </rdf:Seq>
+        </bib:authors>
+        <dcterms:isReferencedBy rdf:resource="#item_1056"/>
+        <dc:subject>matrAerosol:Particulate</dc:subject>
+        <dc:subject>propFraction:Correlation</dc:subject>
+        <dc:subject>reprMathFunction:ProbabilityDensityFunction</dc:subject>
+        <dc:subject>reprMathStatistics:Statistics</dc:subject>
+        <dc:title>Defect cluster analysis for wafer-scale integration</dc:title>
+        <bib:pages>128-135</bib:pages>
+        <dc:date>1990</dc:date>
+    </bib:Article>
+    <bib:Journal rdf:about="urn:issn:0894-6507">
+        <dc:title>Semiconductor Manufacturing, IEEE Transactions on</dc:title>
+        <prism:volume>3</prism:volume>
+        <prism:number>3</prism:number>
+        <dcterms:alternative>Semiconductor Manufacturing, IEEE Transactions on</dcterms:alternative>
+        <dc:identifier>ISSN 0894-6507</dc:identifier>
+    </bib:Journal>
+    <bib:Memo rdf:about="#item_1056">
+        <rdf:value>The following values have no corresponding Zotero field:&lt;br/>PB  - IEEE&lt;br/></rdf:value>
+        <dc:subject>_RIS import</dc:subject>
+    </bib:Memo>
+    <bib:Document rdf:about="http://www.tc.umn.edu/~puk/gps-ada.htm">
+        <z:itemType>webpage</z:itemType>
+        <dcterms:isPartOf>
+           <z:Website></z:Website>
+        </dcterms:isPartOf>
+        <bib:authors>
+            <rdf:Seq>
+                <rdf:li>
+                    <foaf:Person>
+                        <foaf:surname>Pukite</foaf:surname>
+                        <foaf:givenname>P. R.</foaf:givenname>
+                    </foaf:Person>
+                </rdf:li>
+            </rdf:Seq>
+        </bib:authors>
+        <link:link rdf:resource="#item_1058"/>
+        <dc:subject>propSpaceHeight:Topography</dc:subject>
+        <dc:title>Global Positioning of Ada</dc:title>
+        <dc:date>1995 Oct 18</dc:date>
+        <dc:identifier>
+            <dcterms:URI>
+               <rdf:value>http://www.tc.umn.edu/~puk/gps-ada.htm</rdf:value>
+            </dcterms:URI>
+        </dc:identifier>
+        <dcterms:dateSubmitted>2012-11-28 04:28:34</dcterms:dateSubmitted>
+    </bib:Document>
+    <z:Attachment rdf:about="#item_1058">
+        <z:itemType>attachment</z:itemType>
+        <dc:title>Global Positioning of Ada</dc:title>
+        <dcterms:dateSubmitted>2012-11-28 04:28:35</dcterms:dateSubmitted>
+        <dc:identifier>
+            <dcterms:URI>
+               <rdf:value>http://www.tc.umn.edu/~puk/gps-ada.htm</rdf:value>
+            </dcterms:URI>
+        </dc:identifier>
+        <link:type>text/html</link:type>
+        <link:charset>25</link:charset>
+    </z:Attachment>
+    <bib:Article rdf:about="#item_1059">
+        <z:itemType>journalArticle</z:itemType>
+        <dcterms:isPartOf>
+            <bib:Journal>
+                <dc:title>ACM SIGSIM Simulation Digest</dc:title>
+                <prism:volume>21</prism:volume>
+                <prism:number>2</prism:number>
+                <dc:identifier>ISSN 0163-6103</dc:identifier>
+            </bib:Journal>
+        </dcterms:isPartOf>
+        <bib:authors>
+            <rdf:Seq>
+                <rdf:li>
+                    <foaf:Person>
+                        <foaf:surname>Pukite</foaf:surname>
+                        <foaf:givenname>PR</foaf:givenname>
+                    </foaf:Person>
+                </rdf:li>
+                <rdf:li>
+                    <foaf:Person>
+                        <foaf:surname>Pukite</foaf:surname>
+                        <foaf:givenname>J.</foaf:givenname>
+                    </foaf:Person>
+                </rdf:li>
+            </rdf:Seq>
+        </bib:authors>
+        <dc:subject>phen:StochasticProcess</dc:subject>
+        <dc:subject>reprMathStatistics:Statistics</dc:subject>
+        <dc:title>Digital signal processors for computation intensive statistics and simulation</dc:title>
+        <bib:pages>20-29</bib:pages>
+        <dc:date>1990</dc:date>
+    </bib:Article>
+    <bib:Document rdf:about="https://www.fbo.gov/index?s=opportunity&amp;mode=form&amp;id=e9bd71694d0ca43332c8d98ca37f4d28&amp;tab=core&amp;_cview=1">
+        <z:itemType>webpage</z:itemType>
+        <dcterms:isPartOf>
+           <z:Website></z:Website>
+        </dcterms:isPartOf>
+        <bib:authors>
+            <rdf:Seq>
+                <rdf:li>
+                   <foaf:Person><foaf:surname>DARPA</foaf:surname></foaf:Person>
+                </rdf:li>
+            </rdf:Seq>
+        </bib:authors>
+        <link:link rdf:resource="#item_1061"/>
+        <link:link rdf:resource="#item_1062"/>
+        <dc:subject>humanDecision:Objective</dc:subject>
+        <dc:subject>phen:StochasticProcess</dc:subject>
+        <dc:subject>phenAtmo:Thermal</dc:subject>
+        <dc:subject>phenAtmo:Weather</dc:subject>
+        <dc:subject>phenAtmoPrecipitation:Rainfall</dc:subject>
+        <dc:subject>phenHydro:WaterFlow</dc:subject>
+        <dc:subject>phenWave:GravityWave</dc:subject>
+        <dc:subject>procChemical:Corrosion</dc:subject>
+        <dc:subject>propSpaceHeight:SeaState</dc:subject>
+        <dc:subject>propSpaceHeight:Topography</dc:subject>
+        <dc:subject>propTemperature:Temperature</dc:subject>
+        <dc:subject>realm:Atmosphere</dc:subject>
+        <dc:subject>realm:Land</dc:subject>
+        <dc:subject>realm:Ocean</dc:subject>
+        <dc:subject>realmBiolBiome:Terrain</dc:subject>
+        <dc:subject>reprSpaceGeometry:Surface</dc:subject>
+        <dc:title>Component, Context, and Manufacturing Model Library 1 (C2M2L-1) - DARPA-BAA-11-47 - Federal Business Opportunities: Opportunities</dc:title>
+        <dc:identifier>
+            <dcterms:URI>
+                <rdf:value>https://www.fbo.gov/index?s=opportunity&amp;mode=form&amp;id=e9bd71694d0ca43332c8d98ca37f4d28&amp;tab=core&amp;_cview=1</rdf:value>
+            </dcterms:URI>
+        </dc:identifier>
+        <dcterms:dateSubmitted>2012-11-28 04:36:01</dcterms:dateSubmitted>
+    </bib:Document>
+    <z:Attachment rdf:about="#item_1061">
+        <z:itemType>attachment</z:itemType>
+        <dc:title>Component, Context, and Manufacturing Model Library 1 (C2M2L-1) - DARPA-BAA-11-47 - Federal Business Opportunities: Opportunities</dc:title>
+        <dcterms:dateSubmitted>2012-11-28 04:36:02</dcterms:dateSubmitted>
+        <dc:identifier>
+            <dcterms:URI>
+                <rdf:value>https://www.fbo.gov/index?s=opportunity&amp;mode=form&amp;id=e9bd71694d0ca43332c8d98ca37f4d28&amp;tab=core&amp;_cview=1</rdf:value>
+            </dcterms:URI>
+        </dc:identifier>
+        <link:type>text/html</link:type>
+        <link:charset>25</link:charset>
+    </z:Attachment>
+    <z:Attachment rdf:about="#item_1062">
+        <z:itemType>attachment</z:itemType>
+        <dc:title>view.pdf</dc:title>
+        <dcterms:dateSubmitted>2012-11-28 04:41:26</dcterms:dateSubmitted>
+        <dc:identifier>
+            <dcterms:URI>
+                <rdf:value>https://www.fbo.gov/utils/view?id=2f025cb8feb448ffa34d012122316c4f</rdf:value>
+            </dcterms:URI>
+        </dc:identifier>
+        <link:type>application/pdf</link:type>
+    </z:Attachment>
+    <bib:Article rdf:about="http://iopscience.iop.org/0305-4470/37/17/008">
+        <z:itemType>journalArticle</z:itemType>
+        <dcterms:isPartOf>
+            <bib:Journal>
+                <dc:title>Journal of Physics A: Mathematical and General</dc:title>
+                <prism:volume>37</prism:volume>
+                <prism:number>17</prism:number>
+            </bib:Journal>
+        </dcterms:isPartOf>
+        <bib:authors>
+            <rdf:Seq>
+                <rdf:li>
+                    <foaf:Person>
+                        <foaf:surname>Mallick</foaf:surname>
+                        <foaf:givenname>K.</foaf:givenname>
+                    </foaf:Person>
+                </rdf:li>
+                <rdf:li>
+                    <foaf:Person>
+                        <foaf:surname>Marcq</foaf:surname>
+                        <foaf:givenname>P.</foaf:givenname>
+                    </foaf:Person>
+                </rdf:li>
+            </rdf:Seq>
+        </bib:authors>
+        <link:link rdf:resource="#item_1067"/>
+        <dc:subject>phen:StochasticProcess</dc:subject>
+        <dc:subject>phenWaveNoise:Noise</dc:subject>
+        <dc:title>On the stochastic pendulum with Ornstein–Uhlenbeck noise</dc:title>
+        <bib:pages>4769</bib:pages>
+        <dc:date>2004</dc:date>
+        <dc:identifier>
+            <dcterms:URI>
+                <rdf:value>http://iopscience.iop.org/0305-4470/37/17/008</rdf:value>
+            </dcterms:URI>
+        </dc:identifier>
+        <dcterms:dateSubmitted>2012-11-28 05:10:35</dcterms:dateSubmitted>
+        <z:libraryCatalog>Google Scholar</z:libraryCatalog>
+    </bib:Article>
+    <z:Attachment rdf:about="#item_1067">
+        <z:itemType>attachment</z:itemType>
+        <dc:title>0407198.pdf</dc:title>
+        <dcterms:dateSubmitted>2012-11-28 05:10:29</dcterms:dateSubmitted>
+        <dc:identifier>
+            <dcterms:URI>
+               <rdf:value>http://arxiv.org/pdf/cond-mat/0407198.pdf</rdf:value>
+            </dcterms:URI>
+        </dc:identifier>
+        <link:type>application/pdf</link:type>
+        <link:charset>25</link:charset>
+    </z:Attachment>
+    <rdf:Description rdf:about="#item_1069">
+        <z:itemType>conferencePaper</z:itemType>
+        <bib:authors>
+            <rdf:Seq>
+                <rdf:li>
+                    <foaf:Person>
+                        <foaf:surname>Prattico</foaf:surname>
+                        <foaf:givenname>F.</foaf:givenname>
+                    </foaf:Person>
+                </rdf:li>
+                <rdf:li>
+                    <foaf:Person>
+                        <foaf:surname>Petroni</foaf:surname>
+                        <foaf:givenname>F.</foaf:givenname>
+                    </foaf:Person>
+                </rdf:li>
+                <rdf:li>
+                    <foaf:Person>
+                        <foaf:surname>D'Amico</foaf:surname>
+                        <foaf:givenname>G.</foaf:givenname>
+                    </foaf:Person>
+                </rdf:li>
+            </rdf:Seq>
+        </bib:authors>
+        <dc:subject>phenAtmoWind:Wind</dc:subject>
+        <dc:title>First and second order semi-Markov chains for wind speed modeling</dc:title>
+        <dc:date>2012</dc:date>
+        <bib:presentedAt>
+            <bib:Conference>
+               <dc:title>EGU General Assembly Conference Abstracts</dc:title>
+            </bib:Conference>
+        </bib:presentedAt>
+        <prism:volume>14</prism:volume>
+        <bib:pages>318</bib:pages>
+    </rdf:Description>
 </rdf:RDF>
