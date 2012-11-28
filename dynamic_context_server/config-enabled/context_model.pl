@@ -186,12 +186,47 @@ display(Model, Render, Dist, Scale*Xaxis) :-
                     ]).
 
 
+/*
+find_random_slot(List, Value) :-
+    random(Rand),
+    iterate_through_slots(
+*/
 
 get_sample(_*Dist, Sample) :-
     call(Dist, _, Sample), !.
 get_sample(Dist, Sample) :-
+    Dist = [F1*D1,F2*D2],
+    F1 + F2 =< 1,
+    random(Rand),
+    (
+       Rand < F1
+    ->
+       call(D1, _, Sample)
+    ;
+       call(D2, _, Sample)
+    ).
+get_sample(Dist, Sample) :-
+    Dist = [F1*D1,F2*D2,F3*D3],
+    F1 + F2 + F3 =< 1,
+    random(Rand),
+    (
+       Rand < F1
+    ->
+       call(D1, _, Sample)
+    ;
+       Rand < F1+F2
+    ->
+       call(D2, _, Sample)
+    ;
+       call(D3, _, Sample)
+    ).
+
+
+/*
+get_sample(Dist, Sample) :-
     Dist = [_*D|_],                % This needs work to cover the other cases
     call(D, _, Sample).
+*/
 
 data_generator(Request) :-
     http_parameters(Request, [model(Model,[])
@@ -265,4 +300,22 @@ find_optional_units(Named_Unit,NList,[]) :-
 find_optional_units(_,[],[]).
 
 
+root_sea_state(M,D,YP,X) :-
+    Y is YP*YP,
+    A is 2.7/D,
+    B is 1.05/D,
+    X is 1/M/2*sqrt((2^(1/3)*(1-12*A*B*Y))/(3*A*B*(sqrt((-27*A^2*Y+72*A*B*Y+2)^2-4*(1-12*A*B*Y)^3)-27*A^2*Y+72*A*B*Y+2)^(1/3))+(sqrt((-27*A^2*Y+72*A*B*Y+2)^2-4*(1-12*A*B*Y)^3)-27*A^2*Y+72*A*B*Y+2)^(1/3)/(3*2^(1/3)*A*B)-2/(3*A*B)+1/(4*B^2))-1/2*sqrt(-(1/B^3-4/(A*B^2))/(4*sqrt((2^(1/3)*(1-12*A*B*Y))/(3*A*B*(sqrt((-27*A^2*Y+72*A*B*Y+2)^2-4*(1-12*A*B*Y)^3)-27*A^2*Y+72*A*B*Y+2)^(1/3))+(sqrt((-27*A^2*Y+72*A*B*Y+2)^2-4*(1-12*A*B*Y)^3)-27*A^2*Y+72*A*B*Y+2)^(1/3)/(3*2^(1/3)*A*B)-2/(3*A*B)+1/(4*B^2)))-(sqrt((-27*A^2*Y+72*A*B*Y+2)^2-4*(1-12*A*B*Y)^3)-27*A^2*Y+72*A*B*Y+2)^(1/3)/(3*2^(1/3)*A*B)-(2^(1/3)*(1-12*A*B*Y))/(3*A*B*(sqrt((-27*A^2*Y+72*A*B*Y+2)^2-4*(1-12*A*B*Y)^3)-27*A^2*Y+72*A*B*Y+2)^(1/3))-4/(3*A*B)+1/(2*B^2))+1/(4*B).
+
+/*
+root_sea_state(M,D,YP,X) :-
+    Y is YP*YP,
+    A is 2.7/D,
+    B is 1.05/D,
+    X is 1/M/2*sqrt((2^(1/3)*(1-12*A*B*Y))/(3*A*B*(sqrt((-27*A^2*Y+72*A*B*Y+2)^2-4*(1-12*A*B*Y)^3)-27*A^2*Y+72*A*B*Y+2)^(1/3))+(sqrt((-27*A^2*Y+72*A*B*Y+2)^2-4*(1-12*A*B*Y)^3)-27*A^2*Y+72*A*B*Y+2)^(1/3)/(3*2^(1/3)*A*B)-2/(3*A*B)+1/(4*B^2))-1/2*sqrt((1/B^3-4/(A*B^2))/(4*sqrt((2^(1/3)*(1-12*A*B*Y))/(3*A*B*(sqrt((-27*A^2*Y+72*A*B*Y+2)^2-4*(1-12*A*B*Y)^3)-27*A^2*Y+72*A*B*Y+2)^(1/3))+(sqrt((-27*A^2*Y+72*A*B*Y+2)^2-4*(1-12*A*B*Y)^3)-27*A^2*Y+72*A*B*Y+2)^(1/3)/(3*2^(1/3)*A*B)-2/(3*A*B)+1/(4*B^2)))-(sqrt((-27*A^2*Y+72*A*B*Y+2)^2-4*(1-12*A*B*Y)^3)-27*A^2*Y+72*A*B*Y+2)^(1/3)/(3*2^(1/3)*A*B)-(2^(1/3)*(1-12*A*B*Y))/(3*A*B*(sqrt((-27*A^2*Y+72*A*B*Y+2)^2-4*(1-12*A*B*Y)^3)-27*A^2*Y+72*A*B*Y+2)^(1/3))-4/(3*A*B)+1/(2*B^2))+1/(4*B) .
+*/
+
+/*
+root_seastate(A,B,Y,X) :-
+X is  1/2*sqrt((2^(1/3)*(1-12*A*B*Y))/(3*A*B*(sqrt((-27*A^2*Y+72*A*B*Y+2)^2-4*(1-12*A*B*Y)^3)-27*A^2*Y+72*A*B*Y+2)^(1/3))+(sqrt((-27*A^2*Y+72*A*B*Y+2)^2-4*(1-12*A*B*Y)^3)-27*A^2*Y+72*A*B*Y+2)^(1/3)/(3*2^(1/3)*A*B)-2/(3*A*B)+1/(4*B^2))+1/2*sqrt((1/B^3-4/(A*B^2))/(4*sqrt((2^(1/3)*(1-12*A*B*Y))/(3*A*B*(sqrt((-27*A^2*Y+72*A*B*Y+2)^2-4*(1-12*A*B*Y)^3)-27*A^2*Y+72*A*B*Y+2)^(1/3))+(sqrt((-27*A^2*Y+72*A*B*Y+2)^2-4*(1-12*A*B*Y)^3)-27*A^2*Y+72*A*B*Y+2)^(1/3)/(3*2^(1/3)*A*B)-2/(3*A*B)+1/(4*B^2)))-(sqrt((-27*A^2*Y+72*A*B*Y+2)^2-4*(1-12*A*B*Y)^3)-27*A^2*Y+72*A*B*Y+2)^(1/3)/(3*2^(1/3)*A*B)-(2^(1/3)*(1-12*A*B*Y))/(3*A*B*(sqrt((-27*A^2*Y+72*A*B*Y+2)^2-4*(1-12*A*B*Y)^3)-27*A^2*Y+72*A*B*Y+2)^(1/3))-4/(3*A*B)+1/(2*B^2))+1/(4*B).
+*/
 

@@ -20,10 +20,10 @@
 :- http_handler('/html/images/sphere.pbm',
 		http_reply_file(icons('favicon.ico'), []),
 		[]).
-*/
 :- http_handler('/favicon.ico',
 		http_reply_file('/html/images/favicon.gif', []),
 		[]).
+*/
 
 server(Port) :-
    http_server(http_dispatch, [port(Port)]).

@@ -1,11 +1,9 @@
 W	Collect all XLS and PPT files
-	test will indicate whether the triples are loaded
+	feature img files transition to html page with zoom
 	std atmo table
 	lightning stroke plot
-	GPS trout-v ref, and SWS
 	context_solar, planck's law
 	Aquatic wave height model, plus connection to Sea-State, significant wave height
-	Dual model Particle size Monte-Carlo, TOPS has particle size classes
 	ENT classification system tied to SWEET, show as GraphViz?
 	Each browse entry should have short narrative and one link
 	Add browser tree to individual features
@@ -13,6 +11,9 @@ W	Collect all XLS and PPT files
 	Semi-Markov sync function to scale
 	convert rdf_ to entailments
 	Different data format generators
+x	GPS trout-v ref, and SWS, DARPA solic
+x	Dual model Particle size Monte-Carlo, TOPS has particle size classes
+x	test will indicate whether the triples are loaded
 x	Deliver buoyancy model
 x	window needs normalizing
 x	EMI links for Rockwell

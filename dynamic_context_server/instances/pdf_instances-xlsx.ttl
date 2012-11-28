@@ -104,11 +104,11 @@ ent:Michigan_waves a rdfs:Resource ;
 	ent:characteristic "waveHeight" ;
 	ent:title "Wave height Distribution" ;
 	ent:x_axis "m" ;
-	ent:pdf "1.0*bessel_seastate(0,0.5,12.0,Dist)" ;
+	ent:pdf "1.0*bessel_seastate(0,0.56,12.5,Dist)" ;
 	ent:moments "[mean, depth]" ;
-	ent:interval "1.1"^^xsd:double ;
+	ent:interval "1.05"^^xsd:double ;
 	ent:min_extent "0.0010"^^xsd:double ;
-	ent:max_extent "20.0"^^xsd:double .
+	ent:max_extent "10.0"^^xsd:double .
 
 ent:Superior_waves a rdfs:Resource ;
 	ent:model "Superior_waves" ;
@@ -117,11 +117,11 @@ ent:Superior_waves a rdfs:Resource ;
 	ent:characteristic "waveHeight" ;
 	ent:title "Wave height Distribution" ;
 	ent:x_axis "m" ;
-	ent:pdf "1.0*bessel_seastate(0,0.5,13.0,Dist)" ;
+	ent:pdf "1.0*bessel_seastate(0,0.85,16.0,Dist)" ;
 	ent:moments "[mean, depth]" ;
-	ent:interval "1.1"^^xsd:double ;
+	ent:interval "1.05"^^xsd:double ;
 	ent:min_extent "0.0010"^^xsd:double ;
-	ent:max_extent "20.0"^^xsd:double .
+	ent:max_extent "12.0"^^xsd:double .
 
 ent:Atlantic_seaboard_waves a rdfs:Resource ;
 	ent:model "Atlantic_seaboard_waves" ;
@@ -130,11 +130,11 @@ ent:Atlantic_seaboard_waves a rdfs:Resource ;
 	ent:characteristic "waveHeight" ;
 	ent:title "Wave height Distribution" ;
 	ent:x_axis "m" ;
-	ent:pdf "1.0*bessel_seastate(0,0.5,19.0,Dist)" ;
+	ent:pdf "1.0*bessel_seastate(1,0.81,26.0,Dist)" ;
 	ent:moments "[mean, depth]" ;
-	ent:interval "1.1"^^xsd:double ;
+	ent:interval "1.05"^^xsd:double ;
 	ent:min_extent "0.0010"^^xsd:double ;
-	ent:max_extent "20.0"^^xsd:double .
+	ent:max_extent "16.0"^^xsd:double .
 
 ent:San_Diego_waves a rdfs:Resource ;
 	ent:model "San_Diego_waves" ;

@@ -56,11 +56,21 @@ bessel_seastate(Order, Mean, Depth, pdf, X, Y) :-
 
 bessel_seastate(Order, Mean, Depth, cdf, X, Y) :-
     nonvar(X),
-    Input is 2*X/Mean,
+    A is 2.7*X/Depth,
+    B is 1.05*X/Depth,
+    F2 is 1-A*(1-B),
+    (   F2 > 0
+    ->
+        F is sqrt(F2)
+    ;
+        F is 1e-10
+    ),
+    Factor is X/Mean*F,
+    Input is 2*Factor,
     Index is Order + 1,
     output <- besselK(Input,Index),
     Output <- output,
-    Y is Input*Output*(1.0-X/Depth).
+    Y is 2*(Factor)^(Order+1)*Output.
 
 bessel_seastate(_Order, Mean, _Depth, sample, X, Sample) :-
     var(X),
@@ -68,6 +78,29 @@ bessel_seastate(_Order, Mean, _Depth, sample, X, Sample) :-
     random(R1), R1_2 is sqrt(R1),
     random(R2), R2_2 is sqrt(R2),
     Sample is Mean * log(R1_2) * log(R2_2).
+
+
+
+root_sea_state(M,D,YP,X) :-
+    Y is YP*YP,
+    A is 2.7/D,
+    B is 1.05/D,
+    X is 1/M/2*sqrt((2^(1/3)*(1-12*A*B*Y))/(3*A*B*(sqrt((-27*A^2*Y+72*A*B*Y+2)^2-4*(1-12*A*B*Y)^3)-27*A^2*Y+72*A*B*Y+2)^(1/3))+(sqrt((-27*A^2*Y+72*A*B*Y+2)^2-4*(1-12*A*B*Y)^3)-27*A^2*Y+72*A*B*Y+2)^(1/3)/(3*2^(1/3)*A*B)-2/(3*A*B)+1/(4*B^2))-1/2*sqrt(-(1/B^3-4/(A*B^2))/(4*sqrt((2^(1/3)*(1-12*A*B*Y))/(3*A*B*(sqrt((-27*A^2*Y+72*A*B*Y+2)^2-4*(1-12*A*B*Y)^3)-27*A^2*Y+72*A*B*Y+2)^(1/3))+(sqrt((-27*A^2*Y+72*A*B*Y+2)^2-4*(1-12*A*B*Y)^3)-27*A^2*Y+72*A*B*Y+2)^(1/3)/(3*2^(1/3)*A*B)-2/(3*A*B)+1/(4*B^2)))-(sqrt((-27*A^2*Y+72*A*B*Y+2)^2-4*(1-12*A*B*Y)^3)-27*A^2*Y+72*A*B*Y+2)^(1/3)/(3*2^(1/3)*A*B)-(2^(1/3)*(1-12*A*B*Y))/(3*A*B*(sqrt((-27*A^2*Y+72*A*B*Y+2)^2-4*(1-12*A*B*Y)^3)-27*A^2*Y+72*A*B*Y+2)^(1/3))-4/(3*A*B)+1/(2*B^2))+1/(4*B).
+
+/*
+root_sea_state(M,D,YP,X) :-
+    Y is YP*YP,
+    A is 2.7/D,
+    B is 1.05/D,
+    X is 1/M/2*sqrt((2^(1/3)*(1-12*A*B*Y))/(3*A*B*(sqrt((-27*A^2*Y+72*A*B*Y+2)^2-4*(1-12*A*B*Y)^3)-27*A^2*Y+72*A*B*Y+2)^(1/3))+(sqrt((-27*A^2*Y+72*A*B*Y+2)^2-4*(1-12*A*B*Y)^3)-27*A^2*Y+72*A*B*Y+2)^(1/3)/(3*2^(1/3)*A*B)-2/(3*A*B)+1/(4*B^2))-1/2*sqrt((1/B^3-4/(A*B^2))/(4*sqrt((2^(1/3)*(1-12*A*B*Y))/(3*A*B*(sqrt((-27*A^2*Y+72*A*B*Y+2)^2-4*(1-12*A*B*Y)^3)-27*A^2*Y+72*A*B*Y+2)^(1/3))+(sqrt((-27*A^2*Y+72*A*B*Y+2)^2-4*(1-12*A*B*Y)^3)-27*A^2*Y+72*A*B*Y+2)^(1/3)/(3*2^(1/3)*A*B)-2/(3*A*B)+1/(4*B^2)))-(sqrt((-27*A^2*Y+72*A*B*Y+2)^2-4*(1-12*A*B*Y)^3)-27*A^2*Y+72*A*B*Y+2)^(1/3)/(3*2^(1/3)*A*B)-(2^(1/3)*(1-12*A*B*Y))/(3*A*B*(sqrt((-27*A^2*Y+72*A*B*Y+2)^2-4*(1-12*A*B*Y)^3)-27*A^2*Y+72*A*B*Y+2)^(1/3))-4/(3*A*B)+1/(2*B^2))+1/(4*B) .
+*/
+
+/*
+root_seastate(A,B,Y,X) :-
+X is  1/2*sqrt((2^(1/3)*(1-12*A*B*Y))/(3*A*B*(sqrt((-27*A^2*Y+72*A*B*Y+2)^2-4*(1-12*A*B*Y)^3)-27*A^2*Y+72*A*B*Y+2)^(1/3))+(sqrt((-27*A^2*Y+72*A*B*Y+2)^2-4*(1-12*A*B*Y)^3)-27*A^2*Y+72*A*B*Y+2)^(1/3)/(3*2^(1/3)*A*B)-2/(3*A*B)+1/(4*B^2))+1/2*sqrt((1/B^3-4/(A*B^2))/(4*sqrt((2^(1/3)*(1-12*A*B*Y))/(3*A*B*(sqrt((-27*A^2*Y+72*A*B*Y+2)^2-4*(1-12*A*B*Y)^3)-27*A^2*Y+72*A*B*Y+2)^(1/3))+(sqrt((-27*A^2*Y+72*A*B*Y+2)^2-4*(1-12*A*B*Y)^3)-27*A^2*Y+72*A*B*Y+2)^(1/3)/(3*2^(1/3)*A*B)-2/(3*A*B)+1/(4*B^2)))-(sqrt((-27*A^2*Y+72*A*B*Y+2)^2-4*(1-12*A*B*Y)^3)-27*A^2*Y+72*A*B*Y+2)^(1/3)/(3*2^(1/3)*A*B)-(2^(1/3)*(1-12*A*B*Y))/(3*A*B*(sqrt((-27*A^2*Y+72*A*B*Y+2)^2-4*(1-12*A*B*Y)^3)-27*A^2*Y+72*A*B*Y+2)^(1/3))-4/(3*A*B)+1/(2*B^2))+1/(4*B).
+*/
+
+
 
 
 

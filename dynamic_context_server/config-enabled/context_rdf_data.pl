@@ -232,7 +232,7 @@ ref_m('demos',     target_iframe, '/html/demos.html').
 ref_m('atmosphere',     model, '/context_atm/navigate').
 ref_m('atmosphere',     model, '/context_standard_atmosphere/navigate').
 ref_m('atmosphere',     target_iframe, '/html/atm.html').
-ref_m('atmosphere',     target_iframe, '/html/standard_atmosphere.html').
+ref_m('atmosphere',     target_iframe, '/html/standard_atmosphere.html').   % This will not get called, hidden
 ref_m('atmosphere',     feature, 'thermal').
 ref_m('atmosphere',     category, 'phenAtmo:Weather').
 ref_m('atmosphere',     category, 'phenAtmoPressure:Barometric').
