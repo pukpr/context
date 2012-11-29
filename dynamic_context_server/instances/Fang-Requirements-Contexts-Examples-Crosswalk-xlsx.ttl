@@ -1,0 +1,461 @@
+﻿@prefix rdfs: <http://www.w3.org/2000/01/rdf-schema#> .
+@prefix foaf: <http://xmlns.com/foaf/0.1/> .
+@prefix owl: <http://www.w3.org/2002/07/owl#> .
+@prefix xsd: <http://www.w3.org/2001/XMLSchema#> .
+@prefix rdf: <http://www.w3.org/1999/02/22-rdf-syntax-ns#> .
+@prefix ent: <http://entroplet.com/terms#> .
+
+
+<http://entroplet.com/terms#0> ent:req_category "1.1.1" ;
+	ent:req_attribute "Cross Country Land Speed" ;
+	ent:req_text "For cross-country movement, with the vehicle at GVW, shall be able to attain land speeds of:" ;
+	ent:context "Y" ;
+	ent:uri "/ref/Fang Requirements Contexts Examples Crosswalk.htm" ;
+	a "ent:requirement" ;
+	ent:priority "KPP" .
+
+<http://entroplet.com/terms#1> ent:req_category "1.1.2" ;
+	ent:req_attribute "Sustained Forward Cruising Speed in up to Sea State 3" ;
+	ent:req_text "The vehicle at GVW, while operating through a mix of head and following seas with a SWH of up to 0.9 m (36 inches) shall have a sustained minimum average speed of:" ;
+	ent:context "Y" ;
+	ent:uri "/ref/Fang Requirements Contexts Examples Crosswalk.htm" ;
+	a "ent:requirement" ;
+	ent:priority "KPP" .
+
+<http://entroplet.com/terms#2> ent:req_category "1.1.3" ;
+	ent:req_attribute "0-20 mph Acceleration on Level Ground" ;
+	ent:req_text "The vehicle at GVW shall accelerate on a level hard surface from 0 to 32 kph ( 20mph) in:" ;
+	ent:context "Y" ;
+	ent:uri "/ref/Fang Requirements Contexts Examples Crosswalk.htm" ;
+	a "ent:requirement" ;
+	ent:priority "High" .
+
+<http://entroplet.com/terms#3> ent:req_category "1.1.4" ;
+	ent:req_attribute "Level Road Land Speed" ;
+	ent:req_text "On a level, hard surfaced road, the vehicle, at GVW, shall attain a speed of no less than:" ;
+	ent:context "Y" ;
+	ent:uri "/ref/Fang Requirements Contexts Examples Crosswalk.htm" ;
+	a "ent:requirement" ;
+	ent:priority "High" .
+
+<http://entroplet.com/terms#4> ent:req_category "1.1.5" ;
+	ent:req_attribute "Reverse Land Speed" ;
+	ent:req_text "The vehicle at GVW shall have a reverse speed of no less than:" ;
+	ent:context "Y" ;
+	ent:uri "/ref/Fang Requirements Contexts Examples Crosswalk.htm" ;
+	a "ent:requirement" ;
+	ent:priority "High" .
+
+<http://entroplet.com/terms#5> ent:req_category "1.1.6" ;
+	ent:req_attribute "Max Forward Speed in up to Sea State 3" ;
+	ent:req_text "The vehicle at GVW, while operating through fully formed seas with a SWH of up to 0.9 m (36 inches) shall posses a max water speed of more than:" ;
+	ent:context "Y" ;
+	ent:uri "/ref/Fang Requirements Contexts Examples Crosswalk.htm" ;
+	a "ent:requirement" ;
+	ent:priority "High" .
+
+<http://entroplet.com/terms#6> ent:req_category "1.1.7" ;
+	ent:req_attribute "Sustained Low Average Speed on Level Ground  (no brakes)" ;
+	ent:req_text "On a level, hard surface without use of service brakes, the vehicle shall operate at a speed no greater than:" ;
+	ent:context "Y" ;
+	ent:uri "/ref/Fang Requirements Contexts Examples Crosswalk.htm" ;
+	a "ent:requirement" ;
+	ent:priority "Med" .
+
+<http://entroplet.com/terms#7> ent:req_category "1.3.1" ;
+	ent:req_attribute "Combined Land and Sea Range" ;
+	ent:req_text "The vehicle shall be capable of operating on internally carried fuel for a minimum distance (a) at an average speed of 40kph (25mph) on a level hard surface road after completion of a minimum water distance of 22.2 km (12 nautical miles) at an average water speed of 10 knots in sea state 1: " ;
+	ent:context "Y" ;
+	ent:uri "/ref/Fang Requirements Contexts Examples Crosswalk.htm" ;
+	a "ent:requirement" ;
+	ent:priority "High" .
+
+<http://entroplet.com/terms#8> ent:req_category "1.3.2" ;
+	ent:req_attribute "Land Range on Level Ground" ;
+	ent:req_text "The vehicle at GVW shall be capable of operating on a level hard surface road on internally carried fuel, at an average speed of 40 kph (25 mph)  for a minimum distance  of:" ;
+	ent:context "Y" ;
+	ent:uri "/ref/Fang Requirements Contexts Examples Crosswalk.htm" ;
+	a "ent:requirement" ;
+	ent:priority "High" .
+
+<http://entroplet.com/terms#9> ent:req_category "1.3.3" ;
+	ent:req_attribute "Operating Time at Sea" ;
+	ent:req_text "The vehicle shall be capable of operating in in sea state 1 at an average speed of 5.2 knots for:" ;
+	ent:context "Y" ;
+	ent:uri "/ref/Fang Requirements Contexts Examples Crosswalk.htm" ;
+	a "ent:requirement" ;
+	ent:priority "High" .
+
+<http://entroplet.com/terms#10> ent:req_category "1.4.1" ;
+	ent:req_attribute "Ride Quality Over Rough Roads" ;
+	ent:req_text "The vehicle at GVW & Combat weight shall attain no more than an average vertical absorbed power of 6 Watts, as measured at the base of all occupant seats, while negotiating the following Root Mean Square (RMS) ride courses at speeds listed:" ;
+	ent:context "Y" ;
+	ent:uri "/ref/Fang Requirements Contexts Examples Crosswalk.htm" ;
+	a "ent:requirement" ;
+	ent:priority "High" .
+
+<http://entroplet.com/terms#11> ent:req_category "1.4.2" ;
+	ent:req_attribute "Ride Quality Over Obstacles" ;
+	ent:req_text "The vehicle at GVW & combat weight, shall sustain no more than a 2.5G peak vertical acceleration, as measured at each occupant location, while negotiating a non-deformable, half-round obstacle of the specified size and at the rates listed: , " ;
+	ent:context "Y" ;
+	ent:uri "/ref/Fang Requirements Contexts Examples Crosswalk.htm" ;
+	a "ent:requirement" ;
+	ent:priority "High" .
+
+<http://entroplet.com/terms#12> ent:req_category "1.5.1.1" ;
+	ent:req_attribute "Reverse Speed in Water" ;
+	ent:req_text "The vehicle, shall achieve a reverse speed in calm water of more than:" ;
+	ent:context "Y" ;
+	ent:uri "/ref/Fang Requirements Contexts Examples Crosswalk.htm" ;
+	a "ent:requirement" ;
+	ent:priority "High" .
+
+<http://entroplet.com/terms#13> ent:req_category "1.5.1.2" ;
+	ent:req_attribute "360 degree Pivot Turn on Calm Open Water" ;
+	ent:req_text "The vehicle shall execute a 360 degree pivot turn in both port and starboard directions in calm water within a  diameter of less than:" ;
+	ent:context "Y" ;
+	ent:uri "/ref/Fang Requirements Contexts Examples Crosswalk.htm" ;
+	a "ent:requirement" ;
+	ent:priority "High" .
+
+<http://entroplet.com/terms#14> ent:req_category "1.5.1.3" ;
+	ent:req_attribute "Stopping Distance from Maximum Speed in Calm Open Water" ;
+	ent:req_text "The vehicle shall stop forward motion from max water speed in calm water within a distance of:" ;
+	ent:context "Y" ;
+	ent:uri "/ref/Fang Requirements Contexts Examples Crosswalk.htm" ;
+	a "ent:requirement" ;
+	ent:priority "High" .
+
+<http://entroplet.com/terms#15> ent:req_category "1.5.2.1" ;
+	ent:req_attribute "Minimum Forward Speed in Surf Zones" ;
+	ent:req_text "With the engine at idle and drive engaged in a surf zone, the forward speed shall be not less than:" ;
+	ent:context "Y" ;
+	ent:uri "/ref/Fang Requirements Contexts Examples Crosswalk.htm" ;
+	a "ent:requirement" ;
+	ent:priority "High" .
+
+<http://entroplet.com/terms#16> ent:req_category "1.5.2.2" ;
+	ent:req_attribute "Maintaining Heading In Surf Zone" ;
+	ent:req_text "The vehicle shall steer and shall maintain a desired heading while negotiating a plunging surf height of:" ;
+	ent:context "Y" ;
+	ent:uri "/ref/Fang Requirements Contexts Examples Crosswalk.htm" ;
+	a "ent:requirement" ;
+	ent:priority "High" .
+
+<http://entroplet.com/terms#17> ent:req_category "1.5.2.3" ;
+	ent:req_attribute "Riverine Operations" ;
+	ent:req_text "The vehicle shall be able to maintain a heading while operating in freshwater cross currents of 4 knots at a speed of:" ;
+	ent:context "Y" ;
+	ent:uri "/ref/Fang Requirements Contexts Examples Crosswalk.htm" ;
+	a "ent:requirement" ;
+	ent:priority "High" .
+
+<http://entroplet.com/terms#18> ent:req_category "1.5.3.1.1" ;
+	ent:req_attribute "Vehicle Operations on Side Slope" ;
+	ent:req_text "The vehicle at GVW, shall be able to complete the following maneuver on a hard dry  40% (22 deg) side slope:" ;
+	ent:context "Y" ;
+	ent:uri "/ref/Fang Requirements Contexts Examples Crosswalk.htm" ;
+	a "ent:requirement" ;
+	ent:priority "High" .
+
+<http://entroplet.com/terms#19> ent:req_category "1.5.3.1.2" ;
+	ent:req_attribute "Speed on 60% Grade" ;
+	ent:req_text "The vehicle, at GVW shall be able to ascend/descend,  in both forward and reverse, a hard dry 60% (31 deg) grade at speeds greater than:" ;
+	ent:context "Y" ;
+	ent:uri "/ref/Fang Requirements Contexts Examples Crosswalk.htm" ;
+	a "ent:requirement" ;
+	ent:priority "High" .
+
+<http://entroplet.com/terms#20> ent:req_category "1.5.3.1.3" ;
+	ent:req_attribute "Stopping & Re-starting on Grades" ;
+	ent:req_text "The vehicle at GVW shall be capable of stopping on a 60% (31 deg) hard-dry grade for not less than one minute, shut the engine off, restart, and then continue to ascend/descend the 60% (31 deg) grade.  " ;
+	ent:context "Y" ;
+	ent:uri "/ref/Fang Requirements Contexts Examples Crosswalk.htm" ;
+	a "ent:requirement" ;
+	ent:priority "High" .
+
+<http://entroplet.com/terms#21> ent:req_category "1.5.3.2.1" ;
+	ent:req_attribute "NATO Mobility" ;
+	ent:req_text "The vehicle (at GVW) shall achieve the NATO Reference Mobility Model (NRMM) requirements off road as called out." ;
+	ent:context "Y" ;
+	ent:uri "/ref/Fang Requirements Contexts Examples Crosswalk.htm" ;
+	a "ent:requirement" ;
+	ent:priority "KPP" .
+
+<http://entroplet.com/terms#22> ent:req_category "1.5.3.2.2" ;
+	ent:req_attribute "Gap Crossing" ;
+	ent:req_text "The vehicle while on hard level ground shall cross a bottomless gap with 90 deg edges of no less than:" ;
+	ent:context "Y" ;
+	ent:uri "/ref/Fang Requirements Contexts Examples Crosswalk.htm" ;
+	a "ent:requirement" ;
+	ent:priority "High" .
+
+<http://entroplet.com/terms#23> ent:req_category "1.5.3.2.3" ;
+	ent:req_attribute "Trench Crossing (small dry river bed)" ;
+	ent:req_text "The vehicle shall traverse a ditch of minimum dimensions ≥1.37m (4.5 ft) deep and ≥7.77m (25.5 ft) across, with hard surface ingress and egress walls sloped at an angle of ≤36.5 degrees." ;
+	ent:context "Y" ;
+	ent:uri "/ref/Fang Requirements Contexts Examples Crosswalk.htm" ;
+	a "ent:requirement" ;
+	ent:priority "High" .
+
+<http://entroplet.com/terms#24> ent:req_category "1.5.3.2.4" ;
+	ent:req_attribute "Vertical Step Maneuver" ;
+	ent:req_text "The vehicle at GVW shall be capable of stepping up and down, in forward and reverse on a straight on approach, a vertical step of:" ;
+	ent:context "Y" ;
+	ent:uri "/ref/Fang Requirements Contexts Examples Crosswalk.htm" ;
+	a "ent:requirement" ;
+	ent:priority "High" .
+
+<http://entroplet.com/terms#25> ent:req_category "1.5.3.3.1" ;
+	ent:req_attribute "Lateral Acceleration Limits on Level Ground" ;
+	ent:req_text "The vehicle at GVW and traveling at a speed of 24 kph (15 mph) on hard level ground shall attain lateral acceleration without skid-out of not less than:" ;
+	ent:context "Y" ;
+	ent:uri "/ref/Fang Requirements Contexts Examples Crosswalk.htm" ;
+	a "ent:requirement" ;
+	ent:priority "High" .
+
+<http://entroplet.com/terms#26> ent:req_category "1.5.3.3.2" ;
+	ent:req_attribute "Lateral Acceleration Limits on Level Ground" ;
+	ent:req_text "The vehicle at GVW and traveling at a speed of 48.3 kph (30 mph) on hard level ground shall attain  lateral acceleration without skid-out of not less than:" ;
+	ent:context "Y" ;
+	ent:uri "/ref/Fang Requirements Contexts Examples Crosswalk.htm" ;
+	a "ent:requirement" ;
+	ent:priority "High" .
+
+<http://entroplet.com/terms#27> ent:req_category "1.5.3.3.3" ;
+	ent:req_attribute "360 Degree Pivot Turn on Level Ground" ;
+	ent:req_text "The vehicle shall perform a 360 degree pivot turn, on a level hard surface in the left and right direction independently, within one and one half vehicle lengths, in no greater than:" ;
+	ent:context "Y" ;
+	ent:uri "/ref/Fang Requirements Contexts Examples Crosswalk.htm" ;
+	a "ent:requirement" ;
+	ent:priority "High" .
+
+<http://entroplet.com/terms#28> ent:req_category "1.5.3.3.4" ;
+	ent:req_attribute "90 degree Large Turning Radius Maneuver" ;
+	ent:req_text "The vehicle shall traverse a 90 degree, 13.5m (44 ft) radius turn while moving at speeds of:" ;
+	ent:context "Y" ;
+	ent:uri "/ref/Fang Requirements Contexts Examples Crosswalk.htm" ;
+	a "ent:requirement" ;
+	ent:priority "High" .
+
+<http://entroplet.com/terms#29> ent:req_category "1.5.3.3.5" ;
+	ent:req_attribute "90 degree Small Turning Radius Maneuver" ;
+	ent:req_text "The vehicle shall traverse a 90 degree, 7.3m (24 ft) radius turn while moving at speeds of:" ;
+	ent:context "Y" ;
+	ent:uri "/ref/Fang Requirements Contexts Examples Crosswalk.htm" ;
+	a "ent:requirement" ;
+	ent:priority "High" .
+
+<http://entroplet.com/terms#30> ent:req_category "1.5.3.4.1" ;
+	ent:req_attribute "Brake Fade from Maximum Speed" ;
+	ent:req_text "The vehicle  at GVW shall be capable of braking from the maximum forward speed to a full stop three consecutive times, with a minimum brake fade  of not less than 90% between repetitions with a minimum time of:" ;
+	ent:context "Y" ;
+	ent:uri "/ref/Fang Requirements Contexts Examples Crosswalk.htm" ;
+	a "ent:requirement" ;
+	ent:priority "High" .
+
+<http://entroplet.com/terms#31> ent:req_category "1.5.3.4.2" ;
+	ent:req_attribute "Brake Performance on Dry, Level Ground" ;
+	ent:req_text "The vehicle, at GVW, on a dry hard surface road free of loose material, shall have a deceleration of more than:" ;
+	ent:context "Y" ;
+	ent:uri "/ref/Fang Requirements Contexts Examples Crosswalk.htm" ;
+	a "ent:requirement" ;
+	ent:priority "High" .
+
+<http://entroplet.com/terms#32> ent:req_category "1.5.3.4.3" ;
+	ent:req_attribute "Service Brake  Performance on Grades" ;
+	ent:req_text "With the engine running, the service brakes shall hold the vehicle at GVW on a dry hard surface,  pointing either uphill or downhill on a grade greater than :" ;
+	ent:context "Y" ;
+	ent:uri "/ref/Fang Requirements Contexts Examples Crosswalk.htm" ;
+	a "ent:requirement" ;
+	ent:priority "High" .
+
+<http://entroplet.com/terms#33> ent:req_category "1.5.3.4.4" ;
+	ent:req_attribute "Stopping Distance & Drift from Maximum Road Speed" ;
+	ent:req_text "The vehicle, at GVW, shall stop from maximum vehicle forward speed , with drift not exceeding 2m (6.5 ft), within a distance of:" ;
+	ent:context "Y" ;
+	ent:uri "/ref/Fang Requirements Contexts Examples Crosswalk.htm" ;
+	a "ent:requirement" ;
+	ent:priority "High" .
+
+<http://entroplet.com/terms#34> ent:req_category "1.6.1" ;
+	ent:req_attribute "Like For Like Tow Capability" ;
+	ent:req_text "The vehicle with a full tank of fuel, at GVW shall  be capable of towing another like vehicle in its payload category of GVW without disconnection of final drives over cross country terrain at 16 kph (10 mph) for a distance of:" ;
+	ent:context "Y" ;
+	ent:uri "/ref/Fang Requirements Contexts Examples Crosswalk.htm" ;
+	a "ent:requirement" ;
+	ent:priority "High" .
+
+<http://entroplet.com/terms#35> ent:req_category "1.6.2" ;
+	ent:req_attribute "Water Towing Speed" ;
+	ent:req_text "The vehicle at GVW shall be capable of towing a like vehicle at GVW in sea state 1 and through the surf zone onto a beach at speed of:" ;
+	ent:context "Y" ;
+	ent:uri "/ref/Fang Requirements Contexts Examples Crosswalk.htm" ;
+	a "ent:requirement" ;
+	ent:priority "High" .
+
+<http://entroplet.com/terms#36> ent:req_category "1.6.3" ;
+	ent:req_attribute "Drawbar Pull Wet Clay" ;
+	ent:req_text "On a level, clean, clay surface (CL in USCS Soil Classification System) with a strength of 200 or greater Rating Cone Index immediately after a 12.7 mm (0.5 inch) rainfall per hour for two hours, the vehicle shall provide a drawbar pull of:" ;
+	ent:context "Y" ;
+	ent:uri "/ref/Fang Requirements Contexts Examples Crosswalk.htm" ;
+	a "ent:requirement" ;
+	ent:priority "High" .
+
+<http://entroplet.com/terms#37> ent:req_category "1.6.4" ;
+	ent:req_attribute "Maximum Tractive Effort on Level Ground" ;
+	ent:req_text "The maximum output torque at the sprocket under ambient conditions defined by NATO AEP-5 at 150 m (492 ft) altitude in forward and reverse on a level, hard surface road shall be sufficient to generate a tractive effort equal to:" ;
+	ent:context "Y" ;
+	ent:uri "/ref/Fang Requirements Contexts Examples Crosswalk.htm" ;
+	a "ent:requirement" ;
+	ent:priority "High" .
+
+<http://entroplet.com/terms#38> ent:req_category "3.1.1" ;
+	ent:req_attribute "Ambient Air Temperature Working Range" ;
+	ent:req_text "The vehicle shall meet all operational performance requirements in land and sea modes including surf zones at the following ambient air temperatures:" ;
+	ent:context "Y" ;
+	ent:uri "/ref/Fang Requirements Contexts Examples Crosswalk.htm" ;
+	a "ent:requirement" ;
+	ent:priority "High" .
+
+<http://entroplet.com/terms#39> ent:req_category "3.1.2" ;
+	ent:req_attribute "Humidity Working Range" ;
+	ent:req_text "The vehicle shall meet all operational performance requirements at ambient relative humidity of up to 100 percent." ;
+	ent:context "Y" ;
+	ent:uri "/ref/Fang Requirements Contexts Examples Crosswalk.htm" ;
+	a "ent:requirement" ;
+	ent:priority "High" .
+
+<http://entroplet.com/terms#40> ent:req_category "3.1.3" ;
+	ent:req_attribute "Elevation Working Range" ;
+	ent:req_text "The vehicle shall meet all operational performance requirements on land mode at an elevation range defined by:" ;
+	ent:context "Y" ;
+	ent:uri "/ref/Fang Requirements Contexts Examples Crosswalk.htm" ;
+	a "ent:requirement" ;
+	ent:priority "Med" .
+
+<http://entroplet.com/terms#41> ent:req_category "3.2.1" ;
+	ent:req_attribute "Accidental Loads" ;
+	ent:req_text "All supporting hardware shall be able to withstand 10g vertical, 8g longitudinal, 3g lateral  when applied to the component or sub system being supported, without degradation to the vehicle or any vehicle subsystem performance." ;
+	ent:context "N" ;
+	ent:uri "/ref/Fang Requirements Contexts Examples Crosswalk.htm" ;
+	a "ent:requirement" ;
+	ent:priority "High" .
+
+<http://entroplet.com/terms#42> ent:req_category "3.2.2" ;
+	ent:req_attribute "Corrosion Resistance" ;
+	ent:req_text "The vehicle shall be designed to operate for a minimum corrosion service life, which will include varying or extended periods in corrosive environments involving one or more of the following: high humidity, salt spray, road de-icing agents, ground contact, gravel impingement, atmospheric contamination and temperature extremes -45° C to 71° C (-50 to +160 F degrees)." ;
+	ent:context "Y" ;
+	ent:uri "/ref/Fang Requirements Contexts Examples Crosswalk.htm" ;
+	a "ent:requirement" ;
+	ent:priority "High" .
+
+<http://entroplet.com/terms#43> ent:req_category "3.2.3" ;
+	ent:req_attribute "Electromagnetic Interference / Compatibility (EMI/EMC) Standards" ;
+	ent:req_text "The vehicle shall be capable of all operational performance requirements in all applicable Electromagnetic Environments as specified in MIL-STD-464A.The vehicle shall be intersystem and intersystem electromagnetically compatible and shall be immune to electromagnetic interference (EMI) which may degrade or disrupt normal performance. vehicle subsystems shall not be operationally degraded due to electromagnetic emissions from vehicle components or due to susceptibility of its constituent components. System components shall meet the EMC requirements of MIL-STD-461F as applicable: CE102, CS101, CS114 (10 kHz-30 MHz), CS115, CS116, RE102, RS103 (2 MHz - 18GHz)." ;
+	ent:context "Y" ;
+	ent:uri "/ref/Fang Requirements Contexts Examples Crosswalk.htm" ;
+	a "ent:requirement" ;
+	ent:priority "High" .
+
+<http://entroplet.com/terms#44> ent:req_category "3.2.4" ;
+	ent:req_attribute "Rail Transportation Impact Standard" ;
+	ent:req_text "The vehicle shall withstand the rail impact test specified in MIL-STD-810." ;
+	ent:uri "/ref/Fang Requirements Contexts Examples Crosswalk.htm" ;
+	a "ent:requirement" ;
+	ent:priority "High" .
+
+<http://entroplet.com/terms#45> ent:req_category "3.2.5" ;
+	ent:req_attribute "Surf Zone Load Survivability" ;
+	ent:req_text "The vehicle and all its subsystems, shall be capable of withstanding, without degradation to the vehicle or subsystems, all loads imparted in grounding at a speed of 8 Knots." ;
+	ent:uri "/ref/Fang Requirements Contexts Examples Crosswalk.htm" ;
+	a "ent:requirement" ;
+	ent:priority "Med" .
+
+<http://entroplet.com/terms#46> ent:req_category "5.1.10" ;
+	ent:req_attribute "Heat Shielding" ;
+	ent:req_text "Heat shielding shall be used where required to protect other components and subsystems from the effects of excessive heat." ;
+	ent:context "Y" ;
+	ent:uri "/ref/Fang Requirements Contexts Examples Crosswalk.htm" ;
+	a "ent:requirement" ;
+	ent:priority "Med" .
+
+<http://entroplet.com/terms#47> ent:req_category "5.3.1" ;
+	ent:req_attribute "Maneuverability Survivability in Rough Seas" ;
+	ent:req_text "The vehicle shall be able to negotiate sea state 3 (1-1.2m wave height) and shall not sink or capsize in sea state 5 (2.4-3.6m wave height)." ;
+	ent:context "Y" ;
+	ent:uri "/ref/Fang Requirements Contexts Examples Crosswalk.htm" ;
+	a "ent:requirement" ;
+	ent:priority "High" .
+
+<http://entroplet.com/terms#48> ent:req_category "5.6.4" ;
+	ent:req_attribute "Jounce Condition" ;
+	ent:req_text "The vehicle hull, when on flat level ground, shall not make contact with the ground at max jounce condition." ;
+	ent:context "Y" ;
+	ent:uri "/ref/Fang Requirements Contexts Examples Crosswalk.htm" ;
+	a "ent:requirement" ;
+	ent:priority "Med" .
+
+<http://entroplet.com/terms#49> ent:req_category "5.6.6" ;
+	ent:req_attribute "GVW Load Condition" ;
+	ent:req_text "With the vehicle at GVW on flat level ground, the suspension shall not be making contact with the jounce stops." ;
+	ent:context "Y" ;
+	ent:uri "/ref/Fang Requirements Contexts Examples Crosswalk.htm" ;
+	a "ent:requirement" ;
+	ent:priority "Med" .
+
+<http://entroplet.com/terms#50> ent:req_category "5.7.20" ;
+	ent:req_attribute "Electromagnetic Interference" ;
+	ent:req_text "The design shall comply with all best engineering practices to mitigate EMI effects." ;
+	ent:context "Y" ;
+	ent:uri "/ref/Fang Requirements Contexts Examples Crosswalk.htm" ;
+	a "ent:requirement" ;
+	ent:priority "Med" .
+
+<http://entroplet.com/terms#51> ent:req_category "5.8.8" ;
+	ent:req_attribute "Slope Performance Over Fuel Tank Fill Range" ;
+	ent:req_text "The vehicle shall be capable of meeting all grade and slope operations with the fuel capacity at both 100% and 10% full." ;
+	ent:context "Y" ;
+	ent:uri "/ref/Fang Requirements Contexts Examples Crosswalk.htm" ;
+	a "ent:requirement" ;
+	ent:priority "Med" .
+
+<http://entroplet.com/terms#52> ent:req_category "5.8.11" ;
+	ent:req_attribute "Fuel Tank Range and Survivability" ;
+	ent:req_text "The vehicle shall be equipped with corrosion resistant fuel tank (s) of sufficient volume to permit vehicle operations for the range specified." ;
+	ent:context "Y" ;
+	ent:uri "/ref/Fang Requirements Contexts Examples Crosswalk.htm" ;
+	a "ent:requirement" ;
+	ent:priority "Med" .
+
+<http://entroplet.com/terms#53> ent:req_category "5.9.1" ;
+	ent:req_attribute "Cooling System Performance for all Operational Modes" ;
+	ent:req_text "The cooling system shall enable the vehicle to meet all land, water and surf operation performance requirements at all speeds and over obstacles that allow it to conduct sustained operations.  The vehicle cooling system shall enable the vehicle to meet all performance requirements with no degradation in performance, and keep sub system fluid temperatures to within manufacturer’s specific limits at temperatures of:" ;
+	ent:context "Y" ;
+	ent:uri "/ref/Fang Requirements Contexts Examples Crosswalk.htm" ;
+	a "ent:requirement" ;
+	ent:priority "High" .
+
+<http://entroplet.com/terms#54> ent:req_category "5.9.2" ;
+	ent:req_attribute " Sufficient Cooling During Tractive Effort" ;
+	ent:req_text "The vehicle cooling system shall maintain and stabilize component temperatures within manufacturer's specific limits while operating at max ambient temperature for a period of 2 hrs, with the vehicle developing a tractive effort equal to:" ;
+	ent:context "Y" ;
+	ent:uri "/ref/Fang Requirements Contexts Examples Crosswalk.htm" ;
+	a "ent:requirement" ;
+	ent:priority "High" .
+
+<http://entroplet.com/terms#55> ent:req_category "5.11.1" ;
+	ent:req_attribute "Park Brake Performance on Grades" ;
+	ent:req_text "With the engine running or shut down, the parking brake shall hold the vehicle at GVW, stationary, headed both uphill and downhill, on a dry hard surface that is free from loose material, on a grade greater than:" ;
+	ent:context "Y" ;
+	ent:uri "/ref/Fang Requirements Contexts Examples Crosswalk.htm" ;
+	a "ent:requirement" ;
+	ent:priority "High" .
+
+<http://entroplet.com/terms#56> ent:req_category "5.12.7" ;
+	ent:req_attribute "Engine Starting and Cranking Time Until Operation" ;
+	ent:req_text "At -32° C to 54° C ( -25°F to 130°F ) the engine shall start within one minute from the initiation of cranking with no external aids, kits, or prior warming of the batteries. " ;
+	ent:context "Y" ;
+	ent:uri "/ref/Fang Requirements Contexts Examples Crosswalk.htm" ;
+	a "ent:requirement" ;
+	ent:priority "Med" .

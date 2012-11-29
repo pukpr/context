@@ -127,10 +127,23 @@ context:MCO-4790-18B
 context:MIL-STD-464A
 	a	req:ReferencePoint;
 	dc:subject	"phenAtmoLightning:Lightning" ;
+	dc:subject	"phenElecMag:ElectricField" ;
 	dc:subject	"humanEnvirStandards:EnvironmentalStandard" ;
 	rdfs:label		"MIL-STD-464A";
 	dcterms:hasPart	"Lightning Indirect Effects environment specified in Paragraph 5.4";
 	ent:req_phrase	"lightning strikes" ,
+			"EMI" ,
+                        "electromagnetic interference" ;
+	req:references	ent:EMI
+	.
+
+context:MIL-STD-461F
+	a	req:ReferencePoint;
+	dc:subject	"phenElecMag:ElectricField" ;
+	dc:subject	"humanEnvirStandards:EnvironmentalStandard" ;
+	rdfs:label		"MIL-STD-461F";
+	dcterms:hasPart	"System components shall meet the EMC requirements of MIL-STD-461F as applicable: CE102, CS101, CS114 (10 kHz-30 MHz), CS115, CS116, RE102, RS103 (2 MHz - 18GHz)";
+	ent:req_phrase	"EMI" ,
                         "electromagnetic interference" ;
 	req:references	ent:EMI
 	.
