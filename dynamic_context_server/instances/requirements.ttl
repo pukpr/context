@@ -120,7 +120,7 @@ context:MCO-4790-18B
 	dc:subject	"procChemical:Corrosion" ;
 	rdfs:label		"MCO-4790.18B";
     dcterms:hasPart	"16 Jul 04  / TM 4795-34-2 / TM4795-12-1";
-	rdfs:comment	"salt-fog conditions" ;
+	ent:req_phrase	"salt-fog conditions" ;
 	req:references	ent:Corrosion
 	.
 
@@ -130,7 +130,8 @@ context:MIL-STD-464A
 	dc:subject	"humanEnvirStandards:EnvironmentalStandard" ;
 	rdfs:label		"MIL-STD-464A";
 	dcterms:hasPart	"Lightning Indirect Effects environment specified in Paragraph 5.4";
-	rdfs:comment	"lightning strikes" ;
+	ent:req_phrase	"lightning strikes" ,
+                        "electromagnetic interference" ;
 	req:references	ent:EMI
 	.
 
@@ -140,7 +141,7 @@ context:AR-70-38
 	dc:subject	"propFraction:Humidity" ;
 	rdfs:label		"AR-70-38";
 	dcterms:hasPart	"table 2.1";
-	rdfs:comment	"humid storage conditions" ;
+	ent:req_phrase	"humid storage conditions" ;
 	req:references	ent:Resources
 	.
 
@@ -150,7 +151,7 @@ context:USCS-Soil-Classification-System
 	dc:subject	"realmSoil:SoilLayer" ;
 	rdfs:label		"USCS-Soil-Classification-System";
     dcterms:hasPart	"unspecified";
-	rdfs:comment	"level, clean, clay surface" ;
+	ent:req_phrase	"level, clean, clay surface" ;
 	req:references	ent:FineTerrain
 	.
 
@@ -160,7 +161,8 @@ context:NRMM
 	dc:subject	"propFraction:Humidity" ;
 	rdfs:label		"NRMM";
     dcterms:hasPart	"unspecified";
-	rdfs:comment	"German dry conditions",
+	ent:req_phrase	"German dry conditions",
+                                        "off road",
 					"Jordan dry conditions",
 					"German wet conditions",
 					"German snow conditions",
@@ -170,13 +172,13 @@ context:NRMM
 	req:references	ent:Resources
 	.
 
-context:NATO_AEP-5 
+context:NATO_AEP-5
 	a	req:ReferencePoint;
 	dc:subject	"humanEnvirStandards:EnvironmentalStandard" ;
 	dc:subject	"phenAtmoPressure:Barometric" ;
 	rdfs:label		"NATO AEP-5";
         dcterms:hasPart	"ambient conditions";
-	rdfs:comment	"at 150 m altitude" ;
+	ent:req_phrase	"at 150 m altitude" ;
 	req:references	ent:Resources
         .
 
@@ -188,9 +190,11 @@ context:NATO_AEP-5
 context:AmbientTemperature
 	a	req:Requirement;
 	dc:subject	"propTemperature:Temperature" ;
-	rdfs:comment	"max ambient temperature",
+	ent:req_phrase	"max ambient temperature",
 					"-XX degrees C to +XX degrees C",
 					"ambient air temperatures",
+                                        "excessive heat" ,
+                                        "warming" ,
 					"temperatures ranging between -XX F and XX F";
 	req:references	ent:Thermal
 	.
@@ -198,7 +202,7 @@ context:AmbientTemperature
 context:Slope
 	a	req:Requirement;
 	dc:subject	"realmBiolBiome:Terrain" ;
-	rdfs:comment	"all Grade & Slope",
+	ent:req_phrase	"all Grade & Slope",
 					"XX% side slope",
 					"slope operations up to and including XX% (T)",
 					"XX% grade",
@@ -206,6 +210,11 @@ context:Slope
 					"slopes up to and including the maximum grade",
 					"dry hard surface, XX% grade (XX degrees)",
 					"uphill or downhill",
+					"side slope",
+                                        "grade at speeds" ,
+                                        "grade and slope" ,
+					"grade greater than" ,
+					"hard-dry grade" ,
 					"hard surface ingress and egress walls sloped at an angle no less thanXX degrees";
 	req:references	ent:GrossTerrain
 	.
@@ -213,10 +222,12 @@ context:Slope
 context:SeaState
 	a	req:Requirement;
 	dc:subject	"propSpaceHeight:SeaState" ;
-	rdfs:comment	"Sea State characterized by a XX meter SWH",
+	ent:req_phrase	"Sea State characterized by a XX meter SWH",
 					"calm water",
+					"sea state",
 					"sea state conditions",
-					"Significant Wave Height (SWH) of XX meters";
+					"seas with a SWH",
+					"Significant Wave Height (SWH) of XX meters" ;
 	req:references	ent:Wave
 	.
 
@@ -224,11 +235,15 @@ context:SeaState
 context:Surface
 	a	req:Requirement;
 	dc:subject	"propMass:Roughness" ;
-	rdfs:comment	"level, hard surfaced road",
+	ent:req_phrase	"level, hard surfaced road",
 					"level, hard surface",
+					"level  hard surface",
+                                        "hard level ground" ,
+                                        "hard dry" ,
 					"level, clean, clay surface",
 					"flat secondary roads (T)",
 					"hard surface road with a coefficient of friction of XX",
+                                        "dry hard surface",
 					"dry hard surface road that is free of loose material" ;
 	req:references	ent:FineTerrain
 	.
@@ -236,7 +251,7 @@ context:Surface
 context:Terrain
 	a	req:Requirement;
 	dc:subject	"realmBiolBiome:Terrain" ;
-	rdfs:comment	"level, hard surfaced road",
+	ent:req_phrase	"level, hard surfaced road",
 					"cross-country",
 					"Root Mean Square (RMS) ride courses";
 	req:references	ent:FineTerrain
@@ -245,14 +260,14 @@ context:Terrain
 context:Rainfall
 	a	req:Requirement;
 	dc:subject	"phenAtmoPrecipitation:Rainfall" ;
-	rdfs:comment	"XX mm (XX inch) rainfall per hour";
+	ent:req_phrase	"XX mm (XX inch) rainfall per hour";
 	req:references	ent:Rainfall
 	.
 
 context:ClimateConditions
 	a	req:Requirement;
 	dc:subject	"propFraction:Humidity" ;
-	rdfs:comment	"German dry conditions",
+	ent:req_phrase	"German dry conditions",
 					"Jordan dry conditions",
 					"German wet conditions",
 					"German snow conditions",
@@ -265,39 +280,47 @@ context:ClimateConditions
 context:Obstacle
 	a	req:Requirement;
 	dc:subject	"reprSpaceGeometry:Surface" ;
-	rdfs:comment	"non-deformable, half-round obstacle of XX inches",
-					"Obstacle Height (in.):    WW   XX   YY   ZZ";
+	ent:req_phrase	"non-deformable, half-round obstacle of XX inches",
+			"non-deformable, half-round obstacle",
+                        "verticle step",
+			"Obstacle Height (in.):    WW   XX   YY   ZZ";
 	req:references	ent:FineTerrain
 	.
 
 context:RiverLine
 	a	req:Requirement;
 	dc:subject	"realmLandform:LandRegion" ;
-	rdfs:comment	"river line operations";
+	ent:req_phrase	"river line operations" ,
+                        "fresh water cross currents" ;
 	req:references	ent:Lakes
 	.
 
 context:Surf
 	a	req:Requirement;
 	dc:subject	"phenWave:GravityWave" ;
-	rdfs:comment	"XX meter (XX feet) plunging surf",
+	ent:req_phrase	"XX meter (XX feet) plunging surf",
 	                "transiting the surf and beach regions",
-	                "through the surf and onto a beach";
+	                "through the surf and onto a beach",
+                        "surf zone" ,
+			"surf height" ;
 	req:references	ent:Wave
 	.
 
 context:Water
 	a	req:Requirement;
 	dc:subject	"phenFluidDynamics:FluidPhenomena" ;
-	rdfs:comment	"fresh water";
+	ent:req_phrase	"fresh water" ,
+                        "water distance";
 	req:references	ent:Lakes
 	.
 
 context:Corrosive
 	a	req:Requirement;
 	dc:subject	"procChemical:Corrosion" ;
-	rdfs:comment	"salt-fog conditions",
+	ent:req_phrase	"salt-fog conditions",
 	                "water contamination",
+                        "corrosive environments" ,
+                        "salt spray" ,
 					"salt atmosphere";
 	req:references	ent:Corrosion
 	.
@@ -305,57 +328,60 @@ context:Corrosive
 context:LandDistance
 	a	req:Requirement;
 	dc:subject	"realmLandform:LandRegion" ;
-	rdfs:comment	"distance of XX km";
+	ent:req_phrase	"distance of XX km";
 	req:references	ent:GrossTerrain
 	.
 
 context:AquaticDistance
 	a	req:Requirement;
 	dc:subject	"phenOcean:OceanPhenomena" ;
-	rdfs:comment	"XX nautical miles of water operation in sea state XX";
+	ent:req_phrase	"XX nautical miles of water operation in sea state XX";
 	req:references	ent:Wave
 	.
 
 context:Step
 	a	req:Requirement;
 	dc:subject	"reprSpaceGeometry:Surface" ;
-	rdfs:comment	"stepping up and down a vertical step of XX inches";
+	ent:req_phrase	"stepping up and down a vertical step of XX inches";
 	req:references	ent:FineTerrain
 	.
 
 context:Gap
 	a	req:Requirement;
 	dc:subject	"reprSpaceGeometry:Surface" ;
-	rdfs:comment	"a gap no less than XX ft";
+	ent:req_phrase	"a gap no less than XX ft";
 	req:references	ent:FineTerrain
 	.
 
 context:Ditch
 	a	req:Requirement;
 	dc:subject	"reprSpaceGeometry:Surface" ;
-	rdfs:comment	"a ditch of no less than XX ft deep and no less than XX ft across";
+	ent:req_phrase	"a ditch of no less than XX ft deep and no less than XX ft across" ,
+                        "bottomless gap",
+			"ditch of minimum" ;
 	req:references	ent:FineTerrain
 	.
 
 context:Fording
 	a	req:Requirement;
 	dc:subject	"realmHydroBody:Lake" ;
-	rdfs:comment	"ford a XX inch (T)",
-					"fording operations";
+	ent:req_phrase	"ford a XX inch (T)",
+			"fording operations";
 	req:references	ent:Lakes
 	.
 
 context:AmbientWaterTemperature
 	a	req:Requirement;
 	dc:subject	"propTemperature:Temperature" ;
-	rdfs:comment	"max ambient water temperature of XX deg C";
+	ent:req_phrase	"max ambient water temperature of XX deg C";
 	req:references	ent:Resources
 	.
 
 context:Humidity
 	a	req:Requirement;
 	dc:subject	"propFraction:Humidity" ;
-	rdfs:comment	"ambient relative humidity of up to XX percent",
+	ent:req_phrase	"ambient relative humidity of up to XX percent",
+			"ambient relative humidity" ,
 					"humid storage conditions";
 	req:references	ent:Resources
 	.
@@ -363,7 +389,8 @@ context:Humidity
 context:Altitude
 	a	req:Requirement;
 	dc:subject	"phenAtmoPressure:Barometric" ;
-	rdfs:comment	"-XX ft to +XX ft elevation",
+	ent:req_phrase	"-XX ft to +XX ft elevation",
+			"elevation range" ,
                         "at 150 m altitude";
 	req:references	ent:Resources
 	.
@@ -372,14 +399,21 @@ context:Altitude
 context:Tree
 	a	req:Requirement;
 	dc:subject	"reprSpaceGeometry:Surface" ;
-	rdfs:comment	"XX inch tree";
+	ent:req_phrase	"XX inch tree";
 	req:references	ent:FineTerrain
 	.
 
 context:Lightning
 	a	req:Requirement;
 	dc:subject	"phenAtmoLightning:Lightning" ;
-	rdfs:comment	"lightning strikes";
+	ent:req_phrase	"lightning strikes";
+	req:references	ent:EMI
+	.
+
+context:EMI
+	a	req:Requirement;
+	dc:subject	"phenElecMag:ElectricField" ;
+	ent:req_phrase	"EMI";
 	req:references	ent:EMI
 	.
 

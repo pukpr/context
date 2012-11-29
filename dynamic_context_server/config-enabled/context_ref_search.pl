@@ -171,7 +171,7 @@ graph(Request) :-
 % Model path
 find_context_requirement(Term, tr([td(Comment),
                                    td(Context),
-                                   td(a(href(Link),doc)),
+                                   td(a(href(Link),Doc)),
                                    % td(a(href(Workflow),path)),
 				   td(a([href(Workflow),
                                         target('_parent')],
@@ -184,7 +184,10 @@ find_context_requirement(Term, tr([td(Comment),
                                    td(System),
                                    td(Level)
                                   ])) :-
-   rdf(Term, rdfs:comment, literal(Comment)),
+
+   Doc = [img([src('/html/images/require.gif'),
+	       title('A requirements document for allocation')]),i('doc')],
+   rdf(Term, ent:req_phrase, literal(Comment)),
 %   (
 %   rdf(Term, dcterms:'URI', Link);
 %   ),
@@ -197,13 +200,25 @@ find_context_requirement(Term, tr([td(Comment),
    context:find_and_break_out_terms(Comment, Narrative, Begin, Middle, Last),
    rdf(Req, ent:req_attribute, literal(Attribute)),
    rdf(Req, ent:uri, literal(Link)),
-   rdf(Req, ent:req_category, literal(Category)),
-   rdf(Req, ent:req_sys_description, literal(System)),
-   rdf(Req, ent:req_system_level, literal(Level)),
+   (   rdf(Req, ent:req_category, literal(Category)) ->
+       true
+   ;
+       Category=''
+   ),
+   (   rdf(Req, ent:req_sys_description, literal(System)) ->
+       true
+   ;
+       System=''
+   ),
+   (   rdf(Req, ent:req_system_level, literal(Level)) ->
+       true
+   ;
+       Level=''
+   ),
    (   rdf(Req, ent:context, literal(Context)) ->
        true
    ;
-       Context='()'
+       Context=''
    ),
    context:uri_index_link(Req, ReqLink).
 
@@ -228,19 +243,21 @@ find_context_requirement(Term, tr([td(Comment), td(Doc), td(Link),
 				   td(Part),
 				   td(SweetName),
 				   td(ReqLink)])) :-
+   SpecDoc = [img([src('/html/images/spec.gif'),
+                    title('A specification, testing, or standards document')]),i('spec')],
    spec(Spec),
    % Look for phrase
-   rdf(Term, rdfs:comment, literal(Comment)),
+   rdf(Term, ent:req_phrase, literal(Comment)),
    rdf(Term, dc:subject, literal(SWEET)),
    % Connect to Zotero
    rdf(RefTitle, dc:subject, literal(SWEET)),
    rdf(RefTitle, dc:subject, literal(Spec)),
    % rdf(RefTitle, dc:title, literal(Title)),
-   article_link(RefTitle, spec, Link),
+   article_link(RefTitle, SpecDoc, Link),
    % Look for reference points to spec
    rdf(Req, rdf:type, req:'ReferencePoint'),
    rdf(Req, rdfs:label, literal(Doc)),
-   rdf(Req, rdfs:comment, literal(Comment)),
+   rdf(Req, ent:req_phrase, literal(Comment)),
    rdf(Req, dc:subject, literal(Spec)),
    rdf(Req, dc:subject, literal(SWEET)),
    context:replace_chars(':', ' ', SWEET, SweetName),
