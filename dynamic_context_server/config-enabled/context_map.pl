@@ -49,6 +49,11 @@ available_location(Locale, Title, Model, Feature) :-
      rdf(URI, ent:locale, Locale),
      rdfS(URI, ent:feature, Feature),
      ref_m(Feature, model, Model).
+available_location(Locale, Title, Model, Feature) :-
+     rdfS(Locale, ent:title, Title),
+     % rdf(Locale, ent:locale, Locale),
+     rdfS(Locale, ent:feature, Feature),
+     ref_m(Feature, model, Model).
 available_location(Locale, Locale, '#', Locale).
 
 
@@ -125,7 +130,8 @@ find_locs(option([value(Out)],[Name])) :-
    rdf(Out, ent:title, Name).
 
 navigate(Request) :-
-    setof(Loc, Loc ^ find_locs(Loc), List),
+    setof(Loc, Loc ^ find_locs(Loc), LocList),
+    sort(LocList, List),
     reply_html_page(
         cliopatria(default),
         [title('Map Search'),
@@ -136,7 +142,7 @@ navigate(Request) :-
                Request,
                [
                 h1('Context map/location view'),
-		ul( li(p([\(con_text:gif(map)),'Select a modeled locale to map',
+		ul( li(p([\(con_text:gif(map)),'Select a modeled locale to map, or check for feature availability',
 			  form([action('navigate_locale'), target(target_iframe)],
 			       [
 				select([name('locale')], List),

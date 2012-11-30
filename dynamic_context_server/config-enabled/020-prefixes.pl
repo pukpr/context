@@ -24,6 +24,7 @@ purposes:
 :- rdf_register_ns('svg','http://www.w3.org/2000/svg#').
 :- rdf_register_ns('xlink','http://www.w3.org/1999/xlink#').
 :- rdf_register_ns('rsslink','http://purl.org/rss/1.0/modules/link/').
+:- rdf_register_ns('dbpedia','http://dbpedia.org/resource/').
 
 
 % Add SWEET layers here

@@ -103,7 +103,18 @@ temperature(Request) :-
                                                     'day',
                                                     'Temperature(F)',
                                                     ['Average temperature (degrees F)'],
-                                                    Dual_Profile))
+                                                    Dual_Profile)),
+                     br([]),
+                     \(con_text:inline_button(
+                                   \(con_text:button_link('Display Map',
+					   '/context_map/view',
+					   render,
+					   [[lat, Lat],
+					    [lon, Lon],
+					    [title, Site]
+					   ]))
+                                            )
+                     )
                     ])
    ;
      reply_html_page([title(Site),
@@ -113,7 +124,7 @@ temperature(Request) :-
                    ])
    ).
 
-navigate -->
+example -->
    html(
        \(con_text:table_form_target('Temperature profile >> ',
 				    '/context_temperature/temperature',
@@ -123,6 +134,32 @@ navigate -->
 		     )
 		   ).
 
+% -----
+
+navigate -->
+    {
+     get_all_temperature_sets(List)
+    },
+    html(
+       form([action('/context_temperature/temperature'),
+             target('target_iframe')],
+            [
+             select([name('site')], List),
+             input([type('submit'), value('Select Data Set')])
+            ])
+        ).
+
+get_all_temperature_sets(List) :-
+    findall(option([value(ID)],[Name]), available_location(ID, Name), L),
+    sort(L, List).
+
+available_location(Locale, Title) :-
+     rdfS(Locale, ent:title, Title),
+     rdf(URI, ent:locale, Locale),
+     rdfS(URI, ent:feature, 'thermal features').
+available_location(Locale, Title) :-
+     rdfS(Locale, ent:title, Title),
+     rdfS(Locale, ent:feature, 'thermal features').
 
 % ------------- dbpedia interface
 
@@ -153,8 +190,23 @@ strip_numbers([literal(type(_, Str))| Rest], Input, Final) :-
     strip_numbers(Rest, [Num|Input], Final).
 
 get_lat_lon(Location, Lat, Lon) :-
+    (
+       rdf_global_id(dbpedia:_, Location) ->
+       Local = Location
+    ;
+       rdf_global_id(dbpedia:Location, Local)
+    ),
+/*
+    (
+       rdf_global_id(dbpedia:Local, Location) ->
+       true
+    ;
+       Local = Location
+    ),
     Format = 'select * where {dbpedia:~w geo:lat ?Lat; geo:long ?Long.}',
-    format(atom(Q), Format, [Location]),
+*/
+    Format = 'select * where {<~w> geo:lat ?Lat; geo:long ?Long.}',
+    format(atom(Q), Format, [Local]),
     sparql_query(
          Q,
          row(C1, C2),
@@ -164,11 +216,19 @@ get_lat_lon(Location, Lat, Lon) :-
 get_lat_lon(_Location, '?', '?').
 
 get_temperature_spread(Location, Lows, Highs, Name) :-
+    (
+       rdf_global_id(dbpedia:_, Location) ->
+       Local = Location
+    ;
+       rdf_global_id(dbpedia:Location, Local)
+    ),
+    print(user_error, ['======',Local, '======']),
     format_temperature_query(Text),
     atomic_list_concat(Text, Temps),
-    Format = 'select * where {dbpedia:~w ~w dbpprop:location ?L.}',
+    % Format = 'select * where {dbpedia:~w ~w dbpprop:location ?L.}',
+    Format = 'select * where {<~w> ~w dbpprop:location ?L.}',
     % Format = 'select * where {dbpedia:~w ~w rdfs:label ?L.}',
-    format(atom(Q), Format, [Location, Temps]),
+    format(atom(Q), Format, [Local, Temps]),
     sparql_query(
          Q,
          Row,

@@ -32,6 +32,7 @@
                      <instances/surface_friction-xlsx.ttl>,
                      <instances/river_flow.ttl>,
                      <instances/density-xlsx.ttl>,
+                     <instances/temperature_regions-sparql-xlsx.ttl>,
                      <terms/defs.ttl>,
                      <terms/swore.rdf>,
                      <terms/biblio.ttl>,
@@ -148,6 +149,11 @@
         a lib:Schema ;
         a lib:CloudNode ;
 	dc:title "Densities of various liquids near room temperature.".
+
+<temperature_regions-sparql-xlsx.ttl>
+        a lib:Schema ;
+        a lib:CloudNode ;
+	dc:title "Locations with monthly temperature swings from dbpedia.".
 
 <terms/defs.ttl>
         a lib:Schema ;

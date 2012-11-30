@@ -7,5 +7,9 @@
 
 Thermal model info
 
+<pre>
+select distinct ?Resource,$Location,$Latitude,$Longitude where { ?Resource dbpprop:location $Location; dbpprop:augHighF ?Concept; geo:lat $Latitude; geo:long $Longitude} LIMIT 5000
+</pre>
+
 </body>
 </html>
