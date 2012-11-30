@@ -12,7 +12,8 @@ find_requirement_topics(option([value(Name)],[Local])) :-
    rdf_split_url(_, Local, Name).
 
 navigate(Request) :-
-   findall(Name, find_requirement_topics(Name), Names),
+   findall(Name, find_requirement_topics(Name), Nlist),
+   sort(Nlist, Names),
    reply_html_page(cliopatria(default),
                    [title('Requirements')],
       [

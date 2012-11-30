@@ -260,7 +260,22 @@ test(context_ontology_not_loaded) :-
         rdf(_Subject, dc:title, _Object),
         !.
 
-
+test(dbpedia) :-
+    context_temperature:strip_numbers([literal(type(xsd:int, '29')),
+                                       literal(type(xsd:int, '31'))], [], [29,31]),
+    context_temperature:process_location('Baltimore',
+                                         cold(MinCold, MaxCold, DayCold),
+                                         hot(MinHot, MaxHot, DayHot),
+                                         _Lows,
+                                         _Highs,
+                                         Name),
+    MinCold = 29,
+    MaxCold = 44,
+    DayCold = 15,
+    MinHot = 73,
+    MaxHot = 91,
+    DayHot = 195,
+    Name = 'Baltimore'.
 
 :- end_tests(lists).
 

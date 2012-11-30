@@ -14,6 +14,7 @@
 		     <instances/requirements.ttl>,
 		     <instances/FANG_reqts_to_BAE-xlsx.ttl>,
 		     <instances/RemainingReqtsHighlighted_Oct11-xlsx.ttl>,
+		     <instances/Fang-Requirements-Contexts-Examples-Crosswalk-xlsx.ttl>,
                      <instances/Terrain-PSD-metadata-xlsx.ttl>,
                      <instances/Obstacle-metadata-xlsx.ttl>,
                      <instances/Terrain-PSD-data-json.ttl>,
@@ -67,6 +68,11 @@
 	 a lib:Instances ;
 	 a lib:CloudNode ;
 	 dc:title "Additional system requirements" .
+
+<instances/Fang-Requirements-Contexts-Examples-Crosswalk-xlsx.ttl>
+	 a lib:Instances ;
+	 a lib:CloudNode ;
+	 dc:title "Cross-walked requirements" .
 
 <instances/Terrain-PSD-metadata-xlsx.ttl>
 	 a lib:Instances ;
