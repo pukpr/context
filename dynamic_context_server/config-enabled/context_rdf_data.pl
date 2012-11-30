@@ -3,52 +3,52 @@
 
 
 ref_m('fine terrain features',     model, '/context_select/navigate?category=fine_terrain').
-ref_m('fine terrain features',     target_iframe, '/html/static_pages/gems/fine_terrain.png').
+ref_m('fine terrain features',     target_iframe, '/html/static_pages/gems/fine_terrain.html').
 ref_m('fine terrain features',     category, 'propMass:Roughness').
 ref_m('fine terrain features',     category, 'realmSoil:SoilLayer').
 ref_m('fine terrain features',     category, 'realmBiolBiome:Terrain').
 ref_m('fine terrain features',     category, 'reprSpaceGeometry:Surface').
 
 ref_m('gross terrain features',     model, '/context_select/navigate?category=gross_terrain').
-ref_m('gross terrain features',     target_iframe, '/html/static_pages/gems/gross_terrain.png').
+ref_m('gross terrain features',     target_iframe, '/html/static_pages/gems/gross_terrain.html').
 ref_m('gross terrain features',     category, 'propSpaceHeight:Topography').
 ref_m('gross terrain features',     category, 'realmBiolBiome:Terrain').
 ref_m('gross terrain features',     category, 'reprSpaceGeometry:Surface').
 
 ref_m('wave features',     model, '/context_select/navigate?category=wave').
-ref_m('wave features',     target_iframe, '/html/static_pages/gems/wave_statistics.png').
+ref_m('wave features',     target_iframe, '/html/static_pages/gems/wave_statistics.html').
 ref_m('wave features',     category, 'phenWave:GravityWave').
 ref_m('wave features',     category, 'propSpaceHeight:SeaState').
 ref_m('wave features',     category, 'phenOcean:OceanPhenomena').
 ref_m('wave features',     category, 'phenFluidDynamics:FluidPhenomena').
 
 ref_m('wind features',     model, '/context_select/navigate?category=wind').
-ref_m('wind features',     target_iframe, '/html/static_pages/gems/wind_statistics.png').
+ref_m('wind features',     target_iframe, '/html/static_pages/gems/wind_statistics.html').
 ref_m('wind features',     category, 'phenAtmoWind:Wind').
 ref_m('wind features',     category, 'phenAtmo:Weather').
 ref_m('wind features',     category, 'phenFluidDynamics:FluidPhenomena').
 
 ref_m('clutter features',     model, '/context_select/navigate?category=clutter').
-ref_m('clutter features',     target_iframe, '/html/static_pages/gems/clutter_modeling.png').
+ref_m('clutter features',     target_iframe, '/html/static_pages/gems/clutter_modeling.html').
 ref_m('clutter features',     category, 'phenAtmoLightning:Lightning').
 ref_m('clutter features',     category, 'phenElecMag:ElectricField').
 ref_m('clutter features',     category, 'phenWaveNoise:Noise').
 ref_m('clutter features',     category, 'matrEquipment:Communications').
 
 ref_m('lakes features',     model, '/context_select/navigate?category=lakes').
-ref_m('lakes features',     target_iframe, '/html/static_pages/gems/lake_sizes.png').
+ref_m('lakes features',     target_iframe, '/html/static_pages/gems/lake_sizes.html').
 ref_m('lakes features',     category, 'phenHydro:WaterFlow').
 ref_m('lakes features',     category, 'realmHydroBody:Lake').
 
 ref_m('particle features',     model, '/context_select/navigate?category=particles').
-ref_m('particle features',     target_iframe, '/html/static_pages/gems/particle_sizes.png').
+ref_m('particle features',     target_iframe, '/html/static_pages/gems/particle_sizes.html').
 ref_m('particle features',     category, 'matrAerosol:Particulate').
 ref_m('particle features',     category, 'phenAtmoPrecipitation:Rainfall').
 ref_m('particle features',     category, 'phenGeolVolcano:VolcanicPlume').
 ref_m('particle features',     category, 'statePhysical:Droplet').
 
 ref_m('thermal features',     model, '/context_select/navigate?category=thermal').
-ref_m('thermal features',     target_iframe, '/html/static_pages/gems/thermal_dispersion.png').
+ref_m('thermal features',     target_iframe, '/html/static_pages/gems/thermal_dispersion.html').
 ref_m('thermal features',     category, 'phenMixing:Diffusion').
 ref_m('thermal features',     category, 'propConductivity:ThermalConductivity').
 ref_m('thermal features',     category, 'propDiffusivity:ThermalDiffusivity').
@@ -56,13 +56,13 @@ ref_m('thermal features',     category, 'propTemperature:Temperature').
 ref_m('thermal features',     category, 'phenAtmo:Thermal').
 
 ref_m('rain features',     model, '/context_select/navigate?category=rainfall').
-ref_m('rain features',     target_iframe, '/html/static_pages/gems/rain_statistics.png').
+ref_m('rain features',     target_iframe, '/html/static_pages/gems/rain_statistics.html').
 ref_m('rain features',     category, 'phenAtmoCloud:Cloud').
 ref_m('rain features',     category, 'phenAtmo:Weather').
 ref_m('rain features',     category, 'phenAtmoPrecipitation:Rainfall').
 
 ref_m('corrosion features',     model, '/context_select/navigate?category=corrosion').
-ref_m('corrosion features',     target_iframe, '/html/static_pages/gems/corrosion_oxidation.png').
+ref_m('corrosion features',     target_iframe, '/html/static_pages/gems/corrosion_oxidation.html').
 ref_m('corrosion features',     category, 'procChemical:Corrosion').
 ref_m('corrosion features',     category, 'procChemical:Oxidation').
 ref_m('corrosion features',     category, 'matrElement:Fe').
