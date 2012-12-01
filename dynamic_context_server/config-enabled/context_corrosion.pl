@@ -11,7 +11,7 @@
 :- context:register(context_corrosion:corrosion_components).
 
 
-collect_unit_options(Metal, List) :-
+collect_component_materials(Metal, List) :-
     findall([Name],
             (   rdfS(Metal_Resource, rdfs:label, Metal),
                 rdf(Metal_Resource, rdfs:subClassOf, Component),
@@ -34,7 +34,7 @@ collect_unit_options(Metal, List) :-
 corrosion_components(Request) :-
     http_parameters(Request, [mat(Material, [])]),
     upcase_atom(Material, Mat),
-    collect_unit_options(Mat, List),
+    collect_component_materials(Mat, List),
     reply_html_page([title('Corrosion Components'),
                      \(con_text:style)],
                     [
