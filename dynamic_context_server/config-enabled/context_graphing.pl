@@ -187,14 +187,19 @@ dygraph_plot(LogScale, Headings, Xaxis, Yaxis, Title, Data) -->
 
 dygraph_native(LogScale, Headings, Xaxis, Yaxis, Title, Data) -->
    {
-    is_log(LogScale,Log)
+    is_log(LogScale,Log),
+    (	is_list(Title) ->
+	atomic_list_concat(Title, Text)
+    ;
+       Text = Title
+    )
    },
    html([
          \pre_dygraph_script_load,
          div([id('graphdiv'), style('display:block')], []),
          script([type('text/javascript')],
          [
-          \js_call('handleDygraphList'(Log,Xaxis,Yaxis,Title,Headings,Data))
+          \js_call('handleDygraphList'(Log,Xaxis,Yaxis,Text,Headings,Data))
          ])
         ]).
 

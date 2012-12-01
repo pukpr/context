@@ -3,23 +3,43 @@
 			     ]).
 
 :- use_module(context_math).
+:- use_module(library(dialect/ifprolog)).
 
 :- context:register(context_corrosion:navigate).
 :- context:register(context_corrosion:plot).
 :- context:register(context_corrosion:corrosion_scale_table).
+:- context:register(context_corrosion:corrosion_components).
 
-% rdf_(ent:steel, ent:diffusion, ent:steel).
 
-/*
-collect_unit_options(Functor, List) :-
-    findall(option([value(Value)],[Name]),
-            (   rdf_(Functor, ent:units, Unit),
-                rdf_(Unit, ent:unit, Value),
-                rdf_(Unit, ent:description, Name)
+collect_unit_options(Metal, List) :-
+    findall([Name],
+            (   rdfS(Metal_Resource, rdfs:label, Metal),
+                rdf(Metal_Resource, rdfs:subClassOf, Component),
+                rdfS(Component, rdfs:label, Name)),
+	    /*
+	        (   % atom_split(Name, '-', [T1,T2,T3])
+		    atom_to_term(Name, [T1, -, T2, -, T3], [])
+		 ->
+		    true
+		;
+		    T1 = Name,
+		    T2 = '',
+		    T3 = ''
+		)
             ),
-            List).
-*/
+	    */
 
+	    List).
+
+corrosion_components(Request) :-
+    http_parameters(Request, [mat(Material, [])]),
+    upcase_atom(Material, Mat),
+    collect_unit_options(Mat, List),
+    reply_html_page([title('Corrosion Components'),
+                     \(con_text:style)],
+                    [
+		     \(con_text:table_multiple_entries([[Mat]], List))
+		    ]).
 
 
 
@@ -57,6 +77,9 @@ navigate(Request) :-
                           ),
 
                       br([]),
+		      i('what components are made from:'),
+		      \(con_text:form(corrosion_components, render, [['mat', 'IRON']])),
+                      % \(button_link('Component Types', corrosion_components, render)),
 		      \(con_text:render_iframe(render))
                      ]
 						       ))

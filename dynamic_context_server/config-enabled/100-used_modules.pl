@@ -78,6 +78,8 @@
 :- use_module(context_query).
 :- use_module(context_emi).
 :- use_module(context_standard_atmosphere).
+:- use_module(context_weather).
+:- use_module(context_dbpedia).
 
 
 

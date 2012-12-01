@@ -1,5 +1,11 @@
 :- module(context_geo, []).
 
+/** <module> Context geo-spatial utilities
+    * Lat/Lon to UTM
+    * DEM interface
+    * Google API
+*/
+
 :- use_module(context_math).
 :- use_module(library(clpfd)).
 

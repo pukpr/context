@@ -187,6 +187,11 @@ dispatch(rainfall) -->
 	      \g(search,
 		 a([href('/context_model/navigate?characteristics=cloudArea&render=render'),
 		   target(target_iframe)], 'Cloud PDF models')),
+	      \g(workflow,
+                 i(['Locations with monthly precipitation profiles',
+                    \(context_weather:navigate)
+                   ])
+                ),
 	      \(ref_search('phenAtmoPrecipitation:Rainfall', 'Rainfall references'))
 	     ]
 	    ).

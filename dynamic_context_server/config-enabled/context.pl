@@ -27,6 +27,11 @@
 ref_link_to_pdf(FileName, Dest, Link) :-
    format(atom(Link), '/ref/~s#nameddest=~s', [FileName,Dest]).
 
+strip_numbers([], Input, Final) :- reverse(Input, Final).
+strip_numbers([literal(type(_, Str))| Rest], Input, Final) :-
+    atom_number(Str, Num),
+    strip_numbers(Rest, [Num|Input], Final).
+
 cgi_pairs([[Key,Value]], Input, Output) :-
     atomic_list_concat([Input, Key, '=', Value], Output).
 cgi_pairs([[Key,Value]|R], Input, Output) :-
