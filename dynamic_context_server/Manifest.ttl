@@ -33,6 +33,7 @@
                      <instances/river_flow.ttl>,
                      <instances/density-xlsx.ttl>,
                      <instances/temperature_regions-sparql-xlsx.ttl>,
+		     <instances/combined_ontology.rdf>,
                      <terms/defs.ttl>,
                      <terms/swore.rdf>,
                      <terms/biblio.ttl>,
@@ -44,6 +45,11 @@
 	 a lib:Instances ;
 	 a lib:CloudNode ;
 	 dc:title "Context instances from data sources, proto" .
+
+<instances/combined_ontology.rdf>
+	 a lib:Instances ;
+	 a lib:CloudNode ;
+	 dc:title "Component ontology" .
 
 <instances/pdf_instances-xls.ttl>
 	 a lib:Instances ;

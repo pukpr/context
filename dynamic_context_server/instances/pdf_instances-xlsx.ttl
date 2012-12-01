@@ -191,16 +191,6 @@ ent:lightning_rate a rdfs:Resource ;
 	ent:max_extent "100.0"^^xsd:double .
 
 
-_:node178edpcmsx1 a ent:pattern ;
-	ent:moment_name "1" ;
-	ent:moment_value "1" .
-
-ent:CONUS_slopes ent:stuff _:node178edpcmsx1 .
-
-
-
-
-
 
 
 

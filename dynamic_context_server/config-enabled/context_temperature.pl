@@ -83,6 +83,8 @@ temperature(Request) :-
                       Name)
    ->
      get_lat_lon(Site,Lat, Lon),
+     get_depiction(Site, Image),
+     get_page(Site, Page),
      middle_days(Days),
      get_month(DayCold, ColdMonth),
      get_month(DayHot, HotMonth),
@@ -98,6 +100,7 @@ temperature(Request) :-
                                                              [i(ColdMonth), i(ColdMonth), i(HotMonth), i(HotMonth)]])),
                           br([])
                          ]),
+                     img([height=300, align=right, class=opaque, src=Image]),  % class=opaque
                      \(context_graphing:dygraph_native(lin,
                                                     ['Day', 'Lows', 'Highs'],
                                                     'day',
@@ -114,6 +117,10 @@ temperature(Request) :-
 					    [title, Site]
 					   ]))
                                             )
+                     ),
+                     \(con_text:inline_button(
+                                    \(con_text:button_link('Display Info Page', Page, render))
+                                             )
                      )
                     ])
    ;
@@ -196,15 +203,6 @@ get_lat_lon(Location, Lat, Lon) :-
     ;
        rdf_global_id(dbpedia:Location, Local)
     ),
-/*
-    (
-       rdf_global_id(dbpedia:Local, Location) ->
-       true
-    ;
-       Local = Location
-    ),
-    Format = 'select * where {dbpedia:~w geo:lat ?Lat; geo:long ?Long.}',
-*/
     Format = 'select * where {<~w> geo:lat ?Lat; geo:long ?Long.}',
     format(atom(Q), Format, [Local]),
     sparql_query(
@@ -214,6 +212,29 @@ get_lat_lon(Location, Lat, Lon) :-
                  ),
     strip_numbers([C1, C2], [], [Lat, Lon]), !.
 get_lat_lon(_Location, '?', '?').
+
+
+get_depiction(Location, Image) :-
+    (
+       rdf_global_id(dbpedia:_, Location) ->
+       Local = Location
+    ;
+       rdf_global_id(dbpedia:Location, Local)
+    ),
+    Format = 'select * where {<~w> foaf:depiction ?Image.}',
+    format(atom(Q), Format, [Local]),
+    sparql_query(Q, row(Image), [ host('dbpedia.org'), path('/sparql/')] ).
+get_depiction(_, '#').
+
+
+get_page(Location, Page) :-
+    (
+       rdf_global_id(dbpedia:Local, Location) ->
+       true
+    ;
+       Local = Location
+    ),
+    atom_concat('http://dbpedia.org/page/', Local, Page).
 
 get_temperature_spread(Location, Lows, Highs, Name) :-
     (
