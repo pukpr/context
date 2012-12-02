@@ -1,9 +1,23 @@
+:- module(context_ou, [
+		       ou_variance/4
+		      ]).
+
+/** <module> Ornstein-Uhlenbeck solution
+    * multivariance
+    *
+*/
+
 :- use_module(library(clpfd)).
 :- use_module(library('R')).
 :- use_module(context_math).
 
 :- dynamic
    diffElev/4.
+
+ou_variance(D,Theta,X,Y) :-
+   F is (1-exp(-2*X*Theta))/2/Theta,
+   Y is sqrt(D*F).
+
 
 ou_model(_D,_Theta,0,0) :-
    assert(diffElev(zzz, 0, 0, 1)), !.
@@ -74,3 +88,35 @@ calc_avg(URI, Theta, Diffusion) :-
    Theta is TT/L,
    Diffusion is DT/L.
 
+xrange(0,40).
+yrange(0,20).
+scale(Size) :- Size is 1201*1201.
+
+y(URI, X, YElev) :-
+   yrange(Y0, Y1),
+   findall(H, ( between(Y0, Y1, Y),
+		context_autocorr:diffElev(URI,X,Y,H)
+	      ), L),
+   scale(Num),
+   Scale is 1/Num,
+   YElev mapdot Scale .* L.
+
+var(URI, X, Var) :-
+   yrange(Y0, Y1),
+   Elev range [Y0,Y1]/1,
+   y(URI, X, YElev),
+   Sq mapdot Elev * Elev,
+   Var0 dot YElev * Sq,
+   Mean dot YElev * Elev,
+   Var is sqrt(Var0 - Mean*Mean).
+
+multivar(URI, Vars) :-
+   xrange(X0, X1),
+   findall(Var, ( between(X0, X1, X),
+		  var(URI,X,Var)
+	      ), Vars).
+
+
+run(URI, Vars) :-
+   context_autocorr:load_dem(URI),
+   multivar(URI, Vars).

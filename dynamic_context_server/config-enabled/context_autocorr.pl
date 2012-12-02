@@ -14,6 +14,7 @@
 :- context:register(context_autocorr:random_walker).
 :- context:register(context_autocorr:google_profile).
 :- context:register(context_autocorr:data_service).
+:- context:register(context_autocorr:variance).
 
 
 % Marginal Probability Distribution for elevation distances
@@ -41,10 +42,16 @@ navigate(Request) :-
                                           [
                                            select([name('uri')], List),
                                            br([]),
+					   /*
                                            \(con_text:radio_box_input_two('plot',
-                                                                          ['color levels', false],
-                                                                          ['contour lines', true]
+                                                                          ['color levels', color],
+                                                                          ['contour lines', contour],
+									  ['variance', variance]
 									 )),
+					   */
+					   \(con_text:radio_toggles('plot',[ ['color levels', color],
+                                                                          ['contour lines', contour],
+									  ['variance', variance]])),
                                            %input([type('hidden'), name(render), value(render)]),
                                            input([type('submit'), name(opt), value('MaxEnt')]),
                                            input([type('submit'), name(opt), value('MixEnt')]),
@@ -197,7 +204,7 @@ find_model(Model, Name, Quality, Df, Lf, Nf, Ff, Flatness) :-
     D0 range [0.1,4096]^Scale,
     % L0 = [0.0000001],
     % L0 range [0.000001,0.5]^Scale,
-    L0 range [0.00001,1.0]^10,
+    L0 range [0.00001,1.0]^10,   %0.00001
     % N0 range [N_Min,N_Max]/1,
     findall([Q,L,D,F], model_fit(Model, Name, Nf,D0,L0,F0,D,L,F,Q), Results),
     list_min(Results, Min),
@@ -369,8 +376,10 @@ calc_avg(URI, Theta, Diffusion) :-
    Theta is TT/L,
    Diffusion is DT/L.
 
-negate(true,false).
-negate(false,true).
+negate(true,color).
+negate(false,contour).
+maintain(true,contour).
+maintain(false,color).
 
 model_options([], _URI, _Opt, _Contour) --> !.
 model_options([F|R], URI, Opt, Contour) -->
@@ -381,7 +390,8 @@ model_options([F|R], URI, Opt, Contour) -->
    model_options(R, URI, Opt, Contour).
 model_options([F|R], URI, Opt, Contour)  -->
    {
-    F \= Opt
+    F \= Opt,
+    maintain(Contour,Type)
    },
    html(
    \(con_text:inline_button(
@@ -389,7 +399,7 @@ model_options([F|R], URI, Opt, Contour)  -->
 					   'contour',
 					   target_iframe,
 					   [[uri, URI],
-					    [plot, Contour],
+					    [plot, Type],
 					    [opt, F]
 					   ]))
                                             )
@@ -558,15 +568,48 @@ contour_display(Opt, URI, Contour, Lat, Lon, Info) :-
                                             [t, URI]
 					   ]))
                                             )
+                     ),
+                    \(con_text:inline_button(
+                                   \(con_text:button_link('variance',
+					   'variance',
+					   render,
+					   [[df, Df],
+					    [lf, Lf],
+                                            [uri, URI]
+					   ]))
+                                            )
                      )
 
 		    ]
 	      ).
 
 
+variance(Request) :-
+    http_parameters(Request, [uri(URI, [string]),
+                              df(Df, [float]),
+                              lf(Lf, [float])]),
+    context_ou:run(URI, Vars),
+    context_ou:xrange(X0,X1),
+    % X1_scale is X1*100,
+    X range [X0,X1]/1,
+    OU mapdot ou_variance(Df,Lf) ~> X,
+    Profile tuple X + Vars + OU,
+    reply_html_page(
+	    [title('multi-variance')],
+	    [
+	     \(context_graphing:dygraph_native(
+				       log,
+				       ['Post', 'Data Variance', 'OU Variance'],
+				       'x (post)', 'rms (m)',
+				       ['Variance ', URI],
+				       Profile))
+		 ]
+			   ).
+
+
 contour(Request) :-
     http_parameters(Request, [uri(URI, [string, optional(true)]),
-                              plot(Contour, [boolean, optional(true)]),
+                              plot(Contour, [string, optional(true)]),
 			      opt(Opt, [string, default('MaxEnt')]),
                               lat(Lat, [float, optional(true)]),
                               lon(Lon, [float, optional(true)])]),
@@ -578,11 +621,36 @@ contour(Request) :-
            Contour = false, % assumes unbound
            contour_display(Opt, URI, Contour, Lat, Lon, Info)
         ;
-            reply_html_page([title('PSD data sets')], [p('section likely not found')])
+            reply_html_page([title('DEM data sets')], [p('section likely not found')])
         )
     ;
-        context_geo:find_dem_section(Lat, Lon, URI, Info),
-        contour_display(Opt, URI, Contour, Lat, Lon, Info)
+        (   Contour = variance ->
+            context_geo:find_dem_section(Lat, Lon, URI, Info),
+	    context_ou:run(URI, Vars),
+	    context_ou:xrange(X0,X1),
+	    X range [X0,X1]/1,
+            Profile tuple X + Vars,
+	    reply_html_page(
+		[title('multi-variance')],
+		[
+		\(context_graphing:dygraph_native(
+				       log,
+				       ['Post', 'Variance'],
+				       'x (post)', 'var (m^2)',
+				       ['Variance ', URI],
+				       Profile))
+		 ]
+			   )
+
+	;
+	    Contour = contour ->
+            context_geo:find_dem_section(Lat, Lon, URI, Info),
+            contour_display(Opt, URI, true, Lat, Lon, Info)
+	;
+	    Contour = color ->
+            context_geo:find_dem_section(Lat, Lon, URI, Info),
+            contour_display(Opt, URI, false, Lat, Lon, Info)
+	)
     ).
 
 

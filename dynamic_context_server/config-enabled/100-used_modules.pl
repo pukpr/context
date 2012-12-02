@@ -80,6 +80,7 @@
 :- use_module(context_standard_atmosphere).
 :- use_module(context_weather).
 :- use_module(context_dbpedia).
+:- use_module(context_autocorr).
 
 
 
