@@ -199,7 +199,7 @@ find_model(Model, Name, Quality, Df, Lf, Nf, Ff, Flatness) :-
     Flatness is Z/Nf,
     F0 range [0.0,1.0]/0.1,
     % N_Min = N_Max,
-    Scale is sqrt(16),
+    Scale is sqrt(16), %16
     % D0 range [0.1,8192]^Scale,
     D0 range [0.1,4096]^Scale,
     % L0 = [0.0000001],
@@ -509,7 +509,7 @@ contour_display(Opt, URI, Contour, Lat, Lon, Info) :-
 		    \(con_text:table_multiple_entries(
              [[i('section'),i('PDF model'), i('Diffusion'), i([&(theta), '=Drag']),  i(&(sigma)),
 	       i('Fitness'),  i('Lat/Lon'), i('UTM - Zone,E,N'), i('model error'), i('flat')]],
-             [[b(URI), Model, '~2f'-Df, '~7f'-Lf, '~2f'-Sigma, '~0f%'-Order, '~1f/~1f'-[Lat,Lon],
+             [[b(URI), Model, '~2f'-Df, '~5f'-Lf, '~2f'-Sigma, '~0f%'-Order, '~1f/~1f'-[Lat,Lon],
                '~w, ~0f, ~0f'-[Zone,Easting,Northing], '~0f% .. ~0f%'-[Err0,Err1], '~1f%'-Flat ]]
 						     )
 		     ),
@@ -559,6 +559,16 @@ contour_display(Opt, URI, Contour, Lat, Lon, Info) :-
 				    URI, Opt, Contour)),
 
                     \(con_text:inline_button(
+                                   \(con_text:button_link('RMS',
+					   'variance',
+					   render,
+					   [[df, Df],
+					    [lf, Lf],
+                                            [uri, URI]
+					   ]))
+                                            )
+                     ),
+                    \(con_text:inline_button(
                                    \(con_text:button_link('Sampled Google Profile',
 					   'google_profile',
 					   render,
@@ -566,16 +576,6 @@ contour_display(Opt, URI, Contour, Lat, Lon, Info) :-
 					    [e, Easting],
 					    [n, Northing],
                                             [t, URI]
-					   ]))
-                                            )
-                     ),
-                    \(con_text:inline_button(
-                                   \(con_text:button_link('variance',
-					   'variance',
-					   render,
-					   [[df, Df],
-					    [lf, Lf],
-                                            [uri, URI]
 					   ]))
                                             )
                      )
@@ -592,18 +592,20 @@ variance(Request) :-
     context_ou:xrange(X0,X1),
     % X1_scale is X1*100,
     X range [X0,X1]/1,
-    OU mapdot ou_variance(Df,Lf) ~> X,
+    OU mapdot maxent_ou_variance(Df,Lf) ~> X,
     Profile tuple X + Vars + OU,
     reply_html_page(
 	    [title('multi-variance')],
 	    [
 	     \(context_graphing:dygraph_native(
-				       log,
-				       ['Post', 'Data Variance', 'OU Variance'],
-				       'x (post)', 'rms (m)',
-				       ['Variance ', URI],
-				       Profile))
-		 ]
+				       lin,
+				       ['Post', 'Data RMS', 'MaxEnt RMS'],
+				       'x (post number)', 'RMS (m)',
+				       ['sampling deviation of ', URI],
+				       Profile)),
+	     br([]),
+	     p('The RMS is truncated to elevation changes < 20 meters, due to limited sampling')
+	    ]
 			   ).
 
 

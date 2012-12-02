@@ -1,5 +1,5 @@
 :- module(context_ou, [
-		       ou_variance/4
+		       maxent_ou_variance/4
 		      ]).
 
 /** <module> Ornstein-Uhlenbeck solution
@@ -14,9 +14,20 @@
 :- dynamic
    diffElev/4.
 
+/*
 ou_variance(D,Theta,X,Y) :-
    F is (1-exp(-2*X*Theta))/2/Theta,
    Y is sqrt(D*F).
+*/
+maxent_ou_variance(_D,_Theta,0,0).
+maxent_ou_variance(D,Theta,X,Y) :-
+   F is sqrt(D*(1-exp(-2*X*Theta))/2/Theta),
+   H=20,
+   % F0 is sqrt((1-exp(-2*40*Theta))/2/Theta),
+   % F is FX/F0,
+   Var is F*F-exp(-H/F)*(2*F*F+2*F*H+H*H)/2,
+   Mean is (F-exp(-H/F)*(F+H))/2,
+   Y is sqrt((Var-Mean*Mean)).
 
 
 ou_model(_D,_Theta,0,0) :-
@@ -104,6 +115,10 @@ y(URI, X, YElev) :-
 var(URI, X, Var) :-
    yrange(Y0, Y1),
    Elev range [Y0,Y1]/1,
+   % Z range [0,39]/2,
+   % Z0 mapdot 1 .+ Z,
+   % Z1 mapdot 0.5 .* Z0,
+   % Elev = [0|Z1],
    y(URI, X, YElev),
    Sq mapdot Elev * Elev,
    Var0 dot YElev * Sq,
