@@ -21,7 +21,10 @@ sweet_uri('http://sweet.jpl.nasa.gov/2.3/sweetAll.owl').
 
 load_standard(true) :-
    rdf_library:rdf_attach_library('terms/manifest.ttl'),
-   rdf_library:rdf_load_library('standard-vocabulary').
+   rdf_library:rdf_load_library('standard-vocabulary'),
+   rdf_library:rdf_attach_library('Components.ttl'),
+   rdf_library:rdf_load_library('combined_ontology').
+
 load_standard(false).
 
 load_sweet_remote :-
