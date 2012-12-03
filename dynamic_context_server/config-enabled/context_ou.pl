@@ -12,7 +12,9 @@
 :- use_module(context_math).
 
 :- dynamic
-   diffElev/4.
+   diffElev/4,
+   diffusion/1,
+   drag/1.
 
 /*
 ou_variance(D,Theta,X,Y) :-
@@ -132,6 +134,55 @@ multivar(URI, Vars) :-
 	      ), Vars).
 
 
-run(URI, Vars) :-
+rms_data(URI, Vars) :-
    context_autocorr:load_dem(URI),
    multivar(URI, Vars).
+
+
+setup_parameters :-
+    Scale is sqrt(2),
+    D range [0.1,4096]^Scale,
+    L range [0.00001,1.0]^Scale,
+    retractall(diffusion(_)),
+    retractall(drag(_)),
+    assert(diffusion(D)),
+    assert(drag(L)).
+
+
+:- setup_parameters.
+
+deviation_from_ou(data(X,Y),Diffusion,Drag,Error) :-
+    diffusion(Diffusion_Parameters),
+    member(Diffusion, Diffusion_Parameters),
+    drag(Drag_Parameters),
+    member(Drag, Drag_Parameters),
+    Model mapdot maxent_ou_variance(Diffusion,Drag) ~> X,
+    Delta mapdot Model - Y,
+    Error dot Delta*Delta.
+
+find_min([], Min, Min).
+find_min([[H,_P]|T], Min, Mn) :-
+    CN is min(Min, H),
+    find_min(T, CN, Mn).
+find_minimum(List, Min, Param) :-
+    List = [[H,_P]|T],
+    find_min(T, H, Min),
+    member([Min,Param], List).
+
+optimize(URI, Diffusion, Drag, Errors, Err, P) :-
+    rms_data(URI, Y),
+    length(Y,L),
+    Len is L - 1,
+    X range [0,Len]/1,
+    findall([Error, params([diffusion=Diffusion,drag=Drag])],
+            deviation_from_ou(data(X,Y),Diffusion,Drag,Error),
+            Errors),
+    length(Errors, Num),
+    print(user_error,['number solutions', Num]),
+    find_minimum(Errors, Err, P), !.
+
+
+
+
+
+

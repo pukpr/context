@@ -588,7 +588,7 @@ variance(Request) :-
     http_parameters(Request, [uri(URI, [string]),
                               df(Df, [float]),
                               lf(Lf, [float])]),
-    context_ou:run(URI, Vars),
+    context_ou:rms_data(URI, Vars),
     context_ou:xrange(X0,X1),
     % X1_scale is X1*100,
     X range [X0,X1]/1,
@@ -628,7 +628,7 @@ contour(Request) :-
     ;
         (   Contour = variance ->
             context_geo:find_dem_section(Lat, Lon, URI, Info),
-	    context_ou:run(URI, Vars),
+	    context_ou:rms_data(URI, Vars),
 	    context_ou:xrange(X0,X1),
 	    X range [X0,X1]/1,
             Profile tuple X + Vars,
