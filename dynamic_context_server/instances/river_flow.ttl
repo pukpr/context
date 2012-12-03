@@ -7,10 +7,12 @@
 
 ent:allegheny   a rdfs:Resource ;
         ent:title "Allegheny" ;
+	ent:feature "lakes features";
                ent:river "[0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 1, 8, 101, 363, 556, 555, 560, 609, 632, 693, 761, 937, 978, 984, 775, 941, 864, 784, 662, 602, 416, 289, 168, 141, 59, 36, 10, 2, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0]" .
 
 ent:arkansas   a rdfs:Resource ;
         ent:title "Arkansas" ;
+	ent:feature "lakes features";
 	       ent:lat "38,14,53" ;
                ent:lon "-104,23,55" ;
 	       ent:station_id "07109500" ;
@@ -18,10 +20,12 @@ ent:arkansas   a rdfs:Resource ;
 
 ent:chattooga   a rdfs:Resource ;
         ent:title "Chattooga" ;
+	ent:feature "lakes features";
                ent:river "[0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 2, 71, 616, 1987, 3304, 3425, 3064, 2555, 2345, 2150, 1971, 1577, 1197, 944, 712, 415, 337, 222, 147, 120, 85, 54, 36, 27, 16, 8, 4, 2, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0]" .
 
 ent:hudson   a rdfs:Resource ;
         ent:title "Hudson" ;
+	ent:feature "lakes features";
 	       ent:lat "42,49,45" ;
                ent:lon "-73,40,00" ;
 	       ent:station_id "01335754" ;
@@ -29,6 +33,7 @@ ent:hudson   a rdfs:Resource ;
 
 ent:merrimack   a rdfs:Resource ;
         ent:title  "Merrimack" ;
+	ent:feature "lakes features";
 	       ent:lat "42,38,5" ;
                ent:lon "-71,17,56" ;
 	       ent:station_id "01100000" ;
@@ -36,6 +41,7 @@ ent:merrimack   a rdfs:Resource ;
 
 ent:mississippi  a rdfs:Resource ;
         ent:title "Mississippi" ;
+	ent:feature "lakes features";
 	       ent:lat "38,37,44" ;
                ent:lon "-90,10,47" ;
 	       ent:station_id "07010000" ;
@@ -43,10 +49,12 @@ ent:mississippi  a rdfs:Resource ;
 
 ent:mississippi_anoka   a rdfs:Resource ;
         ent:title "Mississippi, Anoka" ;
+	ent:feature "lakes features";
                ent:river "[0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 6, 59, 199, 549, 565, 885, 1316, 2186, 2674, 3810, 3697, 3164, 2801, 2101, 1728, 1496, 1108, 669, 338, 146, 44, 26, 5, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0]" .
 
 ent:ohio   a rdfs:Resource ;
         ent:title  "Ohio" ;
+	ent:feature "lakes features";
 	       ent:lat "37,08,51" ;
                ent:lon "-88,44,27" ;
 	       ent:station_id "03611500" ;
@@ -54,6 +62,7 @@ ent:ohio   a rdfs:Resource ;
 
 ent:salt   a rdfs:Resource ;
         ent:title "Salt" ;
+	ent:feature "lakes features";
 	       ent:lat "33,47,53" ;
                ent:lon "-110,29,57" ;
 	       ent:station_id "09497500" ;
@@ -61,10 +70,12 @@ ent:salt   a rdfs:Resource ;
 
 ent:stcroix  a rdfs:Resource ;
          ent:title "St. Croix" ;
+	ent:feature "lakes features";
                ent:river "[0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 1, 52, 286, 636, 1879, 2708, 2447, 1589, 1141, 787, 533, 502, 409, 341, 237, 149, 87, 44, 18, 5, 2, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0]" .
 
 ent:umpqua   a rdfs:Resource ;
         ent:title "Umpqua" ;
+	ent:feature "lakes features";
 	       ent:lat  "43,35,10" ;
                ent:lon "-123,33,15" ;
 	       ent:station_id "14321000" ;

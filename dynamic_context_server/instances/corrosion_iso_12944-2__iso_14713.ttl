@@ -79,22 +79,27 @@ ent:C5-M ent:corrosion_scale "C5-M" ;
 
 
 ent:corrosion_rural ent:locale ent:ElEscorialSpain ;
+		    ent:feature "corrosion features";
                     ent:corrosive_atmosphere "rural";
                     ent:corrosion_class ent:C2 .
 
 ent:corrosion_urban ent:locale ent:MadridSpain ;
+		    ent:feature "corrosion features";
                     ent:corrosive_atmosphere "urban" ;
                     ent:corrosion_class ent:C3 .
 
 ent:corrosion_industrial ent:locale ent:BilbaoSpain ;
+		    ent:feature "corrosion features";
                     ent:corrosive_atmosphere "industrial" ;
                     ent:corrosion_class ent:C4 .
 
 ent:corrosion_marine_mild ent:locale ent:BarcelonaSpain ;
+		    ent:feature "corrosion features";
                     ent:corrosive_atmosphere "marine_mild" ;
                     ent:corrosion_class ent:C4 .
 
 ent:corrosion_marine_severe ent:locale ent:AlicanteSpain ;
+		    ent:feature "corrosion features";
                     ent:corrosive_atmosphere "marine_severe" ;
                     ent:corrosion_class ent:C5-M .
 

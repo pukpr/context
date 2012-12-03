@@ -8,6 +8,8 @@
 
 <http://entroplet.com/terms#ATC_Belgian_Block_10_logspaced>
    a rdfs:Resource ;
+   ent:locale ent:APG ;
+   ent:feature "fine terrain features" ;
 	ent:course_name "ATC Belgian Block 10" ;
 	ent:course_description "paved course with unevenly laid granite blocks." ;
 	ent:course_material "granite" ;
@@ -22,6 +24,8 @@
 
 <http://entroplet.com/terms#ATC_Belgian_Block_90_logspaced>
    a rdfs:Resource ;
+   ent:locale ent:APG ;
+   ent:feature "fine terrain features" ;
 	ent:course_name "ATC Belgian Block 90" ;
 	ent:course_description "paved course with unevenly laid granite blocks." ;
 	ent:course_material "granite" ;
@@ -36,6 +40,8 @@
 
 <http://entroplet.com/terms#ATC_Belgian_Block_logspaced>
    a rdfs:Resource ;
+   ent:locale ent:APG ;
+   ent:feature "fine terrain features" ;
 	ent:course_name "ATC Belgian Block" ;
 	ent:course_description "paved course with unevenly laid granite blocks." ;
 	ent:course_material "granite" ;
@@ -50,6 +56,8 @@
 
 <http://entroplet.com/terms#ATC_Churchville_B_10_logspaced>
    a rdfs:Resource ;
+   ent:locale ent:APG ;
+   ent:feature "fine terrain features" ;
 	ent:course_name "ATC Churchville B 10" ;
 	ent:course_description "Steep hilly course with a severe \"rough portion\"" ;
 	ent:course_material "native soil and rock" ;
@@ -64,6 +72,8 @@
 
 <http://entroplet.com/terms#ATC_Churchville_B_90_logspaced>
    a rdfs:Resource ;
+   ent:locale ent:APG ;
+   ent:feature "fine terrain features" ;
 	ent:course_name "ATC Churchville B 90" ;
 	ent:course_description "Steep hilly course with a severe \"rough portion\"" ;
 	ent:course_material "native soil and rock" ;
@@ -78,6 +88,8 @@
 
 <http://entroplet.com/terms#ATC_Churchville_B_logspaced>
    a rdfs:Resource ;
+   ent:locale ent:APG ;
+   ent:feature "fine terrain features" ;
 	ent:course_name "ATC Churchville B" ;
 	ent:course_description "Steep hilly course with a severe \"rough portion\"" ;
 	ent:course_material "native soil and rock" ;
@@ -92,6 +104,8 @@
 
 <http://entroplet.com/terms#ATC_Churchville_C_10_logspaced>
    a rdfs:Resource ;
+   ent:locale ent:APG ;
+   ent:feature "fine terrain features" ;
 	ent:course_name "ATC Churchville C 10" ;
 	ent:course_description "Moderately hilly secondary road course with turnarounds for continuous testing" ;
 	ent:course_material "soil and gravel" ;
@@ -106,6 +120,8 @@
 
 <http://entroplet.com/terms#ATC_Churchville_C_90_logspaced>
    a rdfs:Resource ;
+   ent:locale ent:APG ;
+   ent:feature "fine terrain features" ;
 	ent:course_name "ATC Churchville C 90" ;
 	ent:course_description "Moderately hilly secondary road course with turnarounds for continuous testing" ;
 	ent:course_material "soil and gravel" ;
@@ -120,6 +136,8 @@
 
 <http://entroplet.com/terms#ATC_Churchville_C_logspaced>
    a rdfs:Resource ;
+   ent:locale ent:APG ;
+   ent:feature "fine terrain features" ;
 	ent:course_name "ATC Churchville C" ;
 	ent:course_description "Moderately hilly secondary road course with turnarounds for continuous testing" ;
 	ent:course_material "soil and gravel" ;
@@ -134,6 +152,8 @@
 
 <http://entroplet.com/terms#ATC_Munson_Gravel_10_logspaced>
    a rdfs:Resource ;
+   ent:locale ent:APG ;
+   ent:feature "fine terrain features" ;
 	ent:course_name "ATC Munson Gravel 10" ;
 	ent:course_description "Gravel road course with left and right turns" ;
 	ent:course_material "soil and gravel" ;
@@ -148,6 +168,8 @@
 
 <http://entroplet.com/terms#ATC_Munson_Gravel_90_logspaced>
    a rdfs:Resource ;
+   ent:locale ent:APG ;
+   ent:feature "fine terrain features" ;
 	ent:course_name "ATC Munson Gravel 90" ;
 	ent:course_description "Gravel road course with left and right turns" ;
 	ent:course_material "soil and gravel" ;
@@ -162,6 +184,8 @@
 
 <http://entroplet.com/terms#ATC_Munson_Gravel_logspaced>
    a rdfs:Resource ;
+   ent:locale ent:APG ;
+   ent:feature "fine terrain features" ;
 	ent:course_name "ATC Munson Gravel" ;
 	ent:course_description "Gravel road course with left and right turns" ;
 	ent:course_material "soil and gravel" ;
@@ -176,6 +200,8 @@
 
 <http://entroplet.com/terms#ATC_Perryman_1_10_logspaced>
    a rdfs:Resource ;
+   ent:locale ent:APG ;
+   ent:feature "fine terrain features" ;
 	ent:course_name "ATC Perryman 1 10" ;
 	ent:course_description "Variable course with potholes, washboard, and rutting" ;
 	ent:course_material "Quarry spall and gravel" ;
@@ -190,6 +216,8 @@
 
 <http://entroplet.com/terms#ATC_Perryman_1_90_logspaced>
    a rdfs:Resource ;
+   ent:locale ent:APG ;
+   ent:feature "fine terrain features" ;
 	ent:course_name "ATC Perryman 1 90" ;
 	ent:course_description "Variable course with potholes, washboard, and rutting" ;
 	ent:course_material "Quarry spall and gravel" ;
@@ -204,6 +232,8 @@
 
 <http://entroplet.com/terms#ATC_Perryman_1_logspaced>
    a rdfs:Resource ;
+   ent:locale ent:APG ;
+   ent:feature "fine terrain features" ;
 	ent:course_name "ATC Perryman 1" ;
 	ent:course_description "Variable course with potholes, washboard, and rutting" ;
 	ent:course_material "Quarry spall and gravel" ;
@@ -218,6 +248,8 @@
 
 <http://entroplet.com/terms#ATC_Perryman_2_10_logspaced>
    a rdfs:Resource ;
+   ent:locale ent:APG ;
+   ent:feature "fine terrain features" ;
 	ent:course_name "ATC Perryman 2 10" ;
 	ent:course_description "Irregular course with variable surface characteristics, potholes and depressions up to 46 cm are present" ;
 	ent:course_material "native soil" ;
@@ -232,6 +264,8 @@
 
 <http://entroplet.com/terms#ATC_Perryman_2_90_logspaced>
    a rdfs:Resource ;
+   ent:locale ent:APG ;
+   ent:feature "fine terrain features" ;
 	ent:course_name "ATC Perryman 2 90" ;
 	ent:course_description "Irregular course with variable surface characteristics, potholes and depressions up to 46 cm  are present" ;
 	ent:course_material "native soil" ;
@@ -246,6 +280,8 @@
 
 <http://entroplet.com/terms#ATC_Perryman_2_logspaced>
    a rdfs:Resource ;
+   ent:locale ent:APG ;
+   ent:feature "fine terrain features" ;
 	ent:course_name "ATC Perryman 2" ;
 	ent:course_description "Irregular course with variable surface characteristics, potholes and depressions up to 46 cm are present" ;
 	ent:course_material "native soil" ;
@@ -260,6 +296,8 @@
 
 <http://entroplet.com/terms#ATC_Perryman_3_10_logspaced>
    a rdfs:Resource ;
+   ent:locale ent:APG ;
+   ent:feature "fine terrain features" ;
 	ent:course_name "ATC Perryman 3 10" ;
 	ent:course_description "Rough course with repetitive humps, 45 to 60 meters apart, potholes and depressions up to 90 cm are present" ;
 	ent:course_material "native soil" ;
@@ -274,6 +312,8 @@
 
 <http://entroplet.com/terms#ATC_Perryman_3_90_logspaced>
    a rdfs:Resource ;
+   ent:locale ent:APG ;
+   ent:feature "fine terrain features" ;
 	ent:course_name "ATC Perryman 3 90" ;
 	ent:course_description "Rough course with repetitive humps, 45 to 60 meters apart, potholes and depressions up to 90 cm are present" ;
 	ent:course_material "native soil" ;
@@ -288,6 +328,8 @@
 
 <http://entroplet.com/terms#ATC_Perryman_3_logspaced>
    a rdfs:Resource ;
+   ent:locale ent:APG ;
+   ent:feature "fine terrain features" ;
 	ent:course_name "ATC Perryman 3" ;
 	ent:course_description "Rough course with repetitive humps, 45 to 60 meters apart, potholes and depressions up to 90 cm are present" ;
 	ent:course_material "native soil" ;
@@ -302,6 +344,8 @@
 
 <http://entroplet.com/terms#ATC_Perryman_A_10_logspaced>
    a rdfs:Resource ;
+   ent:locale ent:APG ;
+   ent:feature "fine terrain features" ;
 	ent:course_name "ATC Perryman A 10" ;
 	ent:course_description "Course typical of unimproved country road maintained by grading" ;
 	ent:course_material "native soil" ;
@@ -316,6 +360,8 @@
 
 <http://entroplet.com/terms#ATC_Perryman_A_90_logspaced>
    a rdfs:Resource ;
+   ent:locale ent:APG ;
+   ent:feature "fine terrain features" ;
 	ent:course_name "ATC Perryman A 90" ;
 	ent:course_description "Course typical of unimproved country road maintained by grading" ;
 	ent:course_material "native soil" ;
@@ -330,6 +376,8 @@
 
 <http://entroplet.com/terms#ATC_Perryman_A_logspaced>
    a rdfs:Resource ;
+   ent:locale ent:APG ;
+   ent:feature "fine terrain features" ;
 	ent:course_name "ATC Perryman A" ;
 	ent:course_description "Course typical of unimproved country road maintained by grading" ;
 	ent:course_material "native soil" ;
@@ -344,6 +392,8 @@
 
 <http://entroplet.com/terms#YTC_Desert_March_logspaced>
    a rdfs:Resource ;
+   ent:locale ent:YPG ;
+   ent:feature "fine terrain features" ;
 	ent:course_name "YTC Desert March" ;
 	ent:course_description "Long test course for comprehensive vehicle testing" ;
 	ent:course_material "sand, gravel" ;
@@ -358,6 +408,8 @@
 
 <http://entroplet.com/terms#YTC_KOFA_Level_Gravel_logspaced>
    a rdfs:Resource ;
+   ent:locale ent:YPG ;
+   ent:feature "fine terrain features" ;
 	ent:course_name "YTC KOFA Level Gravel" ;
 	ent:course_description "improved secondary gravel road, nearly level.  Graded and compacted." ;
 	ent:course_material "quarried road construction grade gravel" ;
@@ -372,6 +424,8 @@
 
 <http://entroplet.com/terms#YTC_Laguna_Hilly_Trails_logspaced>
    a rdfs:Resource ;
+   ent:locale ent:YPG ;
+   ent:feature "fine terrain features" ;
 	ent:course_name "YTC Laguna Hilly Trails" ;
 	ent:course_description "Hilly terrain with grades up to 30percent" ;
 	ent:course_material "loose rock, gravel, sand" ;
@@ -387,6 +441,8 @@
 
 <http://entroplet.com/terms#YTC_Laguna_Level_Trails_East_logspaced>
    a rdfs:Resource ;
+   ent:locale ent:YPG ;
+   ent:feature "fine terrain features" ;
 	ent:course_name "YTC Laguna Level Trails East" ;
 	ent:course_description "Endurance course comprised of maintained gravel and dirt roads" ;
 	ent:course_material "gravel, dirt, and sand" ;
@@ -402,6 +458,8 @@
 
 <http://entroplet.com/terms#YTC_Laguna_Level_logspaced>
    a rdfs:Resource ;
+   ent:locale ent:YPG ;
+   ent:feature "fine terrain features" ;
 	ent:course_name "YTC Laguna Level" ;
 	ent:course_description "Abandoned highway, compacted and graded, used primarily for RAM and performance testing" ;
 	ent:course_material "gravel" ;
@@ -416,6 +474,8 @@
 
 <http://entroplet.com/terms#YTC_Laguna_Levels_Trails_West_logspaced>
    a rdfs:Resource ;
+   ent:locale ent:YPG ;
+   ent:feature "fine terrain features" ;
 	ent:course_name "YTC Laguna Levels Trails West" ;
 	ent:course_description "Dirt road course suitable for testing commercial trucks" ;
 	ent:course_material "gravel, sand,  soil" ;
@@ -430,6 +490,8 @@
 
 <http://entroplet.com/terms#YTC_Laguna_Paved_logspaced>
    a rdfs:Resource ;
+   ent:locale ent:YPG ;
+   ent:feature "fine terrain features" ;
 	ent:course_name "YTC Laguna Paved" ;
 	ent:course_description "Smooth, near level paved course with turnarounds for continuous testing" ;
 	ent:course_material "high-strength asphalt" ;
@@ -444,6 +506,8 @@
 
 <http://entroplet.com/terms#YTC_Midid-Eastpercent20Secpercent20B>
    a rdfs:Resource ;
+   ent:locale ent:YPG ;
+   ent:feature "fine terrain features" ;
 	ent:course_name "YTC Mid-East Section B" ;
 	ent:course_description "Rough course with hilly washes " ;
 	ent:course_material "coarse loamy sand, gravely loamy soil" ;
@@ -458,6 +522,8 @@
 
 <http://entroplet.com/terms#YTC_Midid-Eastpercent20Start>
    a rdfs:Resource ;
+   ent:locale ent:YPG ;
+   ent:feature "fine terrain features" ;
 	ent:course_name "YTC Mid-East Start" ;
 	ent:course_description "Rough course with hilly washes " ;
 	ent:course_material "coarse loamy sand, gravely loamy soil" ;
@@ -472,6 +538,8 @@
 
 <http://entroplet.com/terms#YTC_Midid-Eastpercent20WashEnd>
    a rdfs:Resource ;
+   ent:locale ent:YPG ;
+   ent:feature "fine terrain features" ;
 	ent:course_name "YTC Mid-East Wash/End" ;
 	ent:course_description "Rough course with hilly washes " ;
 	ent:course_material "coarse loamy sand, gravely loamy soil" ;
@@ -486,6 +554,8 @@
 
 <http://entroplet.com/terms#YTC_MidEast_Sec_A_logspaced>
    a rdfs:Resource ;
+   ent:locale ent:YPG ;
+   ent:feature "fine terrain features" ;
 	ent:course_name "YTC Mid-East Section A" ;
 	ent:course_description "Rough course with hilly washes " ;
 	ent:course_material "coarse loamy sand, gravely loamy soil" ;
@@ -500,6 +570,8 @@
 
 <http://entroplet.com/terms#YTC_Patton_Hilly_Gravel_logspaced>
    a rdfs:Resource ;
+   ent:locale ent:YPG ;
+   ent:feature "fine terrain features" ;
 	ent:course_name "YTC Patton Hilly Gravel" ;
 	ent:course_description "Hilly test course with steep grades" ;
 	ent:course_material "gravel, gravel and soil, gravel and sand" ;
@@ -515,6 +587,8 @@
 
 <http://entroplet.com/terms#YTC_Patton_Hilly_Trails_logspaced>
    a rdfs:Resource ;
+   ent:locale ent:YPG ;
+   ent:feature "fine terrain features" ;
 	ent:course_name "YTC Patton Hilly Trails" ;
 	ent:course_description "Rustic hilly test course which includes extreme grades" ;
 	ent:course_material "sand, rock, soil" ;
@@ -530,6 +604,8 @@
 
 <http://entroplet.com/terms#YTC_Patton_Level_Gravel_logspaced>
    a rdfs:Resource ;
+   ent:locale ent:YPG ;
+   ent:feature "fine terrain features" ;
 	ent:course_name "YTC Patton Level Gravel" ;
 	ent:course_description "Course typical of secondary graveled road. Graded and compacted" ;
 	ent:course_material "quarried road construction grade gravel" ;
@@ -544,6 +620,8 @@
 
 <http://entroplet.com/terms#YTC_Patton_Level_Trails_logspaced>
    a rdfs:Resource ;
+   ent:locale ent:YPG ;
+   ent:feature "fine terrain features" ;
 	ent:course_name "YTC Patton Level Trails" ;
 	ent:course_description "Level course with severe bumps used to excersise suspension systems and drive trains" ;
 	ent:course_material "gravel, sand, clay, soil" ;
@@ -559,6 +637,7 @@
 
 <http://entroplet.com/terms#BAE_Systems_Concrete_logspaced>
    a rdfs:Resource ;
+   ent:feature "fine terrain features" ;
 	ent:course_name "BAE Systems Concrete" ;
 	ent:course_description "Smooth, near level paved course adapted from YTC Laguna Paved - different friction coefficients" ;
 	ent:course_material "concrete" ;
@@ -572,6 +651,8 @@
 
 <http://entroplet.com/terms#ATC_MTA_2InchWashboard>
    a rdfs:Resource ;
+   ent:locale ent:APG ;
+   ent:feature "fine terrain features" ;
 	ent:course_name "ATC 2-Inch Washboard" ;
 	ent:course_description "Concrete course with 1-inch amplitude sinusoidal surface with wavelength of 2 feet" ;
 	ent:course_material "concrete" ;
@@ -584,6 +665,8 @@
 
 <http://entroplet.com/terms#ATC_MTA_RadialWashboard>
    a rdfs:Resource ;
+   ent:locale ent:APG ;
+   ent:feature "fine terrain features" ;
 	ent:course_name "ATC 2- to 4-Inch Radial Washboard" ;
 	ent:course_description "Concrete course with sinusoidal surface: amplitude varies from 1 to 2 inches and wavelength varies from 1 to 5 feet" ;
 	ent:course_material "concrete" ;
@@ -596,6 +679,8 @@
 
 <http://entroplet.com/terms#ATC_MTA_3InchSpacedBump>
    a rdfs:Resource ;
+   ent:locale ent:APG ;
+   ent:feature "fine terrain features" ;
 	ent:course_name "ATC 3-Inch Spaced Bumps" ;
 	ent:course_description "Concrete course with 3-inch bumps (3 feet long and 30 feet apart); orientation of bumps varies" ;
 	ent:course_material "concrete" ;
@@ -608,6 +693,8 @@
 
 <http://entroplet.com/terms#ATC_MTA_6InchWashboard>
    a rdfs:Resource ;
+   ent:locale ent:APG ;
+   ent:feature "fine terrain features" ;
 	ent:course_name "ATC 6-Inch Washboard" ;
 	ent:course_description "Concrete course with 3-inch amplitude sinusoidal surface with wavelength of 6 feet" ;
 	ent:course_material "concrete" ;
@@ -620,6 +707,8 @@
 
 <http://entroplet.com/terms#ATC_MTA30percentConcreteSlope>
    a rdfs:Resource ;
+   ent:locale ent:APG ;
+   ent:feature "fine terrain features" ;
 	ent:course_name "ATC 30percent Gradeability Slope" ;
 	ent:course_description "Concrete slope, constant incline of 30percent" ;
 	ent:course_material "concrete" ;
@@ -631,6 +720,8 @@
 
 <http://entroplet.com/terms#ATC_MTA40percentConcreteSlope>
    a rdfs:Resource ;
+   ent:locale ent:APG ;
+   ent:feature "fine terrain features" ;
 	ent:course_name "ATC 40percent Gradeability Slope" ;
 	ent:course_description "Concrete slope, constant incline of 40percent" ;
 	ent:course_material "concrete" ;
@@ -642,6 +733,8 @@
 
 <http://entroplet.com/terms#ATC_MTA45percentConcreteSlope>
    a rdfs:Resource ;
+   ent:locale ent:APG ;
+   ent:feature "fine terrain features" ;
 	ent:course_name "ATC 45percent Gradeability Slope" ;
 	ent:course_description "Concrete slope, constant incline of 45percent" ;
 	ent:course_material "concrete" ;
@@ -653,6 +746,8 @@
 
 <http://entroplet.com/terms#ATC_MTA50percentConcreteSlope>
    a rdfs:Resource ;
+   ent:locale ent:APG ;
+   ent:feature "fine terrain features" ;
 	ent:course_name "ATC 50percent Gradeability Slope" ;
 	ent:course_description "Concrete slope, constant incline of 50percent" ;
 	ent:course_material "concrete" ;
@@ -664,6 +759,8 @@
 
 <http://entroplet.com/terms#ATC_MTA60percentConcreteSlope>
    a rdfs:Resource ;
+   ent:locale ent:APG ;
+   ent:feature "fine terrain features" ;
 	ent:course_name "ATC 60percent Gradeability Slope" ;
 	ent:course_description "Concrete slope, constant incline of 60percent" ;
 	ent:course_material "concrete" ;
@@ -674,6 +771,8 @@
 	ent:PSD_JSON_file "ATC_MTA60percentConcreteSlope.JSON" .
 
 <http://entroplet.com/terms#ATC+20percent25+Side+Slope>  a rdfs:Resource ;
+   ent:locale ent:APG ;
+   ent:feature "fine terrain features" ;
 	ent:course_name "ATC 20percent Side Slope" ;
 	ent:course_description "Concrete slope, no longitudinal height change, but constant cross-slope of 20percent" ;
 	ent:course_material "concrete" ;
@@ -682,6 +781,8 @@
 	ent:F_dynamic "0.8" .
 
 <http://entroplet.com/terms#ATC+30percent25+Side+Slope>  a rdfs:Resource ;
+   ent:locale ent:APG ;
+   ent:feature "fine terrain features" ;
 	ent:course_name "ATC 30percent Side Slope" ;
 	ent:course_description "Concrete slope, no longitudinal height change, but constant cross-slope of 30percent" ;
 	ent:course_material "concrete" ;
@@ -690,6 +791,8 @@
 	ent:F_dynamic "0.8" .
 
 <http://entroplet.com/terms#ATC+40percent25+Side+Slope>  a rdfs:Resource ;
+   ent:locale ent:APG ;
+   ent:feature "fine terrain features" ;
 	ent:course_name "ATC 40percent Side Slope" ;
 	ent:course_description "Concrete slope, no longitudinal height change, but constant cross-slope of 40percent" ;
 	ent:course_material "concrete" ;
@@ -699,6 +802,8 @@
 
 <http://entroplet.com/terms#ATC_MTA_15DegreeLoadingRamp>
    a rdfs:Resource ;
+   ent:locale ent:APG ;
+   ent:feature "fine terrain features" ;
 	ent:course_name "ATC 15° Simulated Loading Ramp" ;
 	ent:course_description "Concrete slope, constant incline of 15° up to 1.55 m elevation gain" ;
 	ent:course_material "concrete" ;
@@ -710,6 +815,8 @@
 
 <http://entroplet.com/terms#ATC_MTA_20DegreeLoadingRamp>
    a rdfs:Resource ;
+   ent:locale ent:APG ;
+   ent:feature "fine terrain features" ;
 	ent:course_name "ATC 20° Simulated Loading Ramp" ;
 	ent:course_description "Concrete slope, constant incline of 20° up to 4.1 m elevation gain" ;
 	ent:course_material "concrete" ;
@@ -721,6 +828,8 @@
 
 <http://entroplet.com/terms#ATC_MTA_StandardDitch>
    a rdfs:Resource ;
+   ent:locale ent:APG ;
+   ent:feature "fine terrain features" ;
 	ent:course_name "ATC Standard Ditch" ;
 	ent:course_description "Concrete ditch, max depth of 56 in. and length of 25' 8\"" ;
 	ent:course_material "concrete" ;
@@ -731,6 +840,8 @@
 	ent:PSD_JSON_file "ATC_MTA_StandardDitch.JSON" .
 
 <http://entroplet.com/terms#ATC+Turning+Circle>  a rdfs:Resource ;
+   ent:locale ent:APG ;
+   ent:feature "fine terrain features" ;
 	ent:course_name "ATC Turning Circle" ;
 	ent:course_description "Round concrete area, 250 ft. in diameter, for conducting turning tests" ;
 	ent:course_material "concrete" ;
@@ -740,6 +851,8 @@
 
 <http://entroplet.com/terms#ATC_MTA_ProfileIVCourse>
    a rdfs:Resource ;
+   ent:locale ent:APG ;
+   ent:feature "fine terrain features" ;
 	ent:course_name "ATC Profile IV Course" ;
 	ent:course_description "Concrete course with bumps of various size and spacing, 465 ft in length" ;
 	ent:course_material "concrete" ;

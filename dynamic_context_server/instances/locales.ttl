@@ -95,3 +95,13 @@ ent:SanNicolasIslandNorth a rdfs:Resource ;
         ent:title "San Nicolas Island North";
 	ent:lat "32.25"^^xsd:double ;
 	ent:lon "-119.5"^^xsd:double.
+
+ent:YPG a rdfs:Resource ;
+        ent:title "Yuma Proving Ground" ;
+        ent:lat "32.6922"^^xsd:double ;
+        ent:lon "-114.615"^^xsd:double.
+
+ent:APG a rdfs:Resource ;
+        ent:title "Aberdeen Proving Ground" ;
+        ent:lat "39.473333"^^xsd:double ;
+        ent:lon "-76.140833"^^xsd:double.

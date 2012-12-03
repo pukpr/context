@@ -17,6 +17,7 @@
 	ent:name "MercedesBenzBelgianBlock" ;
 	ent:src_file "MercedesBenzBelgianBlock.crg.dat" ;
 	ent:title "Mercedes-Benz track profile" ;
+	ent:feature "fine terrain features" ;
 	ent:type "terrain_profile" ;
 	ent:units_x "meters" ;
 	ent:units_y "meters" .
@@ -36,6 +37,7 @@
 	ent:name "MercedesBenzRoughRoadDetrended" ;
 	ent:src_file "MercedesBenzRoughRoadDetrended.crg.dat" ;
 	ent:title "Mercedes-Benz track profile" ;
+	ent:feature "fine terrain features" ;
 	ent:type "terrain_profile" ;
 	ent:units_x "meters" ;
 	ent:units_y "meters" .
@@ -55,6 +57,7 @@
 	ent:name "SW_Minnesota" ;
 	ent:src_file "SW_Minnesota.dat" ;
 	ent:title "Google profile" ;
+	ent:feature "fine terrain features" ;
 	ent:type "terrain_profile" ;
 	ent:units_x "meters" ;
 	ent:units_y "meters" .
@@ -74,6 +77,7 @@
 	ent:name "ou_synthetic" ;
 	ent:src_file "lacrosse" ;
 	ent:title "synthetic Ornstein-Uhlenbeck profile" ;
+	ent:feature "fine terrain features" ;
 	ent:type "terrain_profile" ;
 	ent:units_x "90 meter spacing" ;
 	ent:units_y "meters" .
@@ -92,6 +96,7 @@
 	ent:name "sm_synthetic" ;
 	ent:src_file "telegraph" ;
 	ent:title "synthetic semi-Markov profile" ;
+	ent:feature "fine terrain features" ;
 	ent:type "terrain_profile" ;
 	ent:units_x "90 meter spacing" ;
 	ent:units_y "meters" .

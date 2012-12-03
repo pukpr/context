@@ -5,22 +5,26 @@
 
 <Baltimore>
         ent:characteristic "temperature" ;
+        ent:feature "thermal features";
+	ent:locale ent:Baltimore ;
+	ent:name "Baltimore" ;
 	ent:a -1.95 ;
 	ent:b 4.44 ;
 	ent:c -2.4 ;
 	ent:dT 0.8 ;
-	ent:name "Baltimore" ;
 	ent:t0 13.0 ;
 	ent:td 6.0 ;
 	ent:ty 12.5 .
 
 <Wilmington>
         ent:characteristic "temperature" ;
+        ent:feature "thermal features";
+	ent:locale ent:Wilmington ;
+	ent:name "Wilmington" ;
 	ent:a -1.85 ;
 	ent:b 4.44 ;
 	ent:c -2.4 ;
 	ent:dT 1.0 ;
-	ent:name "Wilmington" ;
 	ent:t0 16.0 ;
 	ent:td 5.0 ;
 	ent:ty 11.5 .

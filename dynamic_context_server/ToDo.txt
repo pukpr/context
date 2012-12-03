@@ -1,5 +1,8 @@
+http://localhost:3020/context_map/navigate_locale?locale=http%3A%2F%2Fentroplet.com%2Fterms%23Oregon&action=Available
+http://localhost:3020/context_map/navigate_locale?locale=http%3A%2F%2Fentroplet.com%2Fterms%23ohio&action=Available
+
 W	Collect all XLS and PPT files
-	feature img files transition to html page with zoom
+	add rdfs:label
 	std atmo table
 	lightning stroke plot
 	context_solar, planck's law
@@ -11,6 +14,8 @@ W	Collect all XLS and PPT files
 	Semi-Markov sync function to scale
 	convert rdf_ to entailments
 	Different data format generators
+x	need locales or coordinates ent:title, ent:lat ent:lon
+x	feature img files transition to html page with zoom
 x	GPS trout-v ref, and SWS, DARPA solic
 x	Dual model Particle size Monte-Carlo, TOPS has particle size classes
 x	test will indicate whether the triples are loaded

@@ -18,6 +18,7 @@
 	ent:name "Gerotek_Angled_Corrugations_West_to_East_29Aug12" ;
 	ent:src_file "Gerotek_Angled_Corrugations_West_to_East_29Aug12.crg.dat" ;
 	ent:title "CSIR track profile, Angled Corrigated" ;
+	ent:feature "fine terrain features" ;
 	ent:type "terrain_profile" ;
 	ent:units_x "meters" ;
 	ent:units_y "meters" .
@@ -37,6 +38,7 @@
 	ent:name "Gerotek_Belgian_Paving_West_to_East_29Aug12" ;
 	ent:src_file "Gerotek_Belgian_Paving_West_to_East_29Aug12.crg.dat" ;
 	ent:title "CSIR track profile, Belgian Paved" ;
+	ent:feature "fine terrain features" ;
 	ent:type "terrain_profile" ;
 	ent:units_x "meters" ;
 	ent:units_y "meters" .
@@ -56,6 +58,7 @@
 	ent:name "Gerotek_Fatigue_West_to_East_29Aug12" ;
 	ent:src_file "Gerotek_Fatigue_West_to_East_29Aug12.crg.dat" ;
 	ent:title "CSIR track profile, Fatigue Course" ;
+	ent:feature "fine terrain features" ;
 	ent:type "terrain_profile" ;
 	ent:units_x "meters" ;
 	ent:units_y "meters" .
@@ -75,6 +78,7 @@
 	ent:name "Gerotek_Parallel_Corrugations_West_to_East_29Aug12" ;
 	ent:src_file "Gerotek_Parallel_Corrugations_West_to_East_29Aug12.crg.dat" ;
 	ent:title "CSIR track profile, Parallel Corrigated" ;
+	ent:feature "fine terrain features" ;
 	ent:type "terrain_profile" ;
 	ent:units_x "meters" ;
 	ent:units_y "meters" .
@@ -94,6 +98,7 @@
 	ent:name "Gerotek_Pothole.synthetic" ;
 	ent:src_file "Gerotek_Pothole.synthetic.crg.dat" ;
 	ent:title "CSIR track profile, synthetic pothole" ;
+	ent:feature "fine terrain features" ;
 	ent:type "terrain_profile" ;
 	ent:units_x "meters" ;
 	ent:units_y "meters" .
@@ -113,6 +118,7 @@
 	ent:name "Rough_Track_Rock_Bed" ;
 	ent:src_file "Rough_Track_Rock_Bed.mat" ;
 	ent:title "CSIR track profile, Rock Bed" ;
+	ent:feature "fine terrain features" ;
 	ent:type "terrain_profile" ;
 	ent:units_x "meters" ;
 	ent:units_y "meters" .

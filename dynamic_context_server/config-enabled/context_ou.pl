@@ -25,8 +25,8 @@ maxent_ou_variance(D,Theta,X,Y) :-
    H=20,
    % F0 is sqrt((1-exp(-2*40*Theta))/2/Theta),
    % F is FX/F0,
-   Var is F*F-exp(-H/F)*(2*F*F+2*F*H+H*H)/2,
-   Mean is (F-exp(-H/F)*(F+H))/2,
+   Var is (2*F*F-exp(-H/F)*(2*F*F+2*F*H+H*H))/1,
+   Mean is (F-exp(-H/F)*(F+H))/1,
    Y is sqrt((Var-Mean*Mean)).
 
 

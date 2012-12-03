@@ -1,4 +1,5 @@
-:- module(context_map, [get_location/4]).
+:- module(context_map, [get_location/4,
+		        available_location/4]).
 
 /** <module> Context model map display
     * Uses marker to center locale
@@ -63,15 +64,7 @@ navigate_locale(Request) :-
 			    ]),
    Action = 'Map',
    get_location(Locale, Lat, Lon, Title),
-/*
-   rdfR(Locale, ent:lat, Lat),
-   rdfR(Locale, ent:lon, Lon),
-   (
-      rdfS(Locale, ent:title, Title)
-   ;
-      Title = Locale
-   ),
-*/
+   print('user_error', ['=============A ', Locale,Title, '============']),
    % print(user_error, [Lat, Lon, Locale]),
    reply_html_page(
 	    [title('Map Home')],
@@ -86,8 +79,9 @@ navigate_locale(Request) :-
 			     action(Action, [])
 			    ]),
    Action = 'Available',
-   rdfR(Locale, ent:lat, Lat),
-   rdfR(Locale, ent:lon, Lon),
+   get_location(Locale, Lat, Lon, Title),
+   % rdfR(Locale, ent:lat, Lat),
+   % rdfR(Locale, ent:lon, Lon),
    available_location(Locale, Title, _, _),
    findall(li(a([href(Model),
 	      target('_parent')],

@@ -171,15 +171,17 @@ make_name(Name, Ent, E) :-
 
 rdfR(Subj, Pred, Obj) :-
     (
-    rdf(Subj, Pred, literal(type(xsd:decimal, Val)));
-    rdf(Subj, Pred, literal(type(xsd:double, Val)))
-    % float?
+     rdf(Subj, Pred, literal(type(xsd:decimal, Val)))
+    ;
+     rdf(Subj, Pred, literal(type(xsd:double, Val)))
+     % float?
     ),
     atom_number(Val, Obj).
 rdfI(Subj, Pred, Obj) :-
     (
-    rdf(Subj, Pred, literal(type(xsd:integer, Val)));
-    rdf(Subj, Pred, literal(type(xsd:int, Val)))
+     rdf(Subj, Pred, literal(type(xsd:integer, Val)))
+    ;
+     rdf(Subj, Pred, literal(type(xsd:int, Val)))
     ),
     atom_number(Val, Obj).
 rdfL(Subj, Pred, Obj) :-
