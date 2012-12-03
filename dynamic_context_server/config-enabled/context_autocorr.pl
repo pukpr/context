@@ -55,7 +55,8 @@ navigate(Request) :-
                                            %input([type('hidden'), name(render), value(render)]),
                                            input([type('submit'), name(opt), value('MaxEnt')]),
                                            input([type('submit'), name(opt), value('MixEnt')]),
-                                           input([type('submit'), name(opt), value('O-U')])
+                                           input([type('submit'), name(opt), value('O-U')]),
+                                           input([type('submit'), name(opt), value('ME-RMS')])
                                            % input([type('submit'), name(opt), value('Regress')])
                                            % input([type('submit'), name(opt), value('mean')]),
                                           ]),
@@ -192,6 +193,21 @@ find_model(_Model, Name, 1, 0.01, 0.1, N_Max, 0.1) :-
     N_Max is 1201*1201,
     Z > 0.81 * N_Max, !.  % 90 percent is flat in the x direction
 */
+
+find_model(ou_maxent_rms, Name, Quality, Df, Lf, Nf, Ff, Flatness) :-
+    context_ou:optimize(Name, Diffusion, Drag, Err),
+    print(user_error, ['residual error', Err]),
+    Nf is 1201*1201,
+    diffElev(Name, 40, 0,Z),
+    Flatness is Z/Nf,
+    F0 range [0.0,1.0]/0.1,
+    D0 = [Diffusion],
+    L0 = [Drag],
+    findall([Q,L,D,F], model_fit(ou_maxent, Name, Nf,D0,L0,F0,D,L,F,Q), Results),
+    list_min(Results, Min),
+    member([Min,Lf,Df,Ff],Results),
+    Quality is integer(Min),
+    !.
 
 find_model(Model, Name, Quality, Df, Lf, Nf, Ff, Flatness) :-
     Nf is 1201*1201,
@@ -445,6 +461,10 @@ contour_display(Opt, URI, Contour, Lat, Lon, Info) :-
       %  MinVal1=MinVal
       % find_best_model(Model, URI, MinVal1, Df, Lf, N, Fraction)
     ;
+        Opt = 'ME-RMS' ->
+      Model = ou_maxent_rms,
+      find_model(Model, URI, MinVal, Df, Lf, N, Fraction, Flatness)
+    ;
         Opt = 'Regress' ->
       Model = ou_maxent,
       N is 1201*1201,
@@ -555,11 +575,11 @@ contour_display(Opt, URI, Contour, Lat, Lon, Info) :-
 					   ]))
                                             )
                      ),
-                    \(model_options(['MaxEnt', 'MixEnt', 'O-U'],
+                    \(model_options(['MaxEnt', 'MixEnt', 'O-U', 'ME-RMS'],
 				    URI, Opt, Contour)),
 
                     \(con_text:inline_button(
-                                   \(con_text:button_link('RMS',
+                                   \(con_text:button_link('plot RMS error',
 					   'variance',
 					   render,
 					   [[df, Df],

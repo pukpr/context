@@ -169,17 +169,18 @@ find_minimum(List, Min, Param) :-
     find_min(T, H, Min),
     member([Min,Param], List).
 
-optimize(URI, Diffusion, Drag, Errors, Err, P) :-
+optimize(URI, Diffusion, Drag, Err) :-
     rms_data(URI, Y),
     length(Y,L),
     Len is L - 1,
     X range [0,Len]/1,
-    findall([Error, params([diffusion=Diffusion,drag=Drag])],
-            deviation_from_ou(data(X,Y),Diffusion,Drag,Error),
+    findall([Error, params([diffusion=Di,drag=Dr])],
+            deviation_from_ou(data(X,Y),Di,Dr,Error),
             Errors),
     length(Errors, Num),
     print(user_error,['number solutions', Num]),
-    find_minimum(Errors, Err, P), !.
+    find_minimum(Errors, Err, params([diffusion=Diffusion,
+                                      drag=Drag])), !.
 
 
 
