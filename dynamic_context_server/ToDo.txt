@@ -1,4 +1,6 @@
 W	Collect all XLS and PPT files
+	calibrate PDF, such as Canada lakes
+	add rdfs:label
 	add ice particle
 	add search pdfs for whatever in feature page
 	std atmo table

@@ -15,6 +15,7 @@
 :- context:register(context_autocorr:google_profile).
 :- context:register(context_autocorr:data_service).
 :- context:register(context_autocorr:variance).
+:- context:register(context_autocorr:mean).
 
 
 % Marginal Probability Distribution for elevation distances
@@ -56,7 +57,8 @@ navigate(Request) :-
                                            input([type('submit'), name(opt), value('MaxEnt')]),
                                            input([type('submit'), name(opt), value('MixEnt')]),
                                            input([type('submit'), name(opt), value('O-U')]),
-                                           input([type('submit'), name(opt), value('ME-RMS')])
+                                           input([type('submit'), name(opt), value('ME-RMS')]),
+                                           input([type('submit'), name(opt), value('ME-mean')])
                                            % input([type('submit'), name(opt), value('Regress')])
                                            % input([type('submit'), name(opt), value('mean')]),
                                           ]),
@@ -195,7 +197,23 @@ find_model(_Model, Name, 1, 0.01, 0.1, N_Max, 0.1) :-
 */
 
 find_model(ou_maxent_rms, Name, Quality, Df, Lf, Nf, Ff, Flatness) :-
-    context_ou:optimize(Name, Diffusion, Drag, Fl, Err),
+    context_ou:optimize_rms(Name, Diffusion, Drag, Fl, Err),
+    print(user_error, ['residual error', Err]),
+    Nf is 1201*1201,
+    diffElev(Name, 40, 0,Z),
+    Flatness is Z/Nf,
+    % F0 range [0.0,1.0]/0.1,
+    F0 = [Fl],
+    D0 = [Diffusion],
+    L0 = [Drag],
+    findall([Q,L,D,F], model_fit(ou_maxent, Name, Nf,D0,L0,F0,D,L,F,Q), Results),
+    list_min(Results, Min),
+    member([Min,Lf,Df,Ff],Results),
+    Quality is integer(Min),
+    !.
+
+find_model(ou_maxent_mean, Name, Quality, Df, Lf, Nf, Ff, Flatness) :-
+    context_ou:optimize_mean(Name, Diffusion, Drag, Fl, Err),
     print(user_error, ['residual error', Err]),
     Nf is 1201*1201,
     diffElev(Name, 40, 0,Z),
@@ -466,6 +484,10 @@ contour_display(Opt, URI, Contour, Lat, Lon, Info) :-
       Model = ou_maxent_rms,
       find_model(Model, URI, MinVal, Df, Lf, N, Fraction, Flatness)
     ;
+        Opt = 'ME-mean' ->
+      Model = ou_maxent_mean,
+      find_model(Model, URI, MinVal, Df, Lf, N, Fraction, Flatness)
+    ;
         Opt = 'Regress' ->
       Model = ou_maxent,
       N is 1201*1201,
@@ -576,7 +598,7 @@ contour_display(Opt, URI, Contour, Lat, Lon, Info) :-
 					   ]))
                                             )
                      ),
-                    \(model_options(['MaxEnt', 'MixEnt', 'O-U', 'ME-RMS'],
+                    \(model_options(['MaxEnt', 'MixEnt', 'O-U', 'ME-RMS', 'ME-mean'],
 				    URI, Opt, Contour)),
 
                     \(con_text:inline_button(
@@ -590,6 +612,16 @@ contour_display(Opt, URI, Contour, Lat, Lon, Info) :-
                                             )
                      ),
                     \(con_text:inline_button(
+                                   \(con_text:button_link('plot Means',
+					   'mean',
+					   render,
+					   [[df, Df],
+					    [lf, Lf],
+                                            [uri, URI]
+					   ]))
+                                            )
+                     ),
+		     \(con_text:inline_button(
                                    \(con_text:button_link('Sampled Google Profile',
 					   'google_profile',
 					   render,
@@ -626,6 +658,29 @@ variance(Request) :-
 				       Profile)),
 	     br([]),
 	     p('The RMS is truncated to elevation changes < 20 meters, due to limited sampling')
+	    ]
+			   ).
+
+mean(Request) :-
+    http_parameters(Request, [uri(URI, [string]),
+                              df(Df, [float]),
+                              lf(Lf, [float])]),
+    context_ou:mean_data(URI, Means),
+    context_ou:xrange(X0,X1),
+    X range [X0,X1]/1,
+    OU mapdot maxent_ou_mean(Df,Lf,1.0) ~> X,
+    Profile tuple X + Means + OU,
+    reply_html_page(
+	    [title('multi-variance')],
+	    [
+	     \(context_graphing:dygraph_native(
+				       lin,
+				       ['Post', 'Data Mean', 'MaxEnt Mean'],
+				       'x (post number)', 'Mean (m)',
+				       ['sampling mean of ', URI],
+				       Profile)),
+	     br([]),
+	     p('The mean is truncated to elevation changes < 20 meters, due to limited sampling')
 	    ]
 			   ).
 

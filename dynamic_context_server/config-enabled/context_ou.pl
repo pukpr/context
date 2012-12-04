@@ -1,5 +1,6 @@
 :- module(context_ou, [
-		       maxent_ou_variance/5
+		       maxent_ou_variance/5,
+		       maxent_ou_mean/5
 		      ]).
 
 /** <module> Ornstein-Uhlenbeck solution
@@ -32,6 +33,19 @@ maxent_ou_variance(D,Theta,Flatness,X,Y) :-
    Mean is Flatness*(F-exp(-H/F)*(F+H))/1,
    Y is sqrt((Var-Mean*Mean)).
 
+maxent_ou_mean(_D,_Theta,_Flat,0,0).
+maxent_ou_mean(D,Theta,Flatness,X,Y) :-
+   F is sqrt(D*(1-exp(-2*X*Theta))/2/Theta),
+   H=20,
+   Y is Flatness*(F-exp(-H/F)*(F+H)).
+%   Sum is (1-exp(-H/F)),
+%   Y is Mean/Sum.
+
+maxent_ou_sum(_D,_Theta,_Flat,0,0).
+maxent_ou_sum(D,Theta,Flatness,X,Y) :-
+   F is sqrt(D*(1-exp(-2*X*Theta))/2/Theta),
+   H=20,
+   Y is Flatness*(1-exp(-H/F)).
 
 ou_model(_D,_Theta,0,0) :-
    assert(diffElev(zzz, 0, 0, 1)), !.
@@ -139,6 +153,25 @@ rms_data(URI, Vars) :-
    context_autocorr:load_dem(URI),
    multivar(URI, Vars).
 
+mean(URI, X, Mean) :-
+   yrange(Y0, Y1),
+   Elev range [Y0,Y1]/1,
+   y(URI, X, YElev),
+   Mean dot YElev * Elev.
+
+%   sumlist(YElev, Sum), % scaling
+%   Mean is M/Sum.
+
+multimean(URI, Means) :-
+   xrange(X0, X1),
+   findall(Var, ( between(X0, X1, X),
+		  mean(URI,X,Var)
+	      ), Means).
+
+mean_data(URI, Means) :-
+   context_autocorr:load_dem(URI),
+   multimean(URI, Means).
+
 
 setup_parameters :-
     Scale is sqrt(2),
@@ -154,6 +187,18 @@ setup_parameters :-
 
 
 :- setup_parameters.
+
+
+mean_from_ou(data(X,Y),Diffusion,Drag,Flatness,Error) :-
+    diffusion(Diffusion_Parameters),
+    member(Diffusion, Diffusion_Parameters),
+    drag(Drag_Parameters),
+    member(Drag, Drag_Parameters),
+    flatness(Flat_Parameters),
+    member(Flatness, Flat_Parameters),
+    Model mapdot maxent_ou_mean(Diffusion,Drag,Flatness) ~> X,
+    Delta mapdot Model - Y,
+    Error dot Delta*Delta.
 
 deviation_from_ou(data(X,Y),Diffusion,Drag,Flatness,Error) :-
     diffusion(Diffusion_Parameters),
@@ -175,13 +220,26 @@ find_minimum(List, Min, Param) :-
     find_min(T, H, Min),
     member([Min,Param], List).
 
-optimize(URI, Diffusion, Drag, Flat, Err) :-
+optimize_rms(URI, Diffusion, Drag, Flat, Err) :-
     rms_data(URI, Y),
     length(Y,L),
     Len is L - 1,
     X range [0,Len]/1,
     findall([Error, params([diffusion=Di,drag=Dr,flatness=Fl])],
             deviation_from_ou(data(X,Y),Di,Dr,Fl,Error),
+            Errors),
+    length(Errors, Num),
+    print(user_error,['number solutions', Num]),
+    find_minimum(Errors, Err, params([diffusion=Diffusion,
+                                      drag=Drag,
+                                      flatness=Flat])), !.
+optimize_mean(URI, Diffusion, Drag, Flat, Err) :-
+    mean_data(URI, Y),
+    length(Y,L),
+    Len is L - 1,
+    X range [0,Len]/1,
+    findall([Error, params([diffusion=Di,drag=Dr,flatness=Fl])],
+            mean_from_ou(data(X,Y),Di,Dr,Fl,Error),
             Errors),
     length(Errors, Num),
     print(user_error,['number solutions', Num]),
