@@ -1,5 +1,6 @@
 :- module(context_thermal, [
-			      thermalModel/5
+			      thermalModelHeat/5,
+			      thermalModelCool/5
 			     ]).
 
 :- use_module(context_math).
@@ -25,7 +26,7 @@ navigate(Request) :-
 			  select([name('h_units')], Hunits),
 			  input([type('text'),
 				 name('limit'),
-				 value('40')]), i(' <= margin'),
+				 value('0.5')]), i(' <= margin'),
 			  br([]),
 			  \(con_text:radio_toggles(
 					 'evaluate',
@@ -45,6 +46,30 @@ navigate(Request) :-
      ]
 		  ).
 
+thermalModelHeat(Diff, X0, T*Time, Z*Temperature) :-
+   context_units:convert(T*Time, T1*day, T1),
+   thermal_dispersion(Diff, X0, T1, Z1),
+   context_units:convert(Z1*c, Z*Temperature, Z), !.
+thermalModelHeat(Diff, X0, Temperature, T*Time, Z) :-
+   thermalModelHeat(Diff, X0, T*Time, Z*Temperature).
+
+
+thermalModelCool(Diff, X0, T*Time, Z*Temperature) :-
+   context_units:convert(T*Time, T1*day, T1),
+   thermal_dispersion(Diff, X0, T1, Z1),
+   Z2 is X0-Z1,
+   context_units:convert(Z2*c, Z*Temperature, Z), !.
+thermalModelCool(Diff, X0, Temperature, T*Time, Z) :-
+   thermalModelCool(Diff, X0, T*Time, Z*Temperature).
+
+/*
+thermalModelCool(Diff, X0, T*Time, Z*Thickness) :-
+   context_units:convert(T*Time, T1*day, T1),
+   Z1 is Diff * T/(X0+sqrt(Diff*T)),
+   context_units:convert(Z1*c, Z*Thickness, Z), !.
+thermalModelCool(Diff, X0, Thickness, T*Time, Z) :-
+   thermalModelCool(Diff, X0, T*Time, Z*Thickness).
+*/
 
 plot(Request) :-
     http_parameters(Request, [kind(Kind, []),
@@ -53,16 +78,16 @@ plot(Request) :-
                               h_units(HUnits, []),
                               evaluate(Characteristic, [default(heat)])]),
 
-    context_units:convert(0.01*day, T1*TUnits, T1),
-    context_units:convert(100.0*day, T2*TUnits, T2),
+    context_units:convert(0.0000001*day, T1*TUnits, T1),
+    context_units:convert(5.0*day, T2*TUnits, T2),
 
-    T range [T1, T2]^0.8*TUnits,
+    T range [T1, T2]^0.9*TUnits,
     (
        Characteristic = heat ->
-	 Z mapdot thermalModel(10, 1.0, HUnits) ~> T
+	 Z mapdot thermalModelHeat(1.0, 1.0, HUnits) ~> T
      ;
        Characteristic = cool ->
-	 Z mapdot thermalModel(100, 1.0, HUnits) ~> T
+	 Z mapdot thermalModelCool(1.0, 1.0, HUnits) ~> T
     ),
     Top mapdot Limit ~> T,
     Data tuple T + Z + Top,
@@ -89,9 +114,3 @@ plot(Request) :-
                     ]
 		  ).
 
-thermalModel(Diff, X0, T*Time, Z*Thickness) :-
-   context_units:convert(T*Time, T1*yr, T1),
-   Z1 is Diff * T/(X0+sqrt(Diff*T)),
-   context_units:convert(Z1*c, Z*Thickness, Z), !.
-thermalModel(Diff, X0, Thickness, T*Time, Z) :-
-   thermalModel(Diff, X0, T*Time, Z*Thickness).

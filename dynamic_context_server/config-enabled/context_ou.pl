@@ -1,5 +1,5 @@
 :- module(context_ou, [
-		       maxent_ou_variance/4
+		       maxent_ou_variance/5
 		      ]).
 
 /** <module> Ornstein-Uhlenbeck solution
@@ -14,21 +14,22 @@
 :- dynamic
    diffElev/4,
    diffusion/1,
-   drag/1.
+   drag/1,
+   flatness/1.
 
 /*
 ou_variance(D,Theta,X,Y) :-
    F is (1-exp(-2*X*Theta))/2/Theta,
    Y is sqrt(D*F).
 */
-maxent_ou_variance(_D,_Theta,0,0).
-maxent_ou_variance(D,Theta,X,Y) :-
+maxent_ou_variance(_D,_Theta,_Flat,0,0).
+maxent_ou_variance(D,Theta,Flatness,X,Y) :-
    F is sqrt(D*(1-exp(-2*X*Theta))/2/Theta),
    H=20,
    % F0 is sqrt((1-exp(-2*40*Theta))/2/Theta),
    % F is FX/F0,
-   Var is (2*F*F-exp(-H/F)*(2*F*F+2*F*H+H*H))/1,
-   Mean is (F-exp(-H/F)*(F+H))/1,
+   Var is Flatness*(2*F*F-exp(-H/F)*(2*F*F+2*F*H+H*H))/1,
+   Mean is Flatness*(F-exp(-H/F)*(F+H))/1,
    Y is sqrt((Var-Mean*Mean)).
 
 
@@ -143,20 +144,25 @@ setup_parameters :-
     Scale is sqrt(2),
     D range [0.1,4096]^Scale,
     L range [0.00001,1.0]^Scale,
+    F range [0.1,1.0]/0.1,
     retractall(diffusion(_)),
     retractall(drag(_)),
+    retractall(flatness(_)),
     assert(diffusion(D)),
-    assert(drag(L)).
+    assert(drag(L)),
+    assert(flatness(F)).
 
 
 :- setup_parameters.
 
-deviation_from_ou(data(X,Y),Diffusion,Drag,Error) :-
+deviation_from_ou(data(X,Y),Diffusion,Drag,Flatness,Error) :-
     diffusion(Diffusion_Parameters),
     member(Diffusion, Diffusion_Parameters),
     drag(Drag_Parameters),
     member(Drag, Drag_Parameters),
-    Model mapdot maxent_ou_variance(Diffusion,Drag) ~> X,
+    flatness(Flat_Parameters),
+    member(Flatness, Flat_Parameters),
+    Model mapdot maxent_ou_variance(Diffusion,Drag,Flatness) ~> X,
     Delta mapdot Model - Y,
     Error dot Delta*Delta.
 
@@ -169,18 +175,19 @@ find_minimum(List, Min, Param) :-
     find_min(T, H, Min),
     member([Min,Param], List).
 
-optimize(URI, Diffusion, Drag, Err) :-
+optimize(URI, Diffusion, Drag, Flat, Err) :-
     rms_data(URI, Y),
     length(Y,L),
     Len is L - 1,
     X range [0,Len]/1,
-    findall([Error, params([diffusion=Di,drag=Dr])],
-            deviation_from_ou(data(X,Y),Di,Dr,Error),
+    findall([Error, params([diffusion=Di,drag=Dr,flatness=Fl])],
+            deviation_from_ou(data(X,Y),Di,Dr,Fl,Error),
             Errors),
     length(Errors, Num),
     print(user_error,['number solutions', Num]),
     find_minimum(Errors, Err, params([diffusion=Diffusion,
-                                      drag=Drag])), !.
+                                      drag=Drag,
+                                      flatness=Flat])), !.
 
 
 

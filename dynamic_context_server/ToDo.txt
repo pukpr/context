@@ -1,8 +1,6 @@
-http://localhost:3020/context_map/navigate_locale?locale=http%3A%2F%2Fentroplet.com%2Fterms%23Oregon&action=Available
-http://localhost:3020/context_map/navigate_locale?locale=http%3A%2F%2Fentroplet.com%2Fterms%23ohio&action=Available
-
 W	Collect all XLS and PPT files
-	add rdfs:label
+	add ice particle
+	add search pdfs for whatever in feature page
 	std atmo table
 	lightning stroke plot
 	context_solar, planck's law
@@ -14,8 +12,9 @@ W	Collect all XLS and PPT files
 	Semi-Markov sync function to scale
 	convert rdf_ to entailments
 	Different data format generators
-x	need locales or coordinates ent:title, ent:lat ent:lon
-x	feature img files transition to html page with zoom
+	Sometimes graph needs more sig figs
+x	add emi refs
+x	feature img files transition to html page with zoom in new window
 x	GPS trout-v ref, and SWS, DARPA solic
 x	Dual model Particle size Monte-Carlo, TOPS has particle size classes
 x	test will indicate whether the triples are loaded
@@ -70,7 +69,6 @@ if time available
 	Put CSIR data as an extra tuple
 	Simulated data for DEM application
 	Name for temporary R files
-	Sometimes graph needs more sig figs
 	DEM meta data
 	Land,Terrain,Aquatic terms
 	Particulate model in salt/fresh water

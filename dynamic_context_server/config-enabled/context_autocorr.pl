@@ -195,12 +195,13 @@ find_model(_Model, Name, 1, 0.01, 0.1, N_Max, 0.1) :-
 */
 
 find_model(ou_maxent_rms, Name, Quality, Df, Lf, Nf, Ff, Flatness) :-
-    context_ou:optimize(Name, Diffusion, Drag, Err),
+    context_ou:optimize(Name, Diffusion, Drag, Fl, Err),
     print(user_error, ['residual error', Err]),
     Nf is 1201*1201,
     diffElev(Name, 40, 0,Z),
     Flatness is Z/Nf,
-    F0 range [0.0,1.0]/0.1,
+    % F0 range [0.0,1.0]/0.1,
+    F0 = [Fl],
     D0 = [Diffusion],
     L0 = [Drag],
     findall([Q,L,D,F], model_fit(ou_maxent, Name, Nf,D0,L0,F0,D,L,F,Q), Results),
@@ -215,7 +216,7 @@ find_model(Model, Name, Quality, Df, Lf, Nf, Ff, Flatness) :-
     Flatness is Z/Nf,
     F0 range [0.0,1.0]/0.1,
     % N_Min = N_Max,
-    Scale is sqrt(16), %16
+    Scale is sqrt(4), %16
     % D0 range [0.1,8192]^Scale,
     D0 range [0.1,4096]^Scale,
     % L0 = [0.0000001],
@@ -612,7 +613,7 @@ variance(Request) :-
     context_ou:xrange(X0,X1),
     % X1_scale is X1*100,
     X range [X0,X1]/1,
-    OU mapdot maxent_ou_variance(Df,Lf) ~> X,
+    OU mapdot maxent_ou_variance(Df,Lf,1.0) ~> X,
     Profile tuple X + Vars + OU,
     reply_html_page(
 	    [title('multi-variance')],

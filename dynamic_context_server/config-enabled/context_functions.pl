@@ -15,7 +15,9 @@
                               corrected_bessel/4,
 			      pierson_moskowitz/4,
 			      % utility
-                              exp/3
+                              exp/3,
+                              % growth
+                              thermal_dispersion/4
                               ]).
 
 /** <module> Function callbacks for modeling
@@ -219,6 +221,27 @@ pierson_moskowitz(Mean, sample, X, Sample) :-
     var(X),
     random(R),
     Sample is (-Mean/log(R))^0.25.
+
+
+% unit step, thermal growth
+
+thermal_dispersion(Mean, Mag, X, Result) :-
+    X1 is X/Mean,
+    X1 > 0.99999,
+    X1 < 1.00001,
+    Result is Mag*(1.0 - 2/pi), !.
+thermal_dispersion(Mean, Mag, X, Y) :-
+    X1 is X/Mean,
+    X1 > 1,
+    Y is Mag*(1.0 - 2*log(sqrt(X1)+sqrt(X1-1))/sqrt(X1-1)/pi), !.
+thermal_dispersion(Mean, Mag, X, Y) :-
+    X1 is X/Mean,
+    X1 < 1,
+    Y is Mag*(1.0 - 2*acos(sqrt(X1))/sqrt(1-X1)/pi), !.
+
+
+% Fickian dispersive growth
+
 
 
 

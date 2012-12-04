@@ -114,9 +114,9 @@ navigate -->
 	     br([]),
 	     \(con_text:radio_toggles(
 			    'measure',
-			    [['Monthly Snow amount (in)', 'SnowInch'],
-			     ['Monthly Rain days', 'RainDays'],
-			     ['Monthly Rain Precip (in)', 'PrecipitationInch'],
+			    [['Monthly Rain Precip (in)', 'PrecipitationInch'],
+                             ['Monthly Snow Amount (in)', 'SnowInch'],
+			     ['Monthly Rain Days', 'RainDays'],
 			     ['Monthly average Solar (W/m^2)', 'Sun']
 			    ])),
              input([type('submit'), value('Select Data Set')])

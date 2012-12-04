@@ -177,6 +177,19 @@ ent:rain_drops a rdfs:Resource ;
 	ent:min_extent "0.0010"^^xsd:double ;
 	ent:max_extent "10.0"^^xsd:double .
 
+ent:ice_particles a rdfs:Resource ;
+	ent:model "ice_particles" ;
+	ent:locale ent:CONUS ;
+	ent:feature "particle features" ;
+	ent:characteristic "particleSizes" ;
+	ent:title "ice particle size distribution" ;
+	ent:x_axis "mm" ;
+	ent:pdf "[0.9*power_law_2(0.1,Dist), 0.1*exp(2.0,Dist)]" ;
+	ent:moments "[[median], [mean]]" ;
+	ent:interval "1.1"^^xsd:double ;
+	ent:min_extent "0.0010"^^xsd:double ;
+	ent:max_extent "10.0"^^xsd:double .
+
 ent:lightning_rate a rdfs:Resource ;
 	ent:model "lightning_rate" ;
 	ent:locale ent:CONUS ;

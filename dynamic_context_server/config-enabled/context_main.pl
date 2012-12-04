@@ -51,7 +51,7 @@ cliopatria:menu_item(repository/'/context_sweet_utils/import_sweet?all=true',
                      'Load All Ontology').
 cliopatria:menu_item(repository/'https://www.zotero.org/user/login/',
                      'Zotero Ref Library').
-cliopatria:menu_item(help/'/html/static_pages/gems/', 'Intro Slides').
+% cliopatria:menu_item(help/'/html/static_pages/gems/', 'Intro Slides').
 cliopatria:menu_item(help/'/html/basic_terms.html', 'Vocabularies').
 cliopatria:menu_item(help/'http://sweet.jpl.nasa.gov/', 'SWEET').
 cliopatria:menu_item(help/'/context_demos/navigate', 'Eval Demos').

@@ -278,10 +278,11 @@ table_with_iframe_target(Request, Left_Content) -->
         rdf_(Feature, ent:image, Img)
       ->
         atomic_concat('/html/static_pages/gems/',Img, I),
-        Image = img([src(I),
+        Image = a([href('javascript:location.reload(true);')],
+                   img([src(I),
 		     height(32),
 		     title(Feature)]
-		      )
+		      ))
       ;
         Image = ''
       )
