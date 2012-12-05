@@ -65,7 +65,7 @@ random_walker([_|Rest], Value, In, Out) :-
 
 % Ornstein-Uhlenbeck model
 %
-ou_random_walker(_X1, _X2, _Drag, [], _, Out, Out).
+ou_random_walker(_X1, _X2, _Drag, [], _, O, Out) :- reverse(O, Out).
 ou_random_walker(X1, X2, Drag, [_|Rest], Value, In, Out) :-
     random(R),
     (R < 0.5 ->

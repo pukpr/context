@@ -172,7 +172,7 @@ replace_word(Old, New, Orig, Replaced) :-
     atomic_list_concat(Split, New, Replaced), !.
 
 ac_result([Obj,Type], json([ label=Type,
-                              type=Obj,
+                              type=U,
                               % href=HREF
                               % href='javascript:location.reload(false);  'this.form
                               href=HREF
@@ -182,11 +182,11 @@ ac_result([Obj,Type], json([ label=Type,
     % uri_normalized(Obj, URI),
     %context:replace_chars('#', '%23', Obj, URI),
     % context:create_global_term(Obj, _URI),
-    atomic_list_concat(['"/context_map/navigate_locale?locale=',Obj,'&action=Available"'],URL),
-    print(user_error, ['URL', URL]),
-    replace_word('#', '%23', URL, U),
-    print(user_error, ['URL', U]), !,
-    atomic_list_concat(['javascript:retarget_frame(this,', U, ', "render");'], HREF).
+    replace_word('#', '%23', Obj, U),
+    atomic_list_concat(['"/context_map/navigate_locale?action=Available&locale=',U,'"'],URL),
+    % print(user_error, ['URL', URL]),
+    % print(user_error, ['URL', U]), !,
+    atomic_list_concat(['javascript:retarget_frame(this,', URL, ', "render");'], HREF).
     % subm(this,"render");
     %    con_text:info(Type, HREF).
 
