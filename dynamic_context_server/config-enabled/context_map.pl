@@ -11,7 +11,7 @@
 :- context:register(context_map:navigate).
 :- context:register(context_map:view).
 :- context:register(context_map:navigate_locale).
-:- http_handler('/context_map/locale', locale, []).
+:- http_handler('/context_map/locale', find_locale, []).
 
 % :- context:ac_hook(context_map:locale).
 
@@ -23,15 +23,25 @@ minutes_to_degrees((Deg,Min,Sec), Degrees) :-
      ).
 
 get_location(URI, Lat, Lon, Title) :-
+    rdfS(URI, ent:title, Title),
+    rdfR(URI, ent:lat, Lat),
+    rdfR(URI, ent:lon, Lon),
+    !.
+get_location(URI, Lat, Lon, Title) :-
+    rdfS(URI, ent:title, Title),
+    rdfL(URI, ent:lat, Lat0), minutes_to_degrees(Lat0, Lat),
+    rdfL(URI, ent:lon, Lon0), minutes_to_degrees(Lon0, Lon),
+    !.
+/*
+get_location(Title, Lat, Lon, URI) :-
     rdfR(URI, ent:lat, Lat),
     rdfR(URI, ent:lon, Lon),
     rdfS(URI, ent:title, Title), !.
-get_location(URI, Lat, Lon, Title) :-
-    rdfL(URI, ent:lat, Lat0), minutes_to_degrees(Lat0, Lat),
-    rdfL(URI, ent:lon, Lon0), minutes_to_degrees(Lon0, Lon),
-    rdfS(URI, ent:title, Title), !.
+
 get_location(URI, 0.0, 0.0, Title) :-
     rdfS(URI, ent:title, Title).
+*/
+
 
 
 view(Request) :-
@@ -58,16 +68,24 @@ available_location(Locale, Title, Model, Feature) :-
      % rdf(Locale, ent:locale, Locale),
      rdfS(Locale, ent:feature, Feature),
      ref_m(Feature, model, Model).
-available_location(Locale, Locale, '#', Locale).
+% available_location(Locale, Locale, '#', Locale).
 
 
 navigate_locale(Request) :-
-   http_parameters(Request, [locale(Locale, [string]),
+   http_parameters(Request, [locale(Locale_or_Title, [string]),
 			     action(Action, [])
 			    ]),
    Action = 'Map',
-   get_location(Locale, Lat, Lon, Title),
-   print('user_error', ['=============A ', Locale,Title, '============']),
+   (
+    available_location(Locale_or_Title, _Title, _Model, _Feature) ->
+    Locale = Locale_or_Title,
+    get_location(Locale, Lat, Lon, Title)
+   ;
+    Title = Locale_or_Title,
+    get_location(Locale, Lat, Lon, Title)
+   ),
+   % get_location(Locale, Lat, Lon, Title),
+   % print('user_error', ['=============A ', Locale,Title, '============']),
    % print(user_error, [Lat, Lon, Locale]),
    reply_html_page(
 	    [title('Map Home')],
@@ -78,14 +96,23 @@ navigate_locale(Request) :-
 
 
 navigate_locale(Request) :-
-   http_parameters(Request, [locale(Locale, [string]),
+   http_parameters(Request, [locale(Locale_or_Title, [string]),
 			     action(Action, [])
 			    ]),
    Action = 'Available',
-   get_location(Locale, Lat, Lon, Title),
-   % rdfR(Locale, ent:lat, Lat),
+   (
+    available_location(Locale_or_Title, Title, _, _) ->
+    Locale = Locale_or_Title
+    % get_location(Locale, Lat, Lon, Title)
+   ;
+    available_location(Locale, Locale_or_Title, _, _) ->
+    Title = Locale_or_Title
+    % get_location(Locale, Lat, Lon, Title)
+   ),
+   % get_location(Title, Lat, Lon, Locale)
+   % rdfR(Locale, ent:lat, Lat)
    % rdfR(Locale, ent:lon, Lon),
-   available_location(Locale, Title, _, _),
+   % available_location(Locale, Title, _, _),
    findall(li(a([href(Model),
 	      target('_parent')],
 	     Feature)),
@@ -109,7 +136,7 @@ navigate_locale(Request) :-
    */
    % ref_m(UID, target_iframe, Path),
 
-   print(user_error, [Lat, Lon, Locale]),
+   % print(user_error, [Lat, Lon, Locale]),
    reply_html_page(
 	    [title('Map Home')],
 	    [
@@ -138,19 +165,32 @@ autocompletions(Query, Max, Count, Completions) :-
     sort(Completions0, Completions1),
     length(Completions1, Count),
     con_text:first_n(Max, Completions1, Completions2),
-    maplist(obj_result, Completions2, Completions).
+    maplist(ac_result, Completions2, Completions).
 
-obj_result([Obj,Type], json([ label=Obj,
-                              type=Type,
-                              href=HREF
+replace_word(Old, New, Orig, Replaced) :-
+    atomic_list_concat(Split, Old, Orig),
+    atomic_list_concat(Split, New, Replaced), !.
+
+ac_result([Obj,Type], json([ label=Type,
+                              type=Obj,
+                              % href=HREF
                               % href='javascript:location.reload(false);  'this.form
+                              href=HREF
                               % f.target = newtarget ;
                               % f.submit();
                             ])) :-
-    atomic_list_concat(['/context_map/navigate_locale?locale=',Obj,'&action=Available'],HREF).
+    % uri_normalized(Obj, URI),
+    %context:replace_chars('#', '%23', Obj, URI),
+    % context:create_global_term(Obj, _URI),
+    atomic_list_concat(['"/context_map/navigate_locale?locale=',Obj,'&action=Available"'],URL),
+    print(user_error, ['URL', URL]),
+    replace_word('#', '%23', URL, U),
+    print(user_error, ['URL', U]), !,
+    atomic_list_concat(['javascript:retarget_frame(this,', U, ', "render");'], HREF).
+    % subm(this,"render");
     %    con_text:info(Type, HREF).
 
-locale(Request) :-
+find_locale(Request) :-
     http_parameters(Request,
                     [ query(Query, [description('Typed string')]),
                       maxResultsDisplayed(Max, [integer, default(100), description('Max number of results to show') ])
@@ -188,7 +228,7 @@ navigate(Request) :-
                           form([action('navigate_locale'), target(target_iframe)],
 			       [
 				% select([name('locale')], List),
-                                \(con_text:ac(locale, locale)),
+                                \(con_text:ac(find_locale, locale)),
                                 br([]),
 				input([type('submit'), name('action'), value('Map'),
 				       onclick('subm(this.form,"target_iframe");')]),
