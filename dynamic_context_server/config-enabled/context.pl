@@ -114,6 +114,11 @@ register(ModuleHandler) :-
    replace_chars(':', '/', ModuleHandler, RestCB),
    http_handler(root(RestCB), ModuleHandler, []).
 
+ac_hook(ModuleHandler) :-
+   % replace module delimiter : with REST slash /
+   replace_chars(':', '/', ModuleHandler, RestCB),
+   http_handler(RestCB, ModuleHandler, []).
+
 create_global_term(Literal, Term) :-
    atom(Literal),
    rdf_litindex:rdf_tokenize_literal(Literal,[W1,W2]),

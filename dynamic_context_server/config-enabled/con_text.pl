@@ -1,4 +1,4 @@
-:- module(con_text, []).
+:- module(con_text, [obj_result/2]).
 
 /** <module> HTML utilities
     * Form generation
@@ -6,6 +6,7 @@
 */
 
 :- context:register(con_text:info).
+:- context:register(con_text:resources).
 
 
 % Similar to reply HTML page, but for frames
@@ -70,7 +71,10 @@ alert(Link_Text, Alert, Text) :-
     atomic_list_concat(['alert("', Info, '");'], Click),
     Text = a([href='#', onclick=Click],
               Alert).
-%    with_output_to(atom(Output), write(Text)).
+
+info(Link_Text, Output) :-
+    with_output_to(atom(Info), print(Link_Text)),
+    atomic_list_concat(['javascript:alert("', Info, '");'], Output).
 
 
 
@@ -102,21 +106,85 @@ form(Action, Target, List) -->
               [ \input(List),
                input([type('submit')])])).
 
+
+ac(Resource, ID) -->
+    html( div(\(autocomplete_predicates:autocomplete(Resource, [   query_delay(0.3),
+                                                                   auto_highlight(false),
+                                                                   max_results_displayed(10),
+                                                                   width('30em'),
+                                                                   name(ID),
+                                                                   value('')
+                                                                 ])))).
+
+first_n(0, _, []) :- !.
+first_n(_, [], []) :- !.
+first_n(N, [H|T0], [H|T]) :-
+	N2 is N - 1,
+	first_n(N2, T0, T).
+
+area(_Str, 'Baltimore', 'temperature record').
+area(_Str, 'Wilmington', 'temperature record').
+area(_Str, 'conus', 'slope record').
+
+autocompletions(Query, Max, Count, Completions) :-
+    print(user_error,['Q', Query]),
+    findall([Obj,Type], area(Query, Obj, Type), Completions0),
+    sort(Completions0, Completions1),
+    length(Completions1, Count),
+    first_n(Max, Completions1, Completions2),
+    maplist(obj_result, Completions2, Completions).
+
+obj_result([Obj,Type], json([ label=Obj,
+                              type=Type,
+                              href='javascript:location.reload(false);'
+                            ])).
+
+resources(Request) :-
+	http_parameters(Request,
+			[ query(Query, [description('Typed string')]),
+			  maxResultsDisplayed(Max, [integer, default(100), description('Max number of results to show') ])
+			]),
+	autocompletions(Query, Max, Count, Completions),
+	reply_json(json([ query = json([ count=Count ]),
+			  results = Completions
+			])).
+
+:- http_handler('/con_text/resources', resources, []).
+
 % Table-wrapped Form
 table_header([]) --> !.
 table_header([[Name,_]|Rest]) -->
-    html(th([
+    html(th([width('100%')],
+            [
              b(Name)
             ])),
     table_header(Rest).
 
+
 table_input([]) --> !.
 table_input([[Name,Default]|Rest]) -->
-    html(td([
+    html(td([valign=top],
+            [
+            div(\(autocomplete_predicates:autocomplete(resources, [
+                                                                   query_delay(0.3),
+                                                                   auto_highlight(false),
+                                                                   max_results_displayed(10),
+                                                                   width('100%'),
+                                                                   name(Name),
+                                                                   value(Default)
+                                                                 ]))),
+             br([])
+
+             % ,img(src('/html/images/darrow.png'))
+             /*
              input([type('text'),
-                    name(Name),
-                    value(Default)])
-            ])),
+                    size(2),
+                    name(xx),
+                    value('')])
+             */
+             ]
+
+            )),
     table_input(Rest).
 
 
@@ -127,7 +195,7 @@ table_form(Title, Action, List) -->
                       [
                     tr([\table_header(List)]),
                     tr([\table_input(List)]),
-                    tr([td([colspan(L), align(center), bgcolor('palegreen')],
+                    tr([td([colspan(L), align(right), bgcolor('palegreen')],
                            [b(Title),
                             input([type('submit')])
                            ]
@@ -140,7 +208,7 @@ table_form(Title, Action, List) -->
 table_form_target(Title, Action, Target, List) -->
     {length(List, L)},
     html(form([action(Action), target(Target)],
-              [ table([class('block'),border(1)],
+              [ table([class('block'),border(1),width('80%')],
                       [
                     tr([\table_header(List)]),
                     tr([\table_input(List)]),

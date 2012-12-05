@@ -11,7 +11,9 @@
 :- context:register(context_temperature:temperature).
 :- context:register(context_temperature:navigate).
 :- use_module(context_math).
+
 :- use_module(library(semweb/sparql_client)).
+
 
 % T(t) = T0+Ty*sin(2*pi/365*t+a)+(dT*sin(2*pi/365*t+b)+(Td-dT))*sin(2*pi*t+c)
 
@@ -133,13 +135,37 @@ temperature(Request) :-
 
 example -->
    html(
+
        \(con_text:table_form_target('Temperature profile >> ',
 				    '/context_temperature/temperature',
 				    target_iframe,
 				    [['site', 'Wilmington']]
 				   )
 		     )
-		   ).
+
+       ).
+
+
+/*
+:- http_handler(root(autocomplete/ac_predicate), ac_predicate, []).
+
+max_results_displayed(100).
+
+%       prolog:doc_search_field(+Options) is det.
+
+prolog:doc_search_field(Options) -->
+        { select_option(size(W), Options, Options1),
+          atomic_concat(W, ex, Wem),
+          max_results_displayed(Max)
+        },
+        autocomplete(ac_predicate,
+                     [ query_delay(0.3),
+                       auto_highlight(false),
+                       max_results_displayed(Max),
+                       width(Wem)
+                     | Options1
+                     ]).
+*/
 
 % -----
 

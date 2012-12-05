@@ -606,6 +606,7 @@ contour_display(Opt, URI, Contour, Lat, Lon, Info) :-
 					   'variance',
 					   render,
 					   [[df, Df],
+                                            [flat, Fraction],
 					    [lf, Lf],
                                             [uri, URI]
 					   ]))
@@ -616,6 +617,7 @@ contour_display(Opt, URI, Contour, Lat, Lon, Info) :-
 					   'mean',
 					   render,
 					   [[df, Df],
+                                            [flat, Fraction],
 					    [lf, Lf],
                                             [uri, URI]
 					   ]))
@@ -640,12 +642,13 @@ contour_display(Opt, URI, Contour, Lat, Lon, Info) :-
 variance(Request) :-
     http_parameters(Request, [uri(URI, [string]),
                               df(Df, [float]),
+                              flat(Flat, [float]),
                               lf(Lf, [float])]),
     context_ou:rms_data(URI, Vars),
     context_ou:xrange(X0,X1),
     % X1_scale is X1*100,
     X range [X0,X1]/1,
-    OU mapdot maxent_ou_variance(Df,Lf,1.0) ~> X,
+    OU mapdot maxent_ou_variance(Df,Lf,Flat) ~> X,
     Profile tuple X + Vars + OU,
     reply_html_page(
 	    [title('multi-variance')],
@@ -664,11 +667,12 @@ variance(Request) :-
 mean(Request) :-
     http_parameters(Request, [uri(URI, [string]),
                               df(Df, [float]),
+                              flat(Flat, [float]),
                               lf(Lf, [float])]),
     context_ou:mean_data(URI, Means),
     context_ou:xrange(X0,X1),
     X range [X0,X1]/1,
-    OU mapdot maxent_ou_mean(Df,Lf,1.0) ~> X,
+    OU mapdot maxent_ou_mean(Df,Lf,Flat) ~> X,
     Profile tuple X + Means + OU,
     reply_html_page(
 	    [title('multi-variance')],

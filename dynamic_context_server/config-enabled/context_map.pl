@@ -11,6 +11,9 @@
 :- context:register(context_map:navigate).
 :- context:register(context_map:view).
 :- context:register(context_map:navigate_locale).
+:- http_handler('/context_map/locale', locale, []).
+
+% :- context:ac_hook(context_map:locale).
 
 minutes_to_degrees((Deg,Min,Sec), Degrees) :-
      (	 Deg < 0.0 ->
@@ -123,6 +126,41 @@ find_locs(option([value(Out)],[Name])) :-
    rdf(Out, ent:lon, _),
    rdf(Out, ent:title, Name).
 
+find_loc(Query, URI, Title) :-
+   rdf(URI, ent:lat, _),
+   rdf(URI, ent:lon, _),
+   rdf(URI, ent:title, literal(substring(Query),Title)).
+
+
+autocompletions(Query, Max, Count, Completions) :-
+    print(user_error,['Q', Query]),
+    findall([URI,Type], find_loc(Query, URI, Type), Completions0),
+    sort(Completions0, Completions1),
+    length(Completions1, Count),
+    con_text:first_n(Max, Completions1, Completions2),
+    maplist(obj_result, Completions2, Completions).
+
+obj_result([Obj,Type], json([ label=Obj,
+                              type=Type,
+                              href=HREF
+                              % href='javascript:location.reload(false);  'this.form
+                              % f.target = newtarget ;
+                              % f.submit();
+                            ])) :-
+    atomic_list_concat(['/context_map/navigate_locale?locale=',Obj,'&action=Available'],HREF).
+    %    con_text:info(Type, HREF).
+
+locale(Request) :-
+    http_parameters(Request,
+                    [ query(Query, [description('Typed string')]),
+                      maxResultsDisplayed(Max, [integer, default(100), description('Max number of results to show') ])
+                    ]),
+    autocompletions(Query, Max, Count, Completions),
+    reply_json(json([ query = json([ count=Count ]),
+                      results = Completions
+                    ])).
+
+
 navigate(Request) :-
     setof(Loc, Loc ^ find_locs(Loc), LocList),
     sort(LocList, List),
@@ -137,9 +175,21 @@ navigate(Request) :-
                [
                 h1('Context map/location view'),
 		ul( li(p([\(con_text:gif(map)),'Select a modeled locale to map, or check for feature availability',
-			  form([action('navigate_locale'), target(target_iframe)],
+                          form([action('navigate_locale'), target(target_iframe)],
 			       [
 				select([name('locale')], List),
+				input([type('submit'), name('action'), value('Map'),
+				       onclick('subm(this.form,"target_iframe");')]),
+				input([type('submit'), name('action'), value('Available'),
+				       onclick('subm(this.form,"render");')])
+			       ]
+			      ),
+                          br([]),
+                          form([action('navigate_locale'), target(target_iframe)],
+			       [
+				% select([name('locale')], List),
+                                \(con_text:ac(locale, locale)),
+                                br([]),
 				input([type('submit'), name('action'), value('Map'),
 				       onclick('subm(this.form,"target_iframe");')]),
 				input([type('submit'), name('action'), value('Available'),
