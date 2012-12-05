@@ -106,6 +106,24 @@ form(Action, Target, List) -->
               [ \input(List),
                input([type('submit')])])).
 
+form_ac(Action, Target, Subject_Filter, ID) -->
+    html(form([class('query'), action(Action), target(Target)],
+              [ \autoc(Subject_Filter, ID), br([]),
+               input([type('submit')])])).
+
+
+autoc(Callback, ID) -->
+    {
+     with_output_to(atom(CB),format('~w=""', Callback))
+    },
+    html( div(\(autocomplete_predicates:autocomplete(find_term,
+                                                     [   query_delay(0.3),
+                                                         auto_highlight(false),
+                                                         max_results_displayed(10),
+                                                         width('30em'),
+                                                         name(ID),
+                                                         value(CB)
+                                                     ])))).
 
 ac(Resource, ID) -->
     html( div(\(autocomplete_predicates:autocomplete(Resource, [   query_delay(0.3),

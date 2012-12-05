@@ -1,5 +1,6 @@
 :- module(context_map, [get_location/4,
-		        available_location/4]).
+		        available_location/4,
+                        find_example/3]).
 
 /** <module> Context model map display
     * Uses marker to center locale
@@ -21,6 +22,7 @@ minutes_to_degrees((Deg,Min,Sec), Degrees) :-
      ;
         Degrees is Deg + Min/60 + Sec/3600
      ).
+
 
 get_location(URI, Lat, Lon, Title) :-
     rdfS(URI, ent:title, Title),
@@ -103,45 +105,22 @@ navigate_locale(Request) :-
    (
     available_location(Locale_or_Title, Title, _, _) ->
     Locale = Locale_or_Title
-    % get_location(Locale, Lat, Lon, Title)
    ;
     available_location(Locale, Locale_or_Title, _, _) ->
     Title = Locale_or_Title
-    % get_location(Locale, Lat, Lon, Title)
+   ;
+    Title = 'Press "Available" to determine what' ,
+    Locale = Locale_or_Title
    ),
-   % get_location(Title, Lat, Lon, Locale)
-   % rdfR(Locale, ent:lat, Lat)
-   % rdfR(Locale, ent:lon, Lon),
-   % available_location(Locale, Title, _, _),
    findall(li(a([href(Model),
 	      target('_parent')],
 	     Feature)),
 	   available_location(Locale, _, Model, Feature),
 	   Models),
-   /*
-   (
-     rdfS(Locale, ent:title, T),
-     rdf(URI, ent:locale, Locale),
-     rdfS(URI, ent:feature, F),
-     ref_m(F, model, M)
-   ->
-     Model = M,
-     Feature = F,
-     Title = T
-   ;
-     Model='#',
-     Feature = 'not found',
-     Title = Locale
-   ),
-   */
-   % ref_m(UID, target_iframe, Path),
-
-   % print(user_error, [Lat, Lon, Locale]),
    reply_html_page(
 	    [title('Map Home')],
 	    [
 	     p(b(i([Title, ' location is used in the context of :']))),
-	     % h2([a([href(Model),target('_parent')],  Feature)] )
 	     ul(
 	        Models
 	       )
@@ -158,6 +137,11 @@ find_loc(Query, URI, Title) :-
    rdf(URI, ent:lon, _),
    rdf(URI, ent:title, literal(substring(Query),Title)).
 
+find_example(Query, URI, Title) :-
+   rdf(URI, ent:lat, _),
+   rdf(URI, ent:lon, _),
+   rdf(URI, ent:title, literal(substring(Query),Title)).
+
 
 autocompletions(Query, Max, Count, Completions) :-
     print(user_error,['Q', Query]),
@@ -167,28 +151,16 @@ autocompletions(Query, Max, Count, Completions) :-
     con_text:first_n(Max, Completions1, Completions2),
     maplist(ac_result, Completions2, Completions).
 
-replace_word(Old, New, Orig, Replaced) :-
-    atomic_list_concat(Split, Old, Orig),
-    atomic_list_concat(Split, New, Replaced), !.
 
 ac_result([Obj,Type], json([ label=Type,
-                              type=U,
-                              % href=HREF
-                              % href='javascript:location.reload(false);  'this.form
+                              type=Obj,
                               href=HREF
-                              % f.target = newtarget ;
-                              % f.submit();
                             ])) :-
-    % uri_normalized(Obj, URI),
-    %context:replace_chars('#', '%23', Obj, URI),
-    % context:create_global_term(Obj, _URI),
-    replace_word('#', '%23', Obj, U),
-    atomic_list_concat(['"/context_map/navigate_locale?action=Available&locale=',U,'"'],URL),
-    % print(user_error, ['URL', URL]),
-    % print(user_error, ['URL', U]), !,
-    atomic_list_concat(['javascript:retarget_frame(this,', URL, ', "render");'], HREF).
-    % subm(this,"render");
-    %    con_text:info(Type, HREF).
+    % replace_word('#', '%23', Obj, Available),
+    % print(user_error, ['URL', Obj, ' | ', Available]), !,
+    atomic_list_concat(['/context_map/navigate_locale?action=Available&locale=',Obj],URL),
+    atomic_list_concat(['javascript:retarget_frame(this,"', URL, '", "render");'], HREF).
+    % print(user_error, ['HREF', HREF]).
 
 find_locale(Request) :-
     http_parameters(Request,
@@ -235,7 +207,24 @@ navigate(Request) :-
 				input([type('submit'), name('action'), value('Available'),
 				       onclick('subm(this.form,"render");')])
 			       ]
+			      ),
+
+                          br([])
+
+                          /*
+                          form([action('navigate_locale'), target(target_iframe)],
+			       [
+                                \(con_text:autoc(find_example, locale)),
+                                br([]),
+				input([type('submit'), name('action'), value('Map'),
+				       onclick('subm(this.form,"target_iframe");')]),
+				input([type('submit'), name('action'), value('Available'),
+				       onclick('subm(this.form,"render");')])
+			       ]
 			      )
+                          */
+
+
 			 ]
 			)
 		      )

@@ -24,6 +24,30 @@
    rdfL(o,o,?),
    rdfV(o,o,?,?).
 
+
+ac_result([Obj,Type], json([ label=Type,
+                              type=Obj,
+                              href='javascript:location.reload(false);'
+                            ])).
+
+find_term(Request) :-
+    http_parameters(Request,
+                    [ query(Query, [description('Typed string')]),
+                      maxResultsDisplayed(Max, [integer, default(100), description('Max number of results to show') ])
+                    ]),
+    print(user_error, ['Q', Query]),
+    atom_to_term(Query, (Call=String), []),
+    atom_codes(Atom, String),
+    findall([URI,Type], call(Call, Atom, URI, Type), Completions0),
+    sort(Completions0, Completions1),
+    length(Completions1, Count),
+    con_text:first_n(Max, Completions1, Completions2),
+    maplist(ac_result, Completions2, Completions),
+    reply_json(json([ query = json([ count=Count ]),
+                      results = Completions
+                    ])).
+
+
 ref_link_to_pdf(FileName, Dest, Link) :-
    format(atom(Link), '/ref/~s#nameddest=~s', [FileName,Dest]).
 
@@ -78,6 +102,9 @@ replace_chars(This, That, Input, Output) :-
    replace(C, S, Chars, String),
    atom_to_chars(Output, String).
 
+replace_word(Old, New, Orig, Replaced) :-
+    atomic_list_concat(Split, Old, Orig),
+    atomic_list_concat(Split, New, Replaced), !.
 
 /*
 max_list([], C, C).
@@ -114,10 +141,12 @@ register(ModuleHandler) :-
    replace_chars(':', '/', ModuleHandler, RestCB),
    http_handler(root(RestCB), ModuleHandler, []).
 
+/*
 ac_hook(ModuleHandler) :-
    % replace module delimiter : with REST slash /
    replace_chars(':', '/', ModuleHandler, RestCB),
    http_handler(RestCB, ModuleHandler, []).
+*/
 
 create_global_term(Literal, Term) :-
    atom(Literal),
@@ -264,3 +293,7 @@ display_directed_graph(_) :-
 %    retract(local_stored_rdf_graph_list(List)).
 
 :- register(context:display_directed_graph).
+:- register(context:find_term).
+
+:- http_handler('/context/find_term', find_term, []).
+

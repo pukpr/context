@@ -1,9 +1,10 @@
 :- module(context_corrosion, [
-			      corrosionModel/6
+			      corrosionModel/6,
+                              materials/3
 			     ]).
 
 :- use_module(context_math).
-:- use_module(library(dialect/ifprolog)).
+% :- use_module(library(dialect/ifprolog)).
 
 :- context:register(context_corrosion:navigate).
 :- context:register(context_corrosion:plot).
@@ -28,8 +29,11 @@ collect_component_materials(Metal, List) :-
 		)
             ),
 	    */
-
 	    List).
+
+materials(Query, Resource, Title) :-
+    rdf(Resource, rdfs:label,  literal(substring(Query),Title)),
+    rdf(Resource, rdfs:subClassOf, _Component).
 
 corrosion_components(Request) :-
     http_parameters(Request, [mat(Material, [])]),
@@ -77,8 +81,13 @@ navigate(Request) :-
                           ),
 
                       br([]),
-		      i('what components are made from:'),
-		      \(con_text:form(corrosion_components, render, [['mat', 'IRON']])),
+		      i('available materials:'),
+		      % \(con_text:form(corrosion_components, render, [['mat', 'IRON']])),
+                      %%%%%%%%%%%%%%%%
+		      \(con_text:form_ac(corrosion_components, render, materials, mat)),
+                      % \(con_text:autoc(materials, mat)),
+                      %%%%%%%%%%%%%%%%%%%
+
                       % \(button_link('Component Types', corrosion_components, render)),
 		      \(con_text:render_iframe(render))
                      ]
