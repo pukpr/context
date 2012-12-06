@@ -3,6 +3,7 @@
 		    rdfS/3,
 		    rdfL/3,
 		    rdfV/4,
+		    rdfE/3,
 		    rdfx/3,
 		    rdfx_collect/1,
 		    rdfx_clean/0]).
@@ -22,6 +23,7 @@
    rdfI(o,o,?),
    rdfS(o,o,?),
    rdfL(o,o,?),
+   rdfE(o,o,?),
    rdfV(o,o,?,?).
 
 
@@ -234,6 +236,9 @@ rdfS(Subj, Pred, Obj) :-
        rdf(Subj, Pred, literal(Obj)),
        atom(Obj)
     ).
+rdfE(Subj, Pred, Obj) :-
+    rdf(Subj, Pred, O),
+    concise_term(O, Obj).
 
 
 :- dynamic(rdf_temp/3).

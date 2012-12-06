@@ -43,14 +43,6 @@ navigate(Request) :-
      ]
 		  ).
 
-% rdfQ(El, _, El).
-
-/*
-PeriodicTable:casRegistryID
-	a owl:DatatypeProperty ;
-	rdfs:comment "Chemical Abstracts Service (CAS) related information" ;
-	rdfs:seeAlso <http://www.cas.org> .
-*/
 
 registry(ID, a([href(U),target(target_iframe)],
 	       [img([src('/html/images/ref.gif'),
@@ -71,36 +63,30 @@ property(Request) :-
       rdfR(El, pt:atomicWeight, AtWeight),
       rdfS(El, pt:symbol, Sym),
       rdfS(El, pt:color, Color),
+      rdfE(El, pt:classification, Class),
+      rdfE(El, pt:standardState, State),
+      rdf(El, pt:period, PeriodName),
+      rdfI(PeriodName, pt:number, Period),
+      rdfE(El, pt:block, Block),
       registry(RegID, Link),
       reply_html_page([title('Periodic Table'),
                      \(con_text:style)],
                     [
-                       p([Name, ' : ', Color]),
+                       p([b(Name), ' : ', i(Color)]),
 
 		     \(con_text:table_entries(
 				    [
 				    ['symbol', Sym],
 				    ['atomic number', AtNum],
 				    ['atomic weight', AtWeight],
+				    ['period', Period],
+				    ['classification', Class],
+				    ['standard state', State],
+				    ['block', Block],
 				    ['CAS registry ID', Link]
 				    ]
 					     )
-
 		      )
-
-/*
-	PeriodicTable:atomicNumber 27 ;
-	PeriodicTable:atomicWeight "58.933200"^^xsd:float ;
-	PeriodicTable:block PeriodicTable:d-block ;
-	PeriodicTable:casRegistryID "7440-48-4"^^xsd:string ;
-	PeriodicTable:classification PeriodicTable:Metallic ;
-	PeriodicTable:color "lustrous, metallic, greyish tinge"^^xsd:string ;
-	PeriodicTable:group PeriodicTable:group_9 ;
-	PeriodicTable:name "cobalt"^^xsd:string ;
-	PeriodicTable:period PeriodicTable:period_4 ;
-	PeriodicTable:standardState PeriodicTable:solid ;
-	PeriodicTable:symbol "Co"^^xsd:string .
-*/
 		    ]
 		  )
     ;
@@ -123,6 +109,39 @@ span('Sc', T) :- spacer(14,T), !.
 span('Y',  T) :- spacer(14,T), !.
 span(_, '').
 
+cell_color('Actinoid', 'Wheat').
+cell_color('Lanthanoid', 'LightGray').
+cell_color('Noble gas', 'SeaShell').
+cell_color('Coinage metal', 'Silver').
+cell_color('Halogen', 'Cyan'). %
+cell_color('Pnictogen', 'LightSteelBlue'). %
+cell_color('Chalcogen', 'PeachPuff'). %
+cell_color('Alkali metal', 'SkyBlue').
+cell_color('Alkaline earth metal', 'Aquamarine'). %
+cell_color('Lanthanoid', 'LightGray').
+cell_color(_, 'GhostWhite').
+
+% group_color
+
+cell_color(El, Name, Color) :-
+    rdf_global_term(El, E),
+    rdf(E, pt:group, Group),
+    rdfS(Group, pt:name, Name),
+    cell_color(Name, Color), !.
+cell_color(_, 'others', 'GhostWhite').
+
+cellColor([]) --> !.
+cellColor([Group|Rest]) -->
+    {
+     rdf_global_term(Group, G),
+     rdfS(G, pt:name, Name),
+     cell_color(Name, Color)
+    },
+    html(tr([td([bgcolor=Color],Name)])), !,
+    cellColor(Rest).
+cellColor([_|Rest]) --> !,
+    cellColor(Rest).
+
 periodic_row(_,[]) --> !.
 periodic_row(El, [_N-E|R]) -->
    {
@@ -130,22 +149,23 @@ periodic_row(El, [_N-E|R]) -->
       rdfS(E, pt:name, Name),
       span(S, CS),
       (	  El = E ->
-	  Str = big(b(S))
+	  Str = big(b(S)),
+          Color = 'Yellow'
       ;
-          Str = small(S)
+          Str = small(S),
+          cell_color(E, _Name, Color)
       ),
       uri_encoded(query_value, E, URI),
       format(atom(H), 'property?kind=property&element=~w', [URI]),
       HREF = a([href(H),target(render)], Str)
    },
-   html([CS,td([title=Name], small(HREF))]),
+   html([CS,td([title=Name,bgcolor=Color], small(HREF))]),
    periodic_row(El, R).
 
 periodic_table(_,[]) --> !.
 periodic_table(El, [F|R]) -->
    html(tr(\(periodic_row(El,F)))),
    periodic_table(El, R).
-
 
 table(Request) :-
     http_parameters(Request, [element(El, [])]),
@@ -159,12 +179,50 @@ table(Request) :-
     row(Six, pt:period_6),
     row(Seven, pt:period_7),
     List = [One,Two,Three,Four,Five,Six,Seven],
+    findall(Group, rdf(Group, rdf:type, pt:'Group'), Groups),
+    %Lanthanoids = 'Lanthanoids',
+    %Actinoids = 'Actinoids',
+    %cell_color(Lanthanoids, Lanthanoids_Color),
+    %cell_color(Actinoids, Actinoids_Color),
     % print(user_error, List),
-    reply_html_page([title('Periodic Table'),
-                     \(con_text:style)],
+    reply_html_page([title('Periodic Table') ],
                     [
 		      p(['Highlighting ', b(Name), ' : ', b(Symbol)]),
-		      table( \(periodic_table(El, List)) )
+		      table( \(periodic_table(El, List)) ),
+                      br([]),
+                      table([ \(cellColor(Groups))
+                          /*
+                             \(cellColor(pt:group_1)),
+                             \(cellColor(pt:group_2)),
+                             \(cellColor(pt:group_3)),
+                             \(cellColor(pt:group_4)),
+                             \(cellColor(pt:group_5)),
+                             \(cellColor(pt:group_6)),
+                             \(cellColor(pt:group_7)),
+                             \(cellColor(pt:group_8)),
+                             \(cellColor(pt:group_9)),
+                             \(cellColor(pt:group_10)),
+                             \(cellColor(pt:group_11)),
+                             \(cellColor(pt:group_12)),
+                             \(cellColor(pt:group_13)),
+                             \(cellColor(pt:group_14)),
+                             \(cellColor(pt:group_15)),
+                             \(cellColor(pt:group_16)),
+                             \(cellColor(pt:group_17)),
+                             \(cellColor(pt:group_18)),
+                             \(cellColor(pt:group_lanthanoid)),
+                             \(cellColor(pt:group_actinoid))
+                             %tr(td([bgcolor=Lanthanoids_Color],Lanthanoids)),
+                             %tr(td([bgcolor=Actinoids_Color],Actinoids))
+                          */
+                             ])
+
                     ]
 		  ).
+
+
+
+
+
+
 
