@@ -20,11 +20,35 @@ create_list([First|Rest]) -->
 	 ]
 	).
 
+foundational(Subject, Link) :-
+      rdf_(Subject, foundation, [Doc,Page]),
+      rdf_(Doc, foundation_doc, FileName),
+      context:page_link_to_pdf(FileName, Page, Link), !.
+foundational(_Subject, '').
+
+
+link_view('', _, _, Subject, Docs) -->
+    html(p([b(Subject), ' has no categorized ', Docs])), !.
+
+link_view(Link, Target, Image, Subject, Text) -->
+    {
+     concat('/html/images/', Image, Img)
+    },
+    html(p(a([href(Link),
+              target(Target)],
+             [ img([src(Img), width(20)]),
+               'Go to ', Subject, Text
+             ]
+            )
+          )),
+    !.
+
 view_tree(Request, Subject) -->
     { findall(Class, rdf_(Subject, child, Class), List),
       rdf_(Subject, comment, Comment),
       rdf_(Subject, link, Link),
-      rdf_(Subject, target, Target) % if not found use default
+      rdf_(Subject, target, Target), % if not found use default
+      foundational(Subject, FoundationLink)
     },
     html_requires(css('ul_tree.css')),
     html(
@@ -48,10 +72,26 @@ view_tree(Request, Subject) -->
 				  ]),
 			       td([valign(top)],
 				  [ p(Comment),
+                                    /*
 				    p(a([href(Link),
 					 target(Target)],
-					[ img(src('/html/images/rarrow.gif')), 'Go to ', Subject, ' models'])
-				     )			])
+                                        [ img(src('/html/images/rarrow.gif')),
+                                          'Go to ', Subject, ' models'
+                                        ]
+                                       )
+                                     ),
+				    p(a([href(FoundationLink),
+					 target(Target)],
+                                        [ img([src('/html/images/acro.gif'),
+                                               width(20)]),
+                                          'Go to ', Subject, ' foundational document'
+                                        ]
+                                       )
+                                     ),
+                                    */
+                                    \(link_view(Link, Target, 'rarrow.gif', Subject, ' models')),
+                                    \(link_view(FoundationLink, Target, 'acro.gif', Subject, ' foundational document'))
+                                  ])
 			      ]),
 			   tr([
 			       td( [colspan='2'],

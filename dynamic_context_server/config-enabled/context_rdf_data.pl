@@ -284,8 +284,6 @@ ref_(_, IName, Page) :-
 
 % ----------------------------------------------------
 
-
-
 rdf_(fine_terrain, ent:image, 'fine_terrain_icon.png').
 rdf_(fine_terrain, ent:description, 'Fine terrain: course and obstacle models').
 rdf_(gross_terrain, ent:image, 'gross_terrain_icon.png').
@@ -359,6 +357,7 @@ rdf_(temperature, child, 'daily and seasonal').
 rdf_(temperature, child, thermal).
 rdf_(atmospheric, child, humidity).
 rdf_(atmospheric, child, particulates).
+rdf_(atmospheric, child, corrosion).
 rdf_(particulates, child, 'particle size').
 rdf_(particulates, child, 'particle density').
 rdf_(atmospheric, child, 'EMI').
@@ -423,65 +422,92 @@ rdf_('EMI', link, '/context_select/navigate?category=clutter').
 rdf_(slopes, link, '/context_model/navigate?characteristics=slopes&render=render').
 rdf_(slopes, target, target_iframe).
 rdf_(slopes, comment, 'PDF models of slope distribution.').
+rdf_(slopes, foundation, [a,10]).
 
 rdf_(elevations, link, '/context_autocorr/navigate').
 rdf_(elevations, comment, 'Model of terrain elevation difference.').
+rdf_(elevations, foundation, [b,10]).
 
 rdf_(profile, link, '/context_profile/navigate').
 rdf_(profile, comment, 'Models of course and track profiles.').
+rdf_(profile, foundation, [b,12]).
 
 rdf_('man-made obstacles', link, '/context_obstacles/navigate').
-rdf_(profile, comment, 'Models of man-made obstacle profiles.').
+rdf_('man-made obstacles', comment, 'Models of man-made obstacle profiles.').
+rdf_('man-made obstacles', foundation, [d,12]).
 
 rdf_('roughness', link, '/context_psd_workflow/navigate').
 rdf_('roughness', comment, 'Models of courses from power spectral density (PSD) datasets.').
+rdf_('roughness', foundation, [b,12]).
 
 rdf_('rainfall rate', link, '/context_model/navigate?characteristics=rainfall&render=render').
 rdf_('rainfall rate', target, target_iframe).
 rdf_('rainfall rate', comment, 'Models of rainfall intensity').
+rdf_('rainfall rate', foundation, [a,12]).
 
 rdf_('lake size', link, '/context_model/navigate?characteristics=lakeSize&render=render').
 rdf_('lake size', target, target_iframe).
 rdf_('lake size', comment, 'Models of lake size distribution').
+rdf_('lake size', foundation, [a,12]).
 
 rdf_('wind speed', link, '/context_model/navigate?characteristics=windSpeed&render=render').
 rdf_('wind speed', target, target_iframe).
 rdf_('wind speed', comment, 'Models of wind speed').
+rdf_('wind speed', foundation, [a,10]).
 
 rdf_('wave height', link, '/context_model/navigate?characteristics=waveHeight&render=render').
 rdf_('wave height', target, target_iframe).
 rdf_('wave height', comment, 'Models of sea-state wave height distribution').
+rdf_('wave height', foundation, [a,10]).
 
 % wave frequency missing in triple store
 rdf_('wave frequency', link, '/context_model/navigate?characteristics=waveFrequency&render=render').
 rdf_('wave frequency', target, target_iframe).
 rdf_('wave frequency', comment, 'Models of wave frequency distribution').
+rdf_('wave frequency', foundation, [b,10]).
 
 rdf_('particle size', link, '/context_model/navigate?characteristics=particleSizes&render=render').
 rdf_('particle size', target, target_iframe).
 rdf_('particle size', comment, 'Models of particle size distribution').
+rdf_('particle size', foundation, [a,10]).
 
 rdf_('EMI clutter', link, '/context_model/navigate?characteristics=clutterPower&render=render').
 rdf_('EMI clutter', target, target_iframe).
 rdf_('EMI clutter', comment, 'Models of clutter power distribution').
+rdf_('EMI clutter', foundation, [a,10]).
 
 rdf_('cloudiness', link, '/context_model/navigate?characteristics=cloudArea&render=render').
 rdf_('cloudiness', target, target_iframe).
 rdf_('cloudiness', comment, 'Models of cloud coverage').
+rdf_('cloudiness', foundation, [a,10]).
 
 rdf_('physical constants', link, '/context_resources/navigate').
 rdf_('physical constants', comment, 'Properties of static environmental characteristics.').
+rdf_('physical constants', foundation, [d,10]).
 
 rdf_('requirements', link, '/context_require/navigate').
 rdf_('requirements', comment, 'Navigate to source requirements.').
+rdf_('requirements', foundation, [d,10]).
+
+rdf_('thermal', link, '/context_thermal/navigate').
+rdf_('thermal', comment, 'Model of thermal transients.').
+rdf_('thermal', foundation, [c,10]).
+
+rdf_('corrosion', link, '/context_corrosion/navigate').
+rdf_('corrosion', comment, 'Model of corrosive growth.').
+rdf_('corrosion', foundation, [c,8]).
 
 
 % Fall-back info
 rdf_(_, comment, '').
 rdf_(_, link, '').
 rdf_(_, target, '').
+rdf_(_, foundation, '').
 
-
+rdf_(a, foundation_doc, 'foundation/stochastic_analysis.pdf').
+rdf_(b, foundation_doc, 'foundation/terrain_characterization.pdf').
+rdf_(c, foundation_doc, 'foundation/diffusive_growth.pdf').
+rdf_(d, foundation_doc, 'foundation/knowledge_based_environmental_modeling.pdf').
 
 
 % not used

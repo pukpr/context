@@ -21,7 +21,10 @@ navigate(Request) :-
                         [h1('Common resources and artifacts for context modeling'),
                          ul([
                              li([\(con_text:gif(resources)),
-                                 \(con_text:alert(['Placeholder to ', b('OSCAR')], 'Not linked yet'))
+                                 a([href('/html/oscar.html'),
+                                    target=target_iframe],
+                                   ['Access ', b('OSCAR'), ' workflow'])
+                                 % \(con_text:alert(['Placeholder to ', b('OSCAR')], 'Not linked yet'))
                                 ]),
                              li([\(con_text:gif(resources)),
                                  a(href('/context_climate_AR7038/navigate'),

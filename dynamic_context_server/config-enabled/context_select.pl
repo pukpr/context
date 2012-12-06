@@ -57,7 +57,11 @@ dispatch(lakes) -->
 	      \(ref_search('realmHydroBody:Lake', 'Lake references')),
 	      \g(example,
 		 a([href('/context_lakes/navigate')],
-		  'Example seasonal lake ice data'))
+		  'Example seasonal lake ice data')),
+              \g(browse,
+		  a([href('/context_browse/navigate?term=aquatic')],
+                  'Browse aquatic characteristics')
+	       )
 	     ]
 	    ).
 
@@ -68,8 +72,13 @@ dispatch(corrosion) -->
 	      \(ref_search('procChemical:Corrosion', 'Corrosion references')),
 	      \g(resources,
 		 a([href('/context_corrosion/corrosion_scale_table'),
-		    target=render], 'Corrosion table'))
-	     ]
+		    target=render], 'Corrosion table')),
+              \g(browse,
+		  a([href('/context_browse/navigate?term=context')],
+                  'Browse environmental characteristics')
+	       )
+
+             ]
 	    ).
 
 dispatch(fine_terrain) -->
@@ -89,7 +98,11 @@ dispatch(fine_terrain) -->
 		  a([href('/context_friction/coefficient_friction_table'),
                    target=target_iframe], 'Coefficient of Friction table')
 	       ),
-	      \(ref_search('propMass:Roughness', 'Friction references'))
+	      \(ref_search('propMass:Roughness', 'Friction references')),
+              \g(browse,
+		  a([href('/context_browse/navigate?term=fine terrain')],
+                  'Browse fine terrain characteristics')
+	       )
 
 	     ]
 	    ).
@@ -104,7 +117,11 @@ dispatch(gross_terrain) -->
 	      \g(example,
 		 \(context_pdf:example)
 		),
-	      \(ref_search('propSpaceHeight:Topography', 'Topography references'))
+	      \(ref_search('propSpaceHeight:Topography', 'Topography references')),
+              \g(browse,
+		  a([href('/context_browse/navigate?term=gross terrain')],
+                  'Browse gross terrain characteristics')
+	       )
 	     ]
 	    ).
 
@@ -113,7 +130,11 @@ dispatch(wind) -->
 	      \g(search,
 		 a([href('/context_model/navigate?characteristics=windSpeed&render=render'),
 		   target(target_iframe)], 'Wind PDF models')),
-	      \(ref_search('phenAtmoWind:Wind', 'Wind references'))
+	      \(ref_search('phenAtmoWind:Wind', 'Wind references')),
+              \g(browse,
+		  a([href('/context_browse/navigate?term=atmospheric')],
+                  'Browse atmospheric characteristics')
+	       )
 	     ]
 	    ).
 
@@ -132,7 +153,11 @@ dispatch(wave) -->
 		    target=target_iframe],'Sea-state ranges')),
 	      \g(workflow,
 		 a([href('/context_seastate/navigate')], 'Wave/sea state model')), % own page
-	      \(ref_search('phenWave:GravityWave', 'Wave references'))
+	      \(ref_search('phenWave:GravityWave', 'Wave references')),
+              \g(browse,
+		  a([href('/context_browse/navigate?term=aquatic')],
+                  'Browse aquatic characteristics')
+	       )
 	     ]
 	    ).
 
@@ -150,7 +175,11 @@ dispatch(thermal) -->
                   \(context_temperature:example)
                  ])),
 	      \(ref_search('propConductivity:ThermalConductivity', 'Thermal conductivity references')),
-	      \(ref_search('propTemperature:Temperature', 'Temperature references'))
+	      \(ref_search('propTemperature:Temperature', 'Temperature references')),
+              \g(browse,
+		  a([href('/context_browse/navigate?term=context')],
+                  'Browse environmental characteristics')
+	       )
 	     ]
 	    ).
 
@@ -159,7 +188,11 @@ dispatch(particles) -->
 	      \g(search,
 		 a([href('/context_model/navigate?characteristics=particleSizes&render=render'),
 		   target(target_iframe)], 'Particle size PDF models')),
-	      \(ref_search('matrAerosol:Particulate', 'Particle references'))
+	      \(ref_search('matrAerosol:Particulate', 'Particle references')),
+              \g(browse,
+		  a([href('/context_browse/navigate?term=atmospheric')],
+                  'Browse atmospheric characteristics')
+	       )
 	     ]
 	    ).
 
@@ -175,7 +208,11 @@ dispatch(clutter) -->
 		 a([href('/context_model/navigate?characteristics=clutterPower&render=render'),
 		   target(target_iframe)], 'EMI clutter pdf models')),
 	      \(ref_search('phenElecMag:ElectricField', 'EMI references')),
-	      \(ref_search('phenAtmoLightning:Lightning', 'Lightning references'))
+	      \(ref_search('phenAtmoLightning:Lightning', 'Lightning references')),
+              \g(browse,
+		  a([href('/context_browse/navigate?term=EMI')],
+                  'Browse EMI characteristics')
+	       )
 	     ]
 	    ).
 
@@ -192,7 +229,11 @@ dispatch(rainfall) -->
                     \(context_weather:navigate)
                    ])
                 ),
-	      \(ref_search('phenAtmoPrecipitation:Rainfall', 'Rainfall references'))
+	      \(ref_search('phenAtmoPrecipitation:Rainfall', 'Rainfall references')),
+              \g(browse,
+		  a([href('/context_browse/navigate?term=atmospheric')],
+                  'Browse atmospheric characteristics')
+	       )
 	     ]
 	    ).
 

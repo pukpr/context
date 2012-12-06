@@ -9,12 +9,11 @@ W	Collect all XLS and PPT files
 	Aquatic wave height model, plus connection to Sea-State, significant wave height
 	ENT classification system tied to SWEET, show as GraphViz?
 	Each browse entry should have short narrative and one link
-	Add browser tree to individual features
+	Add browser subtree to individual features
 	Thermal heat sink model
-	Semi-Markov sync function to scale
 	convert rdf_ to entailments
 	Different data format generators
-	Sometimes graph needs more sig figs
+x	Auto-completion
 x	add emi refs
 x	feature img files transition to html page with zoom in new window
 x	GPS trout-v ref, and SWS, DARPA solic
@@ -56,7 +55,7 @@ x	Cloud has land plus ocean.
 
 general work
 	Index the papers for PDF
-	Acronyms
+	Acronyms, add via Zotero
 	Unit tests
 	switch graphs to native format whenever possible
 	Use target=_parent or target=_top
@@ -66,6 +65,8 @@ general work
 
 
 if time available
+	Sometimes graph needs more sig figs
+	Semi-Markov sync function to scale
 	Store FFT model as triples
 	Named notation for graph
 	Put CSIR data as an extra tuple
@@ -75,17 +76,16 @@ if time available
 	Land,Terrain,Aquatic terms
 	Particulate model in salt/fresh water
 	Add average elevation to DEM
-	ID does not exist warning
+	"ID does not exist" warning
 	Concat obstacles
 	Math representation for obstacles
 	Error margins on graphs
-	Auto-completion
 	Random number session seed
 	Altitude/pressure graph
 	FFT on SOS
 	shaded-relief, geohack
 	Links to Graphviz dot circles
-	map infor on click once zoomed in
+	map info on click once zoomed in
 	Use Wiki to PDF as an index
 
 

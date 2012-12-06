@@ -50,6 +50,8 @@ find_term(Request) :-
 
 ref_link_to_pdf(FileName, Dest, Link) :-
    format(atom(Link), '/ref/~s#nameddest=~s', [FileName,Dest]).
+page_link_to_pdf(FileName, Page, Link) :-
+   format(atom(Link), '/ref/~s#page=~d', [FileName,Page]).
 
 strip_numbers([], Input, Final) :- reverse(Input, Final).
 strip_numbers([literal(type(_, Str))| Rest], Input, Final) :-
