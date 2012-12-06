@@ -90,7 +90,7 @@ view_tree(Request, Subject) -->
                                      ),
                                     */
                                     \(link_view(Link, Target, 'rarrow.gif', Subject, ' models')),
-                                    \(link_view(FoundationLink, Target, 'acro.gif', Subject, ' foundational document'))
+                                    \(link_view(FoundationLink, target_iframe, 'acro.gif', Subject, ' foundational document'))
                                   ])
 			      ]),
 			   tr([

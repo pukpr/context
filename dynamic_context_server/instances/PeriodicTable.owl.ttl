@@ -1,0 +1,2196 @@
+@base                  <file:///c:/users/pukitepa/git/eval/context/dynamic_context_server/instances/periodictable.owl.rdf> .
+@prefix           owl: <http://www.w3.org/2002/07/owl#> .
+@prefix           xsd: <http://www.w3.org/2001/XMLSchema#> .
+@prefix          rdfs: <http://www.w3.org/2000/01/rdf-schema#> .
+@prefix           rdf: <http://www.w3.org/1999/02/22-rdf-syntax-ns#> .
+@prefix PeriodicTable: <http://www.daml.org/2003/01/periodictable/PeriodicTable#> .
+
+# Named toplevel resources (176)
+
+<http://www.daml.org/2003/01/periodictable/PeriodicTable>
+	a owl:Ontology ;
+	rdfs:comment "Periodic Table of the Elements" ;
+	owl:versionInfo "$Id: PeriodicTable.owl,v 1.10 2004/02/05 15:49:58 mdean Exp $" .
+
+PeriodicTable:Ac
+	a PeriodicTable:Element ;
+	PeriodicTable:atomicNumber 89 ;
+	PeriodicTable:atomicWeight "227"^^xsd:float ;
+	PeriodicTable:block PeriodicTable:f-block ;
+	PeriodicTable:casRegistryID "7440-34-8"^^xsd:string ;
+	PeriodicTable:classification PeriodicTable:Metallic ;
+	PeriodicTable:color "silvery"^^xsd:string ;
+	PeriodicTable:group PeriodicTable:group_actinoid ;
+	PeriodicTable:name "actinium"^^xsd:string ;
+	PeriodicTable:period PeriodicTable:period_7 ;
+	PeriodicTable:standardState PeriodicTable:solid ;
+	PeriodicTable:symbol "Ac"^^xsd:string .
+
+PeriodicTable:Ag
+	a PeriodicTable:Element ;
+	PeriodicTable:atomicNumber 47 ;
+	PeriodicTable:atomicWeight "107.8682"^^xsd:float ;
+	PeriodicTable:block PeriodicTable:d-block ;
+	PeriodicTable:casRegistryID "7440-22-4"^^xsd:string ;
+	PeriodicTable:classification PeriodicTable:Metallic ;
+	PeriodicTable:color "silver"^^xsd:string ;
+	PeriodicTable:group PeriodicTable:group_11 ;
+	PeriodicTable:name "silver"^^xsd:string ;
+	PeriodicTable:period PeriodicTable:period_5 ;
+	PeriodicTable:standardState PeriodicTable:solid ;
+	PeriodicTable:symbol "Ag"^^xsd:string .
+
+PeriodicTable:Al
+	a PeriodicTable:Element ;
+	PeriodicTable:atomicNumber 13 ;
+	PeriodicTable:atomicWeight "26.981538"^^xsd:float ;
+	PeriodicTable:block PeriodicTable:p-block ;
+	PeriodicTable:casRegistryID "7429-90-5"^^xsd:string ;
+	PeriodicTable:classification PeriodicTable:Metallic ;
+	PeriodicTable:color "silvery"^^xsd:string ;
+	PeriodicTable:group PeriodicTable:group_13 ;
+	PeriodicTable:name "aluminium"^^xsd:string ;
+	PeriodicTable:period PeriodicTable:period_3 ;
+	PeriodicTable:standardState PeriodicTable:solid ;
+	PeriodicTable:symbol "Al"^^xsd:string .
+
+PeriodicTable:Am
+	a PeriodicTable:Element ;
+	PeriodicTable:atomicNumber 95 ;
+	PeriodicTable:atomicWeight "243"^^xsd:float ;
+	PeriodicTable:block PeriodicTable:f-block ;
+	PeriodicTable:casRegistryID "7440-35-9"^^xsd:string ;
+	PeriodicTable:classification PeriodicTable:Metallic ;
+	PeriodicTable:color "silvery white"^^xsd:string ;
+	PeriodicTable:group PeriodicTable:group_actinoid ;
+	PeriodicTable:name "americium"^^xsd:string ;
+	PeriodicTable:period PeriodicTable:period_7 ;
+	PeriodicTable:standardState PeriodicTable:solid ;
+	PeriodicTable:symbol "Am"^^xsd:string .
+
+PeriodicTable:Ar
+	a PeriodicTable:Element ;
+	PeriodicTable:atomicNumber 18 ;
+	PeriodicTable:atomicWeight "39.948"^^xsd:float ;
+	PeriodicTable:block PeriodicTable:p-block ;
+	PeriodicTable:casRegistryID "7440-37-1"^^xsd:string ;
+	PeriodicTable:classification PeriodicTable:Non-metallic ;
+	PeriodicTable:color "colourless"^^xsd:string ;
+	PeriodicTable:group PeriodicTable:group_18 ;
+	PeriodicTable:name "argon"^^xsd:string ;
+	PeriodicTable:period PeriodicTable:period_3 ;
+	PeriodicTable:standardState PeriodicTable:gas ;
+	PeriodicTable:symbol "Ar"^^xsd:string .
+
+PeriodicTable:As
+	a PeriodicTable:Element ;
+	PeriodicTable:atomicNumber 33 ;
+	PeriodicTable:atomicWeight "74.92160"^^xsd:float ;
+	PeriodicTable:block PeriodicTable:p-block ;
+	PeriodicTable:casRegistryID "7440-38-2"^^xsd:string ;
+	PeriodicTable:classification PeriodicTable:Semi-metallic ;
+	PeriodicTable:color "metallic grey"^^xsd:string ;
+	PeriodicTable:group PeriodicTable:group_15 ;
+	PeriodicTable:name "arsenic"^^xsd:string ;
+	PeriodicTable:period PeriodicTable:period_4 ;
+	PeriodicTable:standardState PeriodicTable:solid ;
+	PeriodicTable:symbol "As"^^xsd:string .
+
+PeriodicTable:At
+	a PeriodicTable:Element ;
+	PeriodicTable:atomicNumber 85 ;
+	PeriodicTable:atomicWeight "210"^^xsd:float ;
+	PeriodicTable:block PeriodicTable:p-block ;
+	PeriodicTable:casRegistryID "7440-68-8"^^xsd:string ;
+	PeriodicTable:classification PeriodicTable:Semi-metallic ;
+	PeriodicTable:color "metallic"^^xsd:string ;
+	PeriodicTable:group PeriodicTable:group_17 ;
+	PeriodicTable:name "astatine"^^xsd:string ;
+	PeriodicTable:period PeriodicTable:period_6 ;
+	PeriodicTable:standardState PeriodicTable:solid ;
+	PeriodicTable:symbol "At"^^xsd:string .
+
+PeriodicTable:Au
+	a PeriodicTable:Element ;
+	PeriodicTable:atomicNumber 79 ;
+	PeriodicTable:atomicWeight "196.96655"^^xsd:float ;
+	PeriodicTable:block PeriodicTable:d-block ;
+	PeriodicTable:casRegistryID "7440-57-5"^^xsd:string ;
+	PeriodicTable:classification PeriodicTable:Metallic ;
+	PeriodicTable:color "gold"^^xsd:string ;
+	PeriodicTable:group PeriodicTable:group_11 ;
+	PeriodicTable:name "gold"^^xsd:string ;
+	PeriodicTable:period PeriodicTable:period_6 ;
+	PeriodicTable:standardState PeriodicTable:solid ;
+	PeriodicTable:symbol "Au"^^xsd:string .
+
+PeriodicTable:B
+	a PeriodicTable:Element ;
+	PeriodicTable:atomicNumber 5 ;
+	PeriodicTable:atomicWeight "10.811"^^xsd:float ;
+	PeriodicTable:block PeriodicTable:p-block ;
+	PeriodicTable:casRegistryID "7440-42-8"^^xsd:string ;
+	PeriodicTable:classification PeriodicTable:Semi-metallic ;
+	PeriodicTable:color "black"^^xsd:string ;
+	PeriodicTable:group PeriodicTable:group_13 ;
+	PeriodicTable:name "boron"^^xsd:string ;
+	PeriodicTable:period PeriodicTable:period_2 ;
+	PeriodicTable:standardState PeriodicTable:solid ;
+	PeriodicTable:symbol "B"^^xsd:string .
+
+PeriodicTable:Ba
+	a PeriodicTable:Element ;
+	PeriodicTable:atomicNumber 56 ;
+	PeriodicTable:atomicWeight "137.327"^^xsd:float ;
+	PeriodicTable:block PeriodicTable:s-block ;
+	PeriodicTable:casRegistryID "7440-39-3"^^xsd:string ;
+	PeriodicTable:classification PeriodicTable:Metallic ;
+	PeriodicTable:color "silvery white"^^xsd:string ;
+	PeriodicTable:group PeriodicTable:group_2 ;
+	PeriodicTable:name "barium"^^xsd:string ;
+	PeriodicTable:period PeriodicTable:period_6 ;
+	PeriodicTable:standardState PeriodicTable:solid ;
+	PeriodicTable:symbol "Ba"^^xsd:string .
+
+PeriodicTable:Be
+	a PeriodicTable:Element ;
+	PeriodicTable:atomicNumber 4 ;
+	PeriodicTable:atomicWeight "9.012182"^^xsd:float ;
+	PeriodicTable:block PeriodicTable:s-block ;
+	PeriodicTable:casRegistryID "7440-41-7"^^xsd:string ;
+	PeriodicTable:classification PeriodicTable:Metallic ;
+	PeriodicTable:color "lead gray"^^xsd:string ;
+	PeriodicTable:group PeriodicTable:group_2 ;
+	PeriodicTable:name "beryllium"^^xsd:string ;
+	PeriodicTable:period PeriodicTable:period_2 ;
+	PeriodicTable:standardState PeriodicTable:solid ;
+	PeriodicTable:symbol "Be"^^xsd:string .
+
+PeriodicTable:Bh
+	a PeriodicTable:Element ;
+	PeriodicTable:atomicNumber 107 ;
+	PeriodicTable:atomicWeight "264"^^xsd:float ;
+	PeriodicTable:block PeriodicTable:d-block ;
+	PeriodicTable:casRegistryID "54037-14-8"^^xsd:string ;
+	PeriodicTable:classification PeriodicTable:Metallic ;
+	PeriodicTable:color "unknown, but probably metallic and silvery white or grey in appearance"^^xsd:string ;
+	PeriodicTable:group PeriodicTable:group_7 ;
+	PeriodicTable:name "bohrium"^^xsd:string ;
+	PeriodicTable:period PeriodicTable:period_7 ;
+	PeriodicTable:standardState PeriodicTable:solid ;
+	PeriodicTable:symbol "Bh"^^xsd:string .
+
+PeriodicTable:Bi
+	a PeriodicTable:Element ;
+	PeriodicTable:atomicNumber 83 ;
+	PeriodicTable:atomicWeight "208.98038"^^xsd:float ;
+	PeriodicTable:block PeriodicTable:p-block ;
+	PeriodicTable:casRegistryID "7440-69-9"^^xsd:string ;
+	PeriodicTable:classification PeriodicTable:Metallic ;
+	PeriodicTable:color "lustrous reddish white"^^xsd:string ;
+	PeriodicTable:group PeriodicTable:group_15 ;
+	PeriodicTable:name "bismuth"^^xsd:string ;
+	PeriodicTable:period PeriodicTable:period_6 ;
+	PeriodicTable:standardState PeriodicTable:solid ;
+	PeriodicTable:symbol "Bi"^^xsd:string .
+
+PeriodicTable:Bk
+	a PeriodicTable:Element ;
+	PeriodicTable:atomicNumber 97 ;
+	PeriodicTable:atomicWeight "247"^^xsd:float ;
+	PeriodicTable:block PeriodicTable:f-block ;
+	PeriodicTable:casRegistryID "7440-40-6"^^xsd:string ;
+	PeriodicTable:classification PeriodicTable:Metallic ;
+	PeriodicTable:color "unknown, but probably metallic and silvery white or grey in appearance"^^xsd:string ;
+	PeriodicTable:group PeriodicTable:group_actinoid ;
+	PeriodicTable:name "berkelium"^^xsd:string ;
+	PeriodicTable:period PeriodicTable:period_7 ;
+	PeriodicTable:standardState PeriodicTable:solid ;
+	PeriodicTable:symbol "Bk"^^xsd:string .
+
+PeriodicTable:Block
+	a owl:Class ;
+	owl:oneOf ( PeriodicTable:s-block
+		    PeriodicTable:p-block
+		    PeriodicTable:d-block
+		    PeriodicTable:f-block
+		  ) .
+
+PeriodicTable:Br
+	a PeriodicTable:Element ;
+	PeriodicTable:atomicNumber 35 ;
+	PeriodicTable:atomicWeight "79.904"^^xsd:float ;
+	PeriodicTable:block PeriodicTable:p-block ;
+	PeriodicTable:casRegistryID "7726-95-6"^^xsd:string ;
+	PeriodicTable:classification PeriodicTable:Non-metallic ;
+	PeriodicTable:color "red-brown, metallic lustre when solid"^^xsd:string ;
+	PeriodicTable:group PeriodicTable:group_17 ;
+	PeriodicTable:name "bromine"^^xsd:string ;
+	PeriodicTable:period PeriodicTable:period_4 ;
+	PeriodicTable:standardState PeriodicTable:liquid ;
+	PeriodicTable:symbol "Br"^^xsd:string .
+
+PeriodicTable:C
+	a PeriodicTable:Element ;
+	PeriodicTable:atomicNumber 6 ;
+	PeriodicTable:atomicWeight "12.0107"^^xsd:float ;
+	PeriodicTable:block PeriodicTable:p-block ;
+	PeriodicTable:casRegistryID "7440-44-0"^^xsd:string ;
+	PeriodicTable:classification PeriodicTable:Non-metallic ;
+	PeriodicTable:color "graphite is black, diamond is colourless"^^xsd:string ;
+	PeriodicTable:group PeriodicTable:group_14 ;
+	PeriodicTable:name "carbon"^^xsd:string ;
+	PeriodicTable:period PeriodicTable:period_2 ;
+	PeriodicTable:standardState PeriodicTable:solid ;
+	PeriodicTable:symbol "C"^^xsd:string .
+
+PeriodicTable:Ca
+	a PeriodicTable:Element ;
+	PeriodicTable:atomicNumber 20 ;
+	PeriodicTable:atomicWeight "40.078"^^xsd:float ;
+	PeriodicTable:block PeriodicTable:s-block ;
+	PeriodicTable:casRegistryID "7440-70-2"^^xsd:string ;
+	PeriodicTable:classification PeriodicTable:Metallic ;
+	PeriodicTable:color "silvery white"^^xsd:string ;
+	PeriodicTable:group PeriodicTable:group_2 ;
+	PeriodicTable:name "calcium"^^xsd:string ;
+	PeriodicTable:period PeriodicTable:period_4 ;
+	PeriodicTable:standardState PeriodicTable:solid ;
+	PeriodicTable:symbol "Ca"^^xsd:string .
+
+PeriodicTable:Cd
+	a PeriodicTable:Element ;
+	PeriodicTable:atomicNumber 48 ;
+	PeriodicTable:atomicWeight "112.411"^^xsd:float ;
+	PeriodicTable:block PeriodicTable:d-block ;
+	PeriodicTable:casRegistryID "7440-43-9"^^xsd:string ;
+	PeriodicTable:classification PeriodicTable:Metallic ;
+	PeriodicTable:color "silvery grey metallic"^^xsd:string ;
+	PeriodicTable:group PeriodicTable:group_12 ;
+	PeriodicTable:name "cadmium"^^xsd:string ;
+	PeriodicTable:period PeriodicTable:period_5 ;
+	PeriodicTable:standardState PeriodicTable:solid ;
+	PeriodicTable:symbol "Cd"^^xsd:string .
+
+PeriodicTable:Ce
+	a PeriodicTable:Element ;
+	PeriodicTable:atomicNumber 58 ;
+	PeriodicTable:atomicWeight "140.116"^^xsd:float ;
+	PeriodicTable:block PeriodicTable:f-block ;
+	PeriodicTable:casRegistryID "7440-45-1"^^xsd:string ;
+	PeriodicTable:classification PeriodicTable:Metallic ;
+	PeriodicTable:color "silvery white"^^xsd:string ;
+	PeriodicTable:group PeriodicTable:group_lanthanoid ;
+	PeriodicTable:name "cerium"^^xsd:string ;
+	PeriodicTable:period PeriodicTable:period_6 ;
+	PeriodicTable:standardState PeriodicTable:solid ;
+	PeriodicTable:symbol "Ce"^^xsd:string .
+
+PeriodicTable:Cf
+	a PeriodicTable:Element ;
+	PeriodicTable:atomicNumber 98 ;
+	PeriodicTable:atomicWeight "251"^^xsd:float ;
+	PeriodicTable:block PeriodicTable:f-block ;
+	PeriodicTable:casRegistryID "7440-71-3"^^xsd:string ;
+	PeriodicTable:classification PeriodicTable:Metallic ;
+	PeriodicTable:color "unknown, but probably metallic and silvery white or grey in appearance"^^xsd:string ;
+	PeriodicTable:group PeriodicTable:group_actinoid ;
+	PeriodicTable:name "californium"^^xsd:string ;
+	PeriodicTable:period PeriodicTable:period_7 ;
+	PeriodicTable:standardState PeriodicTable:solid ;
+	PeriodicTable:symbol "Cf"^^xsd:string .
+
+PeriodicTable:Cl
+	a PeriodicTable:Element ;
+	PeriodicTable:atomicNumber 17 ;
+	PeriodicTable:atomicWeight "35.453"^^xsd:float ;
+	PeriodicTable:block PeriodicTable:p-block ;
+	PeriodicTable:casRegistryID "7782-50-5"^^xsd:string ;
+	PeriodicTable:classification PeriodicTable:Non-metallic ;
+	PeriodicTable:color "yellowish green"^^xsd:string ;
+	PeriodicTable:group PeriodicTable:group_17 ;
+	PeriodicTable:name "chlorine"^^xsd:string ;
+	PeriodicTable:period PeriodicTable:period_3 ;
+	PeriodicTable:standardState PeriodicTable:gas ;
+	PeriodicTable:symbol "Cl"^^xsd:string .
+
+PeriodicTable:Classification
+	a owl:Class ;
+	owl:oneOf ( PeriodicTable:Metallic
+		    PeriodicTable:Non-metallic
+		    PeriodicTable:Semi-metallic
+		  ) .
+
+PeriodicTable:Cm
+	a PeriodicTable:Element ;
+	PeriodicTable:atomicNumber 96 ;
+	PeriodicTable:atomicWeight "247"^^xsd:float ;
+	PeriodicTable:block PeriodicTable:f-block ;
+	PeriodicTable:casRegistryID "7440-51-9"^^xsd:string ;
+	PeriodicTable:classification PeriodicTable:Metallic ;
+	PeriodicTable:color "silver"^^xsd:string ;
+	PeriodicTable:group PeriodicTable:group_actinoid ;
+	PeriodicTable:name "curium"^^xsd:string ;
+	PeriodicTable:period PeriodicTable:period_7 ;
+	PeriodicTable:standardState PeriodicTable:solid ;
+	PeriodicTable:symbol "Cm"^^xsd:string .
+
+PeriodicTable:Co
+	a PeriodicTable:Element ;
+	PeriodicTable:atomicNumber 27 ;
+	PeriodicTable:atomicWeight "58.933200"^^xsd:float ;
+	PeriodicTable:block PeriodicTable:d-block ;
+	PeriodicTable:casRegistryID "7440-48-4"^^xsd:string ;
+	PeriodicTable:classification PeriodicTable:Metallic ;
+	PeriodicTable:color "lustrous, metallic, greyish tinge"^^xsd:string ;
+	PeriodicTable:group PeriodicTable:group_9 ;
+	PeriodicTable:name "cobalt"^^xsd:string ;
+	PeriodicTable:period PeriodicTable:period_4 ;
+	PeriodicTable:standardState PeriodicTable:solid ;
+	PeriodicTable:symbol "Co"^^xsd:string .
+
+PeriodicTable:Cr
+	a PeriodicTable:Element ;
+	PeriodicTable:atomicNumber 24 ;
+	PeriodicTable:atomicWeight "51.9961"^^xsd:float ;
+	PeriodicTable:block PeriodicTable:d-block ;
+	PeriodicTable:casRegistryID "7440-47-3"^^xsd:string ;
+	PeriodicTable:classification PeriodicTable:Metallic ;
+	PeriodicTable:color "silvery metallic"^^xsd:string ;
+	PeriodicTable:group PeriodicTable:group_6 ;
+	PeriodicTable:name "chromium"^^xsd:string ;
+	PeriodicTable:period PeriodicTable:period_4 ;
+	PeriodicTable:standardState PeriodicTable:solid ;
+	PeriodicTable:symbol "Cr"^^xsd:string .
+
+PeriodicTable:Cs
+	a PeriodicTable:Element ;
+	PeriodicTable:atomicNumber 55 ;
+	PeriodicTable:atomicWeight "132.90545"^^xsd:float ;
+	PeriodicTable:block PeriodicTable:s-block ;
+	PeriodicTable:casRegistryID "7440-46-2"^^xsd:string ;
+	PeriodicTable:classification PeriodicTable:Metallic ;
+	PeriodicTable:color "silvery gold"^^xsd:string ;
+	PeriodicTable:group PeriodicTable:group_1 ;
+	PeriodicTable:name "caesium"^^xsd:string ;
+	PeriodicTable:period PeriodicTable:period_6 ;
+	PeriodicTable:standardState PeriodicTable:solid ;
+	PeriodicTable:symbol "Cs"^^xsd:string .
+
+PeriodicTable:Cu
+	a PeriodicTable:Element ;
+	PeriodicTable:atomicNumber 29 ;
+	PeriodicTable:atomicWeight "63.546"^^xsd:float ;
+	PeriodicTable:block PeriodicTable:d-block ;
+	PeriodicTable:casRegistryID "7440-50-8"^^xsd:string ;
+	PeriodicTable:classification PeriodicTable:Metallic ;
+	PeriodicTable:color "copper, metallic"^^xsd:string ;
+	PeriodicTable:group PeriodicTable:group_11 ;
+	PeriodicTable:name "copper"^^xsd:string ;
+	PeriodicTable:period PeriodicTable:period_4 ;
+	PeriodicTable:standardState PeriodicTable:solid ;
+	PeriodicTable:symbol "Cu"^^xsd:string .
+
+PeriodicTable:Db
+	a PeriodicTable:Element ;
+	PeriodicTable:atomicNumber 105 ;
+	PeriodicTable:atomicWeight "262"^^xsd:float ;
+	PeriodicTable:block PeriodicTable:d-block ;
+	PeriodicTable:casRegistryID "53850-35-4"^^xsd:string ;
+	PeriodicTable:classification PeriodicTable:Metallic ;
+	PeriodicTable:color "unknown, but probably metallic and silvery white or grey in appearance"^^xsd:string ;
+	PeriodicTable:group PeriodicTable:group_5 ;
+	PeriodicTable:name "dubnium"^^xsd:string ;
+	PeriodicTable:period PeriodicTable:period_7 ;
+	PeriodicTable:standardState PeriodicTable:solid ;
+	PeriodicTable:symbol "Db"^^xsd:string .
+
+PeriodicTable:Dy
+	a PeriodicTable:Element ;
+	PeriodicTable:atomicNumber 66 ;
+	PeriodicTable:atomicWeight "162.500"^^xsd:float ;
+	PeriodicTable:block PeriodicTable:f-block ;
+	PeriodicTable:casRegistryID "7429-91-6"^^xsd:string ;
+	PeriodicTable:classification PeriodicTable:Metallic ;
+	PeriodicTable:color "silvery white"^^xsd:string ;
+	PeriodicTable:group PeriodicTable:group_lanthanoid ;
+	PeriodicTable:name "dysprosium"^^xsd:string ;
+	PeriodicTable:period PeriodicTable:period_6 ;
+	PeriodicTable:standardState PeriodicTable:solid ;
+	PeriodicTable:symbol "Dy"^^xsd:string .
+
+PeriodicTable:Element
+	a owl:Class ;
+	rdfs:subClassOf [ a owl:Restriction ;
+			  owl:allValuesFrom xsd:integer ;
+			  owl:onProperty PeriodicTable:atomicNumber
+			] ,
+			[ a owl:Restriction ;
+			  owl:cardinality "1"^^xsd:nonNegativeInteger ;
+			  owl:onProperty PeriodicTable:atomicNumber
+			] ,
+			[ a owl:Restriction ;
+			  owl:allValuesFrom xsd:float ;
+			  owl:onProperty PeriodicTable:atomicWeight
+			] ,
+			[ a owl:Restriction ;
+			  owl:cardinality "1"^^xsd:nonNegativeInteger ;
+			  owl:onProperty PeriodicTable:atomicWeight
+			] ,
+			[ a owl:Restriction ;
+			  owl:allValuesFrom PeriodicTable:Group ;
+			  owl:onProperty PeriodicTable:group
+			] ,
+			[ a owl:Restriction ;
+			  owl:cardinality "1"^^xsd:nonNegativeInteger ;
+			  owl:onProperty PeriodicTable:group
+			] ,
+			[ a owl:Restriction ;
+			  owl:allValuesFrom PeriodicTable:Period ;
+			  owl:onProperty PeriodicTable:period
+			] ,
+			[ a owl:Restriction ;
+			  owl:cardinality "1"^^xsd:nonNegativeInteger ;
+			  owl:onProperty PeriodicTable:period
+			] ,
+			[ a owl:Restriction ;
+			  owl:allValuesFrom PeriodicTable:Block ;
+			  owl:onProperty PeriodicTable:block
+			] ,
+			[ a owl:Restriction ;
+			  owl:cardinality "1"^^xsd:nonNegativeInteger ;
+			  owl:onProperty PeriodicTable:block
+			] ,
+			[ a owl:Restriction ;
+			  owl:allValuesFrom PeriodicTable:StandardState ;
+			  owl:onProperty PeriodicTable:standardState
+			] ,
+			[ a owl:Restriction ;
+			  owl:allValuesFrom xsd:string ;
+			  owl:onProperty PeriodicTable:color
+			] ,
+			[ a owl:Restriction ;
+			  owl:allValuesFrom PeriodicTable:Classification ;
+			  owl:onProperty PeriodicTable:classification
+			] ,
+			[ a owl:Restriction ;
+			  owl:allValuesFrom xsd:string ;
+			  owl:onProperty PeriodicTable:name
+			] ,
+			[ a owl:Restriction ;
+			  owl:cardinality "1"^^xsd:nonNegativeInteger ;
+			  owl:onProperty PeriodicTable:name
+			] ,
+			[ a owl:Restriction ;
+			  owl:allValuesFrom xsd:string ;
+			  owl:onProperty PeriodicTable:symbol
+			] ,
+			[ a owl:Restriction ;
+			  owl:cardinality "1"^^xsd:nonNegativeInteger ;
+			  owl:onProperty PeriodicTable:symbol
+			] .
+
+PeriodicTable:Er
+	a PeriodicTable:Element ;
+	PeriodicTable:atomicNumber 68 ;
+	PeriodicTable:atomicWeight "167.259"^^xsd:float ;
+	PeriodicTable:block PeriodicTable:f-block ;
+	PeriodicTable:casRegistryID "7440-52-0"^^xsd:string ;
+	PeriodicTable:classification PeriodicTable:Metallic ;
+	PeriodicTable:color "silvery white"^^xsd:string ;
+	PeriodicTable:group PeriodicTable:group_lanthanoid ;
+	PeriodicTable:name "erbium"^^xsd:string ;
+	PeriodicTable:period PeriodicTable:period_6 ;
+	PeriodicTable:standardState PeriodicTable:solid ;
+	PeriodicTable:symbol "Er"^^xsd:string .
+
+PeriodicTable:Es
+	a PeriodicTable:Element ;
+	PeriodicTable:atomicNumber 99 ;
+	PeriodicTable:atomicWeight "252"^^xsd:float ;
+	PeriodicTable:block PeriodicTable:f-block ;
+	PeriodicTable:casRegistryID "7429-92-7"^^xsd:string ;
+	PeriodicTable:classification PeriodicTable:Metallic ;
+	PeriodicTable:color "unknown, but probably metallic and silvery white or grey in appearance"^^xsd:string ;
+	PeriodicTable:group PeriodicTable:group_actinoid ;
+	PeriodicTable:name "einsteinium"^^xsd:string ;
+	PeriodicTable:period PeriodicTable:period_7 ;
+	PeriodicTable:standardState PeriodicTable:solid ;
+	PeriodicTable:symbol "Es"^^xsd:string .
+
+PeriodicTable:Eu
+	a PeriodicTable:Element ;
+	PeriodicTable:atomicNumber 63 ;
+	PeriodicTable:atomicWeight "151.964"^^xsd:float ;
+	PeriodicTable:block PeriodicTable:f-block ;
+	PeriodicTable:casRegistryID "7440-53-1"^^xsd:string ;
+	PeriodicTable:classification PeriodicTable:Metallic ;
+	PeriodicTable:color "silvery white"^^xsd:string ;
+	PeriodicTable:group PeriodicTable:group_lanthanoid ;
+	PeriodicTable:name "europium"^^xsd:string ;
+	PeriodicTable:period PeriodicTable:period_6 ;
+	PeriodicTable:standardState PeriodicTable:solid ;
+	PeriodicTable:symbol "Eu"^^xsd:string .
+
+PeriodicTable:F
+	a PeriodicTable:Element ;
+	PeriodicTable:atomicNumber 9 ;
+	PeriodicTable:atomicWeight "18.9984032"^^xsd:float ;
+	PeriodicTable:block PeriodicTable:p-block ;
+	PeriodicTable:casRegistryID "7782-41-4"^^xsd:string ;
+	PeriodicTable:classification PeriodicTable:Non-metallic ;
+	PeriodicTable:color "pale yellow"^^xsd:string ;
+	PeriodicTable:group PeriodicTable:group_17 ;
+	PeriodicTable:name "fluorine"^^xsd:string ;
+	PeriodicTable:period PeriodicTable:period_2 ;
+	PeriodicTable:standardState PeriodicTable:gas ;
+	PeriodicTable:symbol "F"^^xsd:string .
+
+PeriodicTable:Fe
+	a PeriodicTable:Element ;
+	PeriodicTable:atomicNumber 26 ;
+	PeriodicTable:atomicWeight "55.845"^^xsd:float ;
+	PeriodicTable:block PeriodicTable:d-block ;
+	PeriodicTable:casRegistryID "7439-89-6"^^xsd:string ;
+	PeriodicTable:classification PeriodicTable:Metallic ;
+	PeriodicTable:color "lustrous, metallic, greyish tinge"^^xsd:string ;
+	PeriodicTable:group PeriodicTable:group_8 ;
+	PeriodicTable:name "iron"^^xsd:string ;
+	PeriodicTable:period PeriodicTable:period_4 ;
+	PeriodicTable:standardState PeriodicTable:solid ;
+	PeriodicTable:symbol "Fe"^^xsd:string .
+
+PeriodicTable:Fm
+	a PeriodicTable:Element ;
+	PeriodicTable:atomicNumber 100 ;
+	PeriodicTable:atomicWeight "257"^^xsd:float ;
+	PeriodicTable:block PeriodicTable:f-block ;
+	PeriodicTable:casRegistryID "7440-72-4"^^xsd:string ;
+	PeriodicTable:classification PeriodicTable:Metallic ;
+	PeriodicTable:color "unknown, but probably metallic and silvery white or grey in appearance"^^xsd:string ;
+	PeriodicTable:group PeriodicTable:group_actinoid ;
+	PeriodicTable:name "fermium"^^xsd:string ;
+	PeriodicTable:period PeriodicTable:period_7 ;
+	PeriodicTable:standardState PeriodicTable:solid ;
+	PeriodicTable:symbol "Fm"^^xsd:string .
+
+PeriodicTable:Fr
+	a PeriodicTable:Element ;
+	PeriodicTable:atomicNumber 87 ;
+	PeriodicTable:atomicWeight "223"^^xsd:float ;
+	PeriodicTable:block PeriodicTable:s-block ;
+	PeriodicTable:casRegistryID "7440-73-5"^^xsd:string ;
+	PeriodicTable:classification PeriodicTable:Metallic ;
+	PeriodicTable:color "metallic"^^xsd:string ;
+	PeriodicTable:group PeriodicTable:group_1 ;
+	PeriodicTable:name "francium"^^xsd:string ;
+	PeriodicTable:period PeriodicTable:period_7 ;
+	PeriodicTable:standardState PeriodicTable:solid ;
+	PeriodicTable:symbol "Fr"^^xsd:string .
+
+PeriodicTable:Ga
+	a PeriodicTable:Element ;
+	PeriodicTable:atomicNumber 31 ;
+	PeriodicTable:atomicWeight "69.723"^^xsd:float ;
+	PeriodicTable:block PeriodicTable:p-block ;
+	PeriodicTable:casRegistryID "7440-55-3"^^xsd:string ;
+	PeriodicTable:classification PeriodicTable:Metallic ;
+	PeriodicTable:color "silvery white"^^xsd:string ;
+	PeriodicTable:group PeriodicTable:group_13 ;
+	PeriodicTable:name "gallium"^^xsd:string ;
+	PeriodicTable:period PeriodicTable:period_4 ;
+	PeriodicTable:standardState PeriodicTable:solid ;
+	PeriodicTable:symbol "Ga"^^xsd:string .
+
+PeriodicTable:Gd
+	a PeriodicTable:Element ;
+	PeriodicTable:atomicNumber 64 ;
+	PeriodicTable:atomicWeight "157.25"^^xsd:float ;
+	PeriodicTable:block PeriodicTable:f-block ;
+	PeriodicTable:casRegistryID "7440-54-2"^^xsd:string ;
+	PeriodicTable:classification PeriodicTable:Metallic ;
+	PeriodicTable:color "silvery white"^^xsd:string ;
+	PeriodicTable:group PeriodicTable:group_lanthanoid ;
+	PeriodicTable:name "gadolinium"^^xsd:string ;
+	PeriodicTable:period PeriodicTable:period_6 ;
+	PeriodicTable:standardState PeriodicTable:solid ;
+	PeriodicTable:symbol "Gd"^^xsd:string .
+
+PeriodicTable:Ge
+	a PeriodicTable:Element ;
+	PeriodicTable:atomicNumber 32 ;
+	PeriodicTable:atomicWeight "72.64"^^xsd:float ;
+	PeriodicTable:block PeriodicTable:p-block ;
+	PeriodicTable:casRegistryID "7440-56-4"^^xsd:string ;
+	PeriodicTable:classification PeriodicTable:Semi-metallic ;
+	PeriodicTable:color "greyish white"^^xsd:string ;
+	PeriodicTable:group PeriodicTable:group_14 ;
+	PeriodicTable:name "germanium"^^xsd:string ;
+	PeriodicTable:period PeriodicTable:period_4 ;
+	PeriodicTable:standardState PeriodicTable:solid ;
+	PeriodicTable:symbol "Ge"^^xsd:string .
+
+PeriodicTable:Group
+	a owl:Class ;
+	rdfs:subClassOf [ a owl:Restriction ;
+			  owl:allValuesFrom xsd:integer ;
+			  owl:onProperty PeriodicTable:number
+			] ,
+			[ a owl:Restriction ;
+			  owl:allValuesFrom xsd:string ;
+			  owl:onProperty PeriodicTable:name
+			] ,
+			[ a owl:Restriction ;
+			  owl:allValuesFrom PeriodicTable:Element ;
+			  owl:onProperty PeriodicTable:element
+			] .
+
+PeriodicTable:H
+	a PeriodicTable:Element ;
+	PeriodicTable:atomicNumber 1 ;
+	PeriodicTable:atomicWeight "1.00794"^^xsd:float ;
+	PeriodicTable:block PeriodicTable:s-block ;
+	PeriodicTable:casRegistryID "1333-74-0"^^xsd:string ;
+	PeriodicTable:classification PeriodicTable:Non-metallic ;
+	PeriodicTable:color "colourless"^^xsd:string ;
+	PeriodicTable:group PeriodicTable:group_1 ;
+	PeriodicTable:name "hydrogen"^^xsd:string ;
+	PeriodicTable:period PeriodicTable:period_1 ;
+	PeriodicTable:standardState PeriodicTable:gas ;
+	PeriodicTable:symbol "H"^^xsd:string .
+
+PeriodicTable:He
+	a PeriodicTable:Element ;
+	PeriodicTable:atomicNumber 2 ;
+	PeriodicTable:atomicWeight "4.002602"^^xsd:float ;
+	PeriodicTable:block PeriodicTable:p-block ;
+	PeriodicTable:casRegistryID "7440-59-7"^^xsd:string ;
+	PeriodicTable:classification PeriodicTable:Non-metallic ;
+	PeriodicTable:color "colourless"^^xsd:string ;
+	PeriodicTable:group PeriodicTable:group_18 ;
+	PeriodicTable:name "helium"^^xsd:string ;
+	PeriodicTable:period PeriodicTable:period_1 ;
+	PeriodicTable:standardState PeriodicTable:gas ;
+	PeriodicTable:symbol "He"^^xsd:string .
+
+PeriodicTable:Hf
+	a PeriodicTable:Element ;
+	PeriodicTable:atomicNumber 72 ;
+	PeriodicTable:atomicWeight "178.49"^^xsd:float ;
+	PeriodicTable:block PeriodicTable:d-block ;
+	PeriodicTable:casRegistryID "7440-58-6"^^xsd:string ;
+	PeriodicTable:classification PeriodicTable:Metallic ;
+	PeriodicTable:color "grey steel"^^xsd:string ;
+	PeriodicTable:group PeriodicTable:group_4 ;
+	PeriodicTable:name "hafnium"^^xsd:string ;
+	PeriodicTable:period PeriodicTable:period_6 ;
+	PeriodicTable:standardState PeriodicTable:solid ;
+	PeriodicTable:symbol "Hf"^^xsd:string .
+
+PeriodicTable:Hg
+	a PeriodicTable:Element ;
+	PeriodicTable:atomicNumber 80 ;
+	PeriodicTable:atomicWeight "200.59"^^xsd:float ;
+	PeriodicTable:block PeriodicTable:d-block ;
+	PeriodicTable:casRegistryID "7439-97-6"^^xsd:string ;
+	PeriodicTable:classification PeriodicTable:Metallic ;
+	PeriodicTable:color "silvery white"^^xsd:string ;
+	PeriodicTable:group PeriodicTable:group_12 ;
+	PeriodicTable:name "mercury"^^xsd:string ;
+	PeriodicTable:period PeriodicTable:period_6 ;
+	PeriodicTable:standardState PeriodicTable:liquid ;
+	PeriodicTable:symbol "Hg"^^xsd:string .
+
+PeriodicTable:Ho
+	a PeriodicTable:Element ;
+	PeriodicTable:atomicNumber 67 ;
+	PeriodicTable:atomicWeight "164.93032"^^xsd:float ;
+	PeriodicTable:block PeriodicTable:f-block ;
+	PeriodicTable:casRegistryID "7440-60-0"^^xsd:string ;
+	PeriodicTable:classification PeriodicTable:Metallic ;
+	PeriodicTable:color "silvery white"^^xsd:string ;
+	PeriodicTable:group PeriodicTable:group_lanthanoid ;
+	PeriodicTable:name "holmium"^^xsd:string ;
+	PeriodicTable:period PeriodicTable:period_6 ;
+	PeriodicTable:standardState PeriodicTable:solid ;
+	PeriodicTable:symbol "Ho"^^xsd:string .
+
+PeriodicTable:Hs
+	a PeriodicTable:Element ;
+	PeriodicTable:atomicNumber 108 ;
+	PeriodicTable:atomicWeight "269"^^xsd:float ;
+	PeriodicTable:block PeriodicTable:d-block ;
+	PeriodicTable:casRegistryID "54037-57-9"^^xsd:string ;
+	PeriodicTable:classification PeriodicTable:Metallic ;
+	PeriodicTable:color "unknown, but probably metallic and silvery white or grey in appearance"^^xsd:string ;
+	PeriodicTable:group PeriodicTable:group_8 ;
+	PeriodicTable:name "hassium"^^xsd:string ;
+	PeriodicTable:period PeriodicTable:period_7 ;
+	PeriodicTable:standardState PeriodicTable:solid ;
+	PeriodicTable:symbol "Hs"^^xsd:string .
+
+PeriodicTable:I
+	a PeriodicTable:Element ;
+	PeriodicTable:atomicNumber 53 ;
+	PeriodicTable:atomicWeight "126.90447"^^xsd:float ;
+	PeriodicTable:block PeriodicTable:p-block ;
+	PeriodicTable:casRegistryID "7553-56-2"^^xsd:string ;
+	PeriodicTable:classification PeriodicTable:Non-metallic ;
+	PeriodicTable:color "violet-dark grey, lustrous"^^xsd:string ;
+	PeriodicTable:group PeriodicTable:group_17 ;
+	PeriodicTable:name "iodine"^^xsd:string ;
+	PeriodicTable:period PeriodicTable:period_5 ;
+	PeriodicTable:standardState PeriodicTable:solid ;
+	PeriodicTable:symbol "I"^^xsd:string .
+
+PeriodicTable:In
+	a PeriodicTable:Element ;
+	PeriodicTable:atomicNumber 49 ;
+	PeriodicTable:atomicWeight "114.818"^^xsd:float ;
+	PeriodicTable:block PeriodicTable:p-block ;
+	PeriodicTable:casRegistryID "7440-74-6"^^xsd:string ;
+	PeriodicTable:classification PeriodicTable:Metallic ;
+	PeriodicTable:color "silvery lustrous grey"^^xsd:string ;
+	PeriodicTable:group PeriodicTable:group_13 ;
+	PeriodicTable:name "indium"^^xsd:string ;
+	PeriodicTable:period PeriodicTable:period_5 ;
+	PeriodicTable:standardState PeriodicTable:solid ;
+	PeriodicTable:symbol "In"^^xsd:string .
+
+PeriodicTable:Ir
+	a PeriodicTable:Element ;
+	PeriodicTable:atomicNumber 77 ;
+	PeriodicTable:atomicWeight "192.217"^^xsd:float ;
+	PeriodicTable:block PeriodicTable:d-block ;
+	PeriodicTable:casRegistryID "7439-88-5"^^xsd:string ;
+	PeriodicTable:classification PeriodicTable:Metallic ;
+	PeriodicTable:color "silvery white"^^xsd:string ;
+	PeriodicTable:group PeriodicTable:group_9 ;
+	PeriodicTable:name "iridium"^^xsd:string ;
+	PeriodicTable:period PeriodicTable:period_6 ;
+	PeriodicTable:standardState PeriodicTable:solid ;
+	PeriodicTable:symbol "Ir"^^xsd:string .
+
+PeriodicTable:K
+	a PeriodicTable:Element ;
+	PeriodicTable:atomicNumber 19 ;
+	PeriodicTable:atomicWeight "39.0983"^^xsd:float ;
+	PeriodicTable:block PeriodicTable:s-block ;
+	PeriodicTable:casRegistryID "7440-09-7"^^xsd:string ;
+	PeriodicTable:classification PeriodicTable:Metallic ;
+	PeriodicTable:color "silvery white"^^xsd:string ;
+	PeriodicTable:group PeriodicTable:group_1 ;
+	PeriodicTable:name "potassium"^^xsd:string ;
+	PeriodicTable:period PeriodicTable:period_4 ;
+	PeriodicTable:standardState PeriodicTable:solid ;
+	PeriodicTable:symbol "K"^^xsd:string .
+
+PeriodicTable:Kr
+	a PeriodicTable:Element ;
+	PeriodicTable:atomicNumber 36 ;
+	PeriodicTable:atomicWeight "83.798"^^xsd:float ;
+	PeriodicTable:block PeriodicTable:p-block ;
+	PeriodicTable:casRegistryID "7439-90-9"^^xsd:string ;
+	PeriodicTable:classification PeriodicTable:Non-metallic ;
+	PeriodicTable:color "colourless"^^xsd:string ;
+	PeriodicTable:group PeriodicTable:group_18 ;
+	PeriodicTable:name "krypton"^^xsd:string ;
+	PeriodicTable:period PeriodicTable:period_4 ;
+	PeriodicTable:standardState PeriodicTable:gas ;
+	PeriodicTable:symbol "Kr"^^xsd:string .
+
+PeriodicTable:La
+	a PeriodicTable:Element ;
+	PeriodicTable:atomicNumber 57 ;
+	PeriodicTable:atomicWeight "138.9055"^^xsd:float ;
+	PeriodicTable:block PeriodicTable:f-block ;
+	PeriodicTable:casRegistryID "7439-91-0"^^xsd:string ;
+	PeriodicTable:classification PeriodicTable:Metallic ;
+	PeriodicTable:color "silvery white"^^xsd:string ;
+	PeriodicTable:group PeriodicTable:group_lanthanoid ;
+	PeriodicTable:name "lanthanum"^^xsd:string ;
+	PeriodicTable:period PeriodicTable:period_6 ;
+	PeriodicTable:standardState PeriodicTable:solid ;
+	PeriodicTable:symbol "La"^^xsd:string .
+
+PeriodicTable:Li
+	a PeriodicTable:Element ;
+	PeriodicTable:atomicNumber 3 ;
+	PeriodicTable:atomicWeight "6.941"^^xsd:float ;
+	PeriodicTable:block PeriodicTable:s-block ;
+	PeriodicTable:casRegistryID "7439-93-2"^^xsd:string ;
+	PeriodicTable:classification PeriodicTable:Metallic ;
+	PeriodicTable:color "silvery white/grey"^^xsd:string ;
+	PeriodicTable:group PeriodicTable:group_1 ;
+	PeriodicTable:name "lithium"^^xsd:string ;
+	PeriodicTable:period PeriodicTable:period_2 ;
+	PeriodicTable:standardState PeriodicTable:solid ;
+	PeriodicTable:symbol "Li"^^xsd:string .
+
+PeriodicTable:Lr
+	a PeriodicTable:Element ;
+	PeriodicTable:atomicNumber 103 ;
+	PeriodicTable:atomicWeight "262"^^xsd:float ;
+	PeriodicTable:block PeriodicTable:d-block ;
+	PeriodicTable:casRegistryID "22537-19-5"^^xsd:string ;
+	PeriodicTable:classification PeriodicTable:Metallic ;
+	PeriodicTable:color "unknown, but probably metallic and silvery white or grey in appearance"^^xsd:string ;
+	PeriodicTable:group PeriodicTable:group_3 ;
+	PeriodicTable:name "lawrencium"^^xsd:string ;
+	PeriodicTable:period PeriodicTable:period_7 ;
+	PeriodicTable:standardState PeriodicTable:solid ;
+	PeriodicTable:symbol "Lr"^^xsd:string .
+
+PeriodicTable:Lu
+	a PeriodicTable:Element ;
+	PeriodicTable:atomicNumber 71 ;
+	PeriodicTable:atomicWeight "174.967"^^xsd:float ;
+	PeriodicTable:block PeriodicTable:d-block ;
+	PeriodicTable:casRegistryID "7439-94-3"^^xsd:string ;
+	PeriodicTable:classification PeriodicTable:Metallic ;
+	PeriodicTable:color "silvery white"^^xsd:string ;
+	PeriodicTable:group PeriodicTable:group_3 ;
+	PeriodicTable:name "lutetium"^^xsd:string ;
+	PeriodicTable:period PeriodicTable:period_6 ;
+	PeriodicTable:standardState PeriodicTable:solid ;
+	PeriodicTable:symbol "Lu"^^xsd:string .
+
+PeriodicTable:Md
+	a PeriodicTable:Element ;
+	PeriodicTable:atomicNumber 101 ;
+	PeriodicTable:atomicWeight "258"^^xsd:float ;
+	PeriodicTable:block PeriodicTable:f-block ;
+	PeriodicTable:casRegistryID "7440-11-1"^^xsd:string ;
+	PeriodicTable:classification PeriodicTable:Metallic ;
+	PeriodicTable:color "unknown, but probably metallic and silvery white or grey in appearance"^^xsd:string ;
+	PeriodicTable:group PeriodicTable:group_actinoid ;
+	PeriodicTable:name "mendelevium"^^xsd:string ;
+	PeriodicTable:period PeriodicTable:period_7 ;
+	PeriodicTable:standardState PeriodicTable:solid ;
+	PeriodicTable:symbol "Md"^^xsd:string .
+
+PeriodicTable:Metallic
+	a PeriodicTable:Classification .
+
+PeriodicTable:Mg
+	a PeriodicTable:Element ;
+	PeriodicTable:atomicNumber 12 ;
+	PeriodicTable:atomicWeight "24.3050"^^xsd:float ;
+	PeriodicTable:block PeriodicTable:s-block ;
+	PeriodicTable:casRegistryID "7439-95-4"^^xsd:string ;
+	PeriodicTable:classification PeriodicTable:Metallic ;
+	PeriodicTable:color "silvery white"^^xsd:string ;
+	PeriodicTable:group PeriodicTable:group_2 ;
+	PeriodicTable:name "magnesium"^^xsd:string ;
+	PeriodicTable:period PeriodicTable:period_3 ;
+	PeriodicTable:standardState PeriodicTable:solid ;
+	PeriodicTable:symbol "Mg"^^xsd:string .
+
+PeriodicTable:Mn
+	a PeriodicTable:Element ;
+	PeriodicTable:atomicNumber 25 ;
+	PeriodicTable:atomicWeight "54.938049"^^xsd:float ;
+	PeriodicTable:block PeriodicTable:d-block ;
+	PeriodicTable:casRegistryID "7439-96-5"^^xsd:string ;
+	PeriodicTable:classification PeriodicTable:Metallic ;
+	PeriodicTable:color "silvery metallic"^^xsd:string ;
+	PeriodicTable:group PeriodicTable:group_7 ;
+	PeriodicTable:name "manganese"^^xsd:string ;
+	PeriodicTable:period PeriodicTable:period_4 ;
+	PeriodicTable:standardState PeriodicTable:solid ;
+	PeriodicTable:symbol "Mn"^^xsd:string .
+
+PeriodicTable:Mo
+	a PeriodicTable:Element ;
+	PeriodicTable:atomicNumber 42 ;
+	PeriodicTable:atomicWeight "95.94"^^xsd:float ;
+	PeriodicTable:block PeriodicTable:d-block ;
+	PeriodicTable:casRegistryID "7439-98-7"^^xsd:string ;
+	PeriodicTable:classification PeriodicTable:Metallic ;
+	PeriodicTable:color "grey metallic"^^xsd:string ;
+	PeriodicTable:group PeriodicTable:group_6 ;
+	PeriodicTable:name "molybdenum"^^xsd:string ;
+	PeriodicTable:period PeriodicTable:period_5 ;
+	PeriodicTable:standardState PeriodicTable:solid ;
+	PeriodicTable:symbol "Mo"^^xsd:string .
+
+PeriodicTable:Mt
+	a PeriodicTable:Element ;
+	PeriodicTable:atomicNumber 109 ;
+	PeriodicTable:atomicWeight "268"^^xsd:float ;
+	PeriodicTable:block PeriodicTable:d-block ;
+	PeriodicTable:casRegistryID "54038-01-6"^^xsd:string ;
+	PeriodicTable:classification PeriodicTable:Metallic ;
+	PeriodicTable:color "unknown, but probably metallic and silvery white or grey in appearance"^^xsd:string ;
+	PeriodicTable:group PeriodicTable:group_9 ;
+	PeriodicTable:name "meitnerium"^^xsd:string ;
+	PeriodicTable:period PeriodicTable:period_7 ;
+	PeriodicTable:standardState PeriodicTable:solid ;
+	PeriodicTable:symbol "Mt"^^xsd:string .
+
+PeriodicTable:N
+	a PeriodicTable:Element ;
+	PeriodicTable:atomicNumber 7 ;
+	PeriodicTable:atomicWeight "14.0067"^^xsd:float ;
+	PeriodicTable:block PeriodicTable:p-block ;
+	PeriodicTable:casRegistryID "7727-37-9"^^xsd:string ;
+	PeriodicTable:classification PeriodicTable:Non-metallic ;
+	PeriodicTable:color "colourless"^^xsd:string ;
+	PeriodicTable:group PeriodicTable:group_15 ;
+	PeriodicTable:name "nitrogen"^^xsd:string ;
+	PeriodicTable:period PeriodicTable:period_2 ;
+	PeriodicTable:standardState PeriodicTable:gas ;
+	PeriodicTable:symbol "N"^^xsd:string .
+
+PeriodicTable:Na
+	a PeriodicTable:Element ;
+	PeriodicTable:atomicNumber 11 ;
+	PeriodicTable:atomicWeight "22.989770"^^xsd:float ;
+	PeriodicTable:block PeriodicTable:s-block ;
+	PeriodicTable:casRegistryID "7440-23-5"^^xsd:string ;
+	PeriodicTable:classification PeriodicTable:Metallic ;
+	PeriodicTable:color "silvery white"^^xsd:string ;
+	PeriodicTable:group PeriodicTable:group_1 ;
+	PeriodicTable:name "sodium"^^xsd:string ;
+	PeriodicTable:period PeriodicTable:period_3 ;
+	PeriodicTable:standardState PeriodicTable:solid ;
+	PeriodicTable:symbol "Na"^^xsd:string .
+
+PeriodicTable:Nb
+	a PeriodicTable:Element ;
+	PeriodicTable:atomicNumber 41 ;
+	PeriodicTable:atomicWeight "92.90638"^^xsd:float ;
+	PeriodicTable:block PeriodicTable:d-block ;
+	PeriodicTable:casRegistryID "7440-03-1"^^xsd:string ;
+	PeriodicTable:classification PeriodicTable:Metallic ;
+	PeriodicTable:color "grey metallic"^^xsd:string ;
+	PeriodicTable:group PeriodicTable:group_5 ;
+	PeriodicTable:name "niobium"^^xsd:string ;
+	PeriodicTable:period PeriodicTable:period_5 ;
+	PeriodicTable:standardState PeriodicTable:solid ;
+	PeriodicTable:symbol "Nb"^^xsd:string .
+
+PeriodicTable:Nd
+	a PeriodicTable:Element ;
+	PeriodicTable:atomicNumber 60 ;
+	PeriodicTable:atomicWeight "144.24"^^xsd:float ;
+	PeriodicTable:block PeriodicTable:f-block ;
+	PeriodicTable:casRegistryID "7440-00-8"^^xsd:string ;
+	PeriodicTable:classification PeriodicTable:Metallic ;
+	PeriodicTable:color "silvery white, yellowish tinge"^^xsd:string ;
+	PeriodicTable:group PeriodicTable:group_lanthanoid ;
+	PeriodicTable:name "neodymium"^^xsd:string ;
+	PeriodicTable:period PeriodicTable:period_6 ;
+	PeriodicTable:standardState PeriodicTable:solid ;
+	PeriodicTable:symbol "Nd"^^xsd:string .
+
+PeriodicTable:Ne
+	a PeriodicTable:Element ;
+	PeriodicTable:atomicNumber 10 ;
+	PeriodicTable:atomicWeight "20.1797"^^xsd:float ;
+	PeriodicTable:block PeriodicTable:p-block ;
+	PeriodicTable:casRegistryID "7440-01-9"^^xsd:string ;
+	PeriodicTable:classification PeriodicTable:Non-metallic ;
+	PeriodicTable:color "colourless"^^xsd:string ;
+	PeriodicTable:group PeriodicTable:group_18 ;
+	PeriodicTable:name "neon"^^xsd:string ;
+	PeriodicTable:period PeriodicTable:period_2 ;
+	PeriodicTable:standardState PeriodicTable:gas ;
+	PeriodicTable:symbol "Ne"^^xsd:string .
+
+PeriodicTable:Ni
+	a PeriodicTable:Element ;
+	PeriodicTable:atomicNumber 28 ;
+	PeriodicTable:atomicWeight "58.6934"^^xsd:float ;
+	PeriodicTable:block PeriodicTable:d-block ;
+	PeriodicTable:casRegistryID "7440-02-0"^^xsd:string ;
+	PeriodicTable:classification PeriodicTable:Metallic ;
+	PeriodicTable:color "lustrous, metallic, silvery tinge"^^xsd:string ;
+	PeriodicTable:group PeriodicTable:group_10 ;
+	PeriodicTable:name "nickel"^^xsd:string ;
+	PeriodicTable:period PeriodicTable:period_4 ;
+	PeriodicTable:standardState PeriodicTable:solid ;
+	PeriodicTable:symbol "Ni"^^xsd:string .
+
+PeriodicTable:No
+	a PeriodicTable:Element ;
+	PeriodicTable:atomicNumber 102 ;
+	PeriodicTable:atomicWeight "259"^^xsd:float ;
+	PeriodicTable:block PeriodicTable:f-block ;
+	PeriodicTable:casRegistryID "10028-14-5"^^xsd:string ;
+	PeriodicTable:classification PeriodicTable:Metallic ;
+	PeriodicTable:color "unknown, but probably metallic and silvery white or grey in appearance"^^xsd:string ;
+	PeriodicTable:group PeriodicTable:group_actinoid ;
+	PeriodicTable:name "nobelium"^^xsd:string ;
+	PeriodicTable:period PeriodicTable:period_7 ;
+	PeriodicTable:standardState PeriodicTable:solid ;
+	PeriodicTable:symbol "No"^^xsd:string .
+
+PeriodicTable:Non-metallic
+	a PeriodicTable:Classification .
+
+PeriodicTable:Np
+	a PeriodicTable:Element ;
+	PeriodicTable:atomicNumber 93 ;
+	PeriodicTable:atomicWeight "237"^^xsd:float ;
+	PeriodicTable:block PeriodicTable:f-block ;
+	PeriodicTable:casRegistryID "7439-99-8"^^xsd:string ;
+	PeriodicTable:classification PeriodicTable:Metallic ;
+	PeriodicTable:color "silvery metallic"^^xsd:string ;
+	PeriodicTable:group PeriodicTable:group_actinoid ;
+	PeriodicTable:name "neptunium"^^xsd:string ;
+	PeriodicTable:period PeriodicTable:period_7 ;
+	PeriodicTable:standardState PeriodicTable:solid ;
+	PeriodicTable:symbol "Np"^^xsd:string .
+
+PeriodicTable:O
+	a PeriodicTable:Element ;
+	PeriodicTable:atomicNumber 8 ;
+	PeriodicTable:atomicWeight "15.9994"^^xsd:float ;
+	PeriodicTable:block PeriodicTable:p-block ;
+	PeriodicTable:casRegistryID "7782-44-7"^^xsd:string ;
+	PeriodicTable:classification PeriodicTable:Non-metallic ;
+	PeriodicTable:color "colourless as a gas, liquid is pale blue"^^xsd:string ;
+	PeriodicTable:group PeriodicTable:group_16 ;
+	PeriodicTable:name "oxygen"^^xsd:string ;
+	PeriodicTable:period PeriodicTable:period_2 ;
+	PeriodicTable:standardState PeriodicTable:gas ;
+	PeriodicTable:symbol "O"^^xsd:string .
+
+PeriodicTable:Os
+	a PeriodicTable:Element ;
+	PeriodicTable:atomicNumber 76 ;
+	PeriodicTable:atomicWeight "190.23"^^xsd:float ;
+	PeriodicTable:block PeriodicTable:d-block ;
+	PeriodicTable:casRegistryID "7440-04-2"^^xsd:string ;
+	PeriodicTable:classification PeriodicTable:Metallic ;
+	PeriodicTable:color "bluish grey"^^xsd:string ;
+	PeriodicTable:group PeriodicTable:group_8 ;
+	PeriodicTable:name "osmium"^^xsd:string ;
+	PeriodicTable:period PeriodicTable:period_6 ;
+	PeriodicTable:standardState PeriodicTable:solid ;
+	PeriodicTable:symbol "Os"^^xsd:string .
+
+PeriodicTable:P
+	a PeriodicTable:Element ;
+	PeriodicTable:atomicNumber 15 ;
+	PeriodicTable:atomicWeight "30.973761"^^xsd:float ;
+	PeriodicTable:block PeriodicTable:p-block ;
+	PeriodicTable:casRegistryID "7723-14-0"^^xsd:string ;
+	PeriodicTable:classification PeriodicTable:Non-metallic ;
+	PeriodicTable:color "colourless/red/silvery white"^^xsd:string ;
+	PeriodicTable:group PeriodicTable:group_15 ;
+	PeriodicTable:name "phosphorus"^^xsd:string ;
+	PeriodicTable:period PeriodicTable:period_3 ;
+	PeriodicTable:standardState PeriodicTable:solid ;
+	PeriodicTable:symbol "P"^^xsd:string .
+
+PeriodicTable:Pa
+	a PeriodicTable:Element ;
+	PeriodicTable:atomicNumber 91 ;
+	PeriodicTable:atomicWeight "231.03588"^^xsd:float ;
+	PeriodicTable:block PeriodicTable:f-block ;
+	PeriodicTable:casRegistryID "7440-13-3"^^xsd:string ;
+	PeriodicTable:classification PeriodicTable:Metallic ;
+	PeriodicTable:color "silvery metallic"^^xsd:string ;
+	PeriodicTable:group PeriodicTable:group_actinoid ;
+	PeriodicTable:name "protactinium"^^xsd:string ;
+	PeriodicTable:period PeriodicTable:period_7 ;
+	PeriodicTable:standardState PeriodicTable:solid ;
+	PeriodicTable:symbol "Pa"^^xsd:string .
+
+PeriodicTable:Pb
+	a PeriodicTable:Element ;
+	PeriodicTable:atomicNumber 82 ;
+	PeriodicTable:atomicWeight "207.2"^^xsd:float ;
+	PeriodicTable:block PeriodicTable:p-block ;
+	PeriodicTable:casRegistryID "7439-92-1"^^xsd:string ;
+	PeriodicTable:classification PeriodicTable:Metallic ;
+	PeriodicTable:color "bluish white"^^xsd:string ;
+	PeriodicTable:group PeriodicTable:group_14 ;
+	PeriodicTable:name "lead"^^xsd:string ;
+	PeriodicTable:period PeriodicTable:period_6 ;
+	PeriodicTable:standardState PeriodicTable:solid ;
+	PeriodicTable:symbol "Pb"^^xsd:string .
+
+PeriodicTable:Pd
+	a PeriodicTable:Element ;
+	PeriodicTable:atomicNumber 46 ;
+	PeriodicTable:atomicWeight "106.42"^^xsd:float ;
+	PeriodicTable:block PeriodicTable:d-block ;
+	PeriodicTable:casRegistryID "7440-05-3"^^xsd:string ;
+	PeriodicTable:classification PeriodicTable:Metallic ;
+	PeriodicTable:color "silvery white metallic"^^xsd:string ;
+	PeriodicTable:group PeriodicTable:group_10 ;
+	PeriodicTable:name "palladium"^^xsd:string ;
+	PeriodicTable:period PeriodicTable:period_5 ;
+	PeriodicTable:standardState PeriodicTable:solid ;
+	PeriodicTable:symbol "Pd"^^xsd:string .
+
+PeriodicTable:Period
+	a owl:Class ;
+	rdfs:subClassOf [ a owl:Restriction ;
+			  owl:allValuesFrom xsd:integer ;
+			  owl:onProperty PeriodicTable:number
+			] ,
+			[ a owl:Restriction ;
+			  owl:allValuesFrom PeriodicTable:Element ;
+			  owl:onProperty PeriodicTable:element
+			] .
+
+PeriodicTable:Pm
+	a PeriodicTable:Element ;
+	PeriodicTable:atomicNumber 61 ;
+	PeriodicTable:atomicWeight "145"^^xsd:float ;
+	PeriodicTable:block PeriodicTable:f-block ;
+	PeriodicTable:casRegistryID "7440-12-2"^^xsd:string ;
+	PeriodicTable:classification PeriodicTable:Metallic ;
+	PeriodicTable:color "metallic"^^xsd:string ;
+	PeriodicTable:group PeriodicTable:group_lanthanoid ;
+	PeriodicTable:name "promethium"^^xsd:string ;
+	PeriodicTable:period PeriodicTable:period_6 ;
+	PeriodicTable:standardState PeriodicTable:solid ;
+	PeriodicTable:symbol "Pm"^^xsd:string .
+
+PeriodicTable:Po
+	a PeriodicTable:Element ;
+	PeriodicTable:atomicNumber 84 ;
+	PeriodicTable:atomicWeight "209"^^xsd:float ;
+	PeriodicTable:block PeriodicTable:p-block ;
+	PeriodicTable:casRegistryID "7440-08-6"^^xsd:string ;
+	PeriodicTable:classification PeriodicTable:Metallic ;
+	PeriodicTable:color "silvery"^^xsd:string ;
+	PeriodicTable:group PeriodicTable:group_16 ;
+	PeriodicTable:name "polonium"^^xsd:string ;
+	PeriodicTable:period PeriodicTable:period_6 ;
+	PeriodicTable:standardState PeriodicTable:solid ;
+	PeriodicTable:symbol "Po"^^xsd:string .
+
+PeriodicTable:Pr
+	a PeriodicTable:Element ;
+	PeriodicTable:atomicNumber 59 ;
+	PeriodicTable:atomicWeight "140.90765"^^xsd:float ;
+	PeriodicTable:block PeriodicTable:f-block ;
+	PeriodicTable:casRegistryID "7440-10-0"^^xsd:string ;
+	PeriodicTable:classification PeriodicTable:Metallic ;
+	PeriodicTable:color "silvery white, yellowish tinge"^^xsd:string ;
+	PeriodicTable:group PeriodicTable:group_lanthanoid ;
+	PeriodicTable:name "praseodymium"^^xsd:string ;
+	PeriodicTable:period PeriodicTable:period_6 ;
+	PeriodicTable:standardState PeriodicTable:solid ;
+	PeriodicTable:symbol "Pr"^^xsd:string .
+
+PeriodicTable:Pt
+	a PeriodicTable:Element ;
+	PeriodicTable:atomicNumber 78 ;
+	PeriodicTable:atomicWeight "195.078"^^xsd:float ;
+	PeriodicTable:block PeriodicTable:d-block ;
+	PeriodicTable:casRegistryID "7440-06-4"^^xsd:string ;
+	PeriodicTable:classification PeriodicTable:Metallic ;
+	PeriodicTable:color "greyish white"^^xsd:string ;
+	PeriodicTable:group PeriodicTable:group_10 ;
+	PeriodicTable:name "platinum"^^xsd:string ;
+	PeriodicTable:period PeriodicTable:period_6 ;
+	PeriodicTable:standardState PeriodicTable:solid ;
+	PeriodicTable:symbol "Pt"^^xsd:string .
+
+PeriodicTable:Pu
+	a PeriodicTable:Element ;
+	PeriodicTable:atomicNumber 94 ;
+	PeriodicTable:atomicWeight "244"^^xsd:float ;
+	PeriodicTable:block PeriodicTable:f-block ;
+	PeriodicTable:casRegistryID "7440-07-5"^^xsd:string ;
+	PeriodicTable:classification PeriodicTable:Metallic ;
+	PeriodicTable:color "silvery white"^^xsd:string ;
+	PeriodicTable:group PeriodicTable:group_actinoid ;
+	PeriodicTable:name "plutonium"^^xsd:string ;
+	PeriodicTable:period PeriodicTable:period_7 ;
+	PeriodicTable:standardState PeriodicTable:solid ;
+	PeriodicTable:symbol "Pu"^^xsd:string .
+
+PeriodicTable:Ra
+	a PeriodicTable:Element ;
+	PeriodicTable:atomicNumber 88 ;
+	PeriodicTable:atomicWeight "226"^^xsd:float ;
+	PeriodicTable:block PeriodicTable:s-block ;
+	PeriodicTable:casRegistryID "7440-14-4"^^xsd:string ;
+	PeriodicTable:classification PeriodicTable:Metallic ;
+	PeriodicTable:color "metallic"^^xsd:string ;
+	PeriodicTable:group PeriodicTable:group_2 ;
+	PeriodicTable:name "radium"^^xsd:string ;
+	PeriodicTable:period PeriodicTable:period_7 ;
+	PeriodicTable:standardState PeriodicTable:solid ;
+	PeriodicTable:symbol "Ra"^^xsd:string .
+
+PeriodicTable:Rb
+	a PeriodicTable:Element ;
+	PeriodicTable:atomicNumber 37 ;
+	PeriodicTable:atomicWeight "85.4678"^^xsd:float ;
+	PeriodicTable:block PeriodicTable:s-block ;
+	PeriodicTable:casRegistryID "7440-17-7"^^xsd:string ;
+	PeriodicTable:classification PeriodicTable:Metallic ;
+	PeriodicTable:color "silvery white"^^xsd:string ;
+	PeriodicTable:group PeriodicTable:group_1 ;
+	PeriodicTable:name "rubidium"^^xsd:string ;
+	PeriodicTable:period PeriodicTable:period_5 ;
+	PeriodicTable:standardState PeriodicTable:solid ;
+	PeriodicTable:symbol "Rb"^^xsd:string .
+
+PeriodicTable:Re
+	a PeriodicTable:Element ;
+	PeriodicTable:atomicNumber 75 ;
+	PeriodicTable:atomicWeight "186.207"^^xsd:float ;
+	PeriodicTable:block PeriodicTable:d-block ;
+	PeriodicTable:casRegistryID "7440-15-5"^^xsd:string ;
+	PeriodicTable:classification PeriodicTable:Metallic ;
+	PeriodicTable:color "greyish white"^^xsd:string ;
+	PeriodicTable:group PeriodicTable:group_7 ;
+	PeriodicTable:name "rhenium"^^xsd:string ;
+	PeriodicTable:period PeriodicTable:period_6 ;
+	PeriodicTable:standardState PeriodicTable:solid ;
+	PeriodicTable:symbol "Re"^^xsd:string .
+
+PeriodicTable:Rf
+	a PeriodicTable:Element ;
+	PeriodicTable:atomicNumber 104 ;
+	PeriodicTable:atomicWeight "261"^^xsd:float ;
+	PeriodicTable:block PeriodicTable:d-block ;
+	PeriodicTable:casRegistryID "53850-36-5"^^xsd:string ;
+	PeriodicTable:classification PeriodicTable:Metallic ;
+	PeriodicTable:color "unknown, but probably metallic and silvery white or grey in appearance"^^xsd:string ;
+	PeriodicTable:group PeriodicTable:group_4 ;
+	PeriodicTable:name "rutherfordium"^^xsd:string ;
+	PeriodicTable:period PeriodicTable:period_7 ;
+	PeriodicTable:standardState PeriodicTable:solid ;
+	PeriodicTable:symbol "Rf"^^xsd:string .
+
+PeriodicTable:Rh
+	a PeriodicTable:Element ;
+	PeriodicTable:atomicNumber 45 ;
+	PeriodicTable:atomicWeight "102.90550"^^xsd:float ;
+	PeriodicTable:block PeriodicTable:d-block ;
+	PeriodicTable:casRegistryID "7440-16-6"^^xsd:string ;
+	PeriodicTable:classification PeriodicTable:Metallic ;
+	PeriodicTable:color "silvery white metallic"^^xsd:string ;
+	PeriodicTable:group PeriodicTable:group_9 ;
+	PeriodicTable:name "rhodium"^^xsd:string ;
+	PeriodicTable:period PeriodicTable:period_5 ;
+	PeriodicTable:standardState PeriodicTable:solid ;
+	PeriodicTable:symbol "Rh"^^xsd:string .
+
+PeriodicTable:Rn
+	a PeriodicTable:Element ;
+	PeriodicTable:atomicNumber 86 ;
+	PeriodicTable:atomicWeight "222"^^xsd:float ;
+	PeriodicTable:block PeriodicTable:p-block ;
+	PeriodicTable:casRegistryID "10043-92-2"^^xsd:string ;
+	PeriodicTable:classification PeriodicTable:Non-metallic ;
+	PeriodicTable:color "colourless"^^xsd:string ;
+	PeriodicTable:group PeriodicTable:group_18 ;
+	PeriodicTable:name "radon"^^xsd:string ;
+	PeriodicTable:period PeriodicTable:period_6 ;
+	PeriodicTable:standardState PeriodicTable:gas ;
+	PeriodicTable:symbol "Rn"^^xsd:string .
+
+PeriodicTable:Ru
+	a PeriodicTable:Element ;
+	PeriodicTable:atomicNumber 44 ;
+	PeriodicTable:atomicWeight "101.07"^^xsd:float ;
+	PeriodicTable:block PeriodicTable:d-block ;
+	PeriodicTable:casRegistryID "7440-18-8"^^xsd:string ;
+	PeriodicTable:classification PeriodicTable:Metallic ;
+	PeriodicTable:color "silvery white metallic"^^xsd:string ;
+	PeriodicTable:group PeriodicTable:group_8 ;
+	PeriodicTable:name "ruthenium"^^xsd:string ;
+	PeriodicTable:period PeriodicTable:period_5 ;
+	PeriodicTable:standardState PeriodicTable:solid ;
+	PeriodicTable:symbol "Ru"^^xsd:string .
+
+PeriodicTable:S
+	a PeriodicTable:Element ;
+	PeriodicTable:atomicNumber 16 ;
+	PeriodicTable:atomicWeight "32.065"^^xsd:float ;
+	PeriodicTable:block PeriodicTable:p-block ;
+	PeriodicTable:casRegistryID "7704-34-9"^^xsd:string ;
+	PeriodicTable:classification PeriodicTable:Non-metallic ;
+	PeriodicTable:color "lemon yellow"^^xsd:string ;
+	PeriodicTable:group PeriodicTable:group_16 ;
+	PeriodicTable:name "sulpher"^^xsd:string ;
+	PeriodicTable:period PeriodicTable:period_3 ;
+	PeriodicTable:standardState PeriodicTable:solid ;
+	PeriodicTable:symbol "S"^^xsd:string .
+
+PeriodicTable:Sb
+	a PeriodicTable:Element ;
+	PeriodicTable:atomicNumber 51 ;
+	PeriodicTable:atomicWeight "121.760"^^xsd:float ;
+	PeriodicTable:block PeriodicTable:p-block ;
+	PeriodicTable:casRegistryID "7440-36-0"^^xsd:string ;
+	PeriodicTable:classification PeriodicTable:Semi-metallic ;
+	PeriodicTable:color "silvery lustrous grey"^^xsd:string ;
+	PeriodicTable:group PeriodicTable:group_15 ;
+	PeriodicTable:name "antimony"^^xsd:string ;
+	PeriodicTable:period PeriodicTable:period_5 ;
+	PeriodicTable:standardState PeriodicTable:solid ;
+	PeriodicTable:symbol "Sb"^^xsd:string .
+
+PeriodicTable:Sc
+	a PeriodicTable:Element ;
+	PeriodicTable:atomicNumber 21 ;
+	PeriodicTable:atomicWeight "44.955910"^^xsd:float ;
+	PeriodicTable:block PeriodicTable:d-block ;
+	PeriodicTable:casRegistryID "7440-20-2"^^xsd:string ;
+	PeriodicTable:classification PeriodicTable:Metallic ;
+	PeriodicTable:color "silvery white"^^xsd:string ;
+	PeriodicTable:group PeriodicTable:group_3 ;
+	PeriodicTable:name "scandium"^^xsd:string ;
+	PeriodicTable:period PeriodicTable:period_4 ;
+	PeriodicTable:standardState PeriodicTable:solid ;
+	PeriodicTable:symbol "Sc"^^xsd:string .
+
+PeriodicTable:Se
+	a PeriodicTable:Element ;
+	PeriodicTable:atomicNumber 34 ;
+	PeriodicTable:atomicWeight "78.96"^^xsd:float ;
+	PeriodicTable:block PeriodicTable:p-block ;
+	PeriodicTable:casRegistryID "7782-49-2"^^xsd:string ;
+	PeriodicTable:classification PeriodicTable:Non-metallic ;
+	PeriodicTable:color "grey, metallic lustre"^^xsd:string ;
+	PeriodicTable:group PeriodicTable:group_16 ;
+	PeriodicTable:name "selenium"^^xsd:string ;
+	PeriodicTable:period PeriodicTable:period_4 ;
+	PeriodicTable:standardState PeriodicTable:solid ;
+	PeriodicTable:symbol "Se"^^xsd:string .
+
+PeriodicTable:Semi-metallic
+	a PeriodicTable:Classification .
+
+PeriodicTable:Sg
+	a PeriodicTable:Element ;
+	PeriodicTable:atomicNumber 106 ;
+	PeriodicTable:atomicWeight "266"^^xsd:float ;
+	PeriodicTable:block PeriodicTable:d-block ;
+	PeriodicTable:casRegistryID "54038-81-2"^^xsd:string ;
+	PeriodicTable:classification PeriodicTable:Metallic ;
+	PeriodicTable:color "unknown, but probably metallic and silvery white or grey in appearance"^^xsd:string ;
+	PeriodicTable:group PeriodicTable:group_6 ;
+	PeriodicTable:name "seaborgium"^^xsd:string ;
+	PeriodicTable:period PeriodicTable:period_7 ;
+	PeriodicTable:standardState PeriodicTable:solid ;
+	PeriodicTable:symbol "Sg"^^xsd:string .
+
+PeriodicTable:Si
+	a PeriodicTable:Element ;
+	PeriodicTable:atomicNumber 14 ;
+	PeriodicTable:atomicWeight "28.0855"^^xsd:float ;
+	PeriodicTable:block PeriodicTable:p-block ;
+	PeriodicTable:casRegistryID "7440-21-3"^^xsd:string ;
+	PeriodicTable:classification PeriodicTable:Semi-metallic ;
+	PeriodicTable:color "dark grey with a bluish tinge"^^xsd:string ;
+	PeriodicTable:group PeriodicTable:group_14 ;
+	PeriodicTable:name "silicon"^^xsd:string ;
+	PeriodicTable:period PeriodicTable:period_3 ;
+	PeriodicTable:standardState PeriodicTable:solid ;
+	PeriodicTable:symbol "Si"^^xsd:string .
+
+PeriodicTable:Sm
+	a PeriodicTable:Element ;
+	PeriodicTable:atomicNumber 62 ;
+	PeriodicTable:atomicWeight "150.36"^^xsd:float ;
+	PeriodicTable:block PeriodicTable:f-block ;
+	PeriodicTable:casRegistryID "7440-19-9"^^xsd:string ;
+	PeriodicTable:classification PeriodicTable:Metallic ;
+	PeriodicTable:color "silvery white"^^xsd:string ;
+	PeriodicTable:group PeriodicTable:group_lanthanoid ;
+	PeriodicTable:name "samarium"^^xsd:string ;
+	PeriodicTable:period PeriodicTable:period_6 ;
+	PeriodicTable:standardState PeriodicTable:solid ;
+	PeriodicTable:symbol "Sm"^^xsd:string .
+
+PeriodicTable:Sn
+	a PeriodicTable:Element ;
+	PeriodicTable:atomicNumber 50 ;
+	PeriodicTable:atomicWeight "118.710"^^xsd:float ;
+	PeriodicTable:block PeriodicTable:p-block ;
+	PeriodicTable:casRegistryID "7440-31-5"^^xsd:string ;
+	PeriodicTable:classification PeriodicTable:Metallic ;
+	PeriodicTable:color "silvery lustrous grey"^^xsd:string ;
+	PeriodicTable:group PeriodicTable:group_14 ;
+	PeriodicTable:name "tin"^^xsd:string ;
+	PeriodicTable:period PeriodicTable:period_5 ;
+	PeriodicTable:standardState PeriodicTable:solid ;
+	PeriodicTable:symbol "Sn"^^xsd:string .
+
+PeriodicTable:Sr
+	a PeriodicTable:Element ;
+	PeriodicTable:atomicNumber 38 ;
+	PeriodicTable:atomicWeight "87.62"^^xsd:float ;
+	PeriodicTable:block PeriodicTable:s-block ;
+	PeriodicTable:casRegistryID "7440-24-6"^^xsd:string ;
+	PeriodicTable:classification PeriodicTable:Metallic ;
+	PeriodicTable:color "silvery white"^^xsd:string ;
+	PeriodicTable:group PeriodicTable:group_2 ;
+	PeriodicTable:name "strontium"^^xsd:string ;
+	PeriodicTable:period PeriodicTable:period_5 ;
+	PeriodicTable:standardState PeriodicTable:solid ;
+	PeriodicTable:symbol "Sr"^^xsd:string .
+
+PeriodicTable:StandardState
+	a owl:Class ;
+	owl:oneOf ( PeriodicTable:state_unknown
+		    PeriodicTable:gas
+		    PeriodicTable:solid
+		    PeriodicTable:liquid
+		  ) .
+
+PeriodicTable:Ta
+	a PeriodicTable:Element ;
+	PeriodicTable:atomicNumber 73 ;
+	PeriodicTable:atomicWeight "180.9479"^^xsd:float ;
+	PeriodicTable:block PeriodicTable:d-block ;
+	PeriodicTable:casRegistryID "7440-25-7"^^xsd:string ;
+	PeriodicTable:classification PeriodicTable:Metallic ;
+	PeriodicTable:color "grey blue"^^xsd:string ;
+	PeriodicTable:group PeriodicTable:group_5 ;
+	PeriodicTable:name "tantalum"^^xsd:string ;
+	PeriodicTable:period PeriodicTable:period_6 ;
+	PeriodicTable:standardState PeriodicTable:solid ;
+	PeriodicTable:symbol "Ta"^^xsd:string .
+
+PeriodicTable:Tb
+	a PeriodicTable:Element ;
+	PeriodicTable:atomicNumber 65 ;
+	PeriodicTable:atomicWeight "158.92534"^^xsd:float ;
+	PeriodicTable:block PeriodicTable:f-block ;
+	PeriodicTable:casRegistryID "7440-27-9"^^xsd:string ;
+	PeriodicTable:classification PeriodicTable:Metallic ;
+	PeriodicTable:color "silvery white"^^xsd:string ;
+	PeriodicTable:group PeriodicTable:group_lanthanoid ;
+	PeriodicTable:name "terbium"^^xsd:string ;
+	PeriodicTable:period PeriodicTable:period_6 ;
+	PeriodicTable:standardState PeriodicTable:solid ;
+	PeriodicTable:symbol "Tb"^^xsd:string .
+
+PeriodicTable:Tc
+	a PeriodicTable:Element ;
+	PeriodicTable:atomicNumber 43 ;
+	PeriodicTable:atomicWeight "98"^^xsd:float ;
+	PeriodicTable:block PeriodicTable:d-block ;
+	PeriodicTable:casRegistryID "7440-26-8"^^xsd:string ;
+	PeriodicTable:classification PeriodicTable:Metallic ;
+	PeriodicTable:color "silvery grey metallic"^^xsd:string ;
+	PeriodicTable:group PeriodicTable:group_7 ;
+	PeriodicTable:name "technetium"^^xsd:string ;
+	PeriodicTable:period PeriodicTable:period_5 ;
+	PeriodicTable:standardState PeriodicTable:solid ;
+	PeriodicTable:symbol "Tc"^^xsd:string .
+
+PeriodicTable:Te
+	a PeriodicTable:Element ;
+	PeriodicTable:atomicNumber 52 ;
+	PeriodicTable:atomicWeight "127.60"^^xsd:float ;
+	PeriodicTable:block PeriodicTable:p-block ;
+	PeriodicTable:casRegistryID "13494-80-9"^^xsd:string ;
+	PeriodicTable:classification PeriodicTable:Semi-metallic ;
+	PeriodicTable:color "silvery lustrous grey"^^xsd:string ;
+	PeriodicTable:group PeriodicTable:group_16 ;
+	PeriodicTable:name "tellurium"^^xsd:string ;
+	PeriodicTable:period PeriodicTable:period_5 ;
+	PeriodicTable:standardState PeriodicTable:solid ;
+	PeriodicTable:symbol "Te"^^xsd:string .
+
+PeriodicTable:Th
+	a PeriodicTable:Element ;
+	PeriodicTable:atomicNumber 90 ;
+	PeriodicTable:atomicWeight "232.0381"^^xsd:float ;
+	PeriodicTable:block PeriodicTable:f-block ;
+	PeriodicTable:casRegistryID "7440-29-1"^^xsd:string ;
+	PeriodicTable:classification PeriodicTable:Metallic ;
+	PeriodicTable:color "silvery white"^^xsd:string ;
+	PeriodicTable:group PeriodicTable:group_actinoid ;
+	PeriodicTable:name "thorium"^^xsd:string ;
+	PeriodicTable:period PeriodicTable:period_7 ;
+	PeriodicTable:standardState PeriodicTable:solid ;
+	PeriodicTable:symbol "Th"^^xsd:string .
+
+PeriodicTable:Ti
+	a PeriodicTable:Element ;
+	PeriodicTable:atomicNumber 22 ;
+	PeriodicTable:atomicWeight "47.867"^^xsd:float ;
+	PeriodicTable:block PeriodicTable:d-block ;
+	PeriodicTable:casRegistryID "7440-32-6"^^xsd:string ;
+	PeriodicTable:classification PeriodicTable:Metallic ;
+	PeriodicTable:color "silvery metallic"^^xsd:string ;
+	PeriodicTable:group PeriodicTable:group_4 ;
+	PeriodicTable:name "titanium"^^xsd:string ;
+	PeriodicTable:period PeriodicTable:period_4 ;
+	PeriodicTable:standardState PeriodicTable:solid ;
+	PeriodicTable:symbol "Ti"^^xsd:string .
+
+PeriodicTable:Tl
+	a PeriodicTable:Element ;
+	PeriodicTable:atomicNumber 81 ;
+	PeriodicTable:atomicWeight "204.3833"^^xsd:float ;
+	PeriodicTable:block PeriodicTable:p-block ;
+	PeriodicTable:casRegistryID "7440-28-0"^^xsd:string ;
+	PeriodicTable:classification PeriodicTable:Metallic ;
+	PeriodicTable:color "silvery white"^^xsd:string ;
+	PeriodicTable:group PeriodicTable:group_13 ;
+	PeriodicTable:name "thallium"^^xsd:string ;
+	PeriodicTable:period PeriodicTable:period_6 ;
+	PeriodicTable:standardState PeriodicTable:solid ;
+	PeriodicTable:symbol "Tl"^^xsd:string .
+
+PeriodicTable:Tm
+	a PeriodicTable:Element ;
+	PeriodicTable:atomicNumber 69 ;
+	PeriodicTable:atomicWeight "168.93421"^^xsd:float ;
+	PeriodicTable:block PeriodicTable:f-block ;
+	PeriodicTable:casRegistryID "7440-30-4"^^xsd:string ;
+	PeriodicTable:classification PeriodicTable:Metallic ;
+	PeriodicTable:color "silvery white"^^xsd:string ;
+	PeriodicTable:group PeriodicTable:group_lanthanoid ;
+	PeriodicTable:name "thulium"^^xsd:string ;
+	PeriodicTable:period PeriodicTable:period_6 ;
+	PeriodicTable:standardState PeriodicTable:solid ;
+	PeriodicTable:symbol "Tm"^^xsd:string .
+
+PeriodicTable:U
+	a PeriodicTable:Element ;
+	PeriodicTable:atomicNumber 92 ;
+	PeriodicTable:atomicWeight "238.02891"^^xsd:float ;
+	PeriodicTable:block PeriodicTable:f-block ;
+	PeriodicTable:casRegistryID "7440-61-1"^^xsd:string ;
+	PeriodicTable:classification PeriodicTable:Metallic ;
+	PeriodicTable:color "metallic grey"^^xsd:string ;
+	PeriodicTable:group PeriodicTable:group_actinoid ;
+	PeriodicTable:name "uranium"^^xsd:string ;
+	PeriodicTable:period PeriodicTable:period_7 ;
+	PeriodicTable:standardState PeriodicTable:solid ;
+	PeriodicTable:symbol "U"^^xsd:string .
+
+PeriodicTable:Uub
+	a PeriodicTable:Element ;
+	PeriodicTable:atomicNumber 112 ;
+	PeriodicTable:atomicWeight "285"^^xsd:float ;
+	PeriodicTable:block PeriodicTable:d-block ;
+	PeriodicTable:casRegistryID "54084-26-3"^^xsd:string ;
+	PeriodicTable:classification PeriodicTable:Metallic ;
+	PeriodicTable:color "unknown, but probably metallic and silvery white or grey in appearance"^^xsd:string ;
+	PeriodicTable:group PeriodicTable:group_12 ;
+	PeriodicTable:name "ununbium"^^xsd:string ;
+	PeriodicTable:period PeriodicTable:period_7 ;
+	PeriodicTable:standardState PeriodicTable:liquid ;
+	PeriodicTable:symbol "Uub"^^xsd:string .
+
+PeriodicTable:Uuh
+	a PeriodicTable:Element ;
+	PeriodicTable:atomicNumber 116 ;
+	PeriodicTable:block PeriodicTable:p-block ;
+	PeriodicTable:casRegistryID "54100-71-9"^^xsd:string ;
+	PeriodicTable:classification PeriodicTable:Metallic ;
+	PeriodicTable:color "unknown, but probably metallic and silvery white or grey in appearance"^^xsd:string ;
+	PeriodicTable:group PeriodicTable:group_16 ;
+	PeriodicTable:name "ununhexium"^^xsd:string ;
+	PeriodicTable:period PeriodicTable:period_7 ;
+	PeriodicTable:standardState PeriodicTable:solid ;
+	PeriodicTable:symbol "Uuh"^^xsd:string .
+
+PeriodicTable:Uun
+	a PeriodicTable:Element ;
+	PeriodicTable:atomicNumber 110 ;
+	PeriodicTable:atomicWeight "271"^^xsd:float ;
+	PeriodicTable:block PeriodicTable:d-block ;
+	PeriodicTable:casRegistryID "54083-77-1"^^xsd:string ;
+	PeriodicTable:classification PeriodicTable:Metallic ;
+	PeriodicTable:color "unknown, but probably metallic and silvery white or grey in appearance"^^xsd:string ;
+	PeriodicTable:group PeriodicTable:group_10 ;
+	PeriodicTable:name "ununnilium"^^xsd:string ;
+	PeriodicTable:period PeriodicTable:period_7 ;
+	PeriodicTable:standardState PeriodicTable:solid ;
+	PeriodicTable:symbol "Uun"^^xsd:string .
+
+PeriodicTable:Uuo
+	a PeriodicTable:Element ;
+	PeriodicTable:atomicNumber 118 ;
+	PeriodicTable:block PeriodicTable:p-block ;
+	PeriodicTable:casRegistryID "54144-19-3"^^xsd:string ;
+	PeriodicTable:classification PeriodicTable:Non-metallic ;
+	PeriodicTable:color "unknown, but probably a colourless gas"^^xsd:string ;
+	PeriodicTable:group PeriodicTable:group_18 ;
+	PeriodicTable:name "ununoctium"^^xsd:string ;
+	PeriodicTable:period PeriodicTable:period_7 ;
+	PeriodicTable:standardState PeriodicTable:gas ;
+	PeriodicTable:symbol "Uuo"^^xsd:string .
+
+PeriodicTable:Uup
+	a PeriodicTable:Element ;
+	PeriodicTable:atomicNumber 115 ;
+	PeriodicTable:block PeriodicTable:p-block ;
+	PeriodicTable:group PeriodicTable:group_15 ;
+	PeriodicTable:name "ununpentium"^^xsd:string ;
+	PeriodicTable:period PeriodicTable:period_7 ;
+	PeriodicTable:standardState PeriodicTable:state_unknown ;
+	PeriodicTable:symbol "Uup"^^xsd:string .
+
+PeriodicTable:Uuq
+	a PeriodicTable:Element ;
+	PeriodicTable:atomicNumber 114 ;
+	PeriodicTable:atomicWeight "289"^^xsd:float ;
+	PeriodicTable:block PeriodicTable:p-block ;
+	PeriodicTable:casRegistryID "54085-16-4"^^xsd:string ;
+	PeriodicTable:classification PeriodicTable:Metallic ;
+	PeriodicTable:color "unknown, but probably metallic and silvery white or grey in appearance"^^xsd:string ;
+	PeriodicTable:group PeriodicTable:group_14 ;
+	PeriodicTable:name "ununquadium"^^xsd:string ;
+	PeriodicTable:period PeriodicTable:period_7 ;
+	PeriodicTable:standardState PeriodicTable:solid ;
+	PeriodicTable:symbol "Uuq"^^xsd:string .
+
+PeriodicTable:Uus
+	a PeriodicTable:Element ;
+	PeriodicTable:atomicNumber 117 ;
+	PeriodicTable:block PeriodicTable:p-block ;
+	PeriodicTable:group PeriodicTable:group_17 ;
+	PeriodicTable:name "ununseptium"^^xsd:string ;
+	PeriodicTable:period PeriodicTable:period_7 ;
+	PeriodicTable:standardState PeriodicTable:state_unknown ;
+	PeriodicTable:symbol "Uus"^^xsd:string .
+
+PeriodicTable:Uut
+	a PeriodicTable:Element ;
+	PeriodicTable:atomicNumber 113 ;
+	PeriodicTable:block PeriodicTable:p-block ;
+	PeriodicTable:group PeriodicTable:group_13 ;
+	PeriodicTable:name "ununtrium"^^xsd:string ;
+	PeriodicTable:period PeriodicTable:period_7 ;
+	PeriodicTable:standardState PeriodicTable:state_unknown ;
+	PeriodicTable:symbol "Uut"^^xsd:string .
+
+PeriodicTable:Uuu
+	a PeriodicTable:Element ;
+	PeriodicTable:atomicNumber 111 ;
+	PeriodicTable:atomicWeight "272"^^xsd:float ;
+	PeriodicTable:block PeriodicTable:d-block ;
+	PeriodicTable:casRegistryID "54386-24-2"^^xsd:string ;
+	PeriodicTable:classification PeriodicTable:Metallic ;
+	PeriodicTable:color "unknown, but probably metallic and silvery white or grey in appearance"^^xsd:string ;
+	PeriodicTable:group PeriodicTable:group_11 ;
+	PeriodicTable:name "unununium"^^xsd:string ;
+	PeriodicTable:period PeriodicTable:period_7 ;
+	PeriodicTable:standardState PeriodicTable:solid ;
+	PeriodicTable:symbol "Uuu"^^xsd:string .
+
+PeriodicTable:V
+	a PeriodicTable:Element ;
+	PeriodicTable:atomicNumber 23 ;
+	PeriodicTable:atomicWeight "50.9415"^^xsd:float ;
+	PeriodicTable:block PeriodicTable:d-block ;
+	PeriodicTable:casRegistryID "7440-62-2"^^xsd:string ;
+	PeriodicTable:classification PeriodicTable:Metallic ;
+	PeriodicTable:color "silvery grey metallic"^^xsd:string ;
+	PeriodicTable:group PeriodicTable:group_5 ;
+	PeriodicTable:name "vanadium"^^xsd:string ;
+	PeriodicTable:period PeriodicTable:period_4 ;
+	PeriodicTable:standardState PeriodicTable:solid ;
+	PeriodicTable:symbol "V"^^xsd:string .
+
+PeriodicTable:W
+	a PeriodicTable:Element ;
+	PeriodicTable:atomicNumber 74 ;
+	PeriodicTable:atomicWeight "183.84"^^xsd:float ;
+	PeriodicTable:block PeriodicTable:d-block ;
+	PeriodicTable:casRegistryID "7440-33-7"^^xsd:string ;
+	PeriodicTable:classification PeriodicTable:Metallic ;
+	PeriodicTable:color "greyish white, lustrous"^^xsd:string ;
+	PeriodicTable:group PeriodicTable:group_6 ;
+	PeriodicTable:name "tungsten"^^xsd:string ;
+	PeriodicTable:period PeriodicTable:period_6 ;
+	PeriodicTable:standardState PeriodicTable:solid ;
+	PeriodicTable:symbol "W"^^xsd:string .
+
+PeriodicTable:Xe
+	a PeriodicTable:Element ;
+	PeriodicTable:atomicNumber 54 ;
+	PeriodicTable:atomicWeight "131.293"^^xsd:float ;
+	PeriodicTable:block PeriodicTable:p-block ;
+	PeriodicTable:casRegistryID "7440-63-3"^^xsd:string ;
+	PeriodicTable:classification PeriodicTable:Non-metallic ;
+	PeriodicTable:color "colourless"^^xsd:string ;
+	PeriodicTable:group PeriodicTable:group_18 ;
+	PeriodicTable:name "xenon"^^xsd:string ;
+	PeriodicTable:period PeriodicTable:period_5 ;
+	PeriodicTable:standardState PeriodicTable:gas ;
+	PeriodicTable:symbol "Xe"^^xsd:string .
+
+PeriodicTable:Y
+	a PeriodicTable:Element ;
+	PeriodicTable:atomicNumber 39 ;
+	PeriodicTable:atomicWeight "88.90585"^^xsd:float ;
+	PeriodicTable:block PeriodicTable:d-block ;
+	PeriodicTable:casRegistryID "7440-65-5"^^xsd:string ;
+	PeriodicTable:classification PeriodicTable:Metallic ;
+	PeriodicTable:color "silvery white"^^xsd:string ;
+	PeriodicTable:group PeriodicTable:group_3 ;
+	PeriodicTable:name "yttrium"^^xsd:string ;
+	PeriodicTable:period PeriodicTable:period_5 ;
+	PeriodicTable:standardState PeriodicTable:solid ;
+	PeriodicTable:symbol "Y"^^xsd:string .
+
+PeriodicTable:Yb
+	a PeriodicTable:Element ;
+	PeriodicTable:atomicNumber 70 ;
+	PeriodicTable:atomicWeight "173.04"^^xsd:float ;
+	PeriodicTable:block PeriodicTable:f-block ;
+	PeriodicTable:casRegistryID "7440-64-4"^^xsd:string ;
+	PeriodicTable:classification PeriodicTable:Metallic ;
+	PeriodicTable:color "silvery white"^^xsd:string ;
+	PeriodicTable:group PeriodicTable:group_lanthanoid ;
+	PeriodicTable:name "ytterbium"^^xsd:string ;
+	PeriodicTable:period PeriodicTable:period_6 ;
+	PeriodicTable:standardState PeriodicTable:solid ;
+	PeriodicTable:symbol "Yb"^^xsd:string .
+
+PeriodicTable:Zn
+	a PeriodicTable:Element ;
+	PeriodicTable:atomicNumber 30 ;
+	PeriodicTable:atomicWeight "65.409"^^xsd:float ;
+	PeriodicTable:block PeriodicTable:d-block ;
+	PeriodicTable:casRegistryID "7440-66-6"^^xsd:string ;
+	PeriodicTable:classification PeriodicTable:Metallic ;
+	PeriodicTable:color "bluish pale grey"^^xsd:string ;
+	PeriodicTable:group PeriodicTable:group_12 ;
+	PeriodicTable:name "zinc"^^xsd:string ;
+	PeriodicTable:period PeriodicTable:period_4 ;
+	PeriodicTable:standardState PeriodicTable:solid ;
+	PeriodicTable:symbol "Zn"^^xsd:string .
+
+PeriodicTable:Zr
+	a PeriodicTable:Element ;
+	PeriodicTable:atomicNumber 40 ;
+	PeriodicTable:atomicWeight "91.224"^^xsd:float ;
+	PeriodicTable:block PeriodicTable:d-block ;
+	PeriodicTable:casRegistryID "7440-67-7"^^xsd:string ;
+	PeriodicTable:classification PeriodicTable:Metallic ;
+	PeriodicTable:color "silvery white"^^xsd:string ;
+	PeriodicTable:group PeriodicTable:group_4 ;
+	PeriodicTable:name "zirconium"^^xsd:string ;
+	PeriodicTable:period PeriodicTable:period_5 ;
+	PeriodicTable:standardState PeriodicTable:solid ;
+	PeriodicTable:symbol "Zr"^^xsd:string .
+
+PeriodicTable:atomicNumber
+	a owl:DatatypeProperty .
+
+PeriodicTable:atomicWeight
+	a owl:DatatypeProperty .
+
+PeriodicTable:block
+	a owl:ObjectProperty .
+
+PeriodicTable:casRegistryID
+	a owl:DatatypeProperty ;
+	rdfs:comment "Chemical Abstracts Service (CAS) related information" ;
+	rdfs:seeAlso <http://www.cas.org> .
+
+PeriodicTable:classification
+	a owl:ObjectProperty .
+
+PeriodicTable:color
+	a owl:DatatypeProperty .
+
+PeriodicTable:d-block
+	a PeriodicTable:Block .
+
+PeriodicTable:element
+	a owl:ObjectProperty .
+
+PeriodicTable:f-block
+	a PeriodicTable:Block .
+
+PeriodicTable:gas
+	a PeriodicTable:StandardState .
+
+PeriodicTable:group
+	a owl:ObjectProperty .
+
+PeriodicTable:group_1
+	a PeriodicTable:Group ;
+	PeriodicTable:element PeriodicTable:Cs ,
+			      PeriodicTable:Fr ,
+			      PeriodicTable:H ,
+			      PeriodicTable:K ,
+			      PeriodicTable:Li ,
+			      PeriodicTable:Na ,
+			      PeriodicTable:Rb ;
+	PeriodicTable:name "Alkali metal"^^xsd:string ;
+	PeriodicTable:number 1 .
+
+PeriodicTable:group_10
+	a PeriodicTable:Group ;
+	PeriodicTable:element PeriodicTable:Ni ,
+			      PeriodicTable:Pd ,
+			      PeriodicTable:Pt ,
+			      PeriodicTable:Uun ;
+	PeriodicTable:number 10 .
+
+PeriodicTable:group_11
+	a PeriodicTable:Group ;
+	PeriodicTable:element PeriodicTable:Ag ,
+			      PeriodicTable:Au ,
+			      PeriodicTable:Cu ,
+			      PeriodicTable:Uuu ;
+	PeriodicTable:name "Coinage metal"^^xsd:string ;
+	PeriodicTable:number 11 .
+
+PeriodicTable:group_12
+	a PeriodicTable:Group ;
+	PeriodicTable:element PeriodicTable:Cd ,
+			      PeriodicTable:Hg ,
+			      PeriodicTable:Uub ,
+			      PeriodicTable:Zn ;
+	PeriodicTable:number 12 .
+
+PeriodicTable:group_13
+	a PeriodicTable:Group ;
+	PeriodicTable:element PeriodicTable:Al ,
+			      PeriodicTable:B ,
+			      PeriodicTable:Ga ,
+			      PeriodicTable:In ,
+			      PeriodicTable:Tl ,
+			      PeriodicTable:Uut ;
+	PeriodicTable:number 13 .
+
+PeriodicTable:group_14
+	a PeriodicTable:Group ;
+	PeriodicTable:element PeriodicTable:C ,
+			      PeriodicTable:Ge ,
+			      PeriodicTable:Pb ,
+			      PeriodicTable:Si ,
+			      PeriodicTable:Sn ,
+			      PeriodicTable:Uuq ;
+	PeriodicTable:number 14 .
+
+PeriodicTable:group_15
+	a PeriodicTable:Group ;
+	PeriodicTable:element PeriodicTable:As ,
+			      PeriodicTable:Bi ,
+			      PeriodicTable:N ,
+			      PeriodicTable:P ,
+			      PeriodicTable:Sb ,
+			      PeriodicTable:Uup ;
+	PeriodicTable:name "Pnictogen"^^xsd:string ;
+	PeriodicTable:number 15 .
+
+PeriodicTable:group_16
+	a PeriodicTable:Group ;
+	PeriodicTable:element PeriodicTable:O ,
+			      PeriodicTable:Po ,
+			      PeriodicTable:S ,
+			      PeriodicTable:Se ,
+			      PeriodicTable:Te ,
+			      PeriodicTable:Uuh ;
+	PeriodicTable:name "Chalcogen"^^xsd:string ;
+	PeriodicTable:number 16 .
+
+PeriodicTable:group_17
+	a PeriodicTable:Group ;
+	PeriodicTable:element PeriodicTable:At ,
+			      PeriodicTable:Br ,
+			      PeriodicTable:Cl ,
+			      PeriodicTable:F ,
+			      PeriodicTable:I ,
+			      PeriodicTable:Uus ;
+	PeriodicTable:name "Halogen"^^xsd:string ;
+	PeriodicTable:number 17 .
+
+PeriodicTable:group_18
+	a PeriodicTable:Group ;
+	PeriodicTable:element PeriodicTable:Ar ,
+			      PeriodicTable:He ,
+			      PeriodicTable:Kr ,
+			      PeriodicTable:Ne ,
+			      PeriodicTable:Rn ,
+			      PeriodicTable:Uuo ,
+			      PeriodicTable:Xe ;
+	PeriodicTable:name "Noble gas"^^xsd:string ;
+	PeriodicTable:number 18 .
+
+PeriodicTable:group_2
+	a PeriodicTable:Group ;
+	PeriodicTable:element PeriodicTable:Ba ,
+			      PeriodicTable:Be ,
+			      PeriodicTable:Ca ,
+			      PeriodicTable:Mg ,
+			      PeriodicTable:Ra ,
+			      PeriodicTable:Sr ;
+	PeriodicTable:name "Alkaline earth metal"^^xsd:string ;
+	PeriodicTable:number 2 .
+
+PeriodicTable:group_3
+	a PeriodicTable:Group ;
+	PeriodicTable:element PeriodicTable:Lr ,
+			      PeriodicTable:Lu ,
+			      PeriodicTable:Sc ,
+			      PeriodicTable:Y ;
+	PeriodicTable:number 3 .
+
+PeriodicTable:group_4
+	a PeriodicTable:Group ;
+	PeriodicTable:element PeriodicTable:Hf ,
+			      PeriodicTable:Rf ,
+			      PeriodicTable:Ti ,
+			      PeriodicTable:Zr ;
+	PeriodicTable:number 4 .
+
+PeriodicTable:group_5
+	a PeriodicTable:Group ;
+	PeriodicTable:element PeriodicTable:Db ,
+			      PeriodicTable:Nb ,
+			      PeriodicTable:Ta ,
+			      PeriodicTable:V ;
+	PeriodicTable:number 5 .
+
+PeriodicTable:group_6
+	a PeriodicTable:Group ;
+	PeriodicTable:element PeriodicTable:Cr ,
+			      PeriodicTable:Mo ,
+			      PeriodicTable:Sg ,
+			      PeriodicTable:W ;
+	PeriodicTable:number 6 .
+
+PeriodicTable:group_7
+	a PeriodicTable:Group ;
+	PeriodicTable:element PeriodicTable:Bh ,
+			      PeriodicTable:Mn ,
+			      PeriodicTable:Re ,
+			      PeriodicTable:Tc ;
+	PeriodicTable:number 7 .
+
+PeriodicTable:group_8
+	a PeriodicTable:Group ;
+	PeriodicTable:element PeriodicTable:Fe ,
+			      PeriodicTable:Hs ,
+			      PeriodicTable:Os ,
+			      PeriodicTable:Ru ;
+	PeriodicTable:number 8 .
+
+PeriodicTable:group_9
+	a PeriodicTable:Group ;
+	PeriodicTable:element PeriodicTable:Co ,
+			      PeriodicTable:Ir ,
+			      PeriodicTable:Mt ,
+			      PeriodicTable:Rh ;
+	PeriodicTable:number 9 .
+
+PeriodicTable:group_actinoid
+	a PeriodicTable:Group ;
+	PeriodicTable:element PeriodicTable:Ac ,
+			      PeriodicTable:Am ,
+			      PeriodicTable:Bk ,
+			      PeriodicTable:Cf ,
+			      PeriodicTable:Cm ,
+			      PeriodicTable:Es ,
+			      PeriodicTable:Fm ,
+			      PeriodicTable:Md ,
+			      PeriodicTable:No ,
+			      PeriodicTable:Np ,
+			      PeriodicTable:Pa ,
+			      PeriodicTable:Pu ,
+			      PeriodicTable:Th ,
+			      PeriodicTable:U ;
+	PeriodicTable:name "Actinoid"^^xsd:string .
+
+PeriodicTable:group_lanthanoid
+	a PeriodicTable:Group ;
+	PeriodicTable:element PeriodicTable:Ce ,
+			      PeriodicTable:Dy ,
+			      PeriodicTable:Er ,
+			      PeriodicTable:Eu ,
+			      PeriodicTable:Gd ,
+			      PeriodicTable:Ho ,
+			      PeriodicTable:La ,
+			      PeriodicTable:Nd ,
+			      PeriodicTable:Pm ,
+			      PeriodicTable:Pr ,
+			      PeriodicTable:Sm ,
+			      PeriodicTable:Tb ,
+			      PeriodicTable:Tm ,
+			      PeriodicTable:Yb ;
+	PeriodicTable:name "Lanthanoid"^^xsd:string .
+
+PeriodicTable:liquid
+	a PeriodicTable:StandardState .
+
+PeriodicTable:name
+	a owl:DatatypeProperty .
+
+PeriodicTable:number
+	a owl:DatatypeProperty .
+
+PeriodicTable:p-block
+	a PeriodicTable:Block .
+
+PeriodicTable:period
+	a owl:ObjectProperty .
+
+PeriodicTable:period_1
+	a PeriodicTable:Period ;
+	PeriodicTable:element PeriodicTable:H ,
+			      PeriodicTable:He ;
+	PeriodicTable:number 1 .
+
+PeriodicTable:period_2
+	a PeriodicTable:Period ;
+	PeriodicTable:element PeriodicTable:B ,
+			      PeriodicTable:Be ,
+			      PeriodicTable:C ,
+			      PeriodicTable:F ,
+			      PeriodicTable:Li ,
+			      PeriodicTable:N ,
+			      PeriodicTable:Ne ,
+			      PeriodicTable:O ;
+	PeriodicTable:number 2 .
+
+PeriodicTable:period_3
+	a PeriodicTable:Period ;
+	PeriodicTable:element PeriodicTable:Al ,
+			      PeriodicTable:Ar ,
+			      PeriodicTable:Cl ,
+			      PeriodicTable:Mg ,
+			      PeriodicTable:Na ,
+			      PeriodicTable:P ,
+			      PeriodicTable:S ,
+			      PeriodicTable:Si ;
+	PeriodicTable:number 3 .
+
+PeriodicTable:period_4
+	a PeriodicTable:Period ;
+	PeriodicTable:element PeriodicTable:As ,
+			      PeriodicTable:Br ,
+			      PeriodicTable:Ca ,
+			      PeriodicTable:Co ,
+			      PeriodicTable:Cr ,
+			      PeriodicTable:Cu ,
+			      PeriodicTable:Fe ,
+			      PeriodicTable:Ga ,
+			      PeriodicTable:Ge ,
+			      PeriodicTable:K ,
+			      PeriodicTable:Kr ,
+			      PeriodicTable:Mn ,
+			      PeriodicTable:Ni ,
+			      PeriodicTable:Sc ,
+			      PeriodicTable:Se ,
+			      PeriodicTable:Ti ,
+			      PeriodicTable:V ,
+			      PeriodicTable:Zn ;
+	PeriodicTable:number 4 .
+
+PeriodicTable:period_5
+	a PeriodicTable:Period ;
+	PeriodicTable:element PeriodicTable:Ag ,
+			      PeriodicTable:Cd ,
+			      PeriodicTable:I ,
+			      PeriodicTable:In ,
+			      PeriodicTable:Mo ,
+			      PeriodicTable:Nb ,
+			      PeriodicTable:Pd ,
+			      PeriodicTable:Rb ,
+			      PeriodicTable:Rh ,
+			      PeriodicTable:Ru ,
+			      PeriodicTable:Sb ,
+			      PeriodicTable:Sn ,
+			      PeriodicTable:Sr ,
+			      PeriodicTable:Tc ,
+			      PeriodicTable:Te ,
+			      PeriodicTable:Xe ,
+			      PeriodicTable:Y ,
+			      PeriodicTable:Zr ;
+	PeriodicTable:number 5 .
+
+PeriodicTable:period_6
+	a PeriodicTable:Period ;
+	PeriodicTable:element PeriodicTable:At ,
+			      PeriodicTable:Au ,
+			      PeriodicTable:Ba ,
+			      PeriodicTable:Bi ,
+			      PeriodicTable:Ce ,
+			      PeriodicTable:Cs ,
+			      PeriodicTable:Dy ,
+			      PeriodicTable:Er ,
+			      PeriodicTable:Eu ,
+			      PeriodicTable:Gd ,
+			      PeriodicTable:Hf ,
+			      PeriodicTable:Hg ,
+			      PeriodicTable:Ho ,
+			      PeriodicTable:Ir ,
+			      PeriodicTable:La ,
+			      PeriodicTable:Lu ,
+			      PeriodicTable:Nd ,
+			      PeriodicTable:Os ,
+			      PeriodicTable:Pb ,
+			      PeriodicTable:Pm ,
+			      PeriodicTable:Po ,
+			      PeriodicTable:Pr ,
+			      PeriodicTable:Pt ,
+			      PeriodicTable:Re ,
+			      PeriodicTable:Rn ,
+			      PeriodicTable:Sm ,
+			      PeriodicTable:Ta ,
+			      PeriodicTable:Tb ,
+			      PeriodicTable:Tl ,
+			      PeriodicTable:Tm ,
+			      PeriodicTable:W ,
+			      PeriodicTable:Yb ;
+	PeriodicTable:number 6 .
+
+PeriodicTable:period_7
+	a PeriodicTable:Period ;
+	PeriodicTable:element PeriodicTable:Ac ,
+			      PeriodicTable:Am ,
+			      PeriodicTable:Bh ,
+			      PeriodicTable:Bk ,
+			      PeriodicTable:Cf ,
+			      PeriodicTable:Cm ,
+			      PeriodicTable:Db ,
+			      PeriodicTable:Es ,
+			      PeriodicTable:Fm ,
+			      PeriodicTable:Fr ,
+			      PeriodicTable:Hs ,
+			      PeriodicTable:Lr ,
+			      PeriodicTable:Md ,
+			      PeriodicTable:Mt ,
+			      PeriodicTable:No ,
+			      PeriodicTable:Np ,
+			      PeriodicTable:Pa ,
+			      PeriodicTable:Pu ,
+			      PeriodicTable:Ra ,
+			      PeriodicTable:Rf ,
+			      PeriodicTable:Sg ,
+			      PeriodicTable:Th ,
+			      PeriodicTable:U ,
+			      PeriodicTable:Uub ,
+			      PeriodicTable:Uuh ,
+			      PeriodicTable:Uun ,
+			      PeriodicTable:Uuo ,
+			      PeriodicTable:Uup ,
+			      PeriodicTable:Uuq ,
+			      PeriodicTable:Uus ,
+			      PeriodicTable:Uut ,
+			      PeriodicTable:Uuu ;
+	PeriodicTable:number 7 .
+
+PeriodicTable:s-block
+	a PeriodicTable:Block .
+
+PeriodicTable:solid
+	a PeriodicTable:StandardState .
+
+PeriodicTable:standardState
+	a owl:ObjectProperty .
+
+PeriodicTable:state_unknown
+	a PeriodicTable:StandardState .
+
+PeriodicTable:symbol
+	a owl:DatatypeProperty .

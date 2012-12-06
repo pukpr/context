@@ -33,6 +33,7 @@
                      <instances/river_flow.ttl>,
                      <instances/density-xlsx.ttl>,
                      <instances/temperature_regions-sparql-xlsx.ttl>,
+                     <instances/PeriodicTable.owl.ttl>,
                      <terms/defs.ttl>,
                      <terms/swore.rdf>,
                      <terms/biblio.ttl>,
@@ -149,6 +150,11 @@
         a lib:Schema ;
         a lib:CloudNode ;
 	dc:title "Densities of various liquids near room temperature.".
+
+<instances/PeriodicTable.owl.ttl>
+        a lib:Schema ;
+        a lib:CloudNode ;
+	dc:title "Periodic table of the elements.".
 
 <temperature_regions-sparql-xlsx.ttl>
         a lib:Schema ;
