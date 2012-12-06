@@ -1,6 +1,7 @@
 :- module(context_water, [table_density/2,
 			   salt_density/3,
-			   fresh_density/2
+			   fresh_density/2,
+                           liquids/3
 			  %    fxn3/3
 			  ]).
 
@@ -18,6 +19,7 @@
 :- context:register(context_water:density_test).
 :- context:register(context_water:plot).
 :- context:register(context_water:densities).
+:- context:register(context_water:liquid_densities).
 
 
 freshwater_density(
@@ -96,13 +98,27 @@ density_cells([Liquid,Temperature,Density]) :-
 
 densities(_Request) :-
     findall(Row, density_cells(Row), Rows),
-    reply_html_page([title('Liquid Densities Table'),
+    reply_html_page([title('Liquid Densit info'),
                      \(con_text:style)],
                    [
                     \(con_text:table_multiple_entries(
                           [['Liquid','Temperature','Density']],
                           Rows))
                    ]).
+
+% autocomplete info
+liquids(Query, Resource, Title) :-
+    rdf(Resource, ent:liquid,  literal(substring(Query),Title)),
+    rdf(Resource, ent:density, _Density).
+
+liquid_densities(Request) :-
+    http_parameters(Request, [liquid(Liquid, [])]),
+    rdfS(UID, ent:liquid, Liquid),
+    rdfS(UID, ent:density, Density),
+    reply_html_page([title('Liquid Density'),
+                     \(con_text:style)],
+                    [ \(con_text:def_list(Liquid=Density))]).
+%
 
 navigate(Request) :-
    collect_unit_options(ent:mass, Munits),
@@ -141,8 +157,12 @@ navigate(Request) :-
 			  input([type('submit'), name(kind), value('log')])
 			 ]
                           ),
+
                       br([]),
-                      \(con_text:button_link('Liquid Densities', 'densities', 'render')),
+                      \(con_text:button_link('Liquid Densities Table', 'densities', 'render')),
+		      \(con_text:form_ac(liquid_densities, render, liquids, liquid)),
+
+                      br([]),
                       \(con_text:button_link('Download Stability Spreadsheet',
                                              '/context_file_reading/download',
                                              render,

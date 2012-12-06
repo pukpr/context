@@ -1,4 +1,7 @@
-:- module(con_text, [obj_result/2]).
+:- module(con_text, [
+                     obj_result/2,
+                     acronym//1
+                    ]).
 
 /** <module> HTML utilities
     * Form generation
@@ -8,6 +11,12 @@
 :- context:register(con_text:info).
 :- context:register(con_text:resources).
 
+
+acronym(Def) -->
+    {
+       acronym_definition(Def, Text)
+    },
+    html(abbr([title=Text], Def)).
 
 % Similar to reply HTML page, but for frames
 reply_frameset_page(Body) :-

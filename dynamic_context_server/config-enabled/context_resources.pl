@@ -5,6 +5,8 @@
 */
 
 :- use_module(context).
+:- use_module(con_text).
+
 :- use_module(context_math).
 
 :- context:register(context_resources:navigate).
@@ -23,7 +25,7 @@ navigate(Request) :-
                              li([\(con_text:gif(resources)),
                                  a([href('/html/oscar.html'),
                                     target=target_iframe],
-                                   ['Access ', b('OSCAR'), ' workflow'])
+                                   ['Access ', b(\(acronym('OSCAR'))), ' workflow'])
                                  % \(con_text:alert(['Placeholder to ', b('OSCAR')], 'Not linked yet'))
                                 ]),
                              li([\(con_text:gif(resources)),

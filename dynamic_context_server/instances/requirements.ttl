@@ -154,7 +154,8 @@ context:AR-70-38
 	dc:subject	"propFraction:Humidity" ;
 	rdfs:label		"AR-70-38";
 	dcterms:hasPart	"table 2.1";
-	ent:req_phrase	"humid storage conditions" ;
+	ent:req_phrase	"humid storage conditions",
+			"humidity" ;
 	req:references	ent:Resources
 	.
 
@@ -164,7 +165,7 @@ context:USCS-Soil-Classification-System
 	dc:subject	"realmSoil:SoilLayer" ;
 	rdfs:label		"USCS-Soil-Classification-System";
     dcterms:hasPart	"unspecified";
-	ent:req_phrase	"level, clean, clay surface" ;
+	ent:req_phrase	"clay surface" ;
 	req:references	ent:FineTerrain
 	.
 
@@ -175,6 +176,7 @@ context:NRMM
 	rdfs:label		"NRMM";
     dcterms:hasPart	"unspecified";
 	ent:req_phrase	"German dry conditions",
+			"NRMM",
                                         "off road",
 					"Jordan dry conditions",
 					"German wet conditions",
@@ -191,7 +193,7 @@ context:NATO_AEP-5
 	dc:subject	"phenAtmoPressure:Barometric" ;
 	rdfs:label		"NATO AEP-5";
         dcterms:hasPart	"ambient conditions";
-	ent:req_phrase	"at 150 m altitude" ;
+	ent:req_phrase	"altitude" ;
 	req:references	ent:Resources
         .
 
@@ -204,11 +206,11 @@ context:AmbientTemperature
 	a	req:Requirement;
 	dc:subject	"propTemperature:Temperature" ;
 	ent:req_phrase	"max ambient temperature",
-					"-XX degrees C to +XX degrees C",
+					"degrees C",
 					"ambient air temperatures",
                                         "excessive heat" ,
                                         "warming" ,
-					"temperatures ranging between -XX F and XX F";
+					"temperatures ranging between";
 	req:references	ent:Thermal
 	.
 
@@ -216,19 +218,17 @@ context:Slope
 	a	req:Requirement;
 	dc:subject	"realmBiolBiome:Terrain" ;
 	ent:req_phrase	"all Grade & Slope",
-					"XX% side slope",
-					"slope operations up to and including XX% (T)",
-					"XX% grade",
-					"XX% hard-dry grade",
-					"slopes up to and including the maximum grade",
-					"dry hard surface, XX% grade (XX degrees)",
-					"uphill or downhill",
 					"side slope",
+					"slope operations up to and including XX% (T)",
+					"% grade",
+					"slopes up to and including the maximum grade",
+					"dry hard surface",
+					"uphill or downhill",
                                         "grade at speeds" ,
                                         "grade and slope" ,
 					"grade greater than" ,
 					"hard-dry grade" ,
-					"hard surface ingress and egress walls sloped at an angle no less thanXX degrees";
+					"hard surface ingress and egress walls sloped at an angle";
 	req:references	ent:GrossTerrain
 	.
 
@@ -240,7 +240,8 @@ context:SeaState
 					"sea state",
 					"sea state conditions",
 					"seas with a SWH",
-					"Significant Wave Height (SWH) of XX meters" ;
+					"SWH",
+					"Significant Wave Height (SWH)" ;
 	req:references	ent:Wave
 	.
 
@@ -255,7 +256,7 @@ context:Surface
                                         "hard dry" ,
 					"level, clean, clay surface",
 					"flat secondary roads (T)",
-					"hard surface road with a coefficient of friction of XX",
+					"hard surface road with a coefficient of friction",
                                         "dry hard surface",
 					"dry hard surface road that is free of loose material" ;
 	req:references	ent:FineTerrain
@@ -266,6 +267,7 @@ context:Terrain
 	dc:subject	"realmBiolBiome:Terrain" ;
 	ent:req_phrase	"level, hard surfaced road",
 					"cross-country",
+					"ride course",
 					"Root Mean Square (RMS) ride courses";
 	req:references	ent:FineTerrain
 	.
@@ -273,7 +275,7 @@ context:Terrain
 context:Rainfall
 	a	req:Requirement;
 	dc:subject	"phenAtmoPrecipitation:Rainfall" ;
-	ent:req_phrase	"XX mm (XX inch) rainfall per hour";
+	ent:req_phrase	"rainfall per hour";
 	req:references	ent:Rainfall
 	.
 
@@ -293,10 +295,9 @@ context:ClimateConditions
 context:Obstacle
 	a	req:Requirement;
 	dc:subject	"reprSpaceGeometry:Surface" ;
-	ent:req_phrase	"non-deformable, half-round obstacle of XX inches",
-			"non-deformable, half-round obstacle",
+	ent:req_phrase	"non-deformable, half-round obstacle",
                         "verticle step",
-			"Obstacle Height (in.):    WW   XX   YY   ZZ";
+			"Obstacle Height";
 	req:references	ent:FineTerrain
 	.
 
@@ -311,7 +312,7 @@ context:RiverLine
 context:Surf
 	a	req:Requirement;
 	dc:subject	"phenWave:GravityWave" ;
-	ent:req_phrase	"XX meter (XX feet) plunging surf",
+	ent:req_phrase	"plunging surf",
 	                "transiting the surf and beach regions",
 	                "through the surf and onto a beach",
                         "surf zone" ,
@@ -341,28 +342,28 @@ context:Corrosive
 context:LandDistance
 	a	req:Requirement;
 	dc:subject	"realmLandform:LandRegion" ;
-	ent:req_phrase	"distance of XX km";
+	ent:req_phrase	"distance of";
 	req:references	ent:GrossTerrain
 	.
 
 context:AquaticDistance
 	a	req:Requirement;
 	dc:subject	"phenOcean:OceanPhenomena" ;
-	ent:req_phrase	"XX nautical miles of water operation in sea state XX";
+	ent:req_phrase	"nautical miles of water operation in sea state";
 	req:references	ent:Wave
 	.
 
 context:Step
 	a	req:Requirement;
 	dc:subject	"reprSpaceGeometry:Surface" ;
-	ent:req_phrase	"stepping up and down a vertical step of XX inches";
+	ent:req_phrase	"stepping up and down a vertical step";
 	req:references	ent:FineTerrain
 	.
 
 context:Gap
 	a	req:Requirement;
 	dc:subject	"reprSpaceGeometry:Surface" ;
-	ent:req_phrase	"a gap no less than XX ft";
+	ent:req_phrase	"a gap no less than";
 	req:references	ent:FineTerrain
 	.
 
@@ -378,7 +379,7 @@ context:Ditch
 context:Fording
 	a	req:Requirement;
 	dc:subject	"realmHydroBody:Lake" ;
-	ent:req_phrase	"ford a XX inch (T)",
+	ent:req_phrase	"ford a XX inch",
 			"fording operations";
 	req:references	ent:Lakes
 	.
@@ -386,15 +387,14 @@ context:Fording
 context:AmbientWaterTemperature
 	a	req:Requirement;
 	dc:subject	"propTemperature:Temperature" ;
-	ent:req_phrase	"max ambient water temperature of XX deg C";
+	ent:req_phrase	"max ambient water temperature";
 	req:references	ent:Resources
 	.
 
 context:Humidity
 	a	req:Requirement;
 	dc:subject	"propFraction:Humidity" ;
-	ent:req_phrase	"ambient relative humidity of up to XX percent",
-			"ambient relative humidity" ,
+	ent:req_phrase	"ambient relative humidity" ,
 					"humid storage conditions";
 	req:references	ent:Resources
 	.
@@ -412,7 +412,7 @@ context:Altitude
 context:Tree
 	a	req:Requirement;
 	dc:subject	"reprSpaceGeometry:Surface" ;
-	ent:req_phrase	"XX inch tree";
+	ent:req_phrase	"inch tree";
 	req:references	ent:FineTerrain
 	.
 

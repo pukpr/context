@@ -21,7 +21,7 @@ navigate(Request) :-
                                     Request,
 		     [
                       h1('Periodic Table of the elements'),
-                      p(''),
+                      p(abbr([title='element pick from drop-down menu'],'element')),
                       form([action(property), target(target_iframe)],
 			 [
 			  select([name('element')], Els),
