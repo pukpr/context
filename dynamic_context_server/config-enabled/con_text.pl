@@ -46,6 +46,20 @@ style_cliopatria -->
         link([ type('text/css'), rel('stylesheet'), href('/css/cliopatria.css') ])
         ).
 
+style_submit -->
+    html(
+	script([type('text/javascript'),src('/html/js/submit.js')], [])
+	).
+
+target_iframe -->
+    html(
+        'subm(this.form,"target_iframe");'
+	).
+target_render -->
+    html(
+        'subm(this.form,"render");'
+	).
+
 space_list([]) --> !.
 space_list([F|R]) -->
     html([b(' + '),i(F)]),

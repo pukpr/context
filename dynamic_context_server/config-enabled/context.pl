@@ -227,7 +227,12 @@ rdfV(Subj, Pred, Obj, Vars) :-
     rdf(Subj, Pred, literal(Val)),
     atom_to_term(Val, Obj, Vars).
 rdfS(Subj, Pred, Obj) :-
-    rdf(Subj, Pred, literal(Obj)).
+    (
+       rdf(Subj, Pred, literal(type(xsd:string, Obj)))
+    ;
+       rdf(Subj, Pred, literal(Obj)),
+       atom(Obj)
+    ).
 
 
 :- dynamic(rdf_temp/3).

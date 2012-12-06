@@ -42,6 +42,11 @@ navigate(Request) :-
                                 ]
                                ),
                              li([\(con_text:gif(resources)),
+                                 a(href('/context_elements/navigate'),
+                                   'Access periodic table of elements')
+                                ]
+                               ),
+                             li([\(con_text:gif(resources)),
                                  a(href('/context_atm/navigate'),
                                    'Access standard atmosphere resource artifacts')
                                 ]
