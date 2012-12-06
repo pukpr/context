@@ -264,6 +264,9 @@ ref_m('physical',     category, 'phenAtmo:Weather').
 ref_m('physical',     category, 'repr:sciUnits').
 ref_m('physical',     category, 'reprDataService:DataService').
 
+ref_m('elements',     model, '/context_elements/navigate').
+ref_m('elements',     target_iframe, '/html/elements.html').
+ref_m('elements',     category, 'procChemical:Corrosion').
 
 ref_(URL, feature, Feature) :-
     ref_m(ID, model, URL),

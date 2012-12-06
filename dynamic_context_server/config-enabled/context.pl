@@ -210,7 +210,8 @@ rdfR(Subj, Pred, Obj) :-
      rdf(Subj, Pred, literal(type(xsd:decimal, Val)))
     ;
      rdf(Subj, Pred, literal(type(xsd:double, Val)))
-     % float?
+    ;
+     rdf(Subj, Pred, literal(type(xsd:float, Val)))
     ),
     atom_number(Val, Obj).
 rdfI(Subj, Pred, Obj) :-
