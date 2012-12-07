@@ -25,12 +25,14 @@ css(URL) -->
 
 row(Characteristic,
     tr([td(Ch),
-        td(a([href='apply?model='+Model],Model)),
-        td(Location), td([Lat,'/',Lon]),
-        td(Max), td(Min), td(Interval),
-        td(Moments), td(PDF),
+        td([a([href='apply?loglog=false&model='+Model],
+	       Model)]),
         td(Title),
-        td(Xaxis)])
+        td(Xaxis),
+        td(Location), td([Lat,'/',Lon]),
+        td(PDF), td(Moments),
+        td(Max), td(Min), td(Interval)
+       ])
    ) :-
     (   Characteristic = all ->
         true
@@ -54,18 +56,20 @@ row(Characteristic,
 
 navigate(Request) :-
     http_parameters(Request, [characteristics(Ch,[default(all)])]),
-    findall(Row, row(Ch,Row), Rows),
+    findall(Row, row(Ch,Row), Rs),
+    sort(Rs, Rows),
     reply_html_page(
                  [title('PDF'), \(con_text:style) ],
                  [table([border(1),
                          style('border:dotted')],
                         [tr([th('Characteristic'),
                              th('Model'),
-                             th('Location'), th('Lat/Lon'),
-                             th('Max'), th('Min'), th('Interval'),
-                             th('Moments'), th('PDF'),
                              th('Title'),
-                             th('Xaxis')])
+                             th('Xaxis'),
+                             th('Location'), th('Lat/Lon'),
+                             th('PDF'), th('Moments'),
+                             th('Max'), th('Min'), th('Interval')
+			    ])
                             | Rows])
                  ]
                    ).
@@ -84,8 +88,11 @@ present_and_next_state(Present, Units, Dist, DistUnits, Next) :-
     distribution(_, Next),
     Dist \= Next.
 
+flip_log(true, false, 'Semi-Log Scale').
+flip_log(false, true, 'Log-Log Scale').
 
-display(Model, Render, Dist, Scale*Xaxis) :-
+display(Model, Render, Dist, Scale*Xaxis, LogLog) :-
+	print(user_error, [LogLog]),
     rdfS(U, ent:model, Model),
     rdfS(U, ent:characteristic, Characteristic),
     rdfR(U, ent:interval, Interval),
@@ -100,6 +107,7 @@ display(Model, Render, Dist, Scale*Xaxis) :-
     rdfV(U, ent:pdf, Distribution_Function,  ['Dist'=State]),
     rdfS(U, ent:x_axis, X_0),
     present_and_next_state(State, Xaxis, Dist, Yaxis, Flip),
+    flip_log(LogLog, NextLog, LogScaleTitle),
     http_current_request(Request),
     context:create_url(Request, '/context_model/data_generator', [[model,Model]], Sampling_URL),
 
@@ -130,13 +138,14 @@ display(Model, Render, Dist, Scale*Xaxis) :-
 
 
                     br([]), % hr([]), br([]),
-                    \(context_graphing:dygraph_plot(
-                                           true,
+                    \(context_graphing:plot_log(
+                                           LogLog,
                                            'X, Y',
                                            Xaxis,
                                            Yaxis,
                                            [Title, ' : ', State],
                                            [XS,Y] )),
+
                      br([]),
                     \(con_text:inline_button(
                                    \(con_text:button_link('Display Map',
@@ -169,6 +178,17 @@ display(Model, Render, Dist, Scale*Xaxis) :-
 					   'code_generator',
 					   Render,
 					   [[model, Model]
+					   ]))
+                                            )
+                     ),
+                    \(con_text:inline_button(
+                                   \(con_text:button_link(LogScaleTitle,
+					   'apply',
+					   '_self',
+					   [[model, Model],
+                                            [render, Render],
+					    [loglog, NextLog],
+					    [dist, Dist]
 					   ]))
                                             )
                      ),
@@ -263,23 +283,24 @@ apply(Request) :-
                               render(Render,[default(render)]),
 			      dist(Dist,[default('Probability Density')]),
 			      n_unit(Num_Units,[optional(true)]),
-			      d_unit(Den_Units,[optional(true)])
+			      d_unit(Den_Units,[optional(true)]),
+			      loglog(LogLog,[default(false)])
 			     ]
 		   ),
     r_open_session,
     rdfS(U, ent:model, Model),
     rdfS(U, ent:x_axis, Xaxis),
     (	var(Num_Units) ->
-        display(Model,Render,Dist,1.0*Xaxis)
+        display(Model,Render,Dist,1.0*Xaxis,LogLog)
     ;
 	var(Den_Units) ->
 	context_units:convert(1.0*Xaxis, To*Num_Units, To),
-        display(Model,Render,Dist,To*Num_Units)
+        display(Model,Render,Dist,To*Num_Units,LogLog)
     ;
         atomic_list_concat([Num_Units,'/',Den_Units], Units),
         atom_to_term(Xaxis, Num/Den, []),
 	context_units:convert(1.0*Num/Den, To*Num_Units/Den_Units, To),
-        display(Model,Render,Dist,To*Units)
+        display(Model,Render,Dist,To*Units,LogLog)
     ),
     r_close.
 

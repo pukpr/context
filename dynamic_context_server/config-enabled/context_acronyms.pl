@@ -1,3 +1,4 @@
+acronym_definition('LL', 'log-log scale').
 acronym_definition('PSD', 'Power Spectral Density or Particle Size Distribution depending on context').
 acronym_definition('SWEET', 'Semantic Web for Earth and Environmental Terminology').
 acronym_definition('OSCAR', 'Ontological System for Context Artifacts and Resources').

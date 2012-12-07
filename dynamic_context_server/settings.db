@@ -1,0 +1,10 @@
+﻿/*  Saved settings
+    Date: Fri Dec 07 00:22:38 2012
+*/
+
+
+%	Indentation used goals in the body
+setting(listing:body_indentation, 4).
+
+%	Distance between tab-stops.  0 uses only spaces
+setting(listing:tab_distance, 0).

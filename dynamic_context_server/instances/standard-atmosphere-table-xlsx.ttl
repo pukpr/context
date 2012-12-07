@@ -5,8 +5,40 @@
 @prefix rdf: <http://www.w3.org/1999/02/22-rdf-syntax-ns#> .
 @prefix ent: <http://entroplet.com/terms#> .
 
+ent:altitude ent:unit "kft" ;
+        rdfs:comment "alt is altitude in thousands of feet." .
 
-<ent:standard_atmosphere_table> ent:altitude "-1.0"^^xsd:double ;
+ent:sigma_density ent:unit  "normalized" ;
+        rdfs:comment "sigma is density divided by sea-level density." .
+
+ent:delta_pressure ent:unit "normalized" ;
+        rdfs:comment "delta is pressure divided by sea-level pressure." .
+
+ent:delta_temperature ent:unit "normalized" ;
+        rdfs:comment "theta is temperature divided by sea-level temperature." .
+
+ent:temperature_rankine ent:unit "r" ;
+        rdfs:comment "temp is temperature in degrees Rankine." .
+
+ent:pressure_psi ent:unit "lb/ft^2" ;
+        rdfs:comment "pressure is pressure in pounds per square foot." .
+
+ent:density_slugs ent:unit "slug/ft^3" ;
+        rdfs:comment "dens is density in slugs per cubic foot." .
+
+ent:speed_of_sound ent:unit "ft/s" ;
+        rdfs:comment "a is the speed of sound in feet per second." .
+
+ent:viscosity_slugs ent:unit "microslug/ft/s" ;
+        rdfs:comment "visc is viscosity in 10**(-6) slugs per foot-second." .
+
+ent:kinematic_velocity ent:unit "ft^2/s" ;
+        rdfs:comment "k.visc is kinematic viscosity in square feet per second." .
+
+ent:ratio_kv_sos   ent:unit "ratio" ;
+        rdfs:comment "ratio is speed of sound divided by kinematic viscosity times 10**(-6)." .
+
+ent:standard_atmosphere_table ent:altitude "-1.0"^^xsd:double ;
 	ent:sigma_density "1.0296"^^xsd:double ;
 	ent:delta_pressure "1.0367"^^xsd:double ;
 	ent:delta_temperature "1.0069"^^xsd:double ;
@@ -630,3 +662,14 @@
 	ent:density_slugs "1.777E-4"^^xsd:double ;
 	ent:kinematic_velocity "0.00167"^^xsd:double ;
 	ent:ratio_kv_sos "0.58"^^xsd:double .
+
+
+
+
+
+
+
+
+
+
+

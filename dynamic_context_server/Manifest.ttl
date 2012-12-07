@@ -34,6 +34,7 @@
                      <instances/density-xlsx.ttl>,
                      <instances/temperature_regions-sparql-xlsx.ttl>,
                      <instances/PeriodicTable.owl.ttl>,
+                     <terms/context-terms.owl.ttl>,
                      <terms/defs.ttl>,
                      <terms/swore.rdf>,
                      <terms/biblio.ttl>,
@@ -180,6 +181,11 @@
         a lib:Schema ;
         a lib:CloudNode ;
 	dc:title "Requirements terms from http://ns.softwiki.de/req/".
+
+<terms/context-terms.owl.ttl>
+        a lib:Schema ;
+        a lib:CloudNode ;
+	dc:title "Context concept terms from http://on.cs.unibas.ch/owl/1.0/Context.owl".
 
 <terms/sweet23_db.trp>
         a lib:Schema ;

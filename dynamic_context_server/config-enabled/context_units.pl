@@ -15,6 +15,7 @@ relation(number/mol, 6.02214129e23).  % Avogadro's constant
 % Distance -- English
 relation(in/ft, 12.0).
 relation(ft/yd, 3.0).
+relation(ft/kft, 1000.0).
 relation(yd/mi, 1760).
 relation(mil/in, 1000.0).
 % Distance -- Metric

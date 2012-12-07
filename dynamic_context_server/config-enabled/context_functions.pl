@@ -7,7 +7,9 @@
                               besselk1_sqrt/3,
 			      % used by PDF
 			      exp/4,
+			      exp_area/4,
 			      power_law_2/4,
+			      power_law_2_area/4,
                               besselk0/4,
                               besselk0_sqrt/4,
                               bessel_seastate/6,
@@ -143,6 +145,41 @@ power_law_2(Median, sample, X, Sample) :-
    random(R),
    Sample is Median*(1.0/R - 1.0).
 
+% Power law of order 2 for area
+%
+
+power_law_2_area(Median, pdf, X, Y) :-
+   nonvar(X),
+   Y = 2.0*X/Median^2/(1.0+(X/Median)^2)^2.  % This is symbolic but ends up being evaluated correctly
+
+power_law_2_area(Median, cdf, X, Y) :-
+   nonvar(X),
+   Y = 1.0/(1.0+(X/Median)^2).
+
+power_law_2_area(Median, sample, X, Sample) :-
+   var(X),
+   random(R),
+   Sample is Median*sqrt(1.0/R - 1.0).
+
+
+% Exponential area
+%
+
+exp_area(Mean, pdf, X, Y) :-
+   nonvar(X),
+   Y is 2.0*X/Mean^2 * exp(-((X/Mean)^2)).
+
+exp_area(Mean, cdf, X, Y) :-
+   nonvar(X),
+   Y is exp(-((X/Mean)^2)).
+
+exp_area(Mean, sample, X, Sample) :-
+   var(X),
+   random(R),
+   Sample is Mean*sqrt(-log(R)).
+
+exp_area(Mean, symbolic, X, Y) :-
+   Y = 1.0/Mean * exp(-X/Mean).
 
 % BesselK,0
 %

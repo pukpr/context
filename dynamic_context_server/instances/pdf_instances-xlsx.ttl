@@ -13,10 +13,10 @@ ent:CONUS_slopes a rdfs:Resource ;
 	ent:characteristic "slopes" ;
 	ent:title "Slope Distribution" ;
 	ent:x_axis "rise/run" ;
-	ent:pdf "1.0*besselk0_sqrt(0.039,Dist)" ;
+	ent:pdf "1.0*besselk0_sqrt(0.037,Dist)" ;
 	ent:moments "[mean]" ;
 	ent:interval "1.05"^^xsd:double ;
-	ent:min_extent "0.00010"^^xsd:double ;
+	ent:min_extent "0.010"^^xsd:double ;
 	ent:max_extent "10.0"^^xsd:double .
 
 ent:Iowa_rainfall a rdfs:Resource ;
@@ -26,76 +26,107 @@ ent:Iowa_rainfall a rdfs:Resource ;
 	ent:characteristic "rainfall" ;
 	ent:title "Rainfall Distribution" ;
 	ent:x_axis "mm/hr" ;
-	ent:pdf "1.0*besselk0_sqrt(2.9,Dist)" ;
+	ent:pdf "1.0*besselk0_sqrt(2.29,Dist)" ;
 	ent:moments "[mean]" ;
 	ent:interval "1.05"^^xsd:double ;
 	ent:min_extent "0.0010"^^xsd:double ;
-	ent:max_extent "1000.0"^^xsd:double .
+	ent:max_extent "100.0"^^xsd:double .
 
-ent:Oregon_wind a rdfs:Resource ;
-	ent:model "Oregon_wind" ;
+ent:Oregon_wind_energy a rdfs:Resource ;
+	ent:model "Oregon_wind_energy" ;
+	ent:locale ent:Oregon ;
+	ent:feature "wind features" ;
+	ent:characteristic "windSpeed" ;
+	ent:title "Wind Speed as Energy distribution" ;
+	ent:x_axis "MPH^2" ;
+	ent:pdf "1.0*besselk0_sqrt(144,Dist)" ;
+	ent:moments "[mean]" ;
+	ent:interval "1.1"^^xsd:double ;
+	ent:min_extent "1.0"^^xsd:double ;
+	ent:max_extent "10000.0"^^xsd:double .
+
+ent:Oregon_wind_speed a rdfs:Resource ;
+	ent:model "Oregon_wind_speed" ;
 	ent:locale ent:Oregon ;
 	ent:feature "wind features" ;
 	ent:characteristic "windSpeed" ;
 	ent:title "Wind Speed distribution" ;
-	ent:x_axis "m/s" ;
-	ent:pdf "1.0*besselk0(12.4,Dist)" ;
+	ent:x_axis "MPH" ;
+	ent:pdf "1.0*besselk0(12,Dist)" ;
+	ent:moments "[mean]" ;
+	ent:interval "1.05"^^xsd:double ;
+	ent:min_extent "1.0"^^xsd:double ;
+	ent:max_extent "100.0"^^xsd:double .
+
+
+ent:Variable_clutter_maxent a rdfs:Resource ;
+	ent:model "Variable_clutter_maxent" ;
+	ent:locale ent:world ;
+	ent:feature "clutter features" ;
+	ent:characteristic "clutterPower" ;
+	ent:title "clutter power distribution MaxEnt" ;
+	ent:x_axis "w/m^2" ;
+	ent:pdf "1.0*besselk0_sqrt(1.0,Dist)" ;
 	ent:moments "[mean]" ;
 	ent:interval "1.1"^^xsd:double ;
-	ent:min_extent "0.0010"^^xsd:double ;
-	ent:max_extent "100.0"^^xsd:double .
+	ent:min_extent "0.010"^^xsd:double ;
+	ent:max_extent "10.0"^^xsd:double .
 
 ent:Variable_clutter a rdfs:Resource ;
 	ent:model "Variable_clutter" ;
 	ent:locale ent:world ;
 	ent:feature "clutter features" ;
 	ent:characteristic "clutterPower" ;
-	ent:title "clutter power distribution" ;
-	ent:x_axis "v/m" ;
-	ent:pdf "1.0*besselk0(1.0,Dist)" ;
+	ent:title "clutter power distribution Rayleigh" ;
+	ent:x_axis "w/m^2" ;
+	ent:pdf "1.0*exp(1.0,Dist)" ;
 	ent:moments "[mean]" ;
 	ent:interval "1.1"^^xsd:double ;
-	ent:min_extent "0.0010"^^xsd:double ;
+	ent:min_extent "0.010"^^xsd:double ;
 	ent:max_extent "10.0"^^xsd:double .
+
+
 
 ent:Canadian_lakes a rdfs:Resource ;
 	ent:model "Canadian_lakes" ;
-	ent:locale ent:Canada ;
+	ent:locale ent:Northern_Quebec ;
 	ent:feature "lakes features" ;
 	ent:characteristic "lakeSize" ;
 	ent:title "lake size distribution" ;
-	ent:x_axis "hectares" ;
-	ent:pdf "1.0*power_law_2(1.0,Dist)" ;
+	ent:x_axis "km^2" ;
+	ent:pdf "1.0*power_law_2(0.1,Dist)" ;
 	ent:moments "[median]" ;
-	ent:interval "1.1"^^xsd:double ;
-	ent:min_extent "0.0010"^^xsd:double ;
-	ent:max_extent "10000.0"^^xsd:double .
+	ent:interval "1.05"^^xsd:double ;
+	ent:min_extent "0.10"^^xsd:double ;
+	ent:max_extent "1000.0"^^xsd:double .
+
+ent:Amazon_lakes a rdfs:Resource ;
+	ent:model "Amazon_lakes" ;
+	ent:locale ent:Amazon ;
+	ent:feature "lakes features" ;
+	ent:characteristic "lakeSize" ;
+	ent:title "lake size distribution" ;
+	ent:x_axis "km^2" ;
+	ent:pdf "1.0*power_law_2(0.19,Dist)" ;
+	ent:moments "[median]" ;
+	ent:interval "1.05"^^xsd:double ;
+	ent:min_extent "0.010"^^xsd:double ;
+	ent:max_extent "1000.0"^^xsd:double .
+
 
 ent:Ocean_clouds a rdfs:Resource ;
 	ent:model "Ocean_clouds" ;
-	ent:locale ent:Atlantic ;
+	ent:locale ent:Pacific ;
 	ent:feature "rain features" ;
 	ent:characteristic "cloudArea" ;
-	ent:title "cloud area distribution" ;
-	ent:x_axis "m^2" ;
-	ent:pdf "1.0*power_law_2(1.0,Dist)" ;
+	ent:title "cloud diameter distribution" ;
+	ent:x_axis "m" ;
+	ent:pdf "1.0*power_law_2(0.1,Dist)" ;
 	ent:moments "[median]" ;
 	ent:interval "1.1"^^xsd:double ;
-	ent:min_extent "0.0010"^^xsd:double ;
-	ent:max_extent "1000.0"^^xsd:double .
+	ent:min_extent "1.0"^^xsd:double ;
+	ent:max_extent "100000.0"^^xsd:double .
 
-ent:Land_clouds a rdfs:Resource ;
-	ent:model "Land_clouds" ;
-	ent:locale ent:CONUS ;
-	ent:feature "rain features" ;
-	ent:characteristic "cloudArea" ;
-	ent:title "cloud area distribution" ;
-	ent:x_axis "m^2" ;
-	ent:pdf "1.0*power_law_2(1.0,Dist)" ;
-	ent:moments "[median]" ;
-	ent:interval "1.1"^^xsd:double ;
-	ent:min_extent "0.0010"^^xsd:double ;
-	ent:max_extent "1000.0"^^xsd:double .
 
 ent:Michigan_waves a rdfs:Resource ;
 	ent:model "Michigan_waves" ;
@@ -144,10 +175,10 @@ ent:San_Diego_waves a rdfs:Resource ;
 	ent:characteristic "waveFrequency" ;
 	ent:title "Wave frequency Distribution" ;
 	ent:x_axis "hz" ;
-	ent:pdf "1.0*pierson_moskowitz(0.1,Dist)" ;
+	ent:pdf "1.0*pierson_moskowitz(0.085,Dist)" ;
 	ent:moments "[mean]" ;
 	ent:interval "1.01"^^xsd:double ;
-	ent:min_extent "0.050"^^xsd:double ;
+	ent:min_extent "0.05"^^xsd:double ;
 	ent:max_extent "0.6"^^xsd:double .
 
 
@@ -183,12 +214,12 @@ ent:ice_particles a rdfs:Resource ;
 	ent:feature "particle features" ;
 	ent:characteristic "particleSizes" ;
 	ent:title "ice particle size distribution" ;
-	ent:x_axis "mm" ;
-	ent:pdf "[0.9*power_law_2(0.1,Dist), 0.1*exp(2.0,Dist)]" ;
+	ent:x_axis "micron" ;
+	ent:pdf "[0.995*power_law_2_area(3.0,Dist), 0.005*exp_area(3000.0,Dist)]" ;
 	ent:moments "[[median], [mean]]" ;
 	ent:interval "1.1"^^xsd:double ;
-	ent:min_extent "0.0010"^^xsd:double ;
-	ent:max_extent "10.0"^^xsd:double .
+	ent:min_extent "1.0"^^xsd:double ;
+	ent:max_extent "10000.0"^^xsd:double .
 
 ent:lightning_rate a rdfs:Resource ;
 	ent:model "lightning_rate" ;

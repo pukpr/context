@@ -41,6 +41,16 @@ ent:Canada a rdfs:Resource ;
 	ent:lat "50.0"^^xsd:double ;
 	ent:lon "-89.0"^^xsd:double.
 
+ent:Northern_Quebec a rdfs:Resource ;
+        ent:title "Northern Quebec";
+	ent:lat "54.0"^^xsd:double ;
+	ent:lon "-75.0"^^xsd:double.
+
+ent:Pacific a rdfs:Resource ;
+        ent:title "Pacific near Hawaii";
+	ent:lat "17.5"^^xsd:double ;
+	ent:lon "-162.5"^^xsd:double.
+
 ent:Atlantic a rdfs:Resource ;
         ent:title "Atlantic area";
 	ent:lon "-75.0"^^xsd:double ;
@@ -105,3 +115,8 @@ ent:APG a rdfs:Resource ;
         ent:title "Aberdeen Proving Ground" ;
         ent:lat "39.473333"^^xsd:double ;
         ent:lon "-76.140833"^^xsd:double.
+
+ent:Amazon a rdfs:Resource ;
+        ent:title "Amazon region" ;
+        ent:lat "-5.0"^^xsd:double ;
+        ent:lon "-60.0"^^xsd:double.

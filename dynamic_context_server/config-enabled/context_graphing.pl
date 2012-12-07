@@ -42,8 +42,11 @@ json_complete(x(X,S), y(Y,P,Shape), In, Out) :-
    atomic_list_concat(['"',Shape,' ',S,',',P,'"'], Id),
    atomic_list_concat(['[', In, '{"id":',Id,',',X,':',S,',',Y,':',P,'}]'], Out).
 json_concat(x(X,S), y(Y,P,Shape), In, Out) :-
-   atomic_list_concat(['"',Shape,' ',S,',',P,'"'], Id),
-   atomic_list_concat([     In, '{"id":',Id,',',X,':',S,',',Y,':',P,'},'], Out).
+   % atomic_list_concat(['"',Shape,' ',S,',',P,'"'], Id),
+   format(atom(Id), '"~w ~2g,~2g"', [Shape,S,P]),
+   format(atom(Str), '{"id":~w, ~w:~w, ~w:~w},', [Id,X,S,Y,P]),
+   atom_concat(In, Str, Out).
+   % atomic_list_concat([     In, '{"id":',Id,',',X,':',S,',',Y,':',P,'},'], Out).
 
 construct_json(X, Y, ID, [[V]], [[P]], In, Out) :-
     json_complete(x(X,V), y(Y,P,ID), In, Out).
@@ -285,6 +288,25 @@ plot(scatter, LogScale, Headings, Xaxis, Yaxis, Title, Data) -->
        \(scatter_plot(LogScale,Xaxis,Yaxis,Data))
         ]).
 
+%
+plot_log(false, Headings, Xaxis, Yaxis, Title, Data) -->
+   html([
+       \(dygraph_plot(true, Headings, Xaxis, Yaxis, Title, Data))
+        ]).
+
+plot_log(true, Headings, Xaxis, Yaxis, Title, Data) -->
+	{
+    % check_list(Title,T),
+    check_list(Xaxis,X),
+    check_list(Yaxis,Y)
+	 % format(atom(Header), '~w - ~w', [Title, Headings])
+	},
+   html([
+       % center(h2([T, ' - ', Headings, ' = '])),
+       center(h2(Title)),
+       \(scatter_plot(true,X,Y,Data)),
+       p(Headings)
+        ]).
 
 % Google Map
 

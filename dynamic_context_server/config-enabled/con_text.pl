@@ -11,6 +11,7 @@
 :- context:register(con_text:info).
 :- context:register(con_text:resources).
 
+% :- dynamic acronym_definition/2.
 
 acronym(Def) -->
     {
@@ -551,14 +552,19 @@ each_entry([[Name,Value]|R]) -->
        ),
    each_entry(R).
 
-table_entries(Content) -->
+table_entries(Attribute, Value, Content) -->
    html(table([border(0),
 	       style('margin-left:40pt;font-family: Arial, Verdana, sans-serif;')
 	      ],
-	      [tr([th([bgcolor(blue), style('color:white;')], 'Attribute'),
-		   th([bgcolor(blue), style('color:white;')], 'Value')]),
+	      [tr([th([bgcolor(blue), style('color:white;')], Attribute),
+		   th([bgcolor(blue), style('color:white;')], Value)]),
 	       \(each_entry(Content))]
 	     )
+       ).
+
+table_entries(Content) -->
+   html(
+       \(table_entries('Attribute', 'Value', Content))
        ).
 
 each_cell(_Cell, []) --> !.

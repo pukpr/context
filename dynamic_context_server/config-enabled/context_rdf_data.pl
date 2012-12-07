@@ -596,6 +596,14 @@ rdf_(ent:length, ent:units, ent:yards).
 rdf_(ent:yards, ent:unit, 'yd').
 rdf_(ent:yards, ent:description, 'yards').
 
+rdf_(ent:length, ent:units, ent:kft).
+rdf_(ent:kft, ent:unit, 'kft').
+rdf_(ent:kft, ent:description, 'thousand feet').
+
+rdf_(ent:length, ent:units, ent:km).
+rdf_(ent:km, ent:unit, 'km').
+rdf_(ent:km, ent:description, 'kilometer').
+
 
 
 % time units

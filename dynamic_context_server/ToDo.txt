@@ -1,17 +1,16 @@
-W	Collect all XLS and PPT files
-	calibrate PDF, such as Canada lakes
 	add rdfs:label
-	add ice particle
-	add search pdfs for whatever in feature page
-	std atmo table
-	lightning stroke plot
-	context_solar, planck's law
-	Aquatic wave height model, plus connection to Sea-State, significant wave height
 	ENT classification system tied to SWEET, show as GraphViz?
-	Thermal heat sink model
 	convert rdf_ to entailments
 	Different data format generators
 	Each browse entry should have short narrative and one link
+	Thermal heat sink model
+	lightning stroke plot
+	context_solar, planck's law
+	Aquatic wave height model, plus connection to Sea-State, significant wave height
+x	std atmo table
+x	add ice particle
+x	add search pdfs for whatever in feature page
+x	calibrate PDF, such as Canada lakes
 x	Add browser subtree to individual features
 x	Auto-completion
 x	add emi refs
@@ -54,6 +53,7 @@ x	Cloud has land plus ocean.
 
 
 general work
+W	Collect all XLS and PPT files
 	Index the papers for PDF
 	Acronyms, add via Zotero
 	Unit tests

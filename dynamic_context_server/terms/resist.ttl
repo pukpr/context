@@ -1,0 +1,1051 @@
+@base           <http://users.ecs.soton.ac.uk/aoj04r/> .
+@prefix    owl: <http://www.w3.org/2002/07/owl#> .
+@prefix    xsd: <http://www.w3.org/2001/XMLSchema#> .
+@prefix   rdfs: <http://www.w3.org/2000/01/rdf-schema#> .
+@prefix    rdf: <http://www.w3.org/1999/02/22-rdf-syntax-ns#> .
+@prefix resist: <http://www.resist-noe.org/ontology/resist#> .
+@prefix portal: <http://www.aktors.org/ontology/portal#> .
+@prefix     dc: <http://purl.org/dc/elements/1.1/> .
+
+# Named toplevel resources (214)
+
+<http://www.resist-noe.org/ontology/resist>
+	a owl:Ontology ;
+	dc:created "2006-03-15" ;
+	dc:creator "Afraz Jaffri" ,
+		   "Bene Rodriguez" ,
+		   "Hugh Glaser" ,
+		   "Ian Millard" ;
+	dc:description "The ReSIST Ontology encompasses concepts within the fields of research in Resilient, Survivable and Dependable Systems"@en ;
+	dc:title "ReSIST Ontology"@en ;
+	rdfs:label "ReSIST Ontology" ;
+	owl:imports <http://www.aktors.org/ontology/portal> ;
+	owl:versionInfo "0.1"^^xsd:string .
+
+resist:Accidental-Fault
+	a owl:Class ;
+	rdfs:comment "Accidental faults are mistakes and bad decisions, as long as they are not made with malicious objectives and were not caused by incompetence. " ;
+	rdfs:subClassOf resist:Elementary-Fault .
+
+resist:Active-Fault
+	a owl:Class ;
+	rdfs:subClassOf resist:Elementary-Fault .
+
+resist:Adaptive-Maintenance
+	a owl:Class ;
+	rdfs:comment "Adaptive maintenance is to make adjustments to environmental changes." ;
+	rdfs:subClassOf resist:Maintenance-By-Modification .
+
+resist:Application-Flaw
+	a owl:Class ;
+	rdfs:comment "Application software is software that has no special system privileges and are not widely shared." ;
+	rdfs:subClassOf resist:Software-Flaw .
+
+resist:Attribute-Of-Dependable-Systems
+	a owl:Class ;
+	rdfs:comment "The attributes that make a system dependable." ;
+	rdfs:subClassOf resist:Dependable-Systems-Technology .
+
+resist:Augmentive-Maintenance
+	a owl:Class ;
+	rdfs:comment "Augmentive maintenance means to make modifications that are an augmentation of the systems function." ;
+	rdfs:subClassOf resist:Maintenance-By-Modification .
+
+resist:Availability
+	a owl:Class ;
+	rdfs:comment "Availability means readiness for correct service." ;
+	rdfs:subClassOf resist:Attribute-Of-Dependable-Systems .
+
+resist:Boundary-Condition-Violation
+	a owl:Class ;
+	rdfs:comment "A boundary condition violation is caused by the omission of checks to assure constraints (e.g. in table size, file allocation or other resource consumption) are not exceeded." ;
+	rdfs:subClassOf resist:Inadvertent-Flaw .
+
+resist:Budget-Failure
+	a owl:Class ;
+	rdfs:comment "A budget failure is when the allocated funds are exhausted before the system passes acceptance testing." ;
+	rdfs:subClassOf resist:Complete-Development-Failure .
+
+resist:Catastrophic-Error
+	a owl:Class ;
+	rdfs:comment "A catastrophic error causes a catastrophic fault." ;
+	rdfs:subClassOf resist:Elementary-Error .
+
+resist:Catastrophic-Failure
+	a owl:Class ;
+	rdfs:comment "Failures where the cost of harmful consequences is orders of magnitude, or even incommensurably, higher than the benefit provided by correct service delivery." ;
+	rdfs:subClassOf resist:Elementary-Failure .
+
+resist:Commission-Fault
+	a owl:Class ;
+	rdfs:comment "The performance of wrong actions." ;
+	rdfs:subClassOf resist:Human-Made-Fault .
+
+resist:Communications-Exploitation
+	a owl:Class ;
+	rdfs:subClassOf resist:Vulnerability-Exploitation .
+
+resist:Compensation
+	a owl:Class ;
+	rdfs:comment "Compensation is when the erroneous state contains enough redundancy to enable an error to be masked." ;
+	rdfs:subClassOf resist:Error-Handling .
+
+resist:Complete-Development-Failure
+	a owl:Class ;
+	rdfs:comment "Development failures that lead to project termination." ;
+	rdfs:subClassOf resist:Development-Failure .
+
+resist:Computer-Fraud
+	a owl:Class ;
+	rdfs:comment "The class of all types of computer fraud that is defined as 'knowingly and with intent to defraud, access a protected computer without authorisation, or exceeds authorised access, and by means of such conduct furthers the intended fraud and obtains anything of value, unless the object of the fraud and the thing obtained consists only of the use of the computer and the value of such use is not more than $5000 in any 1 year period. (US Computer fraud and Abuse Act)." ;
+	rdfs:subClassOf resist:Threat-To-Dependable-Systems .
+
+resist:Computer-Fraud-Without-Authorisation
+	a owl:Class ;
+	rdfs:comment "Without authorisation means to access a protected computer without authorisation." ;
+	rdfs:subClassOf resist:Elementary-Computer-Fraud .
+
+resist:Computer-Systems-Vulnerability
+	a owl:Class ;
+	rdfs:comment "Vulnerability here means all threats that can cause a computer system to malfunction or stop." ;
+	rdfs:subClassOf portal:Research-Area .
+
+resist:Concurrent-Detection
+	a owl:Class ;
+	rdfs:comment "Concurrent Detection takes place during normal service delivery." ;
+	rdfs:subClassOf resist:Error-Detection .
+
+resist:Confidentiality
+	a owl:Class ;
+	rdfs:comment "Confidentiality is the absence of unauthorised disclosure of information." ;
+	rdfs:subClassOf resist:Attribute-Of-Dependable-Systems .
+
+resist:Consistent-Error
+	a owl:Class ;
+	rdfs:comment "A consistent error causes a consistent fault." ;
+	rdfs:subClassOf resist:Elementary-Error .
+
+resist:Consistent-Failure
+	a owl:Class ;
+	rdfs:comment "A Consistent failure is where the incorrect service is perceived identically by all system users." ;
+	rdfs:subClassOf resist:Elementary-Failure .
+
+resist:Content-Error
+	a owl:Class ;
+	rdfs:comment "A content error causes a content fault." ;
+	rdfs:subClassOf resist:Elementary-Error .
+
+resist:Content-Failure
+	a owl:Class ;
+	rdfs:comment "A content failure is when the content of information delivered at the service interface deviates from implementing the system function." ;
+	rdfs:subClassOf resist:Elementary-Failure .
+
+resist:Corrective-Maintenance
+	a owl:Class ;
+	rdfs:comment "Corrective Maintenance means the removal of reported faults." ;
+	rdfs:subClassOf resist:Repair .
+
+resist:Covert-Channel
+	a owl:Class ;
+	rdfs:comment "A covert channel is a path used to transfer information in a way not intended by the systems designers." ;
+	rdfs:subClassOf resist:Non-Malicious-Flaw .
+
+resist:Crack
+	a owl:Class ;
+	rdfs:comment "If a password is cracked, it may suggest access to the password file." ;
+	rdfs:subClassOf resist:Password-Attack .
+
+resist:Data-Availability-Attack
+	a owl:Class ;
+	rdfs:subClassOf resist:Data-Fraud .
+
+resist:Data-Fraud
+	a owl:Class ;
+	rdfs:comment "Data fraud is a combination of input fraud, where the offender dishonestly enters improper data or data improperly, and output fraud where the offender dishonestly suppresses or amends data being output." ;
+	rdfs:subClassOf resist:Elementary-Computer-Fraud .
+
+resist:Data-Improperly-Inserted
+	a owl:Class ;
+	rdfs:subClassOf resist:Fraud-By-Insertion .
+
+resist:Data-Integrity-Attack
+	a owl:Class ;
+	rdfs:subClassOf resist:Data-Fraud .
+
+resist:Deliberate-Fault
+	a owl:Class ;
+	rdfs:comment "Deliberate faults are due to bad decisions, that is, intended actions are wrong and cause faults." ;
+	rdfs:subClassOf resist:Elementary-Fault ,
+			resist:Non-Malicious-Fault .
+
+resist:Dependable-Systems-Technology
+	a owl:Class ;
+	rdfs:comment "Includes all features and research areas of dependable systems technology." ;
+	rdfs:subClassOf portal:Research-Area .
+
+resist:Detected-Error
+	a owl:Class ;
+	rdfs:comment "A detected error is an error that is indicated by an error message or error signal." ;
+	rdfs:subClassOf resist:Elementary-Error .
+
+resist:Development-Failure
+	a owl:Class ;
+	rdfs:comment "Partial or complete development failures are caused by development faults." ;
+	rdfs:subClassOf resist:Elementary-Failure .
+
+resist:Development-Fault
+	a owl:Class ;
+	rdfs:comment "Development faults are all faults that occur during development." ;
+	rdfs:subClassOf resist:Elementary-Fault .
+
+resist:Device-Management-Flaw
+	a owl:Class ;
+	rdfs:comment "Device management includes complex programs that operate in parallel with the CPU.  Can occur when the I/O routines fail to respect parameters provided for them or they validate parameters provided in storage locations that can be altered, directly or indirectly, by user programs after checks are made." ;
+	rdfs:subClassOf resist:Operating-System-Flaw .
+
+resist:Diagnosis
+	a owl:Class ;
+	rdfs:comment "Diagnosis identifies and records the cause(s) of error(s) in terms of both location and type." ;
+	rdfs:subClassOf resist:Fault-Handling .
+
+resist:Dormant-Fault
+	a owl:Class ;
+	rdfs:subClassOf resist:Elementary-Fault .
+
+resist:Downgrading
+	a owl:Class ;
+	rdfs:comment "Downgrading means that the developed system is delivered with less functionality, lower performance, or is predicted to have lower dependability or security than was required in the original system specification." ;
+	rdfs:subClassOf resist:Partial-Development-Failure .
+
+resist:Dynamic-Verification
+	a owl:Class ;
+	rdfs:comment "Dynamic verification means to verify a system through exercising it." ;
+	rdfs:subClassOf resist:Verification .
+
+resist:Early-Timing-Failure
+	a owl:Class ;
+	rdfs:comment "An early timing failure is when the time of arrival or the duration of the information delivered at the service interface is earlier than implementing the system function." ;
+	rdfs:subClassOf resist:Timing-Failure .
+
+resist:Elementary-Computer-Fraud
+	a owl:Class ;
+	rdfs:subClassOf resist:Computer-Systems-Vulnerability .
+
+resist:Elementary-Error
+	a owl:Class ;
+	rdfs:comment "An error is the part of a systems state that may lead to a failure.  This class represents all the different types of errors that can be found in a system." ;
+	rdfs:subClassOf resist:Computer-Systems-Vulnerability .
+
+resist:Elementary-Failure
+	a owl:Class ;
+	rdfs:comment "A failure is an event that occurs when the delivered service deviates from correct service.  This class represents the different types of failure that can occur in a system." ;
+	rdfs:subClassOf resist:Computer-Systems-Vulnerability .
+
+resist:Elementary-Fault
+	a owl:Class ;
+	rdfs:comment "A fault is the cause of an error and this class includes all faults that may affect a system during its life, classified according to 8 basic viewpoints. These viewpoints are the slots of the Fault Class.  The range of the slots corresponds to the 2 Elementary Faults that can be associated with each viewpoint." ;
+	rdfs:subClassOf resist:Computer-Systems-Vulnerability .
+
+resist:Elementary-Security-Flaw
+	a owl:Class ;
+	rdfs:comment "This class represents all the different types of security risks that a system has from the viewpoints of genesis, time and location." ;
+	rdfs:subClassOf resist:Computer-Systems-Vulnerability .
+
+resist:Elusive-Fault
+	a owl:Class ;
+	rdfs:subClassOf resist:Permanent-Fault .
+
+resist:Erratic-Failure
+	a owl:Class ;
+	rdfs:comment "An erratic failure is when a service is delivered (not halted) but is erratic." ;
+	rdfs:subClassOf resist:Elementary-Failure .
+
+resist:Error
+	a owl:Class ;
+	rdfs:comment "This class is used to classify an instance of an error that can be further described by the elementary-error-type property whose range is the Elementary error class." ;
+	rdfs:subClassOf resist:Threat-To-Dependable-Systems .
+
+resist:Error-Detection
+	a owl:Class ;
+	rdfs:comment "Error detection identifies the presence of an error." ;
+	rdfs:subClassOf resist:Fault-Tolerance .
+
+resist:Error-Handling
+	a owl:Class ;
+	rdfs:comment "Error Handling eliminates errors from the system state." ;
+	rdfs:subClassOf resist:Recovery .
+
+resist:Evaluation-Testing
+	a owl:Class ;
+	rdfs:subClassOf resist:Probabilistic-Evaluation .
+
+resist:External-Fault
+	a owl:Class ;
+	rdfs:subClassOf resist:Active-Fault .
+
+resist:Fabrication
+	a owl:Class ;
+	rdfs:subClassOf resist:Transit-Attack .
+
+resist:Failure
+	a owl:Class ;
+	rdfs:comment "This class is used to classify an instance of a failure that can be further described by the properties whose range are subclasses from the Elementary Failure class." ;
+	rdfs:subClassOf resist:Threat-To-Dependable-Systems .
+
+resist:Fault
+	a owl:Class ;
+	rdfs:comment "This class is used to classify an instance of a fault that can be further described by the properties whose range are subclasses from the Elementary Fault class." ;
+	rdfs:subClassOf resist:Threat-To-Dependable-Systems .
+
+resist:Fault-Forecasting
+	a owl:Class ;
+	rdfs:comment "Fault forecasting is conducted by performing an evaluation of the system behaviour with respect to fault occurrence or activation." ;
+	rdfs:subClassOf resist:Means-To-Attain-Dependable-Systems .
+
+resist:Fault-Handling
+	a owl:Class ;
+	rdfs:comment "Fault Handling prevents faults from being activated again." ;
+	rdfs:subClassOf resist:Recovery .
+
+resist:Fault-Prevention
+	a owl:Class ;
+	rdfs:subClassOf resist:Means-To-Attain-Dependable-Systems .
+
+resist:Fault-Removal
+	a owl:Class ;
+	rdfs:comment "Fault removal during the development phase of a system lifecycle consists of verification, diagnosis and correction." ;
+	rdfs:subClassOf resist:Means-To-Attain-Dependable-Systems .
+
+resist:Fault-Tolerance
+	a owl:Class ;
+	rdfs:comment "Fault tolerance, which is aimed at failure avoidance, is carried out via error detection and system recovery." ;
+	rdfs:subClassOf resist:Means-To-Attain-Dependable-Systems .
+
+resist:File-Management-Flaw
+	a owl:Class ;
+	rdfs:comment "File management systems typically use the process, memory and device management functions to create long-term storage structures.  The operating system boundary includes the file system, which often implements access controls to permit users to share and protect their files. Errors in these controls, or in the management of underlying files, can easily result in security flaws." ;
+	rdfs:subClassOf resist:Operating-System-Flaw .
+
+resist:Fraud-By-Insertion
+	a owl:Class ;
+	rdfs:subClassOf resist:Data-Fraud .
+
+resist:Guess
+	a owl:Class ;
+	rdfs:comment "If a password is guessed, it may suggest a weak password approach." ;
+	rdfs:subClassOf resist:Password-Attack .
+
+resist:Halt-Failure
+	a owl:Class ;
+	rdfs:comment "A halt failure is when the system is halted (the external state becomes constant, i.e., system activity, if there is any, is no longer perceptible to the users)." ;
+	rdfs:subClassOf resist:Elementary-Failure .
+
+resist:Hardware-Fault
+	a owl:Class ;
+	rdfs:comment "hardware faults are faults that originate in, or affect, hardware." ;
+	rdfs:subClassOf resist:Elementary-Fault .
+
+resist:Hardware-Flaw
+	a owl:Class ;
+	rdfs:comment "A hardware flaw is a flaw in which hardware exhibits security flaws that did not originate as errors in programs." ;
+	rdfs:subClassOf resist:Elementary-Security-Flaw .
+
+resist:Harvest
+	a owl:Class ;
+	rdfs:comment "If a password was harvested (through visual spying, social engineering, sniffing or key logging attacks, it may suggest low awareness in the password protection area." ;
+	rdfs:subClassOf resist:Password-Attack .
+
+resist:Human-Made-Fault
+	a owl:Class ;
+	rdfs:comment "Human-made faults includes absence of actions when actions should be performed or performing wrong actions." ;
+	rdfs:subClassOf resist:Elementary-Fault .
+
+resist:Identification-Flaw
+	a owl:Class ;
+	rdfs:comment "The identification and authentication flaws occur in functions of the operating system that maintain special files for user ID's and passwords and provide functions to check and update those files as appropriate." ;
+	rdfs:subClassOf resist:Operating-System-Flaw .
+
+resist:Impersonation
+	a owl:Class ;
+	rdfs:comment "Impersonation is the use of another person's password or authentication ticket reuse." ;
+	rdfs:subClassOf resist:Masquerade .
+
+resist:Improper-Data-Insertion
+	a owl:Class ;
+	rdfs:subClassOf resist:Fraud-By-Insertion .
+
+resist:Improper-Obtainment
+	a owl:Class ;
+	rdfs:comment "To read, copy, print, or disseminate - this must be done in close connection with the intent to further a fraud." ;
+	rdfs:subClassOf resist:Data-Fraud .
+
+resist:Improper-Parameters
+	a owl:Class ;
+	rdfs:subClassOf resist:Run-Attack .
+
+resist:Inadequate-Authentication
+	a owl:Class ;
+	rdfs:comment "An inadequate authentication flaw is one that permits a protected operation to be invoked without sufficiently checking the identity and authority of the invoking agent." ;
+	rdfs:subClassOf resist:Inadvertent-Flaw .
+
+resist:Inadvertent-Flaw
+	a owl:Class ;
+	rdfs:comment "Inadvertent flaws may occur in requirements or they may also find their way into software during specification and coding." ;
+	rdfs:subClassOf resist:Elementary-Security-Flaw .
+
+resist:Incompetence-Fault
+	a owl:Class ;
+	rdfs:comment "Faults which happen by mistake or through a bad decision that were the result of incompetence." ;
+	rdfs:subClassOf resist:Elementary-Fault .
+
+resist:Inconsistent-Error
+	a owl:Class ;
+	rdfs:comment "An inconsistent error causes an inconsistent fault." ;
+	rdfs:subClassOf resist:Elementary-Error .
+
+resist:Inconsistent-Failure
+	a owl:Class ;
+	rdfs:comment "An inconsistent failure is where some or all system users perceive differently incorrect service." ;
+	rdfs:subClassOf resist:Elementary-Failure .
+
+resist:Integrity
+	a owl:Class ;
+	rdfs:comment "Integrity means absence of improper system alterations." ;
+	rdfs:subClassOf resist:Attribute-Of-Dependable-Systems .
+
+resist:Intentional-Flaw
+	a owl:Class ;
+	rdfs:subClassOf resist:Elementary-Security-Flaw .
+
+resist:Interception
+	a owl:Class ;
+	rdfs:subClassOf resist:Transit-Attack .
+
+resist:Internal-Fault
+	a owl:Class ;
+	rdfs:subClassOf resist:Active-Fault .
+
+resist:Interruption
+	a owl:Class ;
+	rdfs:subClassOf resist:Transit-Attack .
+
+resist:Isolation
+	a owl:Class ;
+	rdfs:comment "Isolation performs physical or logical exclusion of the faulty components from further participation in service delivery, i.e. makes the fault dormant." ;
+	rdfs:subClassOf resist:Fault-Handling .
+
+resist:Late-Timing-Failure
+	a owl:Class ;
+	rdfs:comment "A late timing failure is when the time of arrival or the duration of the information delivered at the service interface is later than implementing the system function." ;
+	rdfs:subClassOf resist:Timing-Failure .
+
+resist:Latent-Error
+	a owl:Class ;
+	rdfs:comment "A latent error is an error that is present but not detected." ;
+	rdfs:subClassOf resist:Elementary-Error .
+
+resist:Logic-Bomb
+	a owl:Class ;
+	rdfs:comment "A logic or time bomb is a piece of code that remains dormant in the host system until a certain 'detonation' time or event occurs." ;
+	rdfs:subClassOf resist:Malicious-Flaw .
+
+resist:Maintainability
+	a owl:Class ;
+	rdfs:comment "Maintainability means the ability to undergo modifications and repairs." ;
+	rdfs:subClassOf resist:Attribute-Of-Dependable-Systems .
+
+resist:Maintenance-By-Modification
+	a owl:Class ;
+	rdfs:subClassOf resist:Maintenance-Task .
+
+resist:Maintenance-Task
+	a owl:Class ;
+	rdfs:comment "Maintenance tasks include not only repairs, but also all modifications of the system that take place during the use phase of system life." ;
+	rdfs:subClassOf resist:Means-To-Attain-Dependable-Systems .
+
+resist:Major-Error
+	a owl:Class ;
+	rdfs:comment "A major error causes a major fault." ;
+	rdfs:subClassOf resist:Elementary-Error .
+
+resist:Major-Failure
+	a owl:Class ;
+	rdfs:comment "A major failure is where the harmful consequences are much greater in cost than the benefits provided by correct service delivery." ;
+	rdfs:subClassOf resist:Elementary-Failure .
+
+resist:Malicious-Fault
+	a owl:Class ;
+	rdfs:comment "Malicious faults are human-made faults that have a malicious objective.  They are introduced during either system development to cause harm to the system during its use, or directly during use." ;
+	rdfs:subClassOf resist:Elementary-Fault .
+
+resist:Malicious-Flaw
+	a owl:Class ;
+	rdfs:comment "A malicious flaw is an intentional flaw where the objective is to cause harm or damage to a system." ;
+	rdfs:subClassOf resist:Intentional-Flaw .
+
+resist:Masquerade
+	a owl:Class ;
+	rdfs:comment "Masquerade is the unauthorised impersonation of an authorised user or of an entity." ;
+	rdfs:subClassOf resist:Computer-Fraud-Without-Authorisation .
+
+resist:Means-To-Attain-Dependable-Systems
+	a owl:Class ;
+	rdfs:comment "Includes all methods that are used to attain dependable systems." ;
+	rdfs:subClassOf resist:Dependable-Systems-Technology .
+
+resist:Medium-Error
+	a owl:Class ;
+	rdfs:comment "A medium error causes a medium fault." ;
+	rdfs:subClassOf resist:Elementary-Error .
+
+resist:Medium-Failure
+	a owl:Class ;
+	rdfs:comment "A medium failure is where the harmful consequences are slightly greater in cost than the benefits provided by correct service delivery." ;
+	rdfs:subClassOf resist:Elementary-Failure .
+
+resist:Memory-Management-Flaw
+	a owl:Class ;
+	rdfs:comment "Memory management are functions the operating system provides to control storage space. " ;
+	rdfs:subClassOf resist:Operating-System-Flaw .
+
+resist:Minor-Error
+	a owl:Class ;
+	rdfs:comment "A minor error causes a minor fault." ;
+	rdfs:subClassOf resist:Elementary-Error .
+
+resist:Minor-Failure
+	a owl:Class ;
+	rdfs:comment "A minor failure is where the harmful consequences are of similar cost to the benefits provided by correct service delivery." ;
+	rdfs:subClassOf resist:Elementary-Failure .
+
+resist:Model-Checking
+	a owl:Class ;
+	rdfs:comment "Model checking causes the verification of a model that is conducted on a model of the system behaviour, where the model is usually a state-transition model." ;
+	rdfs:subClassOf resist:Static-Verification .
+
+resist:Modelling
+	a owl:Class ;
+	rdfs:comment "Modelling uses the data that was obtained by evaluation testing." ;
+	rdfs:subClassOf resist:Probabilistic-Evaluation .
+
+resist:Modification
+	a owl:Class ;
+	rdfs:subClassOf resist:Transit-Attack .
+
+resist:Natural-Fault
+	a owl:Class ;
+	rdfs:comment "Natural Faults are physical (hardware) faults that are caused by natural phenomena without human participation." ;
+	rdfs:subClassOf resist:Elementary-Fault .
+
+resist:Non-Deliberate-Fault
+	a owl:Class ;
+	rdfs:comment "Non-Deliberate faults are due to mistakes, that is, unintended actions of which the developer, operator, maintainer etc. is not aware." ;
+	rdfs:subClassOf resist:Non-Malicious-Fault .
+
+resist:Non-Malicious-Fault
+	a owl:Class ;
+	rdfs:comment "Non-Malicious faults are introduced without malicious objectives." ;
+	rdfs:subClassOf resist:Elementary-Fault .
+
+resist:Non-Malicious-Flaw
+	a owl:Class ;
+	rdfs:comment "A malicious flaw is an intentional flaw where the objective is not to cause harm or damage to a system." ;
+	rdfs:subClassOf resist:Intentional-Flaw .
+
+resist:Non-Numerical-Content-Failure
+	a owl:Class ;
+	rdfs:comment "Includes alphabets, graphics, colours, sounds." ;
+	rdfs:subClassOf resist:Content-Failure .
+
+resist:Non-Replicating
+	a owl:Class ;
+	rdfs:comment "A trojan horse that does not replicate itself." ;
+	rdfs:subClassOf resist:Trojan-Horse .
+
+resist:Numerical-Content-Failure
+	a owl:Class ;
+	rdfs:subClassOf resist:Content-Failure .
+
+resist:Omission-Fault
+	a owl:Class ;
+	rdfs:comment "The absence of actions when actions should have been performed." ;
+	rdfs:subClassOf resist:Human-Made-Fault .
+
+resist:Operating-System-Flaw
+	a owl:Class ;
+	rdfs:comment "Flaws that occur within the operating system program." ;
+	rdfs:subClassOf resist:Software-Flaw .
+
+resist:Operational-Fault
+	a owl:Class ;
+	rdfs:comment "Operational faults occur during service delivery when the system is accepted for use and starts delivery of its service to users (use phase)." ;
+	rdfs:subClassOf resist:Elementary-Fault .
+
+resist:Ordinal-Evaluation
+	a owl:Class ;
+	rdfs:comment "Ordinal, or qualitative, evaluation aims to identify, classify and rank the failure modes, or the event combinations (component failures or environmental conditions) that would lead to system failures." ;
+	rdfs:subClassOf resist:Fault-Forecasting .
+
+resist:Other
+	a owl:Class ;
+	rdfs:subClassOf resist:Non-Malicious-Flaw .
+
+resist:Other-Exploitable-Logic-Error
+	a owl:Class ;
+	rdfs:comment "Any other inadvertent flaw that does not fit in the other categories." ;
+	rdfs:subClassOf resist:Inadvertent-Flaw .
+
+resist:Overrun
+	a owl:Class ;
+	rdfs:comment "Overruns occur when the development is completed, but the funds or time needed to complete the effort exceed the original estimates." ;
+	rdfs:subClassOf resist:Partial-Development-Failure .
+
+resist:Partial-Development-Failure
+	a owl:Class ;
+	rdfs:comment "Development failures of lesser severity than project termination" ;
+	rdfs:subClassOf resist:Development-Failure .
+
+resist:Password-Attack
+	a owl:Class ;
+	rdfs:comment "Attacks that try to discover a password." ;
+	rdfs:subClassOf resist:Impersonation .
+
+resist:Password-Trafficking
+	a owl:Class ;
+	rdfs:subClassOf resist:Impersonation .
+
+resist:Permanent-Fault
+	a owl:Class ;
+	rdfs:subClassOf resist:Active-Fault .
+
+resist:Personnel-Exploitation
+	a owl:Class ;
+	rdfs:comment "Includes error of omission, incompetence, recklessness or malice, system administration errors." ;
+	rdfs:subClassOf resist:Vulnerability-Exploitation .
+
+resist:Physical-Exploitation
+	a owl:Class ;
+	rdfs:subClassOf resist:Vulnerability-Exploitation .
+
+resist:Preemptive-Detection
+	a owl:Class ;
+	rdfs:comment "Pre-emptive detection takes place while normal service delivery is suspended; checks the system for latent errors and dormant faults." ;
+	rdfs:subClassOf resist:Error-Detection .
+
+resist:Preventive-maintenance
+	a owl:Class ;
+	rdfs:comment "Preventive Maintenance means the discovery and removal of dormant faults." ;
+	rdfs:subClassOf resist:Repair .
+
+resist:Privileged-Utilities
+	a owl:Class ;
+	rdfs:comment "Privileged utilities provide functions that were not anticipated when the operating system was built.  They can have flaws that, because they are also granted privileges, can compromise security." ;
+	rdfs:subClassOf resist:Support-Flaw .
+
+resist:Probabilistic-Evaluation
+	a owl:Class ;
+	rdfs:comment "Probabilistic, or quantitative, evaluation aims to evaluate in terms of probabilities the extent to which some of the attributes are satisfied; those attributes are then viewed as measures." ;
+	rdfs:subClassOf resist:Fault-Forecasting .
+
+resist:Process-Management-Flaw
+	a owl:Class ;
+	rdfs:comment "Process management are functions the operating system provides to control CPU time. " ;
+	rdfs:subClassOf resist:Operating-System-Flaw .
+
+resist:Program-Availability-Attack
+	a owl:Class ;
+	rdfs:subClassOf resist:Program-Fraud .
+
+resist:Program-Fraud
+	a owl:Class ;
+	rdfs:comment "Program Fraud involves either the creation of a program with a view to defraud, or the alteration or amendment of a program to such ends." ;
+	rdfs:subClassOf resist:Elementary-Computer-Fraud .
+
+resist:Program-Integrity-Attack
+	a owl:Class ;
+	rdfs:subClassOf resist:Program-Fraud .
+
+resist:Reconfiguration
+	a owl:Class ;
+	rdfs:comment "Reconfiguration either switches in spare components or reassigns tasks among non-failed components." ;
+	rdfs:subClassOf resist:Fault-Handling .
+
+resist:Recovery
+	a owl:Class ;
+	rdfs:comment "Recovery transforms a system state that contains one or more errors and (possibly) faults into a state without detected errors and without faults that can be activated again." ;
+	rdfs:subClassOf resist:Fault-Tolerance .
+
+resist:Reinitialisation
+	a owl:Class ;
+	rdfs:comment "Reinitialisation checks, updates and records the new configuration and updates system tables and records." ;
+	rdfs:subClassOf resist:Fault-Handling .
+
+resist:Reliability
+	a owl:Class ;
+	rdfs:comment "Reliability means continuity of correct service." ;
+	rdfs:subClassOf resist:Attribute-Of-Dependable-Systems .
+
+resist:Repair
+	a owl:Class ;
+	rdfs:subClassOf resist:Maintenance-Task .
+
+resist:Replicating
+	a owl:Class ;
+	rdfs:comment "A trojan horse that replicates itself by copying its code into other program files.  Commonly called a virus." ;
+	rdfs:subClassOf resist:Trojan-Horse .
+
+resist:RollForward
+	a owl:Class ;
+	rdfs:comment "RollForward is when a state without detected errors is a new state." ;
+	rdfs:subClassOf resist:Error-Handling .
+
+resist:Rollback
+	a owl:Class ;
+	rdfs:comment "Rollback brings the system back to a saved state that existed prior to error occurrence." ;
+	rdfs:subClassOf resist:Error-Handling .
+
+resist:Run-Attack
+	a owl:Class ;
+	rdfs:subClassOf resist:Program-Fraud .
+
+resist:Run-Attack-In-Excess-Of-Authorisation
+	a owl:Class ;
+	rdfs:subClassOf resist:Run-Attack .
+
+resist:Run-Attack-Without-Authorisation
+	a owl:Class ;
+	rdfs:subClassOf resist:Run-Attack .
+
+resist:Safety
+	a owl:Class ;
+	rdfs:comment "Safety means the absence of catastrophic consequences on the user(s) and the environment." ;
+	rdfs:subClassOf resist:Attribute-Of-Dependable-Systems .
+
+resist:Schedule-Failure
+	a owl:Class ;
+	rdfs:comment "A schedule failure is when the project delivery schedule slips to a point in the future where the system would be technologically obsolete or functionally inadequate for the user's needs." ;
+	rdfs:subClassOf resist:Complete-Development-Failure .
+
+resist:Security-Flaw
+	a owl:Class ;
+	rdfs:comment "This class is used to classify an instance of a security flaw that can be further described by the properties whose range are subclasses from the Elementary Security Flaw class." ;
+	rdfs:subClassOf resist:Threat-To-Dependable-Systems .
+
+resist:Serialisation-Error
+	a owl:Class ;
+	rdfs:comment "A serialisation error permits the asynchronous behaviour of different system components to be exploited to cause a security violation." ;
+	rdfs:subClassOf resist:Inadvertent-Flaw .
+
+resist:Signalled-Failure
+	a owl:Class ;
+	rdfs:comment "A signalled failure is when losses are detected and signalled by a warning signal." ;
+	rdfs:subClassOf resist:Elementary-Failure .
+
+resist:Software-Exploitation
+	a owl:Class ;
+	rdfs:comment "Includes bugs or back doors." ;
+	rdfs:subClassOf resist:Vulnerability-Exploitation .
+
+resist:Software-Fault
+	a owl:Class ;
+	rdfs:comment "Software faults are faults that affect software, i.e, programs or data." ;
+	rdfs:subClassOf resist:Elementary-Fault .
+
+resist:Software-Flaw
+	a owl:Class ;
+	rdfs:comment "Software flaws can occur in operating system programs, support software or application software." ;
+	rdfs:subClassOf resist:Elementary-Security-Flaw .
+
+resist:Solid-Fault
+	a owl:Class ;
+	rdfs:subClassOf resist:Permanent-Fault .
+
+resist:Spoofing-Attack
+	a owl:Class ;
+	rdfs:subClassOf resist:Masquerade .
+
+resist:Static-Analysis
+	a owl:Class ;
+	rdfs:comment "Static analysis consists of inspections or work-throughs, data flow analysis, complexity analysis, abstract interpretation, compiler checks, vulnerability search etc." ;
+	rdfs:subClassOf resist:Static-Verification .
+
+resist:Static-Verification
+	a owl:Class ;
+	rdfs:comment "Static verification means verifying a system without actual execution." ;
+	rdfs:subClassOf resist:Verification .
+
+resist:Storage
+	a owl:Class ;
+	rdfs:comment "A storage covert channel transfers information through the setting of bits by one program and the reading of those bits by another." ;
+	rdfs:subClassOf resist:Covert-Channel .
+
+resist:Support-Flaw
+	a owl:Class ;
+	rdfs:comment "Support software comprises compilers, editors, debuggers, subroutine or macro libraries, database management systems and any other programs not properly within the operating system boundary that many users share." ;
+	rdfs:subClassOf resist:Software-Flaw .
+
+resist:Symbolic-Execution
+	a owl:Class ;
+	rdfs:comment "Symbolic execution means that the inputs supplied to a system for verification are symbolic." ;
+	rdfs:subClassOf resist:Dynamic-Verification .
+
+resist:System-Initialisation-Flaw
+	a owl:Class ;
+	rdfs:comment "System initialisation flaws can occur either because the operating system fails to establish the initial protection domains as specified or because the system administrator has not specified a secure initial configuration for the system." ;
+	rdfs:subClassOf resist:Operating-System-Flaw .
+
+resist:Testing
+	a owl:Class ;
+	rdfs:comment "Testing means that the inputs supplied to a system for verification are actual." ;
+	rdfs:subClassOf resist:Dynamic-Verification .
+
+resist:Theorem-Proving
+	a owl:Class ;
+	rdfs:subClassOf resist:Static-Verification .
+
+resist:Threat-To-Dependable-Systems
+	a owl:Class ;
+	rdfs:subClassOf resist:Dependable-Systems-Technology .
+
+resist:Timing
+	a owl:Class ;
+	rdfs:comment "A timing covert channel conveys information by modulating some aspect of system behaviour over time, so that the program receiving information can observe system behaviour and infer protected information." ;
+	rdfs:subClassOf resist:Covert-Channel .
+
+resist:Timing-Error
+	a owl:Class ;
+	rdfs:comment "A timing error causes a timing fault." ;
+	rdfs:subClassOf resist:Elementary-Error .
+
+resist:Timing-Failure
+	a owl:Class ;
+	rdfs:comment "A timing failure is when the time of arrival or the duration of the information delivered at the service interface deviates from implementing the system function." ;
+	rdfs:subClassOf resist:Elementary-Failure .
+
+resist:Transient-Fault
+	a owl:Class ;
+	rdfs:subClassOf resist:Active-Fault .
+
+resist:Transit-Attack
+	a owl:Class ;
+	rdfs:subClassOf resist:Run-Attack .
+
+resist:Trapdoor
+	a owl:Class ;
+	rdfs:comment "A trapdoor is a hidden piece of code that responds to a special input, allowing its user access to resources without passing through the normal security enforcement mechanism." ;
+	rdfs:subClassOf resist:Malicious-Flaw .
+
+resist:Trojan-Horse
+	a owl:Class ;
+	rdfs:comment "A trojan horse is a program that masquerades as a useful service but exploits the rights of the program's user in a way the user does not intend." ;
+	rdfs:subClassOf resist:Malicious-Flaw .
+
+resist:Unknown-Flaw
+	a owl:Class ;
+	rdfs:comment "Any operating system security flaw that does not fit into one of the other classes. " ;
+	rdfs:subClassOf resist:Operating-System-Flaw .
+
+resist:Unprivileged-Utilities
+	a owl:Class ;
+	rdfs:comment "Unprivileged utilities represent vulnerability through being widely shared and highly relied upon." ;
+	rdfs:subClassOf resist:Support-Flaw .
+
+resist:Unsignalled-Failure
+	a owl:Class ;
+	rdfs:comment "The opposite of a signalled failure." ;
+	rdfs:subClassOf resist:Elementary-Failure .
+
+resist:Validation
+	a owl:Class ;
+	rdfs:comment "Validation means checking the system specification." ;
+	rdfs:subClassOf resist:Fault-Removal .
+
+resist:Validation-Error
+	a owl:Class ;
+	rdfs:comment "A validation error occurs when a program fails to check that the parameters supplied or returned to it conform to its assumptions about them, or when these checks are misplaced , so they are ineffectual." ;
+	rdfs:subClassOf resist:Inadvertent-Flaw .
+
+resist:Verification
+	a owl:Class ;
+	rdfs:comment "Verification is the process of checking whether the system adheres to given properties." ;
+	rdfs:subClassOf resist:Fault-Removal .
+
+resist:Vulnerability-Exploitation
+	a owl:Class ;
+	rdfs:subClassOf resist:Computer-Fraud-Without-Authorisation .
+
+resist:capability-fault-type
+	a owl:ObjectProperty ;
+	rdfs:domain resist:Fault ;
+	rdfs:range owl:Class .
+
+resist:dimension-fault-type
+	a owl:ObjectProperty ;
+	rdfs:domain resist:Fault ;
+	rdfs:range owl:Class .
+
+resist:elementary-error-type
+	a owl:ObjectProperty ;
+	rdfs:domain resist:Error .
+
+resist:has-capability
+	a owl:DatatypeProperty ,
+	  owl:FunctionalProperty ;
+	rdfs:range xsd:string .
+
+resist:has-consequence
+	a owl:ObjectProperty ;
+	rdfs:domain resist:Failure ;
+	rdfs:range owl:Class .
+
+resist:has-consistent-failure-type
+	a owl:ObjectProperty ;
+	rdfs:domain resist:Failure ;
+	rdfs:range owl:Class .
+
+resist:has-data-fraud-type
+	a owl:ObjectProperty ;
+	rdfs:domain resist:Computer-Fraud ;
+	rdfs:range owl:Class .
+
+resist:has-detectable-failure-type
+	a owl:ObjectProperty ;
+	rdfs:domain resist:Failure ;
+	rdfs:range owl:Class .
+
+resist:has-dimension
+	a owl:ObjectProperty .
+
+resist:has-domain
+	a owl:ObjectProperty ;
+	rdfs:domain resist:Failure ;
+	rdfs:range [ a owl:Class ;
+		     owl:unionOf ( resist:Late-Timing-Failure
+				   resist:Content-Failure
+				   resist:Erratic-Failure
+				   resist:Early-Timing-Failure
+				   resist:Halt-Failure
+				 )
+		   ] .
+
+resist:has-fraud-without-authorisation-type
+	a owl:ObjectProperty ;
+	rdfs:domain resist:Computer-Fraud ;
+	rdfs:range owl:Class .
+
+resist:has-genesis-flaw-type
+	a owl:ObjectProperty ;
+	rdfs:domain resist:Security-Flaw ;
+	rdfs:range owl:Class .
+
+resist:has-intent
+	a owl:DatatypeProperty ,
+	  owl:FunctionalProperty ;
+	rdfs:range xsd:string .
+
+resist:has-location
+	a owl:ObjectProperty ;
+	rdfs:domain resist:Security-Flaw ;
+	rdfs:range owl:Class .
+
+resist:has-objective
+	a owl:ObjectProperty .
+
+resist:has-pretty-name
+	a owl:DatatypeProperty ;
+	rdfs:domain resist:Threat-To-Dependable-Systems ;
+	rdfs:range xsd:string .
+
+resist:has-program-fraud-type
+	a owl:ObjectProperty ;
+	rdfs:domain resist:Computer-Fraud ;
+	rdfs:range owl:Class .
+
+resist:intent-fault-type
+	a owl:ObjectProperty ;
+	rdfs:domain resist:Fault ;
+	rdfs:range owl:Class .
+
+resist:is-development-fault
+	a owl:DatatypeProperty ;
+	rdfs:domain resist:Fault ;
+	rdfs:range xsd:boolean .
+
+resist:is-interaction-fault
+	a owl:DatatypeProperty ;
+	rdfs:domain resist:Fault ;
+	rdfs:range xsd:boolean .
+
+resist:is-malicious
+	a owl:DatatypeProperty ,
+	  owl:FunctionalProperty ;
+	rdfs:range xsd:string .
+
+resist:is-persistent
+	a owl:DatatypeProperty ,
+	  owl:FunctionalProperty ;
+	rdfs:range xsd:boolean .
+
+resist:is-physical-fault
+	a owl:DatatypeProperty ;
+	rdfs:domain resist:Fault ;
+	rdfs:range xsd:boolean .
+
+resist:is-reproducable
+	a owl:DatatypeProperty ;
+	rdfs:domain resist:Permanent-Fault ;
+	rdfs:range xsd:boolean .
+
+resist:leads-to
+	a owl:ObjectProperty ;
+	rdfs:domain resist:Error ;
+	rdfs:range owl:Class .
+
+resist:objective-fault-type
+	a owl:ObjectProperty ;
+	rdfs:domain resist:Fault ;
+	rdfs:range owl:Class .
+
+resist:persistence-fault-type
+	a owl:ObjectProperty ;
+	rdfs:domain resist:Fault ;
+	rdfs:range owl:Class .
+
+resist:phase-of-creation
+	a owl:ObjectProperty ;
+	rdfs:domain [ a owl:Class ;
+		      owl:unionOf ( resist:Development-Fault
+				    resist:Operational-Fault
+				  )
+		    ] .
+
+resist:phase-of-creation-fault-type
+	a owl:ObjectProperty ;
+	rdfs:domain resist:Fault ;
+	rdfs:range owl:Class .
+
+resist:phenomenological-cause
+	a owl:ObjectProperty .
+
+resist:phenomenological-cause-fault-type
+	a owl:ObjectProperty ;
+	rdfs:domain resist:Fault ;
+	rdfs:range owl:Class .
+
+resist:produces
+	a owl:ObjectProperty ;
+	rdfs:domain resist:Active-Fault ;
+	rdfs:range resist:Error .
+
+resist:state-fault-type
+	a owl:ObjectProperty ;
+	rdfs:domain resist:Fault ;
+	rdfs:range owl:Class .
+
+resist:system-boundaries
+	a owl:ObjectProperty .
+
+resist:system-boundary-fault-type
+	a owl:ObjectProperty ;
+	rdfs:domain resist:Fault ;
+	rdfs:range owl:Class .
