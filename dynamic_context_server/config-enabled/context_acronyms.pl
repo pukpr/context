@@ -28,7 +28,7 @@ acronym_definition('FFT', 'Fast Fourier Transform').
 acronym_definition('FT', 'Fourrier Transform').
 acronym_definition('SoS', 'Superposition of Sines').
 acronym_definition('URL', 'Universal Resource Locator').
-acronym_definition('DCG', 'Definite Clause Grammars (what renders this text)').
+acronym_definition('DCG', 'Definite Clause Grammar (what renders this text)').
 acronym_definition('HTML', 'hypertext markup language (what you are reading right now!)').
 acronym_definition('PCC', 'Probabilistic Certificate of Correctness').
 acronym_definition('DSL', 'Domain Specific Language').
@@ -54,7 +54,7 @@ acronym_definition('GPS', 'Global Positioning System').
 acronym_definition('FP', 'Fokker-Planck').
 acronym_definition('DOI', 'Department of the Interior').
 
-acronym_definition(_, 'unknown').
+acronym_definition(_, i(b(u('definition of acronym')))).
 
 
 

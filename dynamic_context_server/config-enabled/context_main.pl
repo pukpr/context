@@ -51,19 +51,15 @@ cliopatria:menu_item(repository/'/context_sweet_utils/import_sweet?all=true',
                      'Load All Ontology').
 cliopatria:menu_item(repository/'https://www.zotero.org/user/login/',
                      'Zotero Ref Library').
-% cliopatria:menu_item(help/'/html/static_pages/gems/', 'Intro Slides').
 cliopatria:menu_item(help/'/html/basic_terms.html', 'Vocabularies').
 cliopatria:menu_item(help/'http://sweet.jpl.nasa.gov/', 'SWEET').
 cliopatria:menu_item(help/'/context_demos/navigate', 'Eval Demos').
+cliopatria:menu_item(help/'/context_main/acronym_list', 'Acronyms').
 cliopatria:menu_item(places/'https://babelfish.arc.nasa.gov/confluence/display/AVMPROJ/BAE', 'Wiki').
 cliopatria:menu_item(places/'https://babelfish.arc.nasa.gov/trac/avm_performers/browser/context', 'Source').
 cliopatria:menu_item(places/'https://babelfish.arc.nasa.gov/jira/browse/AVM', 'Tracking').
 cliopatria:menu_item(places/'/html/oscar.html', 'OSCAR').
 cliopatria:menu_item(admin/'/context_main/run_unit_tests', 'Tests').
- % cliopatria:menu_item(query/'/context_ont_utils/find_ent_subjects', 'Subjects').
- % cliopatria:menu_item(query/'/context_ont_utils/find_ent_predicates', 'Predicates').
- % cliopatria:menu_item(query/'/context_ont_utils/find_ent_objects', 'Objects').
- % cliopatria:menu_item(query/'/context_file_reading/crawl', 'Models').
 cliopatria:menu_item(query/'/terms#', 'Terms').
 cliopatria:menu_item(query/'/context_query/navigate', 'Generic').
 
@@ -71,6 +67,7 @@ cliopatria:menu_item(query/'/context_query/navigate', 'Generic').
 :- http_handler(root(app), index_page, []).
 
 :- context:register(context_main:run_unit_tests).
+:- context:register(context_main:acronym_list).
 
 nav_aids(Key, Path, Title) -->
     {
@@ -134,6 +131,22 @@ run_unit_tests(_Request) :-
     (   run_tests ),
         []
                          ).
+
+
+acronym_list(_Request) :-
+    findall(tr([th(Acronym),td(Definition)]),
+            acronym_definition(Acronym,Definition),
+            Defs),
+    sort(Defs, Definitions),
+    reply_html_page(
+        cliopatria(default),
+        [title('Acronyms')],
+        [
+         h1('Table of Acronyms'),
+         table(Definitions)
+        ]
+                   ).
+
 
 % %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 

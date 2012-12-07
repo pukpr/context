@@ -14,9 +14,10 @@
 
 acronym(Def) -->
     {
-       acronym_definition(Def, Text)
+       acronym_definition(Def, Text),
+       format(atom(S), '~w', [Text])
     },
-    html(abbr([title=Text], Def)).
+    html(abbr([title=S], Def)).
 
 % Similar to reply HTML page, but for frames
 reply_frameset_page(Body) :-
