@@ -230,10 +230,12 @@ example -->
 	   \(con_text:table_form_target('What artifacts are available? >> ',
 					'/context_pdf/process',
 					'_blank',
-                              [['locale', 'conus'],
+                              [
+			       ['locale', 'conus'],
                                ['property', 'terrain_slopes'],
                                ['operation', 'graph'],
-                               ['quantity', '1']]
+                               ['quantity', '1']
+			      ]
 				      )
 		  )
 	   ).

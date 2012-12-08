@@ -167,8 +167,6 @@ dispatch(wave) -->
 dispatch(thermal) -->
 	html([h1('Thermal and temperature models'),
 	      \g(workflow,
-		 a([href='/context_thermal/navigate'],'Thermal diffusion model')),
-	      \g(workflow,
                  i(['Locations with monthly temperature profiles',
                     \(context_temperature:navigate)
                    ])
@@ -177,6 +175,8 @@ dispatch(thermal) -->
 		 i(['detailed for Baltimore and Wilmington',
                   \(context_temperature:example)
                  ])),
+	      \g(example,
+		 a([href='/context_thermal/navigate'],'Thermal diffusion model')),
 	      \(ref_search('propConductivity:ThermalConductivity', 'Thermal conductivity references')),
 	      \(ref_search('propTemperature:Temperature', 'Temperature references')),
               \g(browse,

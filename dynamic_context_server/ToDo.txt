@@ -3,10 +3,10 @@
 	convert rdf_ to entailments
 	Different data format generators
 	Each browse entry should have short narrative and one link
-	Thermal heat sink model
-	lightning stroke plot
-	context_solar, planck's law
 	Aquatic wave height model, plus connection to Sea-State, significant wave height
+	Thermal heat sink model
+x	lightning stroke plot
+x	context_solar, planck's law
 x	std atmo table
 x	add ice particle
 x	add search pdfs for whatever in feature page

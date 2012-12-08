@@ -20,7 +20,7 @@ relation(yd/mi, 1760).
 relation(mil/in, 1000.0).
 % Distance -- Metric
 relation(angstrom/nm, 10.0).
-relation(nm/micron, 10.0).
+relation(nm/micron, 1000.0).
 relation(micron/mm, 1000.0).
 relation(mm/cm, 10.0).
 relation(cm/dm, 10.0).

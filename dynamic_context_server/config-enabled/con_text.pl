@@ -217,18 +217,28 @@ table_input([[Name,Default]|Rest]) -->
                                                                    value(Default)
                                                                  ]))),
              br([])
-
-             % ,img(src('/html/images/darrow.png'))
-             /*
-             input([type('text'),
-                    size(2),
-                    name(xx),
-                    value('')])
-             */
              ]
 
             )),
     table_input(Rest).
+
+table_input_pair([]) --> !.
+table_input_pair([[Name,Default]|Rest]) -->
+    html(tr([
+	 th([valign=top, width='20%'],Name),
+	 td([valign=top],
+            [
+            div(\(autocomplete_predicates:autocomplete(resources, [
+                                                                   query_delay(0.3),
+                                                                   auto_highlight(false),
+                                                                   max_results_displayed(10),
+                                                                   width('100%'),
+                                                                   name(Name),
+                                                                   value(Default)
+                                                                 ])))
+             ]
+            )])),
+    table_input_pair(Rest).
 
 
 table_form(Title, Action, List) -->
@@ -249,13 +259,17 @@ table_form(Title, Action, List) -->
               ])).
 
 table_form_target(Title, Action, Target, List) -->
-    {length(List, L)},
+/*    {
+     length(List, L)
+    },
+	*/
     html(form([action(Action), target(Target)],
-              [ table([class('block'),border(1),width('80%')],
+              [ table([class('block'),border(1),margin(2)],
                       [
-                    tr([\table_header(List)]),
-                    tr([\table_input(List)]),
-                    tr([td([colspan(L), align(center), bgcolor('palegreen')],
+                    % tr([\table_header(List)]),
+                    % tr([\table_input(List)]),
+		    \(table_input_pair(List)),
+                    tr([td([colspan(2), align(center), bgcolor('palegreen')],
                            [b(Title),
                             input([type('submit')])
                            ]

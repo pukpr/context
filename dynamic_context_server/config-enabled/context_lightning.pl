@@ -1,7 +1,6 @@
 :- module(context_lightning, [
 			      lightningA/5,
-			      lightningB/5,
-			      lightningC/3
+			      lightningD/5
 			    ]).
 
 :- use_module(context_math).
@@ -27,7 +26,7 @@ navigate(Request) :-
 			  select([name('t_units')], Tunits),
 			  input([type('text'),
 				 name('limit'),
-				 value('3')]), i(' <= margin'),
+				 value('3000')]), i(' <= margin'),
 			  br([]),
 			  \(con_text:radio_toggles(
 					 'evaluate',
@@ -52,11 +51,16 @@ navigate(Request) :-
 
 lightningA(I0,Alpha,Beta,X*_Units,Y) :-
    Y is I0*(exp(-Alpha*X)-exp(-Beta*X)).
-lightningB(I0,Alpha,Beta,X*_Units,Y) :-
-   I0 is Alpha+Beta,
-   exp(Alpha, X, Y).
-lightningC(Parameter,X*_Units,Y) :-
-   Y is Parameter*X.
+
+lightningD(I0,Alpha,Beta,X*_Units,Y) :-
+   Y1 is I0*(exp(-Alpha*X)-exp(-Beta*X)),
+   Delta = 1e-4,
+   (   X > Delta ->
+   Y2 is  I0*(exp(-Alpha*(X-Delta))-exp(-Beta*(X-Delta)))
+   ;
+   Y2 = 0
+   ),
+   Y is Y1 +Y2.
 
 plot(Request) :-
     http_parameters(Request, [kind(table, []),
@@ -85,20 +89,28 @@ plot(Request) :-
                               t_units(TUnits, []),
                               evaluate(Characteristic, [])]),
 
-    Time range [0.0, 0.0001]/0.000001*TUnits,
-    rdfL(UID, ent:i0, I0*Current),
-    rdfL(UID, ent:alpha, Alpha/TS ),
-    rdfL(UID, ent:beta, Beta/TS),
+    Time range [0.0, 0.0002]/0.000001*TUnits,
     (
        Characteristic  = single ->
+         rdfS(UID, ent:description, 'Severe stroke'),
+         rdfL(UID, ent:i0, I0*Current),
+         rdfL(UID, ent:alpha, Alpha/TS ),
+         rdfL(UID, ent:beta, Beta/TS),
 	 I mapdot lightningA(I0,Alpha,Beta) ~> Time
+         % Title = ['Lightning Profile : ', Characteristic]
     ;
        Characteristic = multiple  ->
-	 I mapdot lightningB(Limit) ~> Time
+         rdfS(UID, ent:description, 'Multiple stroke'),
+         rdfL(UID, ent:i0, I0*Current),
+         rdfL(UID, ent:alpha, Alpha/TS ),
+         rdfL(UID, ent:beta, Beta/TS),
+	 I mapdot lightningD(I0,Alpha,Beta) ~> Time
+         % Title = ['Not Available : ', Characteristic]
     ;
 	 I mapdot lightningB(Limit) ~> Time
     ),
-    Data tuple Time + I,
+    Margin mapdot Limit ~> Time,
+    Data tuple Time + Margin + I,
     X = 'time',
     Y = 'current',
     XUnits = TUnits,
@@ -106,9 +118,9 @@ plot(Request) :-
     reply_html_page([title('Lightning Profile'),
                      \(con_text:style)],
                     [
-		     \(context_graphing:dygraph_native(lin, [X, Y],
+		     \(context_graphing:dygraph_native(lin, [X, 'margin', Y],
 						       [X,XUnits], [Y, YUnits],
-						       'Lightning Profile', Data))
+						       Characteristic, Data))
                     ]
 		  ).
 
