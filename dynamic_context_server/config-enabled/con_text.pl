@@ -326,6 +326,17 @@ radio_toggles(Name, [[NameN, ValueN]|Rest]) -->
         ),
     radio_toggles(Name, Rest).
 
+number_radio_toggles(_Name, []) --> !.
+number_radio_toggles(Name, [Num|Rest]) -->
+    html([
+        input([type('radio'),
+               name(Name),
+               value(Num)],
+              b(Num))
+         ]
+        ),
+    number_radio_toggles(Name, Rest).
+
 /*
 radio_box_input_two( Name, [Name1, Value1], [Name2, Value2]) -->
     html([

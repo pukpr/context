@@ -51,15 +51,49 @@ exp(Mean, X, Y) :-
 
 % Sea-State BesselK,0
 %
+
+depth_constants(2.7, 1.05).
+
+depth_factor(Mean, Depth, X, F) :-
+    depth_constants(A0, B0),
+    A is A0*X/Depth,
+    B is B0*X/Depth,
+    F2 is (1-A*(1-B)),
+    (   F2 > 0
+    ->
+        F is X*sqrt(F2)/Mean
+    ;
+        F is 1e-10 % small number
+    ).
+
+depth_factor_derivative(Mean, Depth, X, F) :-
+    depth_factor(Mean, Depth, X, F1),
+    depth_constants(A0, B0),
+    K is Depth*(Depth -A0),
+    (   A0*B0*X > K
+    ->
+        F2 is X*A0*B0/sqrt(A0*B0*X-K)
+    ;
+        F2 is 1e-10
+    ),
+    F is F1 + F2.
+
+
 bessel_seastate(Order, Mean, Depth, pdf, X, Y) :-
     nonvar(X),
-    Input is 2*X/Mean,
+    depth_factor(Mean, Depth, X, F1),
+    depth_factor_derivative(Mean, Depth, X, F2),
+    Input is 2*F1,
     output <- besselK(Input,Order),
     Output <- output,
-    Y is 2*Output/Mean*(1.0-X/Depth).
+    Y is 4*(F1^(Order+1))*F2*Output.
+
+    % Y is 2*Output/Mean*(1.0-X/Depth).
 
 bessel_seastate(Order, Mean, Depth, cdf, X, Y) :-
     nonvar(X),
+    depth_factor(Mean, Depth, X, Factor),
+    /*
     A is 2.7*X/Depth,
     B is 1.05*X/Depth,
     F2 is 1-A*(1-B),
@@ -70,26 +104,37 @@ bessel_seastate(Order, Mean, Depth, cdf, X, Y) :-
         F is 1e-10
     ),
     Factor is X/Mean*F,
+    */
     Input is 2*Factor,
     Index is Order + 1,
     output <- besselK(Input,Index),
     Output <- output,
     Y is 2*(Factor)^(Order+1)*Output.
 
-bessel_seastate(_Order, Mean, _Depth, sample, X, Sample) :-
+bessel_seastate(0, Mean, Depth, sample, X, Sample) :-
     var(X),
     % Order = 0 is two of these
-    random(R1), R1_2 is sqrt(R1),
-    random(R2), R2_2 is sqrt(R2),
-    Sample is Mean * log(R1_2) * log(R2_2).
+    random(R1),
+    random(R2),
+    Pre_Sample is log(R1) * log(R2),
+    root_sea_state(Mean,Depth,Pre_Sample,Sample).
 
-
+bessel_seastate(1, Mean, Depth, sample, X, Sample) :-
+    var(X),
+    % Order = 0 is three of these
+    random(R1),
+    random(R2),
+    random(R3),
+    Pre_Sample is -log(R1) * log(R2) * log(R3),
+    root_sea_state(Mean,Depth,Pre_Sample,Sample).
 
 root_sea_state(M,D,YP,X) :-
+    depth_constants(A0, B0),
     Y is YP*YP,
-    A is 2.7/D,
-    B is 1.05/D,
+    A is A0/D,
+    B is B0/D,
     X is 1/M/2*sqrt((2^(1/3)*(1-12*A*B*Y))/(3*A*B*(sqrt((-27*A^2*Y+72*A*B*Y+2)^2-4*(1-12*A*B*Y)^3)-27*A^2*Y+72*A*B*Y+2)^(1/3))+(sqrt((-27*A^2*Y+72*A*B*Y+2)^2-4*(1-12*A*B*Y)^3)-27*A^2*Y+72*A*B*Y+2)^(1/3)/(3*2^(1/3)*A*B)-2/(3*A*B)+1/(4*B^2))-1/2*sqrt(-(1/B^3-4/(A*B^2))/(4*sqrt((2^(1/3)*(1-12*A*B*Y))/(3*A*B*(sqrt((-27*A^2*Y+72*A*B*Y+2)^2-4*(1-12*A*B*Y)^3)-27*A^2*Y+72*A*B*Y+2)^(1/3))+(sqrt((-27*A^2*Y+72*A*B*Y+2)^2-4*(1-12*A*B*Y)^3)-27*A^2*Y+72*A*B*Y+2)^(1/3)/(3*2^(1/3)*A*B)-2/(3*A*B)+1/(4*B^2)))-(sqrt((-27*A^2*Y+72*A*B*Y+2)^2-4*(1-12*A*B*Y)^3)-27*A^2*Y+72*A*B*Y+2)^(1/3)/(3*2^(1/3)*A*B)-(2^(1/3)*(1-12*A*B*Y))/(3*A*B*(sqrt((-27*A^2*Y+72*A*B*Y+2)^2-4*(1-12*A*B*Y)^3)-27*A^2*Y+72*A*B*Y+2)^(1/3))-4/(3*A*B)+1/(2*B^2))+1/(4*B).
+
 
 /*
 root_sea_state(M,D,YP,X) :-

@@ -7,12 +7,13 @@
 :- context:register(context_elements:table).
 :- context:register(context_elements:property).
 
-element(option([value(El)],[Name])) :-
+element(option([label(Name), value(El)],[Name])) :-
    rdfS(El, pt:name, Name),
    rdfI(El, pt:atomicNumber, _).
 
 navigate(Request) :-
-   findall(El, element(El), Els),
+   findall(El, element(El), Elements),
+   sort(Elements, Els),
    reply_html_page(cliopatria(default),
                    [title('Periodic Table of the Elements'),
 		    \(con_text:style_submit)],
@@ -95,7 +96,6 @@ property(Request) :-
 
 row(Row, Period) :-
    rdf_global_term(Period, P),
-   % rdfI(P, pt:number, N),
    findall(N-Col, (rdf(Col, pt:period, P),
 		   rdfI(Col, pt:atomicNumber, N)), R),
    keysort(R, Row).
@@ -180,42 +180,12 @@ table(Request) :-
     row(Seven, pt:period_7),
     List = [One,Two,Three,Four,Five,Six,Seven],
     findall(Group, rdf(Group, rdf:type, pt:'Group'), Groups),
-    %Lanthanoids = 'Lanthanoids',
-    %Actinoids = 'Actinoids',
-    %cell_color(Lanthanoids, Lanthanoids_Color),
-    %cell_color(Actinoids, Actinoids_Color),
-    % print(user_error, List),
     reply_html_page([title('Periodic Table') ],
                     [
 		      p(['Highlighting ', b(Name), ' : ', b(Symbol)]),
 		      table( \(periodic_table(El, List)) ),
                       br([]),
-                      table([ \(cellColor(Groups))
-                          /*
-                             \(cellColor(pt:group_1)),
-                             \(cellColor(pt:group_2)),
-                             \(cellColor(pt:group_3)),
-                             \(cellColor(pt:group_4)),
-                             \(cellColor(pt:group_5)),
-                             \(cellColor(pt:group_6)),
-                             \(cellColor(pt:group_7)),
-                             \(cellColor(pt:group_8)),
-                             \(cellColor(pt:group_9)),
-                             \(cellColor(pt:group_10)),
-                             \(cellColor(pt:group_11)),
-                             \(cellColor(pt:group_12)),
-                             \(cellColor(pt:group_13)),
-                             \(cellColor(pt:group_14)),
-                             \(cellColor(pt:group_15)),
-                             \(cellColor(pt:group_16)),
-                             \(cellColor(pt:group_17)),
-                             \(cellColor(pt:group_18)),
-                             \(cellColor(pt:group_lanthanoid)),
-                             \(cellColor(pt:group_actinoid))
-                             %tr(td([bgcolor=Lanthanoids_Color],Lanthanoids)),
-                             %tr(td([bgcolor=Actinoids_Color],Actinoids))
-                          */
-                             ])
+                      table([ \(cellColor(Groups))])
 
                     ]
 		  ).
