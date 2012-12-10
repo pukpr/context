@@ -173,6 +173,9 @@ test(paramaterized_curve) :-
 
 
 test(scientific_units) :-
+    context_units:scaling(m,km,0.001),
+    context_units:scaling(m,mm,1000.0),
+    context_units:convert(g*hr/cm^2, kg*s/m^2, 36000.0),
     context_units:convert(5.67e-8*j/s/m^2/k^4, SB*btu/hr/ft^2/r^4, SB),
     within(0.171e-8, SB, 0.172e-8),  %% Stefan-Boltzmann in Rankine temperature
     context_units:convert(9.80665*m/s^2, G*ft/s^2, G),

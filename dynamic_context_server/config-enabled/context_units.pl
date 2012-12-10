@@ -1,4 +1,7 @@
-:- module(context_units, [collect_unit_options/2]).
+:- module(context_units, [
+                          collect_unit_options/2,
+                          scaling/3
+                         ]).
 
 /** <module> Units module
     * Symbolic dimensional analysis
@@ -319,3 +322,6 @@ collect_unit_options(Functor, List) :-
                 rdf_(Unit, ent:description, Name)
             ),
             List).
+
+scaling(From, To, Scale) :-
+    context_units:convert(1*From, Scale*To, Scale).
