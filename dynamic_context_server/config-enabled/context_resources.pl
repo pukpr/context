@@ -44,11 +44,6 @@ navigate(Request) :-
                                 ]
                                ),
                              li([\(con_text:gif(resources)),
-                                 a(href('/context_elements/navigate'),
-                                   'Access periodic table of elements')
-                                ]
-                               ),
-                             li([\(con_text:gif(resources)),
                                  a(href('/context_atm/navigate'),
                                    'Access standard atmosphere resource artifacts')
                                 ]
@@ -56,6 +51,16 @@ navigate(Request) :-
                              li([\(con_text:gif(resources)),
                                  a(href('/context_standard_atmosphere/navigate'),
                                    'Access standard atmosphere table')
+                                ]
+                               ),
+                             li([\(con_text:gif(resources)),
+                              a(href('/context_elements/navigate'),
+                                'Access periodic table of elements')
+                             ]
+                            ),
+                             li([\(con_text:gif(resources)),
+                                 a(href('/context_materials/navigate'),
+                                   'Access materials properties')
                                 ]
                                )
                              ])

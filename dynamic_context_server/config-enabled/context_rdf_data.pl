@@ -268,6 +268,11 @@ ref_m('elements',     model, '/context_elements/navigate').
 ref_m('elements',     target_iframe, '/html/elements.html').
 ref_m('elements',     category, 'procChemical:Corrosion').
 
+ref_m('materials',     model, '/context_materials/navigate').
+ref_m('materials',     target_iframe, '/html/materials.html').
+ref_m('materials',     category, 'procChemical:Corrosion').
+ref_m('materials',     category, 'realmSoil:SoilLayer').
+
 ref_(URL, feature, Feature) :-
     ref_m(ID, model, URL),
     ref_m(ID, feature, Feature), !.

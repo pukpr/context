@@ -34,6 +34,8 @@
                      <instances/density-xlsx.ttl>,
                      <instances/temperature_regions-sparql-xlsx.ttl>,
                      <instances/PeriodicTable.owl.ttl>,
+                     <instances/soil_classification.ttl>,
+                     <instances/ar-70-38_specifications.ttl>,
                      <terms/context-terms.owl.ttl>,
                      <terms/defs.ttl>,
                      <terms/swore.rdf>,
@@ -156,6 +158,16 @@
         a lib:Schema ;
         a lib:CloudNode ;
 	dc:title "Periodic table of the elements.".
+
+<instances/soil_classification.ttl>
+        a lib:Schema ;
+        a lib:CloudNode ;
+	dc:title "USCS Soil Classification Table.".
+
+<instances/ar-70-38_specifications.ttl>
+        a lib:Schema ;
+        a lib:CloudNode ;
+	dc:title "AR 70-38 Environmental Specifications.".
 
 <temperature_regions-sparql-xlsx.ttl>
         a lib:Schema ;

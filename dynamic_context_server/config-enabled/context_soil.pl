@@ -6,136 +6,139 @@
 
 :- context:register(context_soil:soil_table).
 
+:- use_module(context).
 
-:- multifile(rdf_/3).
+/*
+% :- multifile(rdf_/3).
 
-rdf_(ent:soil, ent:category, ent:coarse_grained_soil).
-rdf_(ent:soil, ent:category, ent:fine_grained_soil).
-rdf_(ent:soil, ent:category, ent:highly_organic_soil).
+rdf_local(ent:soil, ent:category, ent:coarse_grained_soil).
+rdf_local(ent:soil, ent:category, ent:fine_grained_soil).
+rdf_local(ent:soil, ent:category, ent:highly_organic_soil).
 
-rdf_(ent:coarse_grained_soil, ent:division, ent:gravel).
-rdf_(ent:coarse_grained_soil, ent:division, ent:sand).
-rdf_(ent:coarse_grained_soil, ent:description, 'coarse grained').
-rdf_(ent:coarse_grained_soil, ent:has, ent:gradation).
-rdf_(ent:coarse_grained_soil, ent:has, ent:contents).
+rdf_local(ent:coarse_grained_soil, ent:division, ent:gravel).
+rdf_local(ent:coarse_grained_soil, ent:division, ent:sand).
+rdf_local(ent:coarse_grained_soil, ent:description, 'coarse grained').
+rdf_local(ent:coarse_grained_soil, ent:has, ent:gradation).
+rdf_local(ent:coarse_grained_soil, ent:has, ent:contents).
 
-rdf_(ent:fine_grained_soil, ent:division, ent:moist_silt_clay).
-rdf_(ent:fine_grained_soil, ent:division, ent:dry_silt_clay).
-rdf_(ent:fine_grained_soil, ent:description, 'fine grained').
-rdf_(ent:fine_grained_soil, ent:has, ent:plasticity).
+rdf_local(ent:fine_grained_soil, ent:division, ent:moist_silt_clay).
+rdf_local(ent:fine_grained_soil, ent:division, ent:dry_silt_clay).
+rdf_local(ent:fine_grained_soil, ent:description, 'fine grained').
+rdf_local(ent:fine_grained_soil, ent:has, ent:plasticity).
 
-rdf_(ent:highly_organic_soil, ent:description, 'highly organic').
-rdf_(ent:highly_organic_soil, ent:has, ent:contents).
-rdf_(ent:highly_organic_soil, ent:division, ent:organic).
+rdf_local(ent:highly_organic_soil, ent:description, 'highly organic').
+rdf_local(ent:highly_organic_soil, ent:has, ent:contents).
+rdf_local(ent:highly_organic_soil, ent:division, ent:organic).
 
 
-rdf_(ent:gravel, ent:symbol, 'G').
-rdf_(ent:gravel, ent:name, gravel).
+rdf_local(ent:gravel, ent:symbol, 'G').
+rdf_local(ent:gravel, ent:name, gravel).
 
-rdf_(ent:sand, ent:symbol, 'S').
-rdf_(ent:sand, ent:name, sand).
+rdf_local(ent:sand, ent:symbol, 'S').
+rdf_local(ent:sand, ent:name, sand).
 
-rdf_(ent:moist_silt_clay, ent:class, ent:clay).
-rdf_(ent:moist_silt_clay, ent:class, ent:silt).
+rdf_local(ent:moist_silt_clay, ent:class, ent:clay).
+rdf_local(ent:moist_silt_clay, ent:class, ent:silt).
 
-rdf_(ent:dry_silt_clay, ent:class, ent:clay).
-rdf_(ent:dry_silt_clay, ent:class, ent:silt).
+rdf_local(ent:dry_silt_clay, ent:class, ent:clay).
+rdf_local(ent:dry_silt_clay, ent:class, ent:silt).
 
-rdf_(ent:silt, ent:class, ent:contents).
-rdf_(ent:silt, ent:symbol, 'M').
-rdf_(ent:silt, ent:name, silt).
-rdf_(ent:silt, ent:description, 'silt-like character').
-rdf_(ent:silt, ent:has, ent:low_plasticity).
+rdf_local(ent:silt, ent:class, ent:contents).
+rdf_local(ent:silt, ent:symbol, 'M').
+rdf_local(ent:silt, ent:name, silt).
+rdf_local(ent:silt, ent:description, 'SILT-like character').
+rdf_local(ent:silt, ent:has, ent:low_plasticity).
 
-rdf_(ent:clay, ent:class, ent:contents).
-rdf_(ent:clay, ent:symbol, 'C').
-rdf_(ent:clay, ent:name, clay).
-rdf_(ent:clay, ent:description, 'clay-like character').
-rdf_(ent:clay, ent:has, ent:high_plasticity).
+rdf_local(ent:clay, ent:class, ent:contents).
+rdf_local(ent:clay, ent:symbol, 'C').
+rdf_local(ent:clay, ent:name, clay).
+rdf_local(ent:clay, ent:description, 'clay-like character').
+rdf_local(ent:clay, ent:has, ent:high_plasticity).
 
-rdf_(ent:organic, ent:symbol, 'O').
-rdf_(ent:organic, ent:name, organic).
+rdf_local(ent:organic, ent:symbol, 'O').
+rdf_local(ent:organic, ent:name, organic).
 
-rdf_(ent:low_gradation, ent:class, ent:gradation).
-rdf_(ent:low_gradation, ent:symbol, 'P').
-rdf_(ent:low_gradation, ent:description, 'poorly graded (uniform particle sizes)').
+rdf_local(ent:low_gradation, ent:class, ent:gradation).
+rdf_local(ent:low_gradation, ent:symbol, 'P').
+rdf_local(ent:low_gradation, ent:description, 'poorly graded (uniform particle sizes)').
 
-rdf_(ent:high_gradation, ent:class, ent:gradation).
-rdf_(ent:high_gradation, ent:symbol, 'W').
-rdf_(ent:high_gradation, ent:description, 'well-graded (diversified particle sizes)').
+rdf_local(ent:high_gradation, ent:class, ent:gradation).
+rdf_local(ent:high_gradation, ent:symbol, 'W').
+rdf_local(ent:high_gradation, ent:description, 'well-graded (diversified particle sizes)').
 
-rdf_(ent:moist_silt_clay, ent:symbol, 'H').
-rdf_(ent:high_plasticity, ent:class, ent:plasticity).
-rdf_(ent:high_plasticity, ent:symbol, 'H').
-rdf_(ent:high_plasticity, ent:description, 'high plasticity').
+rdf_local(ent:moist_silt_clay, ent:symbol, 'H').
+rdf_local(ent:high_plasticity, ent:class, ent:plasticity).
+rdf_local(ent:high_plasticity, ent:symbol, 'H').
+rdf_local(ent:high_plasticity, ent:description, 'high plasticity').
 
-rdf_(ent:dry_silt_clay, ent:symbol, 'L').
-rdf_(ent:low_plasticity, ent:class, ent:plasticity).
-rdf_(ent:low_plasticity, ent:symbol, 'L').
-rdf_(ent:low_plasticity, ent:description, 'low plasticity').
+rdf_local(ent:dry_silt_clay, ent:symbol, 'L').
+rdf_local(ent:low_plasticity, ent:class, ent:plasticity).
+rdf_local(ent:low_plasticity, ent:symbol, 'L').
+rdf_local(ent:low_plasticity, ent:description, 'low plasticity').
+*/
 
-soil_combination([C, Div, TG, [Desc, ' containing ', Graininess]]) :-
+soil_combination([C, Desc, TG, [Desc, ' containing ', Graininess]]) :-
    C = 'coarse grained',
    % Prefix
-   rdf_(ent:soil, ent:category, Cat),
-   rdf_(Cat, ent:description, C),
-   rdf_(Cat, ent:division, Div),
+   rdf(ent:soil, ent:category, Cat),
+   rdfS(Cat, ent:description, C),
+   rdf(Cat, ent:division, Div),
 
-   rdf_(Div, ent:symbol, Texture),
-   rdf_(Div, ent:name, Desc),
+   rdfS(Div, ent:symbol, Texture),
+   rdfS(Div, ent:name, Desc),
 
    % Suffix
    (
-     rdf_(Character, ent:class, ent:gradation);
-     rdf_(Character, ent:class, ent:contents)
+     rdf(Character, ent:class, ent:gradation);
+     rdf(Character, ent:class, ent:contents)
    ),
-   rdf_(Character, ent:symbol, Grain),
-   rdf_(Character, ent:description, Graininess),
+   rdfS(Character, ent:symbol, Grain),
+   rdfS(Character, ent:description, Graininess),
 
    % Code
    atom_concat(Texture, Grain, TG).
 
-soil_combination([C, Div, TG, [Desc, ' ', Plasticity, ' mainly ', Graininess]]) :-
+soil_combination([C, Desc, TG, [Desc, ' ', Plasticity, ' mainly ', Graininess]]) :-
    C = 'highly organic',
    % Prefix
-   rdf_(ent:soil, ent:category, Cat),
-   rdf_(Cat, ent:description, C),
-   rdf_(Cat, ent:division, Div),
+   rdf(ent:soil, ent:category, Cat),
+   rdfS(Cat, ent:description, C),
+   rdf(Cat, ent:division, Div),
 
-   rdf_(Div, ent:symbol, Texture),
-   rdf_(Div, ent:name, Desc),
+   rdfS(Div, ent:symbol, Texture),
+   rdfS(Div, ent:name, Desc),
 
    % Suffix
-   rdf_(Contents, ent:class, ent:contents),
-   rdf_(Contents, ent:description, Graininess),
+   rdf(Contents, ent:class, ent:contents),
+   rdfS(Contents, ent:description, Graininess),
 
-   rdf_(Character, ent:class, ent:plasticity),
-   rdf_(Character, ent:symbol, Grain),
-   rdf_(Character, ent:description, Plasticity),
-   rdf_(Contents, ent:has, Plast),
-   rdf_(Plast, ent:description, Plasticity),
+   rdf(Character, ent:class, ent:plasticity),
+   rdfS(Character, ent:symbol, Grain),
+   rdfS(Character, ent:description, Plasticity),
+   rdf(Contents, ent:has, Plast),
+   rdfS(Plast, ent:description, Plasticity),
 
    % Code
    atom_concat(Texture, Grain, TG).
 
 
-soil_combination([C, Div, TG, [Desc, ' with ', Plasticity]]) :-
+soil_combination([C, Desc, TG, [Desc, ' with ', Plasticity]]) :-
    C = 'fine grained',
    % Prefix
-   rdf_(ent:soil, ent:category, Cat),
-   rdf_(Cat, ent:description, C),
+   rdf(ent:soil, ent:category, Cat),
+   rdfS(Cat, ent:description, C),
 
-   rdf_(Cat, ent:division, Div0),
-   rdf_(Div0, ent:symbol, Grain),
-   rdf_(Div0, ent:class, Div),
+   rdf(Cat, ent:division, Div0),
+   rdfS(Div0, ent:symbol, Grain),
+   rdf(Div0, ent:class, Div),
 
-   rdf_(Div, ent:symbol, Texture),
-   rdf_(Div, ent:name, Desc),
+   rdfS(Div, ent:symbol, Texture),
+   rdfS(Div, ent:name, Desc),
 
    % Suffix
-   rdf_(Character, ent:class, ent:plasticity),
-   rdf_(Character, ent:symbol, Grain),
-   rdf_(Character, ent:description, Plasticity),
+   rdf(Character, ent:class, ent:plasticity),
+   rdfS(Character, ent:symbol, Grain),
+   rdfS(Character, ent:description, Plasticity),
 
    % Code
    atom_concat(Texture, Grain, TG).
@@ -219,6 +222,15 @@ search(Name, List) :-
     sort(LL, List)
     .
 
+/*
+store_local :-
+    context:make_name('soil_classification', Ent, E),
+    print(user_error, Ent),
+    !,
+    rdf_local(A,B,C),
+    context:storeRDF_to_graph(A, B,C, E),
+    fail.
+*/
 
 /*
 USDA Soil Classification Description
