@@ -41,6 +41,11 @@ ent:Canada a rdfs:Resource ;
 	ent:lat "50.0"^^xsd:double ;
 	ent:lon "-89.0"^^xsd:double.
 
+ent:Ontario a rdfs:Resource ;
+        ent:title "Ontario";
+	ent:lat "52.0"^^xsd:double ;
+	ent:lon "-82.0"^^xsd:double.
+
 ent:Northern_Quebec a rdfs:Resource ;
         ent:title "Northern Quebec";
 	ent:lat "54.0"^^xsd:double ;
@@ -120,3 +125,8 @@ ent:Amazon a rdfs:Resource ;
         ent:title "Amazon region" ;
         ent:lat "-5.0"^^xsd:double ;
         ent:lon "-60.0"^^xsd:double.
+
+ent:Germany a rdfs:Resource ;
+        ent:title "Germany" ;
+        ent:lat "49.0"^^xsd:double ;
+        ent:lon "9.0"^^xsd:double.

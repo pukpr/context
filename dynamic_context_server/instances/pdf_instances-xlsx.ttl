@@ -58,6 +58,33 @@ ent:Oregon_wind_speed a rdfs:Resource ;
 	ent:min_extent "1.0"^^xsd:double ;
 	ent:max_extent "100.0"^^xsd:double .
 
+ent:Germany_wind_energy a rdfs:Resource ;
+	ent:model "Germany_wind_energy" ;
+	ent:locale ent:Germany ;
+	ent:feature "wind features" ;
+	ent:characteristic "windSpeed" ;
+	ent:title "Wind Energy distribution" ;
+	ent:x_axis "MW-Hr" ;
+	ent:pdf "1.0*exp(1737,Dist)" ;
+	ent:moments "[mean]" ;
+	ent:interval "1.05"^^xsd:double ;
+	ent:min_extent "1.0"^^xsd:double ;
+	ent:max_extent "10000.0"^^xsd:double .
+
+ent:Ontario_wind_energy a rdfs:Resource ;
+	ent:model "Ontario_wind_energy" ;
+	ent:locale ent:Ontario ;
+	ent:feature "wind features" ;
+	ent:characteristic "windSpeed" ;
+	ent:title "Wind Energy distribution" ;
+	ent:x_axis "MW-Hr" ;
+	ent:pdf "1.0*exp(178,Dist)" ;
+	ent:moments "[mean]" ;
+	ent:interval "1.05"^^xsd:double ;
+	ent:min_extent "1.0"^^xsd:double ;
+	ent:max_extent "1000.0"^^xsd:double .
+
+
 
 ent:Variable_clutter_maxent a rdfs:Resource ;
 	ent:model "Variable_clutter_maxent" ;
