@@ -7,7 +7,7 @@
 
 list_solar_models(Target) -->
 	{
-   collect_unit_options(ent:length, Lunits) % elevation
+   collect_unit_options(length, Lunits) % elevation
 	},
     html(
         form([action(plot), target(Target)],

@@ -21,16 +21,16 @@
 %  decorate(X, option([value(X)],[X])).
 
 navigate(Request) :-
-   rdf_units(ent:standardAtmosphere, ent:description, Description),
+   rdfS(ent:standardAtmosphere, ent:description, Description),
    /*
    t_units(Tlist),
    maplist(decorate, Tlist, Tunits),
    p_units(Plist),
    maplist(decorate, Plist, Punits),
    */
-   collect_unit_options(ent:pressure, Punits),
-   collect_unit_options(ent:temperature, Tunits),
-   collect_unit_options(ent:density, Dunits),
+   collect_unit_options(pressure, Punits),
+   collect_unit_options(temperature, Tunits),
+   collect_unit_options(density, Dunits),
 
    reply_html_page(cliopatria(default),
                    [title('Standard Atmosphere')],
@@ -126,12 +126,12 @@ plot(Request) :-
 atmPartialPressureWater(T*Temperature, P*Pressure) :-
    context_units:convert(T*Temperature, T1*c, T1),
    % var(P), % second term is var
-   rdf_units(ent:standardAtmosphere, ent:temperature, T0*k),
-   rdf_units(ent:physicalConstants, ent:gasConstant, R*cal/k/mol),
-   rdf_units(ent:standardAtmosphere, ent:pressure, P0*atm),
+   rdf_units(standardAtmosphere, temperature, T0*k),
+   rdf_units(physicalConstants, gasConstant, R*cal/k/mol),
+   rdf_units(standardAtmosphere, pressure, P0*atm),
    InvT is 1.0/(T1 + T0),
-   rdf_units(ent:water, ent:deltaHvap, DeltaHvap*cal),
-   rdf_units(ent:water, ent:deltaSvap, DeltaSvap*cal/k),
+   rdf_units(water, deltaHvap, DeltaHvap*cal),
+   rdf_units(water, deltaSvap, DeltaSvap*cal/k),
    Exp is DeltaSvap/R - DeltaHvap/R * InvT,
    P1 is P0*exp(Exp),
    context_units:convert(P1*atm, P*Pressure, P), !.
@@ -141,11 +141,11 @@ atmPartialPressureWater(PressureUnits, T*Temperature, P) :-
 atmTemperatureForPartialPressureWater(P*Pressure, T*Temperature) :-
    context_units:convert(P*Pressure, P1*atm, P1),
    % var(T),
-   rdf_units(ent:standardAtmosphere, ent:temperature, T0*k),
-   rdf_units(ent:physicalConstants, ent:gasConstant, R*cal/k/mol),
-   rdf_units(ent:standardAtmosphere, ent:pressure, P0*atm),
-   rdf_units(ent:water, ent:deltaHvap, DeltaHvap*cal),
-   rdf_units(ent:water, ent:deltaSvap, DeltaSvap*cal/k),
+   rdf_units(standardAtmosphere, temperature, T0*k),
+   rdf_units(physicalConstants, gasConstant, R*cal/k/mol),
+   rdf_units(standardAtmosphere, pressure, P0*atm),
+   rdf_units(water, deltaHvap, DeltaHvap*cal),
+   rdf_units(water, deltaSvap, DeltaSvap*cal/k),
    T1 is DeltaHvap/(DeltaSvap - R*log(P1/P0)) - T0,
    context_units:convert(T1*c, T*Temperature, T), !.
 atmTemperatureForPartialPressureWater(TemperatureUnits, P*Pressure, T) :-
@@ -154,9 +154,9 @@ atmTemperatureForPartialPressureWater(TemperatureUnits, P*Pressure, T) :-
 atmPressureDryAdiabatic(Alt*Altitude, P*Pressure) :-
    context_units:convert(Alt*Altitude, Alt1*km, Alt1),
    % var(P),
-   rdf_units(ent:standardAtmosphere, ent:pressure, P0*atm),
-   rdf_units(ent:standardAtmosphere, ent:dryAdiabaticPressureHead, Ph*km),
-   rdf_units(ent:standardAtmosphere, ent:seaLevel, SeaLevel*km),
+   rdf_units(standardAtmosphere, pressure, P0*atm),
+   rdf_units(standardAtmosphere, dryAdiabaticPressureHead, Ph*km),
+   rdf_units(standardAtmosphere, seaLevel, SeaLevel*km),
    Alt0 is Alt1 + SeaLevel,
    P1 is P0*exp(Alt0/Ph),
    context_units:convert(P1*atm, P*Pressure, P), !.
@@ -166,9 +166,9 @@ atmPressureDryAdiabatic(PressureUnits, Alt*Altitude, P) :-
 atmAltitudeAtPressureDryAdiabatic(P*Pressure, Alt*Altitude) :-
    context_units:convert(P*Pressure, P1*atm, P1),
    % var(Alt),
-   rdf_units(ent:standardAtmosphere, ent:pressure, P0*atm),
-   rdf_units(ent:standardAtmosphere, ent:dryAdiabaticPressureHead, Ph*km),
-   rdf_units(ent:standardAtmosphere, ent:seaLevel, SeaLevel*km),
+   rdf_units(standardAtmosphere, pressure, P0*atm),
+   rdf_units(standardAtmosphere, dryAdiabaticPressureHead, Ph*km),
+   rdf_units(standardAtmosphere, seaLevel, SeaLevel*km),
    Alt1 is Ph*log(P1/P0) + SeaLevel, !,
    context_units:convert(Alt1*km, Alt*Altitude, Alt), !.
 atmAltitudeAtPressureDryAdiabatic(AltitudeUnits, P*Pressure, Alt) :-
@@ -189,7 +189,7 @@ boilingPointH20(TemperatureUnits, Alt*Altitude, T) :-
 idealPressure(MW*au, D*Mass/Vol^3, T*Temperature, P*Pressure) :-
    context_units:convert(T*Temperature, T1*k, T1),
    context_units:convert(D*Mass/Vol^3, D1*g/m^3, D1),
-   rdf_units(ent:physicalConstants, ent:gasConstant, R*j/k/mol),
+   rdf_units(physicalConstants, gasConstant, R*j/k/mol),
    P1 is D1*T1*R/MW,
    context_units:convert(P1*pa, P*Pressure, P), !.
 idealPressure(Pressure, MW*au, D*Mass/Vol^3, T*Temperature, P) :-
@@ -199,7 +199,7 @@ idealPressure(Pressure, MW*au, D*Mass/Vol^3, T*Temperature, P) :-
 idealTemperature(MW*au, D*Mass/Vol^3, P*Pressure, T*Temperature) :-
    context_units:convert(P*Pressure, P1*pa, P1),
    context_units:convert(D*Mass/Vol^3, D1*g/m^3, D1),
-   rdf_units(ent:physicalConstants, ent:gasConstant, R*j/k/mol),
+   rdf_units(physicalConstants, gasConstant, R*j/k/mol),
    T1 is P1/D1/R*MW,
    context_units:convert(T1*k, T*Temperature, T),!.
 idealTemperature(Temperature, D*Mass/Vol^3, MW*au, P*Pressure, T*Temperature) :-
@@ -208,7 +208,7 @@ idealTemperature(Temperature, D*Mass/Vol^3, MW*au, P*Pressure, T*Temperature) :-
 idealDensity(MW*au, T*Temperature, P*Pressure, D*Mass/Vol^3) :-
    context_units:convert(T*Temperature, T1*k, T1),
    context_units:convert(P*Pressure, P1*pa, P1),
-   rdf_units(ent:physicalConstants, ent:gasConstant, R*j/k/mol),
+   rdf_units(physicalConstants, gasConstant, R*j/k/mol),
    D1 is P1/T1/R*MW,
    context_units:convert(D1*g/m^3, D*Mass/Vol^3, D), !.
 idealDensity(Mass/Vol^3, MW*au, T*Temperature, P*Pressure, D) :-
@@ -219,9 +219,9 @@ plancks_law(T*Temperature, Lambda*Wavelength, P/Wavelength) :-
    context_units:convert(T*Temperature, T1*k, T1),
    context_units:convert(Lambda*Wavelength, WL*m, WL),
    % context_units:convert(1*Wavelength, Scale*m, Scale),
-   rdf_units(ent:physicalConstants, ent:planckConstant, H*j*s),
-   rdf_units(ent:physicalConstants, ent:speedLight, C*m/s),
-   rdf_units(ent:physicalConstants, ent:boltzmannConstant, K*j/k),
+   rdf_units(physicalConstants, planckConstant, H*j*s),
+   rdf_units(physicalConstants, speedLight, C*m/s),
+   rdf_units(physicalConstants, boltzmannConstant, K*j/k),
    Exp is exp(H*C/(WL*K*T1))-1.0,
    % SpectralEnergyDesnity is 4*pi/C,
    P is 2*H*(C^2)/(WL^5)/Exp, !.
@@ -232,9 +232,9 @@ plancks_law(Wavelength, T*Temperature, Lambda*Wavelength, P) :-
 plancks_law_wavenumber(T*Temperature, WN/Wavenumber, P*Wavenumber) :-
    context_units:convert(T*Temperature, T1*k, T1),
    context_units:convert(WN/Wavenumber, S/m, S),
-   rdf_units(ent:physicalConstants, ent:planckConstant, H*j*s),
-   rdf_units(ent:physicalConstants, ent:speedLight, C*m/s),
-   rdf_units(ent:physicalConstants, ent:boltzmannConstant, K*j/k),
+   rdf_units(physicalConstants, planckConstant, H*j*s),
+   rdf_units(physicalConstants, speedLight, C*m/s),
+   rdf_units(physicalConstants, boltzmannConstant, K*j/k),
    Exp is exp(H*S*C/(K*T1))-1.0,
    P is 2*H*(C^2)*(S^3)/Exp.
    % context_units:convert(P1/m, P/Wavenumber, P), !.
@@ -245,9 +245,9 @@ plancks_law_wavenumber(Wavenumber, T*Temperature, WN*Wavenumber, P) :-
 plancks_law_frequency(T*Temperature, WN*Wavenumber, P/Wavenumber) :-
    context_units:convert(T*Temperature, T1*k, T1),
    context_units:convert(WN*Wavenumber, S*m, S),
-   rdf_units(ent:physicalConstants, ent:planckConstant, H*j*s),
-   rdf_units(ent:physicalConstants, ent:speedLight, C*m/s),
-   rdf_units(ent:physicalConstants, ent:boltzmannConstant, K*j/k),
+   rdf_units(physicalConstants, planckConstant, H*j*s),
+   rdf_units(physicalConstants, speedLight, C*m/s),
+   rdf_units(physicalConstants, boltzmannConstant, K*j/k),
    Exp is exp(H*S*C/(K*T1))-1.0,
    P1 is 2*H*C^2*S^3/Exp,
    context_units:convert(P1/m, P/Wavenumber, P), !.

@@ -35,6 +35,7 @@
                      <instances/density-xlsx.ttl>,
                      <instances/temperature_regions-sparql-xlsx.ttl>,
                      <instances/PeriodicTable.owl.ttl>,
+                     <instances/physical_units_and_constants.ttl>,
                      <instances/soil_classification.ttl>,
                      <instances/ar-70-38_specifications.ttl>,
                      <terms/context-terms.owl.ttl>,
@@ -179,6 +180,11 @@
         a lib:Schema ;
         a lib:CloudNode ;
 	dc:title "Locations with monthly temperature swings from dbpedia.".
+
+<instances/physical_units_and_constants.ttl>
+        a lib:Schema ;
+        a lib:CloudNode ;
+	dc:title "Physical units symbology and constants.".
 
 <terms/defs.ttl>
         a lib:Schema ;

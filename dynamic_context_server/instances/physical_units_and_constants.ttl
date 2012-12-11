@@ -4,11 +4,138 @@
 # Named toplevel resources (56)
 
 <terms#All Units>
+        ent:name "All Units" ;
 	ent:units <terms#units category> .
 
+<terms#units category>
+	ent:unit "symbolic" .
+
+
+ent:standardAtmosphere
+        ent:name "standardAtmosphere" ;
+	ent:comment "standard temperature and pressure (STP)" ;
+	ent:description "Specification of standard atmosphere" ;
+	ent:dryAdiabaticLapseRate "9.8*c/km" ;
+	ent:dryAdiabaticPressureHead "-0.116*km" ;
+	ent:moistAdiabaticLapseRateTypical "5.0*c/km" ;
+	ent:molecularWeight "28.966*au" ;
+	ent:pressure "1.0*atm" ;
+	ent:seaLevel "0.0*km" ;
+	ent:specificGasConstantDryAir "287*j/kg/k" ;
+	ent:specificGasConstantWaterVapor "462*j/kg/k" ;
+	ent:specificHeatRatio "1.4" ;
+        ent:temperature "70*f" ;
+        ent:temperature "273.15*k" .
+
+ent:physicalConstants
+        ent:name "physicalConstants" ;
+	ent:comment "commonly used physical constants" ;
+	ent:atomicUnit "1.66053886e-24*g" ;
+	ent:avogadrosNumber "6.02214129e+23*n" ;
+	ent:boltzmannConstant "1.38065e-23*j/k" ;
+	ent:dielectricConstant "8.854187e-12*fd/m" ;
+	ent:electricalCharge "1.60218e-19*coulombs" ;
+	ent:faradaysConstant "96485.3383*coulombs/mol" ;
+        ent:gasConstant "8.314472*j/k/mol" ;
+	ent:gasConstant "1.9858775*cal/k/mol"  ;
+	ent:gravity "9.80665*m/s^2" ;
+	ent:gravity "32.174049*ft/s^2" ;
+	ent:planckConstant "6.62607e-34*j*s" ;
+	ent:speedLight "300000000.0*m/s" ;
+	ent:stefanBoltzmann "5.670373e-8*w/m^2/k^4" .
+
+ent:solar
+        ent:name "solar" ;
+	ent:comment "average sunshine" ;
+	ent:averageAlbedo "0.31" ;
+	ent:averageSolarInsolation "1366*w/m^2" .
+
+ent:water
+        ent:name "water" ;
+	ent:comment "fresh water properties" ;
+	ent:deltaHvap "9717.1*cal" ;
+	ent:deltaSvap "26.04*cal/k" ;
+	ent:molecular_weight "18.015268*au" .
+
+
 ent:area
+        ent:name  "area" ;
 	ent:units ent:ft_2 ,
 		  ent:m_2 .
+
+ent:density
+        ent:name  "density" ;
+	ent:units ent:g_cm3 ,
+		  ent:kg_liter ,
+		  ent:kg_m3 ,
+		  ent:lb_ft3 ,
+		  ent:mg_micron3 ,
+		  ent:oz_in3 ,
+		  ent:tons_km3 .
+
+ent:dimensionless
+        ent:name  "dimensionless" ;
+	ent:units ent:percent .
+
+ent:length
+        ent:name  "length" ;
+	ent:units ent:cm ,
+		  ent:ft ,
+		  ent:inch ,
+		  ent:kft ,
+		  ent:km ,
+		  ent:meters ,
+		  ent:micron ,
+		  ent:mile ,
+		  ent:mil ,
+		  ent:mm ,
+		  ent:nm ,
+		  ent:yards .
+
+ent:mass
+        ent:name  "mass" ;
+	ent:units ent:kilogram ,
+		  ent:pound .
+
+ent:pressure
+        ent:name  "pressure" ;
+	ent:units ent:atm ,
+		  ent:bar ,
+		  ent:millibar ,
+		  ent:mpa ,
+		  ent:mtorr ,
+		  ent:pa ,
+		  ent:psi ,
+		  ent:torr .
+
+ent:temperature
+        ent:name  "temperature" ;
+	ent:units ent:c ,
+	          ent:f ,
+		  ent:k ,
+		  ent:r .
+
+ent:time
+        ent:name  "time" ;
+	ent:units ent:day ,
+		  ent:decade ,
+		  ent:hour ,
+		  ent:mics ,
+		  ent:min ,
+		  ent:sec ,
+		  ent:year .
+
+ent:volume
+        ent:name  "volume" ;
+	ent:units ent:cm_3 ,
+		  ent:m_3 .
+
+
+
+
+
+
+
 
 ent:atm
 	ent:description "atmospheres" ;
@@ -38,14 +165,9 @@ ent:decade
 	ent:description "decades" ;
 	ent:unit "decade" .
 
-ent:density
-	ent:units ent:g_cm3 ,
-		  ent:kg_liter ,
-		  ent:kg_m3 ,
-		  ent:lb_ft3 ,
-		  ent:mg_micron3 ,
-		  ent:oz_in3 ,
-		  ent:tons_km3 .
+ent:f
+	ent:description "degrees F" ;
+	ent:unit "f" .
 
 ent:ft
 	ent:description "feet" ;
@@ -95,19 +217,6 @@ ent:lb_ft3
 	ent:description "pounds/cubic foot" ;
 	ent:unit "lb/ft^3" .
 
-ent:length
-	ent:units ent:cm ,
-		  ent:ft ,
-		  ent:inch ,
-		  ent:kft ,
-		  ent:km ,
-		  ent:meters ,
-		  ent:micron ,
-		  ent:mil ,
-		  ent:mm ,
-		  ent:nm ,
-		  ent:yards .
-
 ent:m_2
 	ent:description "square meter" ;
 	ent:unit "m^2" .
@@ -115,10 +224,6 @@ ent:m_2
 ent:m_3
 	ent:description "cubic meter" ;
 	ent:unit "m^3" .
-
-ent:mass
-	ent:units ent:kilogram ,
-		  ent:pound .
 
 ent:meters
 	ent:description "meters" ;
@@ -140,6 +245,10 @@ ent:mil
 	ent:description "mils" ;
 	ent:unit "mil" .
 
+ent:mile
+	ent:description "mile" ;
+	ent:unit "mi" .
+
 ent:millibar
 	ent:description "milli Bar" ;
 	ent:unit "millibar" .
@@ -157,6 +266,7 @@ ent:mpa
 	ent:unit "mpa" .
 
 ent:mtorr
+	ent:description "milli Torr" ;
 	ent:unit "mtorr" .
 
 ent:nm
@@ -171,33 +281,16 @@ ent:pa
 	ent:description "Pascals" ;
 	ent:unit "pa" .
 
-ent:physicalConstants
-	<comment> "commonly used physical constants" ;
-	ent:atomicUnit "1.66053886e-24*g" ;
-	ent:avogadrosNumber "6.02214129e+23*n" ;
-	ent:boltzmannConstant "1.38065e-23*j/k" ;
-	ent:dielectricConstant "8.854187e-12*fd/m" ;
-	ent:electricalCharge "1.60218e-19*coulombs" ;
-	ent:faradaysConstant "96485.3383*coulombs/mol" ;
-	ent:gasConstant "1.9858775*cal/k/mol" ;
-	ent:gravity "9.80665*m/s^2" ;
-	ent:planckConstant "6.62607e-34*j*s" ;
-	ent:speedLight "300000000.0*m/s" ;
-	ent:stefanBoltzmann "5.670373e-8*w/m^2/k^4" .
+ent:percent
+	ent:description "%" ;
+	ent:unit "percent" .
 
 ent:pound
 	ent:description "pound(mass)" ;
 	ent:unit "lb" .
 
-ent:pressure
-	ent:units ent:atm ,
-		  ent:bar ,
-		  ent:millibar ,
-		  ent:mpa ,
-		  ent:mtorr ,
-		  ent:pa ,
-		  ent:psi ,
-		  ent:torr .
+ent:power_density
+	ent:units ent:w_m2 .
 
 ent:psi
 	ent:description "pounds/in^2" ;
@@ -211,39 +304,6 @@ ent:sec
 	ent:description "seconds" ;
 	ent:unit "s" .
 
-ent:solar
-	<comment> "average sunshine" ;
-	ent:averageAlbedo "0.31" ;
-	ent:averageSolarInsolation "1366*w/m^2" .
-
-ent:standardAtmosphere
-	<comment> "standard temperature and pressure (STP)" ;
-	ent:description "Specification of standard atmosphere" ;
-	ent:dryAdiabaticLapseRate "9.8*c/km" ;
-	ent:dryAdiabaticPressureHead "-0.116*km" ;
-	ent:moistAdiabaticLapseRateTypical "5.0*c/km" ;
-	ent:molecularWeight "28.966*au" ;
-	ent:pressure "1*atm" ;
-	ent:seaLevel "0.0*km" ;
-	ent:specificGasConstantDryAir "287*j/kg/k" ;
-	ent:specificGasConstantWaterVapor "462*j/kg/k" ;
-	ent:specificHeatRatio "1.4" ;
-	ent:temperature "70*f" .
-
-ent:temperature
-	ent:units ent:c ,
-		  ent:k ,
-		  ent:r .
-
-ent:time
-	ent:units ent:day ,
-		  ent:decade ,
-		  ent:hour ,
-		  ent:mics ,
-		  ent:min ,
-		  ent:sec ,
-		  ent:year .
-
 ent:tons_km3
 	ent:description "tons/cubic km" ;
 	ent:unit "ton/km^3" .
@@ -252,18 +312,9 @@ ent:torr
 	ent:description "Torr" ;
 	ent:unit "torr" .
 
-<terms#units category>
-	ent:unit "Symbolic Notation" .
-
-ent:volume
-	ent:units ent:cm_3 ,
-		  ent:m_3 .
-
-ent:water
-	<comment> "fresh water properties" ;
-	ent:deltaHvap "9717.1*cal" ;
-	ent:deltaSvap "26.04*cal/k" ;
-	ent:molecular_weight "18.015268*au" .
+ent:w_m2
+	ent:description "watts/m^2" ;
+	ent:unit "w/m^2" .
 
 ent:yards
 	ent:description "yards" ;

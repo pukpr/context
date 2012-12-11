@@ -6,7 +6,7 @@
 :- context:register(context_standard_atmosphere:plot).
 
 navigate(Request) :-
-   collect_unit_options(ent:length, Lunits), % elevation
+   collect_unit_options(length, Lunits), % elevation
    rdfS(ent:altitude, rdfs:comment, XDesc),
 
    reply_html_page(cliopatria(default),

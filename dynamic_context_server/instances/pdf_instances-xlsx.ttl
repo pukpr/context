@@ -51,7 +51,7 @@ ent:Oregon_wind_speed a rdfs:Resource ;
 	ent:feature "wind features" ;
 	ent:characteristic "windSpeed" ;
 	ent:title "Wind Speed distribution" ;
-	ent:x_axis "MPH" ;
+	ent:x_axis "mi/hr" ;
 	ent:pdf "1.0*besselk0(12,Dist)" ;
 	ent:moments "[mean]" ;
 	ent:interval "1.05"^^xsd:double ;

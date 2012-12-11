@@ -27,7 +27,6 @@
    rdfE(o,o,?),
    rdfV(o,o,?,?).
 
-
 ac_result([Obj,Type], json([ label=Type,
                               type=Obj,
                               href='javascript:location.reload(false);'

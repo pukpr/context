@@ -105,9 +105,6 @@ ent:constantHighHumidity
 	ent:storage_temperature "[80.0,80.0,80.0,80.0,80.0,80.0,80.0,80.0,80.0,80.0,80.0,80.0,80.0,80.0,80.0,80.0,80.0,80.0,80.0,80.0,80.0,80.0,80.0,80.0]" ;
 	ent:wind "[8.0,17.0]" .
 
-ent:dimensionless
-	ent:units ent:percent .
-
 ent:droplet_count_per_cubic_meter
 	ent:description " droplet count per cubic meter" .
 
@@ -116,10 +113,6 @@ ent:elastomers
 
 ent:extinction_coefficient
 	ent:description "extinction coefficient [/km] for visible light to 12 micron (IR)" .
-
-ent:f
-	ent:description "degrees F" ;
-	ent:unit "f" .
 
 ent:glaze_ice_density
 	ent:description "approx. glaze ice density [lbm/cuft]" .
@@ -233,15 +226,8 @@ ent:operational
 ent:ozone
 	ent:density "1.37e-8*lb/ft^3" .
 
-ent:percent
-	ent:description "%" ;
-	ent:unit "percent" .
-
 ent:polymers
 	ent:site_with_high_deteroration_rate "[open]" .
-
-ent:power_density
-	ent:units ent:w_m2 .
 
 ent:pressure
 	ent:max_pressure "1.08*bar" ;
@@ -341,9 +327,6 @@ ent:surfaceVehicleVicinityConditions
 	ent:particle_diameter_min_typical "0.00291* (in)" ;
 	ent:vehicle_wind_max "59.0*ft/s" .
 
-ent:temperature
-	ent:units ent:f .
-
 ent:textiles
 	ent:site_with_high_deteroration_rate "[forest]" .
 
@@ -364,10 +347,6 @@ ent:variableHighHumidity
 
 ent:vehicle_wind_max
 	ent:description "max. wind speed [ft/s] at 10 ft" .
-
-ent:w_m2
-	ent:description "watts/m^2" ;
-	ent:unit "w/m^2" .
 
 ent:wind
 	ent:gustWindVelocity_10ft "95.0*ft/s" ;
