@@ -27,19 +27,21 @@ two_level_model(L1, Alpha1, L2, Alpha2, Weight, S, R) :-
     W isx WW  & 0.0,
     R & _ isx W*(I-P)*(I-Q)/(I-P*Q)/K^2.
 
-two_level(Course, S, Result) :-  % semiMarkov model
-    rdf_(Course, alpha1, Alpha1),
-    rdf_(Course, l1, L1),
-    rdf_(Course, alpha2, Alpha2),
-    rdf_(Course, l2, L2),
-    rdf_(Course, weight, Weight),
+two_level(Course_Name, S, Result) :-  % semiMarkov model
+    rdfS(Course, ent:name, Course_Name),
+    rdfR(Course, ent:alpha1, Alpha1),
+    rdfR(Course, ent:l1, L1),
+    rdfR(Course, ent:alpha2, Alpha2),
+    rdfR(Course, ent:l2, L2),
+    rdfR(Course, ent:weight, Weight),
     two_level_model(L1, Alpha1, L2, Alpha2, Weight, S, Result), !.
 
-two_level(Course, S, Result) :-  % Ornstein-Uhlenbeck
-    rdf_(Course, diffusion, Diffusion),
-    rdf_(Course, drag, Drag),
-    rdf_(Course, spacing, DX),
-    rdf_(Course, weight, Weight),
+two_level(Course_Name, S, Result) :-  % Ornstein-Uhlenbeck
+    rdfS(Course, ent:name, Course_Name),
+    rdfR(Course, ent:diffusion, Diffusion),
+    rdfR(Course, ent:drag, Drag),
+    rdfR(Course, ent:spacing, DX),
+    rdfR(Course, ent:weight, Weight),
     %Slope is 0.01/sqrt(DX*Diffusion),
     Slope is Drag/sqrt(Diffusion*DX),
     two_level_model(0.0, Slope, 0.0, Slope, Weight, S, Result).

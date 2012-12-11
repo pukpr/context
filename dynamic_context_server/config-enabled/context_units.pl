@@ -317,9 +317,9 @@ check_relations(X, Y, 'NaN') :-
 
 collect_unit_options(Functor, List) :-
     findall(option([value(Value)],[Name]),
-            (   rdf_(Functor, ent:units, Unit),
-                rdf_(Unit, ent:unit, Value),
-                rdf_(Unit, ent:description, Name)
+            (   rdf_units(Functor, ent:units, Unit),
+                rdf_units(Unit, ent:unit, Value),
+                rdf_units(Unit, ent:description, Name)
             ),
             List).
 

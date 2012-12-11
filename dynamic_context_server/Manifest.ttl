@@ -20,6 +20,7 @@
                      <instances/Terrain-PSD-data-json.ttl>,
                      <instances/Terrain-Profile-data-crg.ttl>,
                      <instances/Terrain-Profile-data-assorted.ttl>,
+                     <instances/semi_markov_model_parameters.ttl>,
                      <instances/Terrain-Obstacles-data-csv.ttl>,
                      <instances/Temperature-Model-data.ttl>,
                      <instances/pdf_instances-xlsx.ttl>,
@@ -98,6 +99,11 @@
 	 a lib:Instances ;
 	 a lib:CloudNode ;
 	 dc:title "Data for terrain course profiles from CSIR, mainly from CRG format" .
+
+<instances/semi_markov_model_parameters.ttl>
+	 a lib:Instances ;
+	 a lib:CloudNode ;
+	 dc:title "Model parameters for terrain course profiles" .
 
 <instances/Terrain-Profile-data-assorted.ttl>
 	 a lib:Instances ;

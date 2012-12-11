@@ -307,15 +307,18 @@ apply(Request) :-
 
 find_optional_units(Named_Unit,NList,DList) :-
    atom_to_term(Named_Unit, NUnit/DUnit, []),
-   rdf_(UN, ent:unit, NUnit),
-   rdf_(URI, ent:units, UN),!,
+   rdf_units(UN, ent:unit, NUnit),
+   rdf_units(URI, ent:units, UN),!,
    context_units:collect_unit_options(URI, NList),
-   rdf_(UD, ent:unit, DUnit),
-   rdf_(URID, ent:units, UD),!,
+   rdf_units(UD, ent:unit, DUnit),
+   rdf_units(URID, ent:units, UD),!,
    context_units:collect_unit_options(URID, DList).
 find_optional_units(Named_Unit,NList,[]) :-
    atom_to_term(Named_Unit, Unit, []),
-   rdf_(U, ent:unit, Unit),
-   rdf_(URI, ent:units, U),!,
+   rdf_units(U, ent:unit, Unit),
+   rdf_units(URI, ent:units, U),!,
    context_units:collect_unit_options(URI, NList).
 find_optional_units(_,[],[]).
+
+
+

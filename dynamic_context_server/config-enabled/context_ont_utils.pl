@@ -147,13 +147,6 @@ find_ent_objects(_Request)  :-
 
 restart(_Request) :- halt.
 
-% gendot :-
-%    rdf_(A,B,C),
-%    print(A), print(' -> '), print(C),
-%    print(' [label="'), print(B), print('"];'), nl,
-%    fail.
-
-
 
 
 

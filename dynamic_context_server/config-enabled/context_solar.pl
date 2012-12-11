@@ -9,11 +9,6 @@ list_solar_models(Target) -->
 	{
    collect_unit_options(ent:length, Lunits) % elevation
 	},
-/*
-    {findall(option([value(Name)],[Name]),
-                    (rdf_(ent:ar7038_climate, ent:climate_design_type, ID),
-                     rdf_(ID, ent:name, Name)), Selects)},
-*/
     html(
         form([action(plot), target(Target)],
 			 [
@@ -45,7 +40,6 @@ list_solar_models(Target) -->
 
 
 navigate(Request) :-
-   % rdf_(ent:ar7038_spec, ent:description, Description),
    reply_html_page(cliopatria(default),
                    [title('Solar Insolation')],
                    [\(con_text:table_with_iframe_target(
