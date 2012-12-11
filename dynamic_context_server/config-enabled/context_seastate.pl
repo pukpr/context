@@ -9,7 +9,7 @@
 :- context:register(context_seastate:seastate_table).
 
 navigate(Request) :-
-   collect_unit_options(ent:length, Lunits),
+   collect_unit_options(length, Lunits),
    SS = a([href(seastate_table), target(render)], 'sea-state'),
 
    reply_html_page(cliopatria(default),

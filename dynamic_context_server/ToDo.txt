@@ -3,6 +3,7 @@
 	convert rdf_ to entailments
 	Different data format generators
 	Each browse entry should have short narrative and one link
+	fording model broken
 x	Soil and AR70-38 as TTL
 x	Aquatic wave height model, plus connection to Sea-State, significant wave height + sampling state assuming solution
 x	Thermal heat sink model
@@ -55,7 +56,7 @@ x	Cloud has land plus ocean.
 
 general work
 W	Collect all XLS and PPT files
-	generate a simpler unit scale function
+x	generate a simpler unit scale function
 	Index the papers for PDF
 x	Acronyms, add via Zotero
 	Unit tests

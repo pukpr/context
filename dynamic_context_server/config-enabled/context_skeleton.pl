@@ -9,13 +9,13 @@
 :- context:register(context_skeleton:navigate).
 :- context:register(context_skeleton:plot).
 
-navigate(_Request) :-
-   collect_unit_options(ent:length, Lunits),
+navigate(Request) :-
+   collect_unit_options(length, Lunits),
 
    reply_html_page(cliopatria(default),
                    [title('Title')],
                    [\(con_text:table_with_iframe_target(
-                                    target_iframe,
+                                    Request,
 		     [
                       h1('HeaderText'),
                       p('Explanation'),

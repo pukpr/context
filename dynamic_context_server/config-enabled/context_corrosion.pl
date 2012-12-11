@@ -48,8 +48,8 @@ corrosion_components(Request) :-
 
 
 navigate(Request) :-
-   collect_unit_options(ent:length, Lunits),
-   collect_unit_options(ent:time, Tunits),
+   collect_unit_options(length, Lunits),
+   collect_unit_options(time, Tunits),
 
    reply_html_page(cliopatria(default),
                    [title('Corrosive Atmosphere')],

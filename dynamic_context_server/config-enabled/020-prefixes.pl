@@ -27,7 +27,7 @@ purposes:
 :- rdf_register_ns('dbpedia','http://dbpedia.org/resource/').
 :- rdf_register_ns('dbpedia','http://dbpedia.org/resource/').
 :- rdf_register_ns('pt', 'http://www.daml.org/2003/01/periodictable/PeriodicTable#').
-
+:- rdf_register_ns('cntxt', 'http://on.cs.unibas.ch/owl/1.0/Context.owl#').
 
 % Add SWEET layers here
 

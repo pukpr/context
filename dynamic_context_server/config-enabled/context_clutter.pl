@@ -10,7 +10,7 @@
 :- context:register(context_clutter:plot).
 
 navigate(Request) :-
-   collect_unit_options(ent:time, Tunits),
+   collect_unit_options(time, Tunits),
 
    reply_html_page(cliopatria(default),
                    [title('Clutter model')],

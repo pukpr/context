@@ -17,7 +17,7 @@ collect_names_options(List) :-
             List).
 
 navigate(Request) :-
-   collect_unit_options(ent:area, Lunits),
+   collect_unit_options(area, Lunits),
    collect_names_options(Rivers),
 
    reply_html_page(cliopatria(default),

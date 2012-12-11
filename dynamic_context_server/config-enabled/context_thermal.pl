@@ -10,8 +10,8 @@
 
 
 navigate(Request) :-
-   collect_unit_options(ent:temperature, Hunits),
-   collect_unit_options(ent:time, Tunits),
+   collect_unit_options(temperature, Hunits),
+   collect_unit_options(time, Tunits),
 
    reply_html_page(cliopatria(default),
                    [title('Thermal Environment')],

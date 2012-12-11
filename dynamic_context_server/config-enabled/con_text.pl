@@ -131,10 +131,18 @@ form(Action, Target, List) -->
               [ \input(List),
                input([type('submit')])])).
 
+reload -->
+  html(a([href('javascript:location.reload(true);')], ' refresh')).
+
+
 form_ac(Action, Target, Subject_Filter, ID) -->
-    html(form([class('query'), action(Action), target(Target)],
+    html([ \(reload),
+           form([action(Action), target(Target)],
               [ \autoc(Subject_Filter, ID), br([]),
-               input([type('submit')])])).
+                input([type('submit')])
+               ])
+         ]
+        ).
 
 
 autoc(Callback, ID) -->

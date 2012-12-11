@@ -121,9 +121,9 @@ liquid_densities(Request) :-
 %
 
 navigate(Request) :-
-   collect_unit_options(ent:mass, Munits),
-   collect_unit_options(ent:volume, Vunits),
-   collect_unit_options(ent:temperature, Tunits),
+   collect_unit_options(mass, Munits),
+   collect_unit_options(volume, Vunits),
+   collect_unit_options(temperature, Tunits),
    context_file_reading:find('stability curve calculations.xlsx', Stability_File),
    % context_file_reading:find('density.xlsx', Stability_File),
    reply_html_page(cliopatria(default),
