@@ -3,7 +3,8 @@
 	convert rdf_ to entailments
 	Different data format generators
 	Each browse entry should have short narrative and one link
-	Aquatic wave height model, plus connection to Sea-State, significant wave height + sampling state assuming solution
+x	Soil and AR70-38 as TTL
+x	Aquatic wave height model, plus connection to Sea-State, significant wave height + sampling state assuming solution
 x	Thermal heat sink model
 x	lightning stroke plot
 x	context_solar, planck's law
@@ -54,8 +55,9 @@ x	Cloud has land plus ocean.
 
 general work
 W	Collect all XLS and PPT files
+	generate a simpler unit scale function
 	Index the papers for PDF
-	Acronyms, add via Zotero
+x	Acronyms, add via Zotero
 	Unit tests
 	switch graphs to native format whenever possible
 	Use target=_parent or target=_top
@@ -65,7 +67,7 @@ W	Collect all XLS and PPT files
 
 
 if time available
-	Periodic table in triple store format
+x	Periodic table in triple store format
 	Sometimes graph needs more sig figs
 	Semi-Markov sync function to scale
 	Store FFT model as triples
@@ -82,7 +84,7 @@ if time available
 	Math representation for obstacles
 	Error margins on graphs
 	Random number session seed
-	Altitude/pressure graph
+x	Altitude/pressure graph
 	FFT on SOS
 	shaded-relief, geohack
 	Links to Graphviz dot circles

@@ -1,0 +1,83 @@
+@base        <http://entroplet.com/terms#soil_classification> .
+@prefix ent: <terms#> .
+
+# Named toplevel resources (15)
+
+ent:clay
+	ent:class ent:contents ;
+	ent:description "clay-like character" ;
+	ent:has ent:high_plasticity ;
+	ent:name "clay" ;
+	ent:symbol "C" .
+
+ent:coarse_grained_soil
+	ent:description "coarse grained" ;
+	ent:division ent:gravel ,
+		     ent:sand ;
+	ent:has ent:contents ,
+		ent:gradation .
+
+ent:dry_silt_clay
+	ent:class ent:clay ,
+		  ent:silt ;
+	ent:symbol "L" .
+
+ent:fine_grained_soil
+	ent:description "fine grained" ;
+	ent:division ent:dry_silt_clay ,
+		     ent:moist_silt_clay ;
+	ent:has ent:plasticity .
+
+ent:gravel
+	ent:name "gravel" ;
+	ent:symbol "G" .
+
+ent:high_gradation
+	ent:class ent:gradation ;
+	ent:description "well-graded (diversified particle sizes)" ;
+	ent:symbol "W" .
+
+ent:high_plasticity
+	ent:class ent:plasticity ;
+	ent:description "high plasticity" ;
+	ent:symbol "H" .
+
+ent:highly_organic_soil
+	ent:description "highly organic" ;
+	ent:division ent:organic ;
+	ent:has ent:contents .
+
+ent:low_gradation
+	ent:class ent:gradation ;
+	ent:description "poorly graded (uniform particle sizes)" ;
+	ent:symbol "P" .
+
+ent:low_plasticity
+	ent:class ent:plasticity ;
+	ent:description "low plasticity" ;
+	ent:symbol "L" .
+
+ent:moist_silt_clay
+	ent:class ent:clay ,
+		  ent:silt ;
+	ent:symbol "H" .
+
+ent:organic
+	ent:name "organic" ;
+	ent:symbol "O" .
+
+ent:sand
+	ent:name "sand" ;
+	ent:symbol "S" .
+
+ent:silt
+	ent:class ent:contents ;
+	ent:description "silt-like character" ;
+	ent:has ent:low_plasticity ;
+	ent:name "silt" ;
+	ent:symbol "M" .
+
+ent:soil
+	ent:category ent:coarse_grained_soil ,
+		     ent:fine_grained_soil ,
+		     ent:highly_organic_soil .

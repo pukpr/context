@@ -1,4 +1,5 @@
-:- module(context, [rdfR/3,
+:- module(context, [rdf_term/2,
+                    rdfR/3,
 		    rdfI/3,
 		    rdfS/3,
 		    rdfL/3,
@@ -152,6 +153,11 @@ ac_hook(ModuleHandler) :-
    http_handler(RestCB, ModuleHandler, []).
 */
 
+rdf_term(Atom, URI) :-
+    atom_to_term(Atom, Term, []),
+    rdf_global_term(Term, URI).
+
+
 create_global_term(Literal, Term) :-
    atom(Literal),
    rdf_litindex:rdf_tokenize_literal(Literal,[W1,W2]),
@@ -204,6 +210,33 @@ make_name(Name, Ent, E) :-
     prefix(Ent),
     rdf_global_term(Ent:Name, E0),
     uri_normalized(E0, E).
+
+% Storing RDF triples
+
+storeRDF_to_graph(A, B, F:C, E) :-
+    rdf_global_term(B, BB),
+    rdf_global_term(A, AA),
+    rdf_global_term(F:C, CC),
+    not(rdf(AA,BB,CC)),
+    rdf_assert(AA,BB,CC,E), !.
+storeRDF_to_graph(A, B, C, E) :-
+    is_list(C),
+    with_output_to(atom(S), write(C)),
+    rdf_global_term(B, BB),
+    rdf_global_term(A, AA),
+    not(rdf(AA,BB,_)),
+    rdf_assert(AA,BB,literal(S),E), !.
+storeRDF_to_graph(A, B, C, E) :-
+    with_output_to(atom(S), write(C)),
+    rdf_global_term(B, BB),
+    rdf_global_term(A, AA),
+    not(rdf(AA,BB,_)),
+    rdf_assert(AA,BB,literal(S),E), !.
+storeRDF_to_graph(A, B, C, _E) :-
+    is_list(C),
+    print(user_error, [skippedList, A,B,'\n']), !.
+storeRDF_to_graph(A, B, C, _E) :-
+    print(user_error, [skipped, A,B,C, '\n']).
 
 % RDF utilities
 

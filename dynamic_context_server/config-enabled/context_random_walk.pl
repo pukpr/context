@@ -39,19 +39,21 @@ semi_random_walker(X, Weight, [L1,L2], [A1,A2], Z0, Z1) :-
     Z1 mapdot Z0 + ZW.
 
 
-two_level_random_walk(Course, X, Z, Result) :-  % rename this
-    rdf_(Course, alpha1, Alpha1),
-    rdf_(Course, l1, L1),
-    rdf_(Course, alpha2, Alpha2),
-    rdf_(Course, l2, L2),
-    rdf_(Course, weight, Weight),
+two_level_random_walk(Course_Name, X, Z, Result) :-  % rename this
+    rdfS(Course, ent:name, Course_Name),
+    rdfR(Course, ent:alpha1, Alpha1),
+    rdfR(Course, ent:l1, L1),
+    rdfR(Course, ent:alpha2, Alpha2),
+    rdfR(Course, ent:l2, L2),
+    rdfR(Course, ent:weight, Weight),
     semi_random_walker(X, Weight, [L1,L2], [Alpha1,Alpha2], Z, Result).
 
-two_level_random_walk(Course, X, _Z, Result) :-  % this does not accumulate
-    rdf_(Course, diffusion, Diffusion),
-    rdf_(Course, drag, Drag),
-    rdf_(Course, spacing, DX),
-    rdf_(Course, weight, _Weight),
+two_level_random_walk(Course_Name, X, _Z, Result) :-  % this does not accumulate
+    rdfS(Course, ent:name, Course_Name),
+    rdfR(Course, ent:diffusion, Diffusion),
+    rdfR(Course, ent:drag, Drag),
+    rdfR(Course, ent:spacing, DX),
+    rdfR(Course, ent:weight, _Weight),
     ou_random_walker(Diffusion, DX, Drag, X, Result).
 
 % Conventional random walk

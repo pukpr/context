@@ -106,6 +106,7 @@ process_profile(Request) :-
                              characteristic(Character)
                              ],
                              [attribute_declarations(param)]),
+
    rdfS(URI, ent:name, U),
    rdfR(URI, ent:lat, Lat),
    rdfR(URI, ent:lon, Lon),

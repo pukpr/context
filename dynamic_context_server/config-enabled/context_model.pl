@@ -307,36 +307,18 @@ apply(Request) :-
 
 find_optional_units(Named_Unit,NList,DList) :-
    atom_to_term(Named_Unit, NUnit/DUnit, []),
-   rdf_(UN, ent:unit, NUnit),
-   rdf_(URI, ent:units, UN),!,
+   rdf_units(UN, ent:unit, NUnit),
+   rdf_units(URI, ent:units, UN),!,
    context_units:collect_unit_options(URI, NList),
-   rdf_(UD, ent:unit, DUnit),
-   rdf_(URID, ent:units, UD),!,
+   rdf_units(UD, ent:unit, DUnit),
+   rdf_units(URID, ent:units, UD),!,
    context_units:collect_unit_options(URID, DList).
 find_optional_units(Named_Unit,NList,[]) :-
    atom_to_term(Named_Unit, Unit, []),
-   rdf_(U, ent:unit, Unit),
-   rdf_(URI, ent:units, U),!,
+   rdf_units(U, ent:unit, Unit),
+   rdf_units(URI, ent:units, U),!,
    context_units:collect_unit_options(URI, NList).
 find_optional_units(_,[],[]).
 
 
-root_sea_state(M,D,YP,X) :-
-    Y is YP*YP,
-    A is 2.7/D,
-    B is 1.05/D,
-    X is 1/M/2*sqrt((2^(1/3)*(1-12*A*B*Y))/(3*A*B*(sqrt((-27*A^2*Y+72*A*B*Y+2)^2-4*(1-12*A*B*Y)^3)-27*A^2*Y+72*A*B*Y+2)^(1/3))+(sqrt((-27*A^2*Y+72*A*B*Y+2)^2-4*(1-12*A*B*Y)^3)-27*A^2*Y+72*A*B*Y+2)^(1/3)/(3*2^(1/3)*A*B)-2/(3*A*B)+1/(4*B^2))-1/2*sqrt(-(1/B^3-4/(A*B^2))/(4*sqrt((2^(1/3)*(1-12*A*B*Y))/(3*A*B*(sqrt((-27*A^2*Y+72*A*B*Y+2)^2-4*(1-12*A*B*Y)^3)-27*A^2*Y+72*A*B*Y+2)^(1/3))+(sqrt((-27*A^2*Y+72*A*B*Y+2)^2-4*(1-12*A*B*Y)^3)-27*A^2*Y+72*A*B*Y+2)^(1/3)/(3*2^(1/3)*A*B)-2/(3*A*B)+1/(4*B^2)))-(sqrt((-27*A^2*Y+72*A*B*Y+2)^2-4*(1-12*A*B*Y)^3)-27*A^2*Y+72*A*B*Y+2)^(1/3)/(3*2^(1/3)*A*B)-(2^(1/3)*(1-12*A*B*Y))/(3*A*B*(sqrt((-27*A^2*Y+72*A*B*Y+2)^2-4*(1-12*A*B*Y)^3)-27*A^2*Y+72*A*B*Y+2)^(1/3))-4/(3*A*B)+1/(2*B^2))+1/(4*B).
-
-/*
-root_sea_state(M,D,YP,X) :-
-    Y is YP*YP,
-    A is 2.7/D,
-    B is 1.05/D,
-    X is 1/M/2*sqrt((2^(1/3)*(1-12*A*B*Y))/(3*A*B*(sqrt((-27*A^2*Y+72*A*B*Y+2)^2-4*(1-12*A*B*Y)^3)-27*A^2*Y+72*A*B*Y+2)^(1/3))+(sqrt((-27*A^2*Y+72*A*B*Y+2)^2-4*(1-12*A*B*Y)^3)-27*A^2*Y+72*A*B*Y+2)^(1/3)/(3*2^(1/3)*A*B)-2/(3*A*B)+1/(4*B^2))-1/2*sqrt((1/B^3-4/(A*B^2))/(4*sqrt((2^(1/3)*(1-12*A*B*Y))/(3*A*B*(sqrt((-27*A^2*Y+72*A*B*Y+2)^2-4*(1-12*A*B*Y)^3)-27*A^2*Y+72*A*B*Y+2)^(1/3))+(sqrt((-27*A^2*Y+72*A*B*Y+2)^2-4*(1-12*A*B*Y)^3)-27*A^2*Y+72*A*B*Y+2)^(1/3)/(3*2^(1/3)*A*B)-2/(3*A*B)+1/(4*B^2)))-(sqrt((-27*A^2*Y+72*A*B*Y+2)^2-4*(1-12*A*B*Y)^3)-27*A^2*Y+72*A*B*Y+2)^(1/3)/(3*2^(1/3)*A*B)-(2^(1/3)*(1-12*A*B*Y))/(3*A*B*(sqrt((-27*A^2*Y+72*A*B*Y+2)^2-4*(1-12*A*B*Y)^3)-27*A^2*Y+72*A*B*Y+2)^(1/3))-4/(3*A*B)+1/(2*B^2))+1/(4*B) .
-*/
-
-/*
-root_seastate(A,B,Y,X) :-
-X is  1/2*sqrt((2^(1/3)*(1-12*A*B*Y))/(3*A*B*(sqrt((-27*A^2*Y+72*A*B*Y+2)^2-4*(1-12*A*B*Y)^3)-27*A^2*Y+72*A*B*Y+2)^(1/3))+(sqrt((-27*A^2*Y+72*A*B*Y+2)^2-4*(1-12*A*B*Y)^3)-27*A^2*Y+72*A*B*Y+2)^(1/3)/(3*2^(1/3)*A*B)-2/(3*A*B)+1/(4*B^2))+1/2*sqrt((1/B^3-4/(A*B^2))/(4*sqrt((2^(1/3)*(1-12*A*B*Y))/(3*A*B*(sqrt((-27*A^2*Y+72*A*B*Y+2)^2-4*(1-12*A*B*Y)^3)-27*A^2*Y+72*A*B*Y+2)^(1/3))+(sqrt((-27*A^2*Y+72*A*B*Y+2)^2-4*(1-12*A*B*Y)^3)-27*A^2*Y+72*A*B*Y+2)^(1/3)/(3*2^(1/3)*A*B)-2/(3*A*B)+1/(4*B^2)))-(sqrt((-27*A^2*Y+72*A*B*Y+2)^2-4*(1-12*A*B*Y)^3)-27*A^2*Y+72*A*B*Y+2)^(1/3)/(3*2^(1/3)*A*B)-(2^(1/3)*(1-12*A*B*Y))/(3*A*B*(sqrt((-27*A^2*Y+72*A*B*Y+2)^2-4*(1-12*A*B*Y)^3)-27*A^2*Y+72*A*B*Y+2)^(1/3))-4/(3*A*B)+1/(2*B^2))+1/(4*B).
-*/
 

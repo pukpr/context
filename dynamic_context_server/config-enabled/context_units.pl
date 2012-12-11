@@ -1,4 +1,7 @@
-:- module(context_units, [collect_unit_options/2]).
+:- module(context_units, [
+                          collect_unit_options/2,
+                          scaling/3
+                         ]).
 
 /** <module> Units module
     * Symbolic dimensional analysis
@@ -314,8 +317,11 @@ check_relations(X, Y, 'NaN') :-
 
 collect_unit_options(Functor, List) :-
     findall(option([value(Value)],[Name]),
-            (   rdf_(Functor, ent:units, Unit),
-                rdf_(Unit, ent:unit, Value),
-                rdf_(Unit, ent:description, Name)
+            (   rdf_units(Functor, ent:units, Unit),
+                rdf_units(Unit, ent:unit, Value),
+                rdf_units(Unit, ent:description, Name)
             ),
             List).
+
+scaling(From, To, Scale) :-
+    context_units:convert(1*From, Scale*To, Scale).

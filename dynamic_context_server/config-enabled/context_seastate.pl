@@ -141,7 +141,7 @@ plot(Request) :-
 		     \(context_graphing:dygraph_native(Kind, [X, Y, YL, YH],
 						       [X,XUnits], [Y, YUnits],
 						       ['Sea State ', Limit,
-							' from ', Low, ' .. ', High,
+							' from ', Lo, ' .. ', Hi,
 							' ', XUnits], Data))
                     ]
 		  ).

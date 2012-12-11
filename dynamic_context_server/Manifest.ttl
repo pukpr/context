@@ -20,6 +20,7 @@
                      <instances/Terrain-PSD-data-json.ttl>,
                      <instances/Terrain-Profile-data-crg.ttl>,
                      <instances/Terrain-Profile-data-assorted.ttl>,
+                     <instances/semi_markov_model_parameters.ttl>,
                      <instances/Terrain-Obstacles-data-csv.ttl>,
                      <instances/Temperature-Model-data.ttl>,
                      <instances/pdf_instances-xlsx.ttl>,
@@ -34,6 +35,8 @@
                      <instances/density-xlsx.ttl>,
                      <instances/temperature_regions-sparql-xlsx.ttl>,
                      <instances/PeriodicTable.owl.ttl>,
+                     <instances/soil_classification.ttl>,
+                     <instances/ar-70-38_specifications.ttl>,
                      <terms/context-terms.owl.ttl>,
                      <terms/defs.ttl>,
                      <terms/swore.rdf>,
@@ -97,6 +100,11 @@
 	 a lib:CloudNode ;
 	 dc:title "Data for terrain course profiles from CSIR, mainly from CRG format" .
 
+<instances/semi_markov_model_parameters.ttl>
+	 a lib:Instances ;
+	 a lib:CloudNode ;
+	 dc:title "Model parameters for terrain course profiles" .
+
 <instances/Terrain-Profile-data-assorted.ttl>
 	 a lib:Instances ;
 	 a lib:CloudNode ;
@@ -156,6 +164,16 @@
         a lib:Schema ;
         a lib:CloudNode ;
 	dc:title "Periodic table of the elements.".
+
+<instances/soil_classification.ttl>
+        a lib:Schema ;
+        a lib:CloudNode ;
+	dc:title "USCS Soil Classification Table.".
+
+<instances/ar-70-38_specifications.ttl>
+        a lib:Schema ;
+        a lib:CloudNode ;
+	dc:title "AR 70-38 Environmental Specifications.".
 
 <temperature_regions-sparql-xlsx.ttl>
         a lib:Schema ;

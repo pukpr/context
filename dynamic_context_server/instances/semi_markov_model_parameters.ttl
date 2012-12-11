@@ -1,0 +1,228 @@
+@base        <http://entroplet.com/terms#semi_markov_model_parameters> .
+@prefix xsd: <http://www.w3.org/2001/XMLSchema#> .
+@prefix ent: <terms#> .
+
+# Named toplevel resources (28)
+
+ent:corrugations
+	ent:name "corrugations" ;
+	ent:alpha1 "1.0"^^xsd:double ;
+	ent:alpha2 "1.0"^^xsd:double ;
+	ent:l1 "5.0"^^xsd:double ;
+	ent:l2 "27.5"^^xsd:double ;
+	ent:weight "1.0"^^xsd:double .
+
+ent:gero_belgian
+	ent:name "gero_belgian" ;
+	ent:alpha1 "0.0133"^^xsd:double ;
+	ent:alpha2 "0.0133"^^xsd:double ;
+	ent:l1 "0.13"^^xsd:double ;
+	ent:l2 "0.02"^^xsd:double ;
+	ent:weight "0.006"^^xsd:double .
+
+ent:gero_belgian_1
+	ent:name "gero_belgian_1" ;
+	ent:alpha1 "0.08"^^xsd:double ;
+	ent:alpha2 "0.08"^^xsd:double ;
+	ent:l1 "0.133"^^xsd:double ;
+	ent:l2 "0.133"^^xsd:double ;
+	ent:weight "0.003"^^xsd:double .
+
+ent:gero_belgian_2
+	ent:name "gero_belgian_2" ;
+	ent:alpha1 "0.54"^^xsd:double ;
+	ent:alpha2 "0.54"^^xsd:double ;
+	ent:l1 "0.133"^^xsd:double ;
+	ent:l2 "0.133"^^xsd:double ;
+	ent:weight "0.005"^^xsd:double .
+
+ent:gero_belgian_3
+	ent:name "gero_belgian_3" ;
+	ent:alpha1 "5.4"^^xsd:double ;
+	ent:alpha2 "5.4"^^xsd:double ;
+	ent:l1 "0.133"^^xsd:double ;
+	ent:l2 "0.133"^^xsd:double ;
+	ent:weight "0.005"^^xsd:double .
+
+ent:gero_corrugations
+	ent:name "gero_corrugations" ;
+	ent:alpha1 "0.02"^^xsd:double ;
+	ent:alpha2 "0.02"^^xsd:double ;
+	ent:l1 "0.11"^^xsd:double ;
+	ent:l2 "0.61"^^xsd:double ;
+	ent:weight "0.01"^^xsd:double .
+
+ent:gero_corrugations_r
+	ent:name "gero_corrugations_r" ;
+	ent:alpha1 "40.0"^^xsd:double ;
+	ent:alpha2 "40.0"^^xsd:double ;
+	ent:l1 "0.0"^^xsd:double ;
+	ent:l2 "0.0"^^xsd:double ;
+	ent:weight "0.005"^^xsd:double .
+
+ent:gero_corrugations_s
+	ent:name "gero_corrugations_s" ;
+	ent:alpha1 "0.3"^^xsd:double ;
+	ent:alpha2 "0.3"^^xsd:double ;
+	ent:l1 "0.3"^^xsd:double ;
+	ent:l2 "0.315"^^xsd:double ;
+	ent:weight "0.002"^^xsd:double .
+
+ent:gero_corrugations_x
+	ent:name "gero_corrugations_x" ;
+	ent:alpha1 "0.009"^^xsd:double ;
+	ent:alpha2 "0.009"^^xsd:double ;
+	ent:l1 "0.009"^^xsd:double ;
+	ent:l2 "0.009"^^xsd:double ;
+	ent:weight "0.003"^^xsd:double .
+
+ent:gero_fatigue
+	ent:name "gero_fatigue" ;
+	ent:alpha1 "0.75"^^xsd:double ;
+	ent:alpha2 "0.75"^^xsd:double ;
+	ent:l1 "0.5"^^xsd:double ;
+	ent:l2 "0.5"^^xsd:double ;
+	ent:weight "0.015"^^xsd:double .
+
+ent:gero_fatigue_p
+	ent:name "gero_fatigue_p" ;
+	ent:alpha1 "0.04"^^xsd:double ;
+	ent:alpha2 "1.4"^^xsd:double ;
+	ent:l1 "0.2"^^xsd:double ;
+	ent:l2 "2.0"^^xsd:double ;
+	ent:weight "0.012"^^xsd:double .
+
+ent:gero_fatigue_r
+	ent:name "gero_fatigue_r" ;
+	ent:alpha1 "10.0"^^xsd:double ;
+	ent:alpha2 "10.0"^^xsd:double ;
+	ent:l1 "0.0"^^xsd:double ;
+	ent:l2 "0.0"^^xsd:double ;
+	ent:weight "0.015"^^xsd:double .
+
+ent:gero_fatigue_s
+	ent:name "gero_fatigue_s" ;
+	ent:alpha1 "1.4"^^xsd:double ;
+	ent:alpha2 "0.04"^^xsd:double ;
+	ent:l1 "2.0"^^xsd:double ;
+	ent:l2 "0.2"^^xsd:double ;
+	ent:weight "0.012"^^xsd:double .
+
+ent:gero_fatigue_x
+	ent:name "gero_fatigue_x" ;
+	ent:alpha1 "0.006"^^xsd:double ;
+	ent:alpha2 "0.006"^^xsd:double ;
+	ent:l1 "0.008"^^xsd:double ;
+	ent:l2 "0.008"^^xsd:double ;
+	ent:weight "0.01"^^xsd:double .
+
+ent:gero_pothole
+	ent:name "gero_pothole" ;
+	ent:alpha1 "1.5"^^xsd:double ;
+	ent:alpha2 "0.03"^^xsd:double ;
+	ent:l1 "7.5"^^xsd:double ;
+	ent:l2 "0.57"^^xsd:double ;
+	ent:weight "0.05"^^xsd:double .
+
+ent:gero_pothole_r
+	ent:name "gero_pothole_r" ;
+	ent:alpha1 "40.0"^^xsd:double ;
+	ent:alpha2 "40.0"^^xsd:double ;
+	ent:l1 "0.0"^^xsd:double ;
+	ent:l2 "0.0"^^xsd:double ;
+	ent:weight "0.01"^^xsd:double .
+
+ent:gero_pothole_s
+	ent:name "gero_pothole_s" ;
+	ent:alpha1 "5.0"^^xsd:double ;
+	ent:alpha2 "5.0"^^xsd:double ;
+	ent:l1 "1.0"^^xsd:double ;
+	ent:l2 "1.0"^^xsd:double ;
+	ent:weight "0.005"^^xsd:double .
+
+ent:gero_pothole_x
+	ent:name "gero_pothole_x" ;
+	ent:alpha1 "0.5"^^xsd:double ;
+	ent:alpha2 "0.5"^^xsd:double ;
+	ent:l1 "0.1"^^xsd:double ;
+	ent:l2 "0.1"^^xsd:double ;
+	ent:weight "0.002"^^xsd:double .
+
+ent:mercedes_benz
+	ent:name "mercedes_benz" ;
+	ent:alpha1 "0.0133"^^xsd:double ;
+	ent:alpha2 "0.0133"^^xsd:double ;
+	ent:l1 "0.13"^^xsd:double ;
+	ent:l2 "0.02"^^xsd:double ;
+	ent:weight "0.002"^^xsd:double .
+
+ent:mercedes_benz_2
+	ent:name "mercedes_benz_2" ;
+	ent:alpha1 "0.54"^^xsd:double ;
+	ent:alpha2 "0.54"^^xsd:double ;
+	ent:l1 "0.133"^^xsd:double ;
+	ent:l2 "0.133"^^xsd:double ;
+	ent:weight "0.002"^^xsd:double .
+
+ent:mercedes_benz_3
+	ent:name "mercedes_benz_3" ;
+	ent:alpha1 "20.0"^^xsd:double ;
+	ent:alpha2 "20.0"^^xsd:double ;
+	ent:l1 "0.133"^^xsd:double ;
+	ent:l2 "0.133"^^xsd:double ;
+	ent:weight "0.015"^^xsd:double .
+
+ent:mn_big_ravines
+	ent:name "mn_big_ravines" ;
+	ent:alpha1 "2000.0"^^xsd:double ;
+	ent:alpha2 "80.0"^^xsd:double ;
+	ent:l1 "800.0"^^xsd:double ;
+	ent:l2 "80.0"^^xsd:double ;
+	ent:weight "8.0"^^xsd:double .
+
+ent:mn_roughness
+	ent:name "mn_roughness" ;
+	ent:alpha1 "30.0"^^xsd:double ;
+	ent:alpha2 "30.0"^^xsd:double ;
+	ent:l1 "2.0"^^xsd:double ;
+	ent:l2 "10.0"^^xsd:double ;
+	ent:weight "0.5"^^xsd:double .
+
+ent:mn_small_ravines
+	ent:name "mn_small_ravines" ;
+	ent:alpha1 "500.0"^^xsd:double ;
+	ent:alpha2 "20.0"^^xsd:double ;
+	ent:l1 "200.0"^^xsd:double ;
+	ent:l2 "20.0"^^xsd:double ;
+	ent:weight "8.0"^^xsd:double .
+
+ent:ou_roughness
+	ent:name "ou_roughness" ;
+	ent:alpha1 "71.5"^^xsd:double ;
+	ent:alpha2 "71.5"^^xsd:double ;
+	ent:l1 "0.0"^^xsd:double ;
+	ent:l2 "0.0"^^xsd:double ;
+	ent:weight "50.0"^^xsd:double .
+
+ent:rock_roughness_ou
+	ent:name "rock_roughness_ou" ;
+	ent:diffusion "0.0002"^^xsd:double ;
+	ent:drag "0.01"^^xsd:double ;
+	ent:spacing "1.0"^^xsd:double ;
+	ent:weight "1.0"^^xsd:double .
+
+ent:rock_roughness_semi
+	ent:name "rock_roughness_semi" ;
+	ent:alpha1 "0.5"^^xsd:double ;
+	ent:alpha2 "0.5"^^xsd:double ;
+	ent:l1 "0.0"^^xsd:double ;
+	ent:l2 "0.0"^^xsd:double ;
+	ent:weight "0.1"^^xsd:double .
+
+ent:sm_roughness
+	ent:name "sm_roughness" ;
+	ent:alpha1 "71.5"^^xsd:double ;
+	ent:alpha2 "71.5"^^xsd:double ;
+	ent:l1 "0.0"^^xsd:double ;
+	ent:l2 "0.0"^^xsd:double ;
+	ent:weight "1.0"^^xsd:double .
