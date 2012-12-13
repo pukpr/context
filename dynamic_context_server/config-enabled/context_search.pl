@@ -48,18 +48,19 @@ owl(Query, Resource, Title) :-
     upcase_atom(Resource, R),
     upcase_atom(Query, Q),
     sub_atom(R, _,_,_, Q),
-    Title=Resource.
+    context:concise_term(Resource, Title).
+    % Title=Resource.
 
 owl_result(Request) :-
    http_parameters(Request, [result(Result, [])]),
-   context:uri_index_link(Result, 'definition', render, GraphLink),
-   rdf_global_term(Result, Graph),
-   context:concise_term(Result, R),
+   context:create_global_term(Result, Graph),
+   context:uri_index_link(Graph, 'definition', render, GraphLink),
+   % context:concise_term(Result, R),
    reply_html_page([title('Def'),
                     \(con_text:style)
                    ],
                    [
-                    p([R, ' : ', GraphLink]),
+                    p([Result, ' : ', GraphLink]),
                     br([]),
                     \(context_graph(Graph, []))
 		   ]

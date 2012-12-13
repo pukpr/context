@@ -74,7 +74,7 @@ navigate(Request) :-
 				   target(target_iframe)], 'Subjects')),
 			     li(a([href('/context_ont_utils/find_ent_predicates'),
 				   target(target_iframe)], 'Predicates')),
-			     li(a([href('/context_ont_utils/find_ent_subjects'),
+			     li(a([href('/context_ont_utils/find_ent_objects'),
 				   target(target_iframe)], 'Objects'))
 			    ])
 			       ])

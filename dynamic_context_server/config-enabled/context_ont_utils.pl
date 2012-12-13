@@ -128,7 +128,10 @@ find_ent_objects(_Request)  :-
     (
     findall(P,
             (
-             rdf(_A,_B,C),
+             rdf(A,_B,C),
+	     not(rdf(A, ent:locale, C)),
+	     % B \= ent:locale,
+	     % B \= ent:name,
              rdf_global_object(ent:P, C)
             ),
             List),

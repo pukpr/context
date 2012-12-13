@@ -152,7 +152,7 @@ autoc(Callback, ID) -->
     html( div(\(autocomplete_predicates:autocomplete(find_term,
                                                      [   query_delay(0.3),
                                                          auto_highlight(false),
-                                                         max_results_displayed(10),
+                                                         max_results_displayed(15),
                                                          width('30em'),
                                                          name(ID),
                                                          value(CB)
