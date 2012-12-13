@@ -3,36 +3,983 @@
 @prefix xsd: <http://www.w3.org/2001/XMLSchema#> .
 @prefix owl: <http://www.w3.org/2002/07/owl#> .
 @prefix rdf: <http://www.w3.org/1999/02/22-rdf-syntax-ns#> .
-@prefix ent: <http://entroplet.com/terms#> .
 @prefix dc: <http://purl.org/dc/elements/1.1/> .
 
-@prefix reprDataModel:	<http://sweet.jpl.nasa.gov/2.3/reprDataModel.owl#> .
+@prefix bib: <http://purl.org/net/biblio#> .
+@prefix bibo: <http://purl.org/ontology/bibo/> .
+@prefix req: <http://ns.softwiki.de/req/> .
+@prefix cite: <http://www.zotero.org/namespaces/export#> .
+@prefix prism: <http://prismstandard.org/namespaces/1.2/basic/> .
+@prefix context: <https://babelfish.arc.nasa.gov/confluence/display/AVMPROJ/BAE#> .
+@prefix ent: <http://entroplet.com/terms#> .
+@prefix svg: <http://www.w3.org/2000/svg#> .
+@prefix xlink: <http://www.w3.org/1999/xlink#> .
+@prefix rsslink: <http://purl.org/rss/1.0/modules/link/> .
+@prefix dbpedia: <http://dbpedia.org/resource/> .
+@prefix dbpedia: <http://dbpedia.org/resource/> .
+@prefix pt: <http://www.daml.org/2003/01/periodictable/PeriodicTable#> .
+@prefix cntxt: <http://on.cs.unibas.ch/owl/1.0/Context.owl#> .
+
+@prefix human: <http://sweet.jpl.nasa.gov/2.3/human.owl#> .
+@prefix humanAgriculture: <http://sweet.jpl.nasa.gov/2.3/humanAgriculture.owl#> .
+@prefix humanCommerce: <http://sweet.jpl.nasa.gov/2.3/humanCommerce.owl#> .
+@prefix humanDecision: <http://sweet.jpl.nasa.gov/2.3/humanDecision.owl#> .
+@prefix humanEnvirControl: <http://sweet.jpl.nasa.gov/2.3/humanEnvirControl.owl#> .
+@prefix humanEnvirConservation: <http://sweet.jpl.nasa.gov/2.3/humanEnvirConservation.owl#> .
+@prefix humanEnvirStandards: <http://sweet.jpl.nasa.gov/2.3/humanEnvirStandards.owl#> .
+@prefix humanEnvirAssessment: <http://sweet.jpl.nasa.gov/2.3/humanEnvirAssessment.owl#> .
+@prefix humanJurisdiction: <http://sweet.jpl.nasa.gov/2.3/humanJurisdiction.owl#> .
+@prefix humanKnowledgeDomain: <http://sweet.jpl.nasa.gov/2.3/humanKnowledgeDomain.owl#> .
+@prefix humanResearch: <http://sweet.jpl.nasa.gov/2.3/humanResearch.owl#> .
+@prefix humanTechReadiness: <http://sweet.jpl.nasa.gov/2.3/humanTechReadiness.owl#> .
+@prefix humanTransportation: <http://sweet.jpl.nasa.gov/2.3/humanTransportation.owl#> .
+@prefix matr: <http://sweet.jpl.nasa.gov/2.3/matr.owl#> .
+@prefix matrAerosol: <http://sweet.jpl.nasa.gov/2.3/matrAerosol.owl#> .
+@prefix matrAnimal: <http://sweet.jpl.nasa.gov/2.3/matrAnimal.owl#> .
+@prefix matrBiomass: <http://sweet.jpl.nasa.gov/2.3/matrBiomass.owl#> .
+@prefix matrOrganicCompound: <http://sweet.jpl.nasa.gov/2.3/matrOrganicCompound.owl#> .
+@prefix matrEnergy: <http://sweet.jpl.nasa.gov/2.3/matrEnergy.owl#> .
+@prefix matrEquipment: <http://sweet.jpl.nasa.gov/2.3/matrEquipment.owl#> .
+@prefix matrFacility: <http://sweet.jpl.nasa.gov/2.3/matrFacility.owl#> .
+@prefix matrElement: <http://sweet.jpl.nasa.gov/2.3/matrElement.owl#> .
+@prefix matrElementalMolecule: <http://sweet.jpl.nasa.gov/2.3/matrElementalMolecule.owl#> .
+@prefix matrIndustrial: <http://sweet.jpl.nasa.gov/2.3/matrIndustrial.owl#> .
+@prefix matrInstrument: <http://sweet.jpl.nasa.gov/2.3/matrInstrument.owl#> .
+@prefix matrIon: <http://sweet.jpl.nasa.gov/2.3/matrIon.owl#> .
+@prefix matrIsotope: <http://sweet.jpl.nasa.gov/2.3/matrIsotope.owl#> .
+@prefix matrMicrobiota: <http://sweet.jpl.nasa.gov/2.3/matrMicrobiota.owl#> .
+@prefix matrMineral: <http://sweet.jpl.nasa.gov/2.3/matrMineral.owl#> .
+@prefix matrNaturalResource: <http://sweet.jpl.nasa.gov/2.3/matrNaturalResource.owl#> .
+@prefix matrParticle: <http://sweet.jpl.nasa.gov/2.3/matrParticle.owl#> .
+@prefix matrPlant: <http://sweet.jpl.nasa.gov/2.3/matrPlant.owl#> .
+@prefix matrRock: <http://sweet.jpl.nasa.gov/2.3/matrRock.owl#> .
+@prefix matrRockIgneous: <http://sweet.jpl.nasa.gov/2.3/matrRockIgneous.owl#> .
+@prefix matrSediment: <http://sweet.jpl.nasa.gov/2.3/matrSediment.owl#> .
+@prefix matrWater: <http://sweet.jpl.nasa.gov/2.3/matrWater.owl#> .
+@prefix phen: <http://sweet.jpl.nasa.gov/2.3/phen.owl#> .
+@prefix phenAtmo: <http://sweet.jpl.nasa.gov/2.3/phenAtmo.owl#> .
+@prefix phenAtmoCloud: <http://sweet.jpl.nasa.gov/2.3/phenAtmoCloud.owl#> .
+@prefix phenAtmoFog: <http://sweet.jpl.nasa.gov/2.3/phenAtmoFog.owl#> .
+@prefix phenAtmoFront: <http://sweet.jpl.nasa.gov/2.3/phenAtmoFront.owl#> .
+@prefix phenAtmoLightning: <http://sweet.jpl.nasa.gov/2.3/phenAtmoLightning.owl#> .
+@prefix phenAtmoPrecipitation: <http://sweet.jpl.nasa.gov/2.3/phenAtmoPrecipitation.owl#> .
+@prefix phenAtmoPressure: <http://sweet.jpl.nasa.gov/2.3/phenAtmoPressure.owl#> .
+@prefix phenAtmoTransport: <http://sweet.jpl.nasa.gov/2.3/phenAtmoTransport.owl#> .
+@prefix phenAtmoWind: <http://sweet.jpl.nasa.gov/2.3/phenAtmoWind.owl#> .
+@prefix phenAtmoWindMesoscale: <http://sweet.jpl.nasa.gov/2.3/phenAtmoWindMesoscale.owl#> .
+@prefix phenBiol: <http://sweet.jpl.nasa.gov/2.3/phenBiol.owl#> .
+@prefix phenEcology: <http://sweet.jpl.nasa.gov/2.3/phenEcology.owl#> .
+@prefix phenEnvirImpact: <http://sweet.jpl.nasa.gov/2.3/phenEnvirImpact.owl#> .
+@prefix phenEnergy: <http://sweet.jpl.nasa.gov/2.3/phenEnergy.owl#> .
+@prefix phenCryo: <http://sweet.jpl.nasa.gov/2.3/phenCryo.owl#> .
+@prefix phenCycle: <http://sweet.jpl.nasa.gov/2.3/phenCycle.owl#> .
+@prefix phenCycleMaterial: <http://sweet.jpl.nasa.gov/2.3/phenCycleMaterial.owl#> .
+@prefix phenElecMag: <http://sweet.jpl.nasa.gov/2.3/phenElecMag.owl#> .
+@prefix phenFluidDynamics: <http://sweet.jpl.nasa.gov/2.3/phenFluidDynamics.owl#> .
+@prefix phenFluidInstability: <http://sweet.jpl.nasa.gov/2.3/phenFluidInstability.owl#> .
+@prefix phenFluidTransport: <http://sweet.jpl.nasa.gov/2.3/phenFluidTransport.owl#> .
+@prefix phenGeol: <http://sweet.jpl.nasa.gov/2.3/phenGeol.owl#> .
+@prefix phenGeolFault: <http://sweet.jpl.nasa.gov/2.3/phenGeolFault.owl#> .
+@prefix phenGeolGeomorphology: <http://sweet.jpl.nasa.gov/2.3/phenGeolGeomorphology.owl#> .
+@prefix phenGeolSeismicity: <http://sweet.jpl.nasa.gov/2.3/phenGeolSeismicity.owl#> .
+@prefix phenGeolTectonic: <http://sweet.jpl.nasa.gov/2.3/phenGeolTectonic.owl#> .
+@prefix phenGeolVolcano: <http://sweet.jpl.nasa.gov/2.3/phenGeolVolcano.owl#> .
+@prefix phenHelio: <http://sweet.jpl.nasa.gov/2.3/phenHelio.owl#> .
+@prefix phenHydro: <http://sweet.jpl.nasa.gov/2.3/phenHydro.owl#> .
+@prefix phenMixing: <http://sweet.jpl.nasa.gov/2.3/phenMixing.owl#> .
+@prefix phenOcean: <http://sweet.jpl.nasa.gov/2.3/phenOcean.owl#> .
+@prefix phenOceanDynamics: <http://sweet.jpl.nasa.gov/2.3/phenOceanDynamics.owl#> .
+@prefix phenOceanCoastal: <http://sweet.jpl.nasa.gov/2.3/phenOceanCoastal.owl#> .
+@prefix phenPlanetClimate: <http://sweet.jpl.nasa.gov/2.3/phenPlanetClimate.owl#> .
+@prefix phenReaction: <http://sweet.jpl.nasa.gov/2.3/phenReaction.owl#> .
+@prefix phenSolid: <http://sweet.jpl.nasa.gov/2.3/phenSolid.owl#> .
+@prefix phenStar: <http://sweet.jpl.nasa.gov/2.3/phenStar.owl#> .
+@prefix phenSystem: <http://sweet.jpl.nasa.gov/2.3/phenSystem.owl#> .
+@prefix phenSystemComplexity: <http://sweet.jpl.nasa.gov/2.3/phenSystemComplexity.owl#> .
+@prefix phenWave: <http://sweet.jpl.nasa.gov/2.3/phenWave.owl#> .
+@prefix phenWaveNoise: <http://sweet.jpl.nasa.gov/2.3/phenWaveNoise.owl#> .
+@prefix proc: <http://sweet.jpl.nasa.gov/2.3/proc.owl#> .
+@prefix procChemical: <http://sweet.jpl.nasa.gov/2.3/procChemical.owl#> .
+@prefix procPhysical: <http://sweet.jpl.nasa.gov/2.3/procPhysical.owl#> .
+@prefix procStateChange: <http://sweet.jpl.nasa.gov/2.3/procStateChange.owl#> .
+@prefix procWave: <http://sweet.jpl.nasa.gov/2.3/procWave.owl#> .
+@prefix prop: <http://sweet.jpl.nasa.gov/2.3/prop.owl#> .
+@prefix propBinary: <http://sweet.jpl.nasa.gov/2.3/propBinary.owl#> .
+@prefix propCapacity: <http://sweet.jpl.nasa.gov/2.3/propCapacity.owl#> .
+@prefix propCategorical: <http://sweet.jpl.nasa.gov/2.3/propCategorical.owl#> .
+@prefix propCharge: <http://sweet.jpl.nasa.gov/2.3/propCharge.owl#> .
+@prefix propChemical: <http://sweet.jpl.nasa.gov/2.3/propChemical.owl#> .
+@prefix propConductivity: <http://sweet.jpl.nasa.gov/2.3/propConductivity.owl#> .
+@prefix propCount: <http://sweet.jpl.nasa.gov/2.3/propCount.owl#> .
+@prefix propDifference: <http://sweet.jpl.nasa.gov/2.3/propDifference.owl#> .
+@prefix propDiffusivity: <http://sweet.jpl.nasa.gov/2.3/propDiffusivity.owl#> .
+@prefix propDimensionlessRatio: <http://sweet.jpl.nasa.gov/2.3/propDimensionlessRatio.owl#> .
+@prefix propEnergy: <http://sweet.jpl.nasa.gov/2.3/propEnergy.owl#> .
+@prefix propEnergyFlux: <http://sweet.jpl.nasa.gov/2.3/propEnergyFlux.owl#> .
+@prefix propFraction: <http://sweet.jpl.nasa.gov/2.3/propFraction.owl#> .
+@prefix propIndex: <http://sweet.jpl.nasa.gov/2.3/propIndex.owl#> .
+@prefix propMass: <http://sweet.jpl.nasa.gov/2.3/propMass.owl#> .
+@prefix propMassFlux: <http://sweet.jpl.nasa.gov/2.3/propMassFlux.owl#> .
+@prefix propOrdinal: <http://sweet.jpl.nasa.gov/2.3/propOrdinal.owl#> .
+@prefix propPressure: <http://sweet.jpl.nasa.gov/2.3/propPressure.owl#> .
+@prefix propQuantity: <http://sweet.jpl.nasa.gov/2.3/propQuantity.owl#> .
+@prefix propSpace: <http://sweet.jpl.nasa.gov/2.3/propSpace.owl#> .
+@prefix propSpaceDirection: <http://sweet.jpl.nasa.gov/2.3/propSpaceDirection.owl#> .
+@prefix propSpaceDistance: <http://sweet.jpl.nasa.gov/2.3/propSpaceDistance.owl#> .
+@prefix propSpaceHeight: <http://sweet.jpl.nasa.gov/2.3/propSpaceHeight.owl#> .
+@prefix propSpaceLocation: <http://sweet.jpl.nasa.gov/2.3/propSpaceLocation.owl#> .
+@prefix propSpaceMultidimensional: <http://sweet.jpl.nasa.gov/2.3/propSpaceMultidimensional.owl#> .
+@prefix propSpaceThickness: <http://sweet.jpl.nasa.gov/2.3/propSpaceThickness.owl#> .
+@prefix propFunction: <http://sweet.jpl.nasa.gov/2.3/propFunction.owl#> .
+@prefix propTemperature: <http://sweet.jpl.nasa.gov/2.3/propTemperature.owl#> .
+@prefix propTemperatureGradient: <http://sweet.jpl.nasa.gov/2.3/propTemperatureGradient.owl#> .
+@prefix propTime: <http://sweet.jpl.nasa.gov/2.3/propTime.owl#> .
+@prefix propTimeFrequency: <http://sweet.jpl.nasa.gov/2.3/propTimeFrequency.owl#> .
+@prefix propSpeed: <http://sweet.jpl.nasa.gov/2.3/propSpeed.owl#> .
+@prefix propRotation: <http://sweet.jpl.nasa.gov/2.3/propRotation.owl#> .
+@prefix realm: <http://sweet.jpl.nasa.gov/2.3/realm.owl#> .
+@prefix realmAstroBody: <http://sweet.jpl.nasa.gov/2.3/realmAstroBody.owl#> .
+@prefix realmAstroHelio: <http://sweet.jpl.nasa.gov/2.3/realmAstroHelio.owl#> .
+@prefix realmAstroStar: <http://sweet.jpl.nasa.gov/2.3/realmAstroStar.owl#> .
+@prefix realmAtmo: <http://sweet.jpl.nasa.gov/2.3/realmAtmo.owl#> .
+@prefix realmAtmoWeather: <http://sweet.jpl.nasa.gov/2.3/realmAtmoWeather.owl#> .
+@prefix realmAtmoBoundaryLayer: <http://sweet.jpl.nasa.gov/2.3/realmAtmoBoundaryLayer.owl#> .
+@prefix realmBiolBiome: <http://sweet.jpl.nasa.gov/2.3/realmBiolBiome.owl#> .
+@prefix realmClimateZone: <http://sweet.jpl.nasa.gov/2.3/realmClimateZone.owl#> .
+@prefix realmCryo: <http://sweet.jpl.nasa.gov/2.3/realmCryo.owl#> .
+@prefix realmEarthReference: <http://sweet.jpl.nasa.gov/2.3/realmEarthReference.owl#> .
+@prefix realmGeol: <http://sweet.jpl.nasa.gov/2.3/realmGeol.owl#> .
+@prefix realmGeolBasin: <http://sweet.jpl.nasa.gov/2.3/realmGeolBasin.owl#> .
+@prefix realmGeolConstituent: <http://sweet.jpl.nasa.gov/2.3/realmGeolConstituent.owl#> .
+@prefix realmGeolContinental: <http://sweet.jpl.nasa.gov/2.3/realmGeolContinental.owl#> .
+@prefix realmGeolOrogen: <http://sweet.jpl.nasa.gov/2.3/realmGeolOrogen.owl#> .
+@prefix realmHydro: <http://sweet.jpl.nasa.gov/2.3/realmHydro.owl#> .
+@prefix realmHydroBody: <http://sweet.jpl.nasa.gov/2.3/realmHydroBody.owl#> .
+@prefix realmLandAeolian: <http://sweet.jpl.nasa.gov/2.3/realmLandAeolian.owl#> .
+@prefix realmLandCoastal: <http://sweet.jpl.nasa.gov/2.3/realmLandCoastal.owl#> .
+@prefix realmLandFluvial: <http://sweet.jpl.nasa.gov/2.3/realmLandFluvial.owl#> .
+@prefix realmLandGlacial: <http://sweet.jpl.nasa.gov/2.3/realmLandGlacial.owl#> .
+@prefix realmLandform: <http://sweet.jpl.nasa.gov/2.3/realmLandform.owl#> .
+@prefix realmLandOrographic: <http://sweet.jpl.nasa.gov/2.3/realmLandOrographic.owl#> .
+@prefix realmLandProtected: <http://sweet.jpl.nasa.gov/2.3/realmLandProtected.owl#> .
+@prefix realmLandTectonic: <http://sweet.jpl.nasa.gov/2.3/realmLandTectonic.owl#> .
+@prefix realmLandVolcanic: <http://sweet.jpl.nasa.gov/2.3/realmLandVolcanic.owl#> .
+@prefix realmOcean: <http://sweet.jpl.nasa.gov/2.3/realmOcean.owl#> .
+@prefix realmOceanFeature: <http://sweet.jpl.nasa.gov/2.3/realmOceanFeature.owl#> .
+@prefix realmOceanFloor: <http://sweet.jpl.nasa.gov/2.3/realmOceanFloor.owl#> .
+@prefix realmRegion: <http://sweet.jpl.nasa.gov/2.3/realmRegion.owl#> .
+@prefix realmSoil: <http://sweet.jpl.nasa.gov/2.3/realmSoil.owl#> .
+@prefix rela: <http://sweet.jpl.nasa.gov/2.3/rela.owl#> .
+@prefix relaChemical: <http://sweet.jpl.nasa.gov/2.3/relaChemical.owl#> .
+@prefix relaClimate: <http://sweet.jpl.nasa.gov/2.3/relaClimate.owl#> .
+@prefix relaHuman: <http://sweet.jpl.nasa.gov/2.3/relaHuman.owl#> .
+@prefix relaMath: <http://sweet.jpl.nasa.gov/2.3/relaMath.owl#> .
+@prefix relaPhysical: <http://sweet.jpl.nasa.gov/2.3/relaPhysical.owl#> .
+@prefix relaProvenance: <http://sweet.jpl.nasa.gov/2.3/relaProvenance.owl#> .
+@prefix relaSci: <http://sweet.jpl.nasa.gov/2.3/relaSci.owl#> .
+@prefix relaSpace: <http://sweet.jpl.nasa.gov/2.3/relaSpace.owl#> .
+@prefix relaTime: <http://sweet.jpl.nasa.gov/2.3/relaTime.owl#> .
+@prefix repr: <http://sweet.jpl.nasa.gov/2.3/repr.owl#> .
+@prefix reprDataFormat: <http://sweet.jpl.nasa.gov/2.3/reprDataFormat.owl#> .
+@prefix reprDataModel: <http://sweet.jpl.nasa.gov/2.3/reprDataModel.owl#> .
+@prefix reprDataProduct: <http://sweet.jpl.nasa.gov/2.3/reprDataProduct.owl#> .
+@prefix reprDataService: <http://sweet.jpl.nasa.gov/2.3/reprDataService.owl#> .
+@prefix reprDataServiceAnalysis: <http://sweet.jpl.nasa.gov/2.3/reprDataServiceAnalysis.owl#> .
+@prefix reprDataServiceReduction: <http://sweet.jpl.nasa.gov/2.3/reprDataServiceReduction.owl#> .
+@prefix reprDataServiceGeospatial: <http://sweet.jpl.nasa.gov/2.3/reprDataServiceGeospatial.owl#> .
+@prefix reprDataServiceValidation: <http://sweet.jpl.nasa.gov/2.3/reprDataServiceValidation.owl#> .
+@prefix reprMath: <http://sweet.jpl.nasa.gov/2.3/reprMath.owl#> .
+@prefix reprMathFunction: <http://sweet.jpl.nasa.gov/2.3/reprMathFunction.owl#> .
+@prefix reprMathFunctionOrthogonal: <http://sweet.jpl.nasa.gov/2.3/reprMathFunctionOrthogonal.owl#> .
+@prefix reprMathGraph: <http://sweet.jpl.nasa.gov/2.3/reprMathGraph.owl#> .
+@prefix reprMathOperation: <http://sweet.jpl.nasa.gov/2.3/reprMathOperation.owl#> .
+@prefix reprMathSolution: <http://sweet.jpl.nasa.gov/2.3/reprMathSolution.owl#> .
+@prefix reprMathStatistics: <http://sweet.jpl.nasa.gov/2.3/reprMathStatistics.owl#> .
+@prefix reprSciComponent: <http://sweet.jpl.nasa.gov/2.3/reprSciComponent.owl#> .
+@prefix reprSciFunction: <http://sweet.jpl.nasa.gov/2.3/reprSciFunction.owl#> .
+@prefix reprSciLaw: <http://sweet.jpl.nasa.gov/2.3/reprSciLaw.owl#> .
+@prefix reprSciMethodology: <http://sweet.jpl.nasa.gov/2.3/reprSciMethodology.owl#> .
+@prefix reprSciModel: <http://sweet.jpl.nasa.gov/2.3/reprSciModel.owl#> .
+@prefix reprSciProvenance: <http://sweet.jpl.nasa.gov/2.3/reprSciProvenance.owl#> .
+@prefix reprSciUnits: <http://sweet.jpl.nasa.gov/2.3/reprSciUnits.owl#> .
+@prefix reprSpace: <http://sweet.jpl.nasa.gov/2.3/reprSpace.owl#> .
+@prefix reprSpaceCoordinate: <http://sweet.jpl.nasa.gov/2.3/reprSpaceCoordinate.owl#> .
+@prefix reprSpaceDirection: <http://sweet.jpl.nasa.gov/2.3/reprSpaceDirection.owl#> .
+@prefix reprSpaceGeometry: <http://sweet.jpl.nasa.gov/2.3/reprSpaceGeometry.owl#> .
+@prefix reprSpaceGeometry3D: <http://sweet.jpl.nasa.gov/2.3/reprSpaceGeometry3D.owl#> .
+@prefix reprSpaceReferenceSystem: <http://sweet.jpl.nasa.gov/2.3/reprSpaceReferenceSystem.owl#> .
+@prefix reprTime: <http://sweet.jpl.nasa.gov/2.3/reprTime.owl#> .
+@prefix reprTimeDay: <http://sweet.jpl.nasa.gov/2.3/reprTimeDay.owl#> .
+@prefix reprTimeSeason: <http://sweet.jpl.nasa.gov/2.3/reprTimeSeason.owl#> .
+@prefix state: <http://sweet.jpl.nasa.gov/2.3/state.owl#> .
+@prefix stateBiological: <http://sweet.jpl.nasa.gov/2.3/stateBiological.owl#> .
+@prefix stateChemical: <http://sweet.jpl.nasa.gov/2.3/stateChemical.owl#> .
+@prefix stateDataProcessing: <http://sweet.jpl.nasa.gov/2.3/stateDataProcessing.owl#> .
+@prefix stateEnergyFlux: <http://sweet.jpl.nasa.gov/2.3/stateEnergyFlux.owl#> .
+@prefix stateFluid: <http://sweet.jpl.nasa.gov/2.3/stateFluid.owl#> .
+@prefix stateOrdinal: <http://sweet.jpl.nasa.gov/2.3/stateOrdinal.owl#> .
+@prefix statePhysical: <http://sweet.jpl.nasa.gov/2.3/statePhysical.owl#> .
+@prefix stateRealm: <http://sweet.jpl.nasa.gov/2.3/stateRealm.owl#> .
+@prefix stateRole: <http://sweet.jpl.nasa.gov/2.3/stateRole.owl#> .
+@prefix stateRoleImpact: <http://sweet.jpl.nasa.gov/2.3/stateRoleImpact.owl#> .
+@prefix stateRoleBiological: <http://sweet.jpl.nasa.gov/2.3/stateRoleBiological.owl#> .
+@prefix stateRoleChemical: <http://sweet.jpl.nasa.gov/2.3/stateRoleChemical.owl#> .
+@prefix stateRoleGeographic: <http://sweet.jpl.nasa.gov/2.3/stateRoleGeographic.owl#> .
+@prefix stateRoleRepresentative: <http://sweet.jpl.nasa.gov/2.3/stateRoleRepresentative.owl#> .
+@prefix stateRoleTrust: <http://sweet.jpl.nasa.gov/2.3/stateRoleTrust.owl#> .
+@prefix stateSolid: <http://sweet.jpl.nasa.gov/2.3/stateSolid.owl#> .
+@prefix stateSpace: <http://sweet.jpl.nasa.gov/2.3/stateSpace.owl#> .
+@prefix stateSpaceScale: <http://sweet.jpl.nasa.gov/2.3/stateSpaceScale.owl#> .
+@prefix stateSpaceConfiguration: <http://sweet.jpl.nasa.gov/2.3/stateSpaceConfiguration.owl#> .
+@prefix stateSpectralBand: <http://sweet.jpl.nasa.gov/2.3/stateSpectralBand.owl#> .
+@prefix stateSpectralLine: <http://sweet.jpl.nasa.gov/2.3/stateSpectralLine.owl#> .
+@prefix stateStorm: <http://sweet.jpl.nasa.gov/2.3/stateStorm.owl#> .
+@prefix stateSystem: <http://sweet.jpl.nasa.gov/2.3/stateSystem.owl#> .
+@prefix stateThermodynamic: <http://sweet.jpl.nasa.gov/2.3/stateThermodynamic.owl#> .
+@prefix stateTime: <http://sweet.jpl.nasa.gov/2.3/stateTime.owl#> .
+@prefix stateTimeCycle: <http://sweet.jpl.nasa.gov/2.3/stateTimeCycle.owl#> .
+@prefix stateTimeFrequency: <http://sweet.jpl.nasa.gov/2.3/stateTimeFrequency.owl#> .
+@prefix stateTimeGeologic: <http://sweet.jpl.nasa.gov/2.3/stateTimeGeologic.owl#> .
+@prefix stateVisibility: <http://sweet.jpl.nasa.gov/2.3/stateVisibility.owl#> .
 
 
-ent:name                   rdfs:subClassOf   rdfs:label .
+ent:a  rdfs:subClassOf   stateTimeFrequency:Diurnal  ;
+       rdfs:subClassOf   reprDataModel:Parameter   .
 
-ent:unit                   rdfs:subClassOf   rdf:resource .
+ent:action_integral  rdfs:subClassOf   reprMathOperation:Integral  ;
+                     rdfs:subClassOf   phenAtmoLightning:Lightning   .
 
-ent:description            rdfs:subClassOf   rdf:resource .
+ent:aircraftVicinityConditions  rdfs:subClassOf   matrEquipment:Aircraft ;
+                                rdfs:subClassOf   reprDataServiceGeospatial:Proximity   .
 
-ent:context_type           rdfs:subClassOf   rdf:resource .
+ent:alpha  rdfs:subClassOf   phenAtmoLightning:Lightning  ;
+           rdfs:subClassOf   reprDataModel:Parameter   .
 
-ent:model                  rdfs:subClassOf   reprDataModel:Model .
+ent:alpha1  rdfs:subClassOf   reprSciModel:Parameterization .
 
-ent:locale                 rdfs:subClassOf   rdf:resource .
+ent:altitude  rdfs:subClassOf   propSpaceHeight:Altitude .
 
-ent:characteristic         rdfs:subClassOf   rdf:resource .
+ent:ar7038_climate   rdfs:subClassOf   humanEnvirStandards:EnvironmentalStandard .
 
-ent:title                  rdfs:subClassOf   dc:title .
+ent:atm  rdfs:subClassOf   reprSciUnits:Unit .
 
-ent:x_axis                 rdfs:subClassOf   rdf:resource .
+ent:atomicUnit  rdfs:subClassOf   matrParticle:Atom .
 
-ent:pdf			   rdfs:subClassOf   rdf:resource .
+ent:averageAlbedo  rdfs:subClassOf   propFraction:Albedo .
 
-ent:moments                rdfs:subClassOf   rdf:resource .
+ent:averageSolarInsolation  rdfs:subClassOf   propEnergyFlux:Insolation .
 
-ent:interval               rdfs:subClassOf   rdf:resource .
+ent:avogadrosNumber  rdfs:subClassOf   propQuantity:PhysicalConstant .
 
-ent:min_extent		   rdfs:subClassOf   rdf:resource .
+ent:b  rdfs:subClassOf   stateTimeFrequency:Diurnal .
 
-ent:max_extent		   rdfs:subClassOf   rdf:resource .
+ent:bar  rdfs:subClassOf   reprSciUnits:Unit .
+
+ent:basicCold  rdfs:subClassOf   propIndex:ClimateIndicator .
+
+ent:basicHot  rdfs:subClassOf   propIndex:ClimateIndicator .
+
+ent:behavior  rdfs:subClassOf   phenAtmoLightning:Lightning .
+
+ent:beta  rdfs:subClassOf   phenAtmoLightning:Lightning  ;
+          rdfs:subClassOf   reprDataModel:Parameter   .
+
+ent:boltzmannConstant  rdfs:subClassOf   propQuantity:PhysicalConstant .
+
+ent:c  rdfs:subClassOf   stateTimeFrequency:Diurnal .
+
+ent:c  rdfs:subClassOf   reprSciUnits:Unit .
+
+ent:C2  rdfs:subClassOf   procChemical:Corrosion  ;
+        rdfs:subClassOf   propCategorical:StandardIndustrialClassification   .
+
+ent:C3  rdfs:subClassOf   procChemical:Corrosion  ;
+        rdfs:subClassOf   propCategorical:StandardIndustrialClassification   .
+
+ent:C4  rdfs:subClassOf   procChemical:Corrosion  ;
+        rdfs:subClassOf   propCategorical:StandardIndustrialClassification   .
+
+ent:C5-M  rdfs:subClassOf   procChemical:Corrosion  ;
+          rdfs:subClassOf   propCategorical:StandardIndustrialClassification   .
+
+ent:carbon_steel_mass_loss  rdfs:subClassOf   propMass:MassContent .
+
+ent:carbon_steel_thickness_loss  rdfs:subClassOf   phenSolid:Ablation .
+
+ent:category  rdfs:subClassOf   propCategorical:Category .
+
+ent:characteristic  rdfs:subClassOf   propCategorical:Characteristics .
+
+ent:characterization  rdfs:subClassOf   propCategorical:Characteristics .
+
+ent:characterized_by  rdfs:subClassOf   propCategorical:Characteristics .
+
+ent:class  rdfs:subClassOf   propCategorical:Classification .
+
+ent:clay  rdfs:subClassOf   matrSediment:Clay .
+
+ent:climate_design_type  rdfs:subClassOf   phenPlanetClimate:Climate .
+
+ent:cm  rdfs:subClassOf   reprSciUnits:Unit .
+
+ent:cm_3  rdfs:subClassOf   reprSciUnits:Unit .
+
+ent:coarse_grained_soil  rdfs:subClassOf   matrSediment:Soil .
+
+ent:cold  rdfs:subClassOf   propIndex:ClimateIndicator .
+
+ent:comment   rdfs:subClassOf   rdfs:comment .
+
+ent:condition_type  rdfs:subClassOf   propOrdinal:Condition .
+
+ent:conditions_type  rdfs:subClassOf   phenAtmo:WeatherCondition .
+
+ent:constantHighHumidity  rdfs:subClassOf   propFraction:Humidity .
+
+ent:constraint   rdfs:subClassOf   rdfs:Constraint .
+
+ent:contents   rdfs:subClassOf   realmSoil:SoilLayer .
+
+ent:context   rdfs:subClassOf   cntxt:Subject .
+
+ent:context_type   rdfs:subClassOf   cntxt:Subject .
+
+ent:conus_terrain_slope_distro  rdfs:subClassOf   reprMathFunction:ProbabilityDensityFunction .
+
+ent:Corrosion  rdfs:subClassOf   req:ReferencePoint  ;
+               rdfs:subClassOf   procChemical:Corrosion   .
+
+ent:corrosion  rdfs:subClassOf   procChemical:Corrosion .
+
+ent:corrosion_class  rdfs:subClassOf   procChemical:Corrosion .
+
+ent:corrosion_scale  rdfs:subClassOf   procChemical:Corrosion .
+
+ent:corrosive_atmosphere  rdfs:subClassOf   procChemical:Corrosion .
+
+ent:course_description  rdfs:subClassOf   propCategorical:Description .
+
+ent:course_length  rdfs:subClassOf   propSpaceDistance:Length .
+
+ent:course_material  rdfs:subClassOf   propMass:MaterialProperty .
+
+ent:course_name  rdfs:subClassOf   propCategorical:Name .
+
+ent:course_roughness_inches  rdfs:subClassOf   propMass:Roughness .
+
+ent:course_roughness_percent  rdfs:subClassOf   propMass:Roughness .
+
+ent:course_type  rdfs:subClassOf   propCategorical:Type .
+
+ent:course_width  rdfs:subClassOf   propSpaceDistance:Length .
+
+ent:current_component  rdfs:subClassOf   reprSciComponent:Component .
+
+ent:data_x  rdfs:subClassOf   reprDataModel:Array .
+
+ent:data_y  rdfs:subClassOf   reprDataModel:Array .
+
+ent:data_z  rdfs:subClassOf   reprDataModel:Array .
+
+ent:date  rdfs:subClassOf   propTime:Timestamp .
+
+ent:day  rdfs:subClassOf   reprSciUnits:Unit .
+
+ent:decade  rdfs:subClassOf   reprSciUnits:Unit .
+
+ent:decay50percent  rdfs:subClassOf   reprMathFunction:ExponentialDecay .
+
+ent:delta_pressure  rdfs:subClassOf   phenAtmo:AtmosphericPhenomena .
+
+ent:delta_temperature  rdfs:subClassOf   propTemperature:Temperature .
+
+ent:deltaHvap  rdfs:subClassOf   propQuantity:PhysicalConstant  ,
+                                 procStateChange:Evaporation  ,
+                                 matrWater:WaterVapor .
+
+ent:deltaSvap  rdfs:subClassOf   propQuantity:PhysicalConstant ,
+                                 procStateChange:Evaporation  ,
+			         matrWater:WaterVapor .
+
+ent:density  rdfs:subClassOf   propMass:Density .
+
+ent:density_slugs  rdfs:subClassOf   propMass:Density .
+
+ent:description  rdfs:subClassOf   propCategorical:Description .
+
+ent:diameter  rdfs:subClassOf   propSpaceDistance:Length .
+
+ent:diameter_max  rdfs:subClassOf   propSpaceDistance:Length .
+
+ent:diameter_max_typical  rdfs:subClassOf   propSpaceDistance:Length .
+
+ent:diameter_min  rdfs:subClassOf   propSpaceDistance:Length .
+
+ent:dielectricConstant  rdfs:subClassOf   propQuantity:PhysicalConstant .
+
+ent:diffusion  rdfs:subClassOf   propDiffusivity:Diffusivity .
+
+ent:distribution_type  rdfs:subClassOf   reprMathFunction:ProbabilityDensityFunction .
+
+ent:division   rdfs:subClassOf   realmSoil:SoilOrder .
+
+ent:docref  rdfs:subClassOf   reprMathGraph:Edge .
+
+ent:drag  rdfs:subClassOf   reprSciModel:Parameterization .
+
+ent:driver  rdfs:subClassOf   req:Requirement .
+
+ent:dropletDistribution  rdfs:subClassOf   matrWater:RainDrop   ;
+                         rdfs:subClassOf   ent:pdf_distribution   .
+
+ent:dry_fast_friction  rdfs:subClassOf   procPhysical:Friction .
+
+ent:dry_silt_clay  rdfs:subClassOf   matrSediment:Silt  ;
+                   rdfs:subClassOf   matrSediment:Clay   .
+
+ent:dry_slow_friction  rdfs:subClassOf   procPhysical:Friction .
+
+ent:dryAdiabaticLapseRate  rdfs:subClassOf   stateThermodynamic:Adiabatic .
+
+ent:dryAdiabaticPressureHead  rdfs:subClassOf   stateThermodynamic:Adiabatic .
+
+ent:dT  rdfs:subClassOf   propTemperature:Temperature .
+
+ent:duration  rdfs:subClassOf   propTime:Duratio .
+
+ent:electricalCharge  rdfs:subClassOf   propQuantity:PhysicalConstant .
+
+ent:elevation  rdfs:subClassOf   propSpaceHeight:Elevation .
+
+ent:EMI  rdfs:subClassOf   req:ReferencePoint .
+
+ent:environmental_conditions  rdfs:subClassOf   propIndex:EnvironmentalIndex .
+
+ent:exterior_examples   a   owl:Class .
+
+ent:extinction_coefficient  rdfs:subClassOf   propSpaceDistance:ExtinctionCoefficient .
+
+ent:f  rdfs:subClassOf   reprSciUnits:Unit .
+
+ent:F_dynamic  rdfs:subClassOf   procPhysical:Friction .
+
+ent:F_static  rdfs:subClassOf   procPhysical:Friction .
+
+ent:faradaysConstant  rdfs:subClassOf   propQuantity:PhysicalConstant .
+
+ent:fc  rdfs:subClassOf   procPhysical:Friction .
+
+ent:feature   rdfs:subClassOf   realmGeol:GeologicFeature .
+
+ent:file  rdfs:subClassOf   reprDataFormat:File .
+
+ent:file_path  rdfs:subClassOf   reprDataFormat:File .
+
+ent:filter  rdfs:subClassOf   reprMathFunction:Filter .
+
+ent:fine_grained_soil  rdfs:subClassOf   matrSediment:Soil .
+
+ent:fine_particle_diameter_max_typical  rdfs:subClassOf   matrParticle:Particle .
+
+ent:FineTerrain  rdfs:subClassOf   req:ReferencePoint .
+
+ent:FMU_source_data  rdfs:subClassOf   reprDataFormat:File .
+
+ent:friction  rdfs:subClassOf   procPhysical:Friction .
+
+ent:ft  rdfs:subClassOf   reprSciUnits:Unit .
+
+ent:ft_2  rdfs:subClassOf   reprSciUnits:Unit .
+
+ent:g_cm3  rdfs:subClassOf   reprSciUnits:Unit .
+
+ent:gasConstant  rdfs:subClassOf   propQuantity:PhysicalConstant .
+
+ent:glaze_ice_density  rdfs:subClassOf   matrWater:Ice .
+
+ent:glaze_ice_noPermanentDamage  rdfs:subClassOf   matrWater:Ice .
+
+ent:glaze_ice_operational  rdfs:subClassOf   matrWater:Ice .
+
+ent:glaze_rime_mix_density  rdfs:subClassOf   matrWater:Rime .
+
+ent:glaze_rime_mix_noPermanentDamage  rdfs:subClassOf   matrWater:Rime .
+
+ent:gradation  rdfs:subClassOf   propOrdinal:Gradation .
+
+ent:grade  rdfs:subClassOf   reprMathOperation:Slope .
+
+ent:grade_unit  rdfs:subClassOf   reprMathOperation:Slope ;
+                 rdfs:subClassOf   propFunction:Percentile   .
+
+ent:gravel  rdfs:subClassOf   matrSediment:Gravel .
+
+ent:gravity  rdfs:subClassOf   propQuantity:PhysicalConstant  ;
+	     rdfs:subClassOf   procPhysical:Gravity   .
+
+ent:GrossTerrain  rdfs:subClassOf   req:ReferencePoint .
+
+ent:groundReflectivity  rdfs:subClassOf   propFraction:Reflectivity .
+
+ent:groundTemperatureExtreme  rdfs:subClassOf   propOrdinal:TemperatureRange  ;
+                              rdfs:subClassOf   phen:ExtremeEvent   .
+
+ent:groundTemperatureExtreme  rdfs:subClassOf   propOrdinal:TemperatureRange .
+
+ent:gustWindVelocity_10ft  rdfs:subClassOf   phenAtmoWind:WindGust .
+
+ent:hail  rdfs:subClassOf   phenAtmoPrecipitation:Hail .
+
+ent:has  rdfs:subClassOf   prop:Property .
+
+ent:high_plasticity  rdfs:subClassOf   propMass:Plasticity .
+
+ent:highElevation  rdfs:subClassOf   propSpaceHeight:Elevation .
+
+ent:highly_organic_soil   rdfs:subClassOf   realmSoil:OrganicMatter .
+
+ent:hoarfrost_density_max  rdfs:subClassOf   matrWater:HoarCrystal .
+
+ent:hoarfrost_max  rdfs:subClassOf   matrWater:DepthHoar .
+
+ent:hotDry  rdfs:subClassOf   propIndex:ClimateIndicator .
+
+ent:hotHumid  rdfs:subClassOf   propIndex:ClimateIndicator .
+
+ent:hour  rdfs:subClassOf   reprSciUnits:Unit .
+
+ent:hourly_relative_humidity  rdfs:subClassOf   stateTimeFrequency:Hourly  ;
+                              rdfs:subClassOf   propFraction:Humidity   .
+
+ent:hourly_temperature  rdfs:subClassOf   stateTimeFrequency:Hourly  ;
+                        rdfs:subClassOf   propTemperature:Temperature   .
+
+ent:hours  rdfs:subClassOf   propTime:Duration .
+
+ent:i0  rdfs:subClassOf   phenAtmoLightning:Lightning  ;
+        rdfs:subClassOf   reprDataModel:Parameter   .
+
+ent:ice  rdfs:subClassOf   matrWater:Ice .
+
+ent:inch  rdfs:subClassOf   reprSciUnits:Unit .
+
+ent:interior_examples   a   owl:Class .
+
+ent:interval  rdfs:subClassOf   repr:IntervalScale .
+
+ent:interval_size  rdfs:subClassOf   repr:IntervalScale .
+
+ent:k  rdfs:subClassOf   reprSciUnits:Unit .
+
+ent:key_variable  rdfs:subClassOf   humanResearch:Variable .
+
+ent:kft  rdfs:subClassOf   reprSciUnits:Unit .
+
+ent:kg_liter  rdfs:subClassOf   reprSciUnits:Unit .
+
+ent:kg_m3  rdfs:subClassOf   reprSciUnits:Unit .
+
+ent:kilogram  rdfs:subClassOf   reprSciUnits:Unit .
+
+ent:kinematic_viscosity  rdfs:subClassOf   propDiffusivity:KinematicViscosity .
+
+ent:km  rdfs:subClassOf   reprSciUnits:Unit .
+
+ent:l1  rdfs:subClassOf   reprSciModel:Parameterization .
+
+ent:l2  rdfs:subClassOf   reprSciModel:Parameterization .
+
+ent:label_x  rdfs:subClassOf   propSpaceDirection:Axis .
+
+ent:label_y  rdfs:subClassOf   propSpaceDirection:Axis .
+
+ent:label_z  rdfs:subClassOf   propSpaceDirection:Axis .
+
+ent:Lakes  rdfs:subClassOf   req:ReferencePoint .
+
+ent:large_particle_diameter_max  rdfs:subClassOf   matrParticle:Particle .
+
+ent:large_particle_diameter_max_typical  rdfs:subClassOf   matrParticle:Particle .
+
+ent:large_particle_diameter_min_typical  rdfs:subClassOf   matrParticle:Particle .
+
+ent:lat  rdfs:subClassOf   repr:Coordinate .
+
+ent:lat_max  rdfs:subClassOf   repr:Coordinate  ;
+             rdfs:subClassOf   propFunction:Maximum   .
+
+ent:lat_min  rdfs:subClassOf   repr:Coordinate .
+
+ent:lb_ft3  rdfs:subClassOf   reprSciUnits:Unit .
+
+ent:length_unit  rdfs:subClassOf   propSpaceDistance:Length .
+
+ent:limits_check  rdfs:subClassOf   req:Requirement .
+
+ent:link  rdfs:subClassOf   reprMathGraph:Edge .
+
+ent:liquid  rdfs:subClassOf   matr:Substance .
+
+ent:locale  rdfs:subClassOf   propSpaceLocation:Location .
+
+ent:logarithmic  rdfs:subClassOf   repr:LogarithmicScale .
+
+ent:lon  rdfs:subClassOf   repr:Coordinate .
+
+ent:lon_max  rdfs:subClassOf   repr:Coordinate  ;
+             rdfs:subClassOf   propFunction:Maximum   .
+
+ent:lon_min  rdfs:subClassOf   repr:Coordinate .
+
+ent:low_plasticity  rdfs:subClassOf   propMass:Plasticity .
+
+ent:m_2  rdfs:subClassOf   reprSciUnits:Unit .
+
+ent:m_3  rdfs:subClassOf   reprSciUnits:Unit .
+
+ent:massflux_blowingSnow  rdfs:subClassOf   propMassFlux:MassFlux  ;
+                          rdfs:subClassOf   phenAtmoPrecipitation:Blizzard   .
+
+ent:material  rdfs:subClassOf   matrEquipment:MaterialThing .
+
+ent:max_extent  rdfs:subClassOf   propSpaceMultidimensional:AngularExtent ;
+                rdfs:subClassOf   propFunction:Maximum   .
+
+ent:max_pressure  rdfs:subClassOf   propPressure:AtmosphericPressure  ;
+                  rdfs:subClassOf   propFunction:Maximum   .
+
+ent:mean  rdfs:subClassOf   propFunction:Mean .
+
+ent:meters  rdfs:subClassOf   reprSciUnits:Unit .
+
+ent:mg_micron3  rdfs:subClassOf   reprSciUnits:Unit .
+
+ent:micron  rdfs:subClassOf   reprSciUnits:Unit .
+
+ent:mics  rdfs:subClassOf   reprSciUnits:Unit .
+
+ent:mil  rdfs:subClassOf   reprSciUnits:Unit .
+
+ent:mile  rdfs:subClassOf   reprSciUnits:Unit .
+
+ent:millibar  rdfs:subClassOf   reprSciUnits:Unit .
+
+ent:min  rdfs:subClassOf   reprSciUnits:Unit .
+
+ent:min_extent  rdfs:subClassOf   propSpaceMultidimensional:AngularExtent  ;
+                rdfs:subClassOf   propFunction:Minimum   .
+
+ent:min_pressure  rdfs:subClassOf   propPressure:AtmosphericPressure .
+
+ent:mm  rdfs:subClassOf   reprSciUnits:Unit .
+
+ent:model  rdfs:subClassOf   reprSciModel:Model .
+
+ent:moist_silt_clay  rdfs:subClassOf   matrSediment:Silt  ;
+                     rdfs:subClassOf   matrSediment:Clay   .
+
+ent:moistAdiabaticLapseRateTypical  rdfs:subClassOf   stateThermodynamic:Adiabatic .
+
+ent:molecular_weight  rdfs:subClassOf   propMass:MolecularWeight .
+
+ent:molecularWeight  rdfs:subClassOf   propQuantity:PhysicalConstant  ;
+                      rdfs:subClassOf   propMass:MolecularWeight   .
+
+ent:moments  rdfs:subClassOf   propFunction:Moment .
+
+ent:monte_carlo_model  rdfs:subClassOf   reprMathSolution:Simulation .
+
+ent:mpa  rdfs:subClassOf   reprSciUnits:Unit .
+
+ent:mtorr  rdfs:subClassOf   reprSciUnits:Unit .
+
+ent:name  rdfs:subClassOf   propCategorical:Name .
+
+ent:naturalVicinityConditions  rdfs:subClassOf   phenAtmo:WeatherCondition .
+
+ent:nickname  rdfs:subClassOf   propCategorical:Name .
+
+ent:nm  rdfs:subClassOf   reprSciUnits:Unit .
+
+ent:nominalElevation  rdfs:subClassOf   propSpaceHeight:Elevation .
+
+ent:nominalTime  rdfs:subClassOf   propTime:Time .
+
+ent:note  rdfs:subClassOf   bibo:Note .
+
+ent:obstacle_data  rdfs:subClassOf   stateRoleGeographic:Barrier .
+
+ent:operational  rdfs:subClassOf   humanResearch:OperationalEnvironment .
+
+ent:organic   rdfs:subClassOf   realmSoil:OrganicMatter .
+
+ent:oz_in3  rdfs:subClassOf   reprSciUnits:Unit .
+
+ent:ozone   rdfs:subClassOf   realmAtmo:OzoneLayer .
+
+ent:pa  rdfs:subClassOf   reprSciUnits:Unit .
+
+ent:pageref  rdfs:subClassOf   bibo:Webpage .
+
+ent:particle_density  rdfs:subClassOf   matrParticle:Particle  ;
+                      rdfs:subClassOf   propCount:NumberDensity   .
+
+ent:particle_diameter_max  rdfs:subClassOf   matrParticle:Particle .
+
+ent:particle_diameter_max_typical  rdfs:subClassOf   matrParticle:Particle .
+
+ent:particle_diameter_min  rdfs:subClassOf   matrParticle:Particle .
+
+ent:particle_diameter_min_typical  rdfs:subClassOf   matrParticle:Particle .
+
+ent:path  rdfs:subClassOf   reprDataFormat:File .
+
+ent:pdf  rdfs:subClassOf   reprMathFunction:ProbabilityDensityFunction .
+
+ent:pdf_distribution  rdfs:subClassOf   reprMathFunction:ProbabilityDensityFunction .
+
+ent:peak_current  rdfs:subClassOf   procPhysical:Current .
+
+ent:peak_rate_of_rise  rdfs:subClassOf   procPhysical:Current .
+
+ent:percent  rdfs:subClassOf   reprSciUnits:Unit .
+
+ent:planckConstant  rdfs:subClassOf   propQuantity:PhysicalConstant .
+
+ent:plasticity  rdfs:subClassOf   propMass:Plasticity .
+
+ent:pound  rdfs:subClassOf   reprSciUnits:Unit .
+
+ent:pressure  rdfs:subClassOf   propPressure:AtmosphericPressure .
+
+ent:pressure_psi  rdfs:subClassOf   propPressure:AtmosphericPressure .
+
+ent:priority  rdfs:subClassOf   req:PriorityRating .
+
+ent:property  rdfs:subClassOf   prop:Property .
+
+ent:PSD_JSON_file  rdfs:subClassOf   reprDataFormat:File .
+
+ent:PSD_text_file  rdfs:subClassOf   reprDataFormat:File .
+
+ent:psi  rdfs:subClassOf   reprSciUnits:Unit .
+
+ent:qstag360equivalent  rdfs:subClassOf   propTemperature:EquivalentTemperature .
+
+ent:r  rdfs:subClassOf   reprSciUnits:Unit .
+
+ent:rain  rdfs:subClassOf   phenAtmoPrecipitation:Rain .
+
+ent:rain_rate_eroding  rdfs:subClassOf   phenAtmoPrecipitation:Rainfall .
+
+ent:rain_rate_operational  rdfs:subClassOf   phenAtmoPrecipitation:Rainfall .
+
+ent:Rainfall  rdfs:subClassOf   req:ReferencePoint .
+
+ent:rate_of_rise  rdfs:subClassOf   phenAtmoLightning:Lightning  ;
+                  rdfs:subClassOf   reprDataModel:Parameter   .
+
+ent:ratio_kv_sos  rdfs:subClassOf   propDiffusivity:KinematicViscosity .
+
+ent:relativeHumidity_max_typical  rdfs:subClassOf   propFraction:RelativeHumidity .
+
+ent:req_attribute  rdfs:subClassOf   req:GlossaryTerm .
+
+ent:req_category  rdfs:subClassOf   req:ReferencePoint .
+
+ent:req_phrase  rdfs:subClassOf   req:GlossaryTerm .
+
+ent:req_sub_category  rdfs:subClassOf   req:ReferencePoint .
+
+ent:req_sys_description  rdfs:subClassOf   req:Document .
+
+ent:req_system_level  rdfs:subClassOf   req:Source .
+
+ent:req_text  rdfs:subClassOf   req:Document .
+
+ent:requirement  rdfs:subClassOf   req:Requirement .
+
+ent:requirement_type  rdfs:subClassOf   req:Requirement .
+
+ent:Resources  rdfs:subClassOf   req:ReferencePoint .
+
+ent:rime_density  rdfs:subClassOf   matrWater:Rime .
+
+ent:river   rdfs:subClassOf   realmHydroBody:River .
+
+ent:sand  rdfs:subClassOf   matrSediment:Sand .
+
+ent:sandDust  rdfs:subClassOf   phenAtmoFog:SandHaze .
+
+ent:sandDustEnvironment  rdfs:subClassOf   phenAtmoFog:SandHaze .
+
+ent:sea_level_pressure  rdfs:subClassOf   propPressure:SeaLevelPressure .
+
+ent:sea_state  rdfs:subClassOf   propSpaceHeight:SeaState .
+
+ent:seaLevel  rdfs:subClassOf   propSpaceHeight:SeaLevel .
+
+ent:sec  rdfs:subClassOf   reprSciUnits:Unit .
+
+ent:section_designator   rdfs:subClassOf   realmLandform:LandRegion .
+
+ent:severeCold  rdfs:subClassOf   propIndex:ClimateIndicator .
+
+ent:sigma_density  rdfs:subClassOf   propMass:Density .
+
+ent:silt  rdfs:subClassOf   matrSediment:Silt .
+
+ent:site_with_high_deteroration_rate  rdfs:subClassOf   procChemical:Corrosion .
+
+ent:snow  rdfs:subClassOf   matrWater:Snow .
+
+ent:snow_density  rdfs:subClassOf   matrWater:SnowGrain .
+
+ent:snow_load_portableEquipment  rdfs:subClassOf   propSpaceThickness:SnowCover .
+
+ent:snow_load_semipermanentEquipment  rdfs:subClassOf   propSpaceThickness:SnowCover .
+
+ent:snow_load_temporaryEquipment  rdfs:subClassOf   propSpaceThickness:SnowCover .
+
+ent:snow_rate  rdfs:subClassOf   phenAtmoPrecipitation:Snowfall .
+
+ent:soil_classification   rdfs:subClassOf   realmSoil:SoilOrder .
+
+ent:solar  rdfs:subClassOf   phenCycle:SolarCycle .
+
+ent:solar_radiation  rdfs:subClassOf   propEnergyFlux:SolarRadiation  ;
+                     rdfs:subClassOf   propEnergyFlux:SolarFlux   .
+
+ent:solarLoad  rdfs:subClassOf   propEnergyFlux:SolarFlux .
+
+ent:spacing  rdfs:subClassOf   stateRoleGeographic:Separation .
+
+ent:specificGasConstantDryAir  rdfs:subClassOf   propQuantity:PhysicalConstant .
+
+ent:specificGasConstantWaterVapor  rdfs:subClassOf   propQuantity:PhysicalConstant .
+
+ent:specificHeatRatio  rdfs:subClassOf   propQuantity:PhysicalConstant .
+
+ent:speed_of_sound  rdfs:subClassOf   propQuantity:PhysicalConstant .
+
+ent:speedLight  rdfs:subClassOf   propQuantity:PhysicalConstant .
+
+ent:src_file  rdfs:subClassOf   reprDataFormat:File .
+
+ent:standard  rdfs:subClassOf   humanEnvirStandards:EnvironmentalStandard  ;
+              rdfs:subClassOf   bibo:Standard   .
+
+ent:standard_applies  rdfs:subClassOf   humanEnvirStandards:EnvironmentalStandard .
+
+ent:station_id  rdfs:subClassOf   matrFacility:Station .
+
+ent:steadyWindVelocity_10ft  rdfs:subClassOf   propSpeed:WindSpeed  .
+
+ent:stefanBoltzmann  rdfs:subClassOf   propQuantity:PhysicalConstant .
+
+ent:storage_humidity  rdfs:subClassOf   propFraction:RelativeHumidity .
+
+ent:storage_temperature  rdfs:subClassOf   propTemperature:Temperature .
+
+ent:storageTransit  rdfs:subClassOf   humanTransportation:Transit .
+
+ent:surface_material  rdfs:subClassOf   propMass:MaterialProperty .
+
+ent:surfaceVehicleVicinityConditions  rdfs:subClassOf   matrEquipment:Vehicle  ;
+                                      rdfs:subClassOf   reprDataServiceGeospatial:Proximity   .
+
+ent:sweet  rdfs:subClassOf   reprDataServiceAnalysis:Classification .
+
+ent:symbol  rdfs:subClassOf   matrElement:Element .
+
+ent:t0  rdfs:subClassOf   reprDataModel:Parameter  ;
+        rdfs:subClassOf   propTemperature:Temperature   .
+
+ent:td  rdfs:subClassOf   reprDataModel:Parameter  ;
+        rdfs:subClassOf   propTemperature:Temperature   .
+
+ent:temperature  rdfs:subClassOf   propTemperature:Temperature .
+
+ent:temperature_min_typical  rdfs:subClassOf   propOrdinal:TemperatureRange.
+
+ent:temperature_rankine  rdfs:subClassOf   propTemperature:Temperature .
+
+ent:terrain_slope_distribution  rdfs:subClassOf   reprMathFunction:ProbabilityDensityFunction .
+
+ent:terrain_slopes  rdfs:subClassOf   prop:Property .
+
+ent:Thermal  rdfs:subClassOf   req:ReferencePoint .
+
+ent:time_to_peak  rdfs:subClassOf   reprTime:Duration .
+
+ent:time10percent  rdfs:subClassOf   reprTime:Duration .
+
+ent:time90percent  rdfs:subClassOf   reprTime:Duration .
+
+ent:title  rdfs:subClassOf   propCategorical:Name ;
+           rdfs:subClassOf   dc:title   .
+
+ent:tons_km3  rdfs:subClassOf   reprSciUnits:Unit .
+
+ent:torr  rdfs:subClassOf   reprSciUnits:Unit .
+
+ent:ty  rdfs:subClassOf   reprDataModel:Parameter .
+
+ent:type  rdfs:subClassOf   reprSciModel:Model .
+
+ent:unit  rdfs:subClassOf   reprSciUnits:Unit .
+
+ent:units  rdfs:subClassOf   reprSciUnits:BaseUnit .
+
+ent:unitscategory  rdfs:subClassOf   reprSciUnits:UnitDerivedByScaling .
+
+ent:units_x  rdfs:subClassOf   propSpaceDirection:Axis .
+
+ent:units_y  rdfs:subClassOf   propSpaceDirection:Axis .
+
+ent:units_z  rdfs:subClassOf   propSpaceDirection:Axis .
+
+ent:uri   rdfs:subClassOf   rdfs:resource .
+
+ent:variableHighHumidity  rdfs:subClassOf   propIndex:ClimateIndicator .
+
+ent:vehicle_system_required  rdfs:subClassOf   req:Requirement .
+
+ent:vehicle_wind_max   rdfs:subClassOf   realmAtmoWeather:MaximumWindSpeedLevel .
+
+ent:viscosity_slugs  rdfs:subClassOf   propPressure:Viscosity .
+
+ent:w_m2  rdfs:subClassOf   reprSciUnits:Unit .
+
+ent:Wave  rdfs:subClassOf   req:ReferencePoint .
+
+ent:wave_height  rdfs:subClassOf   propSpaceHeight:SeaState  ;
+                 rdfs:subClassOf   phenWave:GravityWave   .
+
+ent:weight  rdfs:subClassOf   reprMathGraph:WeightedEdge .
+
+ent:wet_fast_friction  rdfs:subClassOf   procPhysical:Friction .
+
+ent:wet_slow_friction  rdfs:subClassOf   procPhysical:Friction .
+
+ent:width_unit  rdfs:subClassOf   propSpaceDistance:Length .
+
+ent:wind  rdfs:subClassOf   propSpeed:WindSpeed  ;
+          rdfs:subClassOf   phenAtmoWind:Wind   .
+
+ent:workflow_comment  rdfs:subClassOf   reprSciProvenance:Workflow .
+
+ent:workflow_path  rdfs:subClassOf   reprSciProvenance:Workflow .
+
+ent:x_axis  rdfs:subClassOf   propSpaceDirection:Axis .
+
+ent:yards  rdfs:subClassOf   reprSciUnits:Unit .
+
+ent:year  rdfs:subClassOf   reprSciUnits:Unit .
+
+ent:zinc_mass_loss  rdfs:subClassOf   propMass:MassContent .
+
+ent:zinc_thickness_loss  rdfs:subClassOf   phenSolid:Ablation .
+
+
+
