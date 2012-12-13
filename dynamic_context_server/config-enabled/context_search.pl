@@ -1,5 +1,4 @@
 :- module(context_search, [
-                          owl/3
                           ]).
 
 /** <module> Context search main
@@ -15,7 +14,7 @@
 :- context:register(context_search:my_search_filter).
 :- context:register(context_search:list_pages).
 :- context:register(context_search:list_cats).
-:- context:register(context_search:owl_result).
+% :- context:register(context_search:owl_result).
 
 find_requirement_topics(option([value(Name)],[Local])) :-
    rdf(Name, rdf:type, req:'Requirement'),
@@ -33,7 +32,12 @@ find_categories(option([value(Cat)],[NS, ' :: ', Local])) :-
    ref_m(UID, category, Cat),
    ref_m(UID, model, _Model),
    atomic_list_concat([NS,Local], ':', Cat).
-
+/*
+model_elements(option([value(Short)],[Name])) :-
+    rdf(ID, rdfs:'subClassOf', _),
+    rdf_global_id(ent:Name, ID),
+    context:concise_term(ID, Short).
+*/
 
 my_search_filter(Request) :-
    http_parameters(Request, [q(Q, [string])]),
@@ -41,7 +45,7 @@ my_search_filter(Request) :-
        print_message(informational, format('~w query', Q)),
        []
 			).
-
+/*
 
 owl(Query, Resource, Title) :-
     rdf(Resource, rdf:type, owl:'Class'),
@@ -65,8 +69,7 @@ owl_result(Request) :-
                     \(context_graph(Graph, []))
 		   ]
 		  ).
-
-
+*/
 
 navigate(Request) :-
    % findall(Name, find_requirement_topics(Name), Ns),
@@ -77,6 +80,8 @@ navigate(Request) :-
    sort(Pgs, Pages),
    findall(Cat, find_categories(Cat), Cats),
    sort(Cats, Categories),
+   %findall(Ent, model_elements(Ent), Ents),
+   %sort(Ents, Elements),
    reply_html_page(cliopatria(default),
                    [title('Search Context')],
       [
@@ -129,12 +134,25 @@ navigate(Request) :-
                                select([name('name')], Categories),
                                input([type('submit')])]
                              )])
+                       )
+/*
+                     li(p([\(con_text:gif(search)),
+			   'Search for model element definitions',
+			   form([action('owl_result')
+                              , target=target_iframe
+                              ],
+                              [
+                               select([name('result')], Elements),
+                               input([type('submit')])]
+                             )])
                        ),
 
                      li(p([\(con_text:gif(search)),
 			   'Search OWL',
 		      \(con_text:form_ac(owl_result, target_iframe, owl, result))
-                          ]))
+                          ])
+                       )
+*/
 
                      ]),
 		 \(con_text:render_iframe(render))
