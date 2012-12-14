@@ -1,9 +1,10 @@
 	add rdfs:label
-	ENT classification system tied to SWEET, show as GraphViz?
 	convert rdf_ to entailments
 	Different data format generators
 	Each browse entry should have short narrative and one link
-	fording model broken
+	Need R that doesn't spawn zombies
+x	fording model broken
+x       ENT classification system tied to SWEET, show as GraphViz?
 x	Soil and AR70-38 as TTL
 x	Aquatic wave height model, plus connection to Sea-State, significant wave height + sampling state assuming solution
 x	Thermal heat sink model

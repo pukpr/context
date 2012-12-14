@@ -202,9 +202,9 @@ ent:metals
 
 ent:naturalConditions
 	ent:fine_particle_diameter_max_typical "0.0059* (in)" ;
-	ent:largee_particle_diameter_max "0.0394* (in)" ;
-	ent:largee_particle_diameter_max_typical "0.01972* (in)" ;
-	ent:largee_particle_diameter_min_typical "0.0059* (in)" ;
+	ent:large_particle_diameter_max "0.0394* (in)" ;
+	ent:large_particle_diameter_max_typical "0.01972* (in)" ;
+	ent:large_particle_diameter_min_typical "0.0059* (in)" ;
 	ent:particle_density "1.1e-5*lb/ft^3" ;
 	ent:particle_diameter_max "0.0394* (in)" ;
 	ent:particle_diameter_max_typical "0.0059* (in)" ;

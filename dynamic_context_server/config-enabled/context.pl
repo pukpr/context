@@ -17,6 +17,7 @@
 
 :- use_module(library(http/http_host)).
 :- use_module(library(http/http_wrapper)).
+:- use_module(library(dialect/ifprolog)).
 
 :- rdf_meta
    rdfx(o,o,o),
@@ -156,17 +157,18 @@ rdf_term(Atom, URI) :-
     atom_to_term(Atom, Term, []),
     rdf_global_term(Term, URI).
 
-
+% literal to URI version
 create_global_term(Literal, Term) :-
    atom(Literal),
-   rdf_litindex:rdf_tokenize_literal(Literal,[W1,W2]),
+   atomic_list_concat([W1,W2], ':', Literal),
+   % rdf_litindex:rdf_tokenize_literal(Literal,[W1,W2]),
    rdf_global_term(W1:W2, Term).
+
+/*
+% or Is it already long?
 create_global_term(Literal, Term) :-
    concise_term(Term, Literal).
-/*   var(Literal),
-   rdf_global_term(W1:W2, Term),
-   rdf_current_ns(NS, W1),
-   .*/
+*/
 
 find_and_break_out_terms(Atom, Start, Length, Begin, Middle, Last) :-
     string_to_atom(S, Atom),
@@ -275,6 +277,7 @@ rdfE(Subj, Pred, Obj) :-
 
 :- dynamic(rdf_temp/3).
 
+% Long URI to literal version
 concise_term(URI, PrefixNotation) :-
     rdf_global_id(Prefix:Local, URI),
     atomic_list_concat([Prefix, :, Local], PrefixNotation).

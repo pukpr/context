@@ -12,12 +12,14 @@
 :- context:register(context_query:navigate).
 :- context:register(context_query:pquery).
 :- context:register(context_query:owl_result).
+% :- context:register(context_query:ent_result).
 
 
 model_elements(option([value(Short)],[Name])) :-
     rdf(ID, rdfs:'subClassOf', _),
     rdf_global_id(ent:Name, ID),
-    context:concise_term(ID, Short).
+    atomic_list_concat(['ent:', Name], Short).
+    % context:concise_term(ID, Short).
 
 owl(Query, Resource, Title) :-
     rdf(Resource, rdf:type, owl:'Class'),
@@ -26,7 +28,25 @@ owl(Query, Resource, Title) :-
     sub_atom(R, _,_,_, Q),
     context:concise_term(Resource, Title).
     % Title=Resource.
-
+/*
+ent_result(Request) :-
+   http_parameters(Request, [result(Result, [])]),
+   % rdf_global_id(Result, Graph),
+   % context:create_global_term(Result, Graph),
+   concat_atom(['ent:',W2], Result),
+   rdf_global_term(ent:W2,Graph),
+   context:uri_index_link(Graph, 'definition', render, GraphLink),
+   % context:concise_term(Result, R),
+   reply_html_page([title('Def'),
+                    \(con_text:style)
+                   ],
+                   [
+                    p([Result, ' : ', GraphLink]),
+                    br([]),
+                    \(context_graph(Graph, []))
+		   ]
+		  ).
+*/
 owl_result(Request) :-
    http_parameters(Request, [result(Result, [])]),
    context:create_global_term(Result, Graph),
@@ -36,7 +56,9 @@ owl_result(Request) :-
                     \(con_text:style)
                    ],
                    [
-                    p([Result, ' : ', GraphLink]),
+                    h1([Result, ' : ', GraphLink]),
+                    br([]),
+                    % h2('directed graph'),
                     br([]),
                     \(context_graph(Graph, []))
 		   ]
@@ -107,8 +129,13 @@ navigate(Request) :-
 			   a([href('/sparql/?query=select * where{?s relaSci:hasNumericValue ?o}')],
                           'SPARQL query syntax')])),
 			  li(p([\(con_text:gif(query)),
-			   a([href('/terms#'),
-			   target(target_iframe)], 'Terminology')])),
+                                a([href('/terms#')],
+                                  'Download' ), i(' - '),
+                                a([href('/browse/list_graph?graph=http://entroplet.com/terms')],
+                                  'Browse' ),
+                                br([]),
+                                i('Terms vocabulary for the dynamic context model library')
+                               ])),
 			  li(p([\(con_text:gif(query)),
 			   a([href('/context_file_reading/crawl'),
 			   target(target_iframe)], 'Other models')])),

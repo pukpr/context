@@ -253,11 +253,19 @@ test(json) :-
     T ='{"a":"b"}' .
 
 test(sweet) :-
-	findall(Out,
-		context_sweet_utils:find_sweet_pairs([_Name,Out]),
-		L),
-	length(L, N),
-	N>10.
+    findall(Out,
+            context_sweet_utils:find_sweet_pairs([_Name,Out]),
+            L),
+    length(L, N),
+    N>10.
+
+test(rdf) :-
+   context:create_global_term('ent:model', Term),
+   rdf(A, Term,      B),
+   rdf(A, ent:model, B),
+   context:concise_term(ent:model, 'ent:model'),
+   !.
+
 
 test(context_ontology_not_loaded) :-
         rdf(_Subject, dc:title, _Object),

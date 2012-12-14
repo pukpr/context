@@ -34,7 +34,7 @@ navigate(Request) :-
                                           ['Density (slugs)', 'density'],
                                           ['Speed of Sound', 'sos'],
                                           ['Viscosity (slugs)', 'visc'],
-                                          ['Kinematic Velocity', 'kv'],
+                                          ['Kinematic Viscosity', 'kv'],
                                           ['Ratio KV/SoS', 'kv_sos']
                                          ])),
                           br([]),
@@ -123,10 +123,10 @@ plot(Request) :-
          rdfS(ent:speed_of_sound, ent:unit, YUnits)
       ;
        Characteristic = kv ->
-         findall(Val, rdfR(STD, ent:kinematic_velocity, Val), Vals),
-         Y = 'Kinematic Velocity',
-         rdfS(ent:kinematic_velocity, rdfs:comment, YDesc),
-         rdfS(ent:kinematic_velocity, ent:unit, YUnits)
+         findall(Val, rdfR(STD, ent:kinematic_viscosity, Val), Vals),
+         Y = 'Kinematic Viscosity',
+         rdfS(ent:kinematic_viscosity, rdfs:comment, YDesc),
+         rdfS(ent:kinematic_viscosity, ent:unit, YUnits)
       ;
        Characteristic = kv_sos ->
          findall(Val, rdfR(STD, ent:ratio_kv_sos, Val), Vals),

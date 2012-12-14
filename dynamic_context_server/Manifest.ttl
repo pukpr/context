@@ -5,6 +5,7 @@
 @prefix  rdf: <http://www.w3.org/1999/02/22-rdf-syntax-ns#> .
 @prefix rdfs: <http://www.w3.org/2000/01/rdf-schema#> .
 @prefix   dc: <http://purl.org/dc/terms/> .
+@prefix  ent: <http://entroplet.com/terms#> .
 
 <instances/context.rdf>
         a lib:Instances ;
@@ -127,89 +128,90 @@
 	 dc:title "Table of standard atmosphere properties in increments of 1000 ft" .
 
 <instances/usgsdems-xslx.ttl>
-        a lib:Schema ;
-        a lib:CloudNode ;
-	dc:title "Names of USGS DEM 1 deg sections for CONUS".
+         a lib:Schema ;
+         a lib:CloudNode ;
+	 dc:title "Names of USGS DEM 1 deg sections for CONUS".
 
 <instances/seastate-xslx.ttl>
-        a lib:Schema ;
-        a lib:CloudNode ;
-	dc:title "Sea state table".
+         a lib:Schema ;
+         a lib:CloudNode ;
+	 dc:title "Sea state table".
 
 <instances/lightning_indirect_effects.ttl>
-        a lib:Schema ;
-        a lib:CloudNode ;
-	dc:title "Lightning indirect effects table".
+         a lib:Schema ;
+         a lib:CloudNode ;
+	 dc:title "Lightning indirect effects table".
 
 <instances/corrosion_iso_12944-2__iso_14713.ttl>
-        a lib:Schema ;
-        a lib:CloudNode ;
-	dc:title "Corrosive scales according to ISO standards".
+         a lib:Schema ;
+         a lib:CloudNode ;
+	 dc:title "Corrosive scales according to ISO standards".
 
 <instances/surface_friction-xlsx.ttl>
-        a lib:Schema ;
-        a lib:CloudNode ;
-	dc:title "Average coefficients of friction of various roadway surfaces.".
+         a lib:Schema ;
+         a lib:CloudNode ;
+	 dc:title "Average coefficients of friction of various roadway surfaces.".
 
 <instances/river_flow.ttl>
-        a lib:Schema ;
-        a lib:CloudNode ;
-	dc:title "Flow rates for various USA rivers.".
+         a lib:Schema ;
+         a lib:CloudNode ;
+	 dc:title "Flow rates for various USA rivers.".
 
 <instances/density-xlsx.ttl>
-        a lib:Schema ;
-        a lib:CloudNode ;
-	dc:title "Densities of various liquids near room temperature.".
+         a lib:Schema ;
+         a lib:CloudNode ;
+	 dc:title "Densities of various liquids near room temperature.".
 
 <instances/PeriodicTable.owl.ttl>
-        a lib:Schema ;
-        a lib:CloudNode ;
-	dc:title "Periodic table of the elements.".
+         a lib:Schema ;
+         a lib:CloudNode ;
+	 dc:title "Periodic table of the elements.".
 
 <instances/soil_classification.ttl>
-        a lib:Schema ;
-        a lib:CloudNode ;
-	dc:title "USCS Soil Classification Table.".
+         a lib:Schema ;
+         a lib:CloudNode ;
+	 dc:title "USCS Soil Classification Table.".
 
 <instances/ar-70-38_specifications.ttl>
-        a lib:Schema ;
-        a lib:CloudNode ;
-	dc:title "AR 70-38 Environmental Specifications.".
+         a lib:Schema ;
+         a lib:CloudNode ;
+	 dc:title "AR 70-38 Environmental Specifications.".
 
 <temperature_regions-sparql-xlsx.ttl>
-        a lib:Schema ;
-        a lib:CloudNode ;
-	dc:title "Locations with monthly temperature swings from dbpedia.".
+         a lib:Schema ;
+         a lib:CloudNode ;
+	 dc:title "Locations with monthly temperature swings from dbpedia.".
 
 <instances/physical_units_and_constants.ttl>
-        a lib:Schema ;
-        a lib:CloudNode ;
-	dc:title "Physical units symbology and constants.".
+         a lib:Schema ;
+         a lib:CloudNode ;
+	 dc:title "Physical units symbology and constants.".
 
 <terms/defs.ttl>
-        a lib:Schema ;
-        a lib:CloudNode ;
-	dc:title "Base context terminology - http://entroplet.com/terms#".
+         a lib:Schema ;
+         a lib:CloudNode ;
+         lib:source  ent: ;
+	 dc:title "Base context terminology - http://entroplet.com/terms#".
 
 <terms/biblio.ttl>
-        a lib:Schema ;
-        a lib:CloudNode ;
-	dc:title "Bibliography terminology - http://purl.org/net/biblio".
+         a lib:Schema ;
+         a lib:CloudNode ;
+	 dc:title "Bibliography terminology - http://purl.org/net/biblio".
 
 <terms/bibo.xml.owl.rdf>
-        a lib:Schema ;
-        a lib:CloudNode ;
-	dc:title "Bibliography terminology - http://purl.org/ontology/bibo/".
+         a lib:Schema ;
+         a lib:CloudNode ;
+	 dc:title "Bibliography terminology - http://purl.org/ontology/bibo/".
 
 <terms/swore.ttl>
-        a lib:Schema ;
-        a lib:CloudNode ;
-	dc:title "Requirements terms from http://ns.softwiki.de/req/".
+         a lib:Schema ;
+         a lib:CloudNode ;
+	 dc:title "Requirements terms from http://ns.softwiki.de/req/".
 
 <terms/context-terms.owl.ttl>
-        a lib:Schema ;
-        a lib:CloudNode ;
-	dc:title "Context concept terms from http://on.cs.unibas.ch/owl/1.0/Context.owl".
+         a lib:Schema ;
+         a lib:CloudNode ;
+	 dc:title "Context concept terms from http://on.cs.unibas.ch/owl/1.0/Context.owl".
 
 <terms/sweet23_db.trp>
         a lib:Schema ;
@@ -227,3 +229,19 @@
 #  rdf_library:rdf_load_library('context').
 
 #  <http://sweet.jpl.nasa.gov/2.3/sweetAll.owl>.
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+

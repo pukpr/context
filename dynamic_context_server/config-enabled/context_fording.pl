@@ -34,7 +34,7 @@ navigate(Request) :-
 			  select([name('a_units')], Lunits),
 			  input([type('text'),
 				 name('cross_section'),
-				 value('3')]), i(' <= cross section'),
+				 value('3000')]), i(' <= cross section (default ft^2)'),
 			  br([]),
 			  p(['select river',
 			  select([name('rivers')], Rivers)
