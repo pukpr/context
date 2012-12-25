@@ -5,11 +5,16 @@
 </head>
 <body>
 <p>
-Terrain Elevation models marginal probabilities shown on a log scale indicating likelihood of an elevation change given a surface translation'
+Terrain Elevation models marginal probabilities shown on a log scale indicating likelihood of an elevation change given a surface translation.
 
-<a href="../ref/foundation/Mathematical Models for Terrain Slope.pdf">Math Models for Terrain Slope</a>
+<p>Terrain is characterized for the lower 48 states according to DEM profiles. The surface translation is limited to 40 post spacings which corresponds to less than 4000 meters and the elevation change is limited to 20 meters.
 
-<p>The following image is converted from a DEM of the Eau Claire West quadrangle in southeastern Minnesota.<br/>
+<p>Fits for each 1 degree section are generated via a Gauss-Markov model following an Ornstein-Uhlenbeck (O-U) reversion-to-the-mean random walk process. A maximum entropy (MaxEnt) approximator generates uncertainty in the O-U model, which in general gives a better fit to the terrain data sets.
+
+See further: <a href="../ref/foundation/Mathematical Models for Terrain Slope.pdf">Math Models for Terrain Slope</a>
+
+<p>The following stereoscopic image is converted from a DEM of the Eau Claire West quadrangle in southeastern Minnesota.<br/>
+
 <img src="/html/images/trout-v.gif"/>
 
 

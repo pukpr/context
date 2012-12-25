@@ -229,7 +229,7 @@ navigate(Request) :-
 			)
 		      )
 		  ),
-                p('After submitted, click on marker to magnify'),
+                %p('After submitted, click on marker to magnify'),
                 h1(' '),
 		\(render_iframe(render) )
                ]
