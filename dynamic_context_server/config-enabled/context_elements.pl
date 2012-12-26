@@ -1,6 +1,11 @@
 :- module(context_elements, [
 			    ]).
 
+/** <module> Periodic table of elements
+    * Semantically created table
+    *
+*/
+
 :- use_module(context_math).
 
 :- context:register(context_elements:navigate).

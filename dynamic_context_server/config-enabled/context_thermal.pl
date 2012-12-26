@@ -3,6 +3,11 @@
 			      thermalModelCool/5
 			     ]).
 
+/** <module> Thermal models
+    * Transient thermal diffusion
+    *
+*/
+
 :- use_module(context_math).
 
 :- context:register(context_thermal:navigate).

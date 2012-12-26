@@ -1,5 +1,10 @@
 :- module(context_solar, []).
 
+/** <module> Solar insolation models
+    * Planck's black body law
+    *
+*/
+
 :- context:register(context_solar:navigate).
 :- context:register(context_solar:plot).
 

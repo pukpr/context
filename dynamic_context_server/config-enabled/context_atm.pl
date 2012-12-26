@@ -11,6 +11,13 @@
                         % plancks_law_frequency/4
 		       ]).
 
+/** <module> Atmosphere specifications
+    * pressure
+    * temperature
+    * solar
+    *
+*/
+
 :- use_module(context_math).
 :- use_module(context_units).
 

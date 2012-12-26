@@ -3,6 +3,12 @@
                               materials/3
 			     ]).
 
+/** <module> Models of corrosion
+    * Corrosive growth
+    * Categories of corrosion environments
+    *
+*/
+
 :- use_module(context_math).
 % :- use_module(library(dialect/ifprolog)).
 

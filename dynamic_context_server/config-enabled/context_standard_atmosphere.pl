@@ -1,5 +1,10 @@
 :- module(context_standard_atmosphere, [ limit_value/3 ]).
 
+/** <module> Standard atmosphere model
+    * Extracted and interpolated from table
+    *
+*/
+
 :- use_module(context_math).
 
 :- context:register(context_standard_atmosphere:navigate).

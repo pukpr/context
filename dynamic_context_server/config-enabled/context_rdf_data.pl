@@ -1,3 +1,9 @@
+/** <module> RDF-emulated data for context features
+    * Category features
+    * Information and help snippets
+*/
+
+
 :- multifile(rdf_/3).
 :- multifile(ref_/3).
 

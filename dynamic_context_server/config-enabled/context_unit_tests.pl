@@ -1,3 +1,8 @@
+/** <module> Unit test module
+    * Uses unit test pattern framework
+    * Automatically run with modifications
+*/
+
 :- use_module(context_math).
 :- use_module(context_complex).
 :- use_module(context_atm).

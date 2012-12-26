@@ -3,6 +3,12 @@
 			      other_fxn/3
 			    ]).
 
+/** <module> Model of EMI clutter
+    * PDF of clutter
+    * Integration model for GPS cold start
+    *
+*/
+
 :- use_module(context_math).
 :- use_module(context_units).
 

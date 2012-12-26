@@ -1,4 +1,7 @@
-% XML generate rules
+/** <module> XML generate rules
+    * Converts prolog to XML structure
+    *
+*/
 
 xml(Prolog) :-
     % html_set_options([dialect(xhtml)]),

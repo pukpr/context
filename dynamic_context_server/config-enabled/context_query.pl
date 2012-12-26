@@ -2,6 +2,11 @@
                           owl/3
                          ]).
 
+/** <module> Querying the semantic triple-store knowledgebase
+    * Elements derived from OWL classes
+    * SPARQL
+*/
+
 :- use_module(context_math).
 :- use_module(applications(browse)).
 

@@ -2,6 +2,14 @@
 			      rdf_units/3
 			    ]).
 
+/** <module> Categorization of common physical constants
+    * Water
+    * Atmosphere
+    * Physical properties and constants
+    * Solar
+    * Dimensional Units
+*/
+
 :- use_module(context_math).
 
 :- context:register(context_physical:navigate).

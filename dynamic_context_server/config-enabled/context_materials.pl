@@ -1,6 +1,12 @@
 :- module(context_materials, [
 			    ]).
 
+/** <module> Materials categories
+    * Soil
+    * Corrosion
+    * Friction
+*/
+
 :- context:register(context_materials:navigate).
 :- context:register(context_materials:plot).
 

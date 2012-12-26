@@ -4,6 +4,11 @@
 			    %  fxn3/3
 			    ]).
 
+/** <module> Knowledge for EMI modeling
+    * Indexing to EMI modeling documents
+    *
+*/
+
 :- use_module(context_math).
 
 :- context:register(context_emi:navigate).

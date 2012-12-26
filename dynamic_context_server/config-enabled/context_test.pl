@@ -1,3 +1,8 @@
+/** <module> Testing
+    * Extra tests not aligned with main application
+    *
+*/
+
 :- use_module(context_math).
 :- use_module(library(clpfd)).
 

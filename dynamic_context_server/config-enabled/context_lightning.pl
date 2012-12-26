@@ -3,6 +3,11 @@
 			      lightningD/5
 			    ]).
 
+/** <module> Atmospheric lightning model
+    * Stroke waveforms for single and multiple strikes
+    *
+*/
+
 :- use_module(context_math).
 
 :- context:register(context_lightning:navigate).

@@ -1,5 +1,11 @@
 :- module(context_csir, []).
 
+/** <module> Rules for capturing terrsin data
+    * Used to convert CSV to triple-store
+    * Data from CSIR applies
+    *
+*/
+
 path_to_obstacles_files(
     '../../../../Models/Land/terrains/grades_slopes/tools/Unity/RoadExperiments/Assets/Resources/Obstacles/').
 

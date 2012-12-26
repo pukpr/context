@@ -3,6 +3,11 @@
                               power_raise/2
 			    ]).
 
+/** <module> Models for fording of streams and rivers
+    * Extracts info from discharge rates of river monitoring locations
+    * Cumulative probabilities for flows inferred
+*/
+
 :- use_module(context_math).
 
 :- context:register(context_fording:navigate).

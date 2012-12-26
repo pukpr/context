@@ -1,6 +1,10 @@
 :- module(context_friction, [
 			     ]).
 
+/** <module> Specification for friction for various materials
+    * Coefficient of friction table
+    *
+*/
 
 :- context:register(context_friction:coefficient_friction_table).
 

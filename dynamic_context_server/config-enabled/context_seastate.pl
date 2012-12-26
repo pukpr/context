@@ -2,6 +2,11 @@
 			      waveHeight/5
 			    ]).
 
+/** <module> Models for seastate
+    * PDF of wave heights mapped to sestate categories
+    *
+*/
+
 :- use_module(context_math).
 
 :- context:register(context_seastate:navigate).

@@ -1,5 +1,11 @@
 :- module(context_climate_AR7038, []).
 
+/** <module> Environmental specifications according to standard
+    * climate
+    *
+*/
+
+
 :- context:register(context_climate_AR7038:navigate).
 :- context:register(context_climate_AR7038:plot).
 

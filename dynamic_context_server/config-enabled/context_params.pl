@@ -1,4 +1,7 @@
-% implicit attribute declarations for http_parameters processing
+/** <module> Implicit attribute declarations for http_parameters processing
+    * Used to create common defaults
+    *
+*/
 
 :- multifile
    param/2.
