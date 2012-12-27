@@ -22,16 +22,17 @@ navigate(Request) :-
                Request,
                [
                 h2('Lake query examples'),
+		                \(con_text:table_form('Clear and load data ', 'set_yearly_range',
+				      [[from,1843],
+				       [to, 2012]])),
+
                 \(con_text:table_form_target(
                                          'What latitude to plot? >> ',
                                          'plot_chart',
                                          target_iframe,
                                          [['latitude', '47']]
                                                       )
-                 ),
-                \(con_text:table_form('Clear and load data ', 'set_yearly_range',
-				      [[from,1843],
-				       [to, 2012]]))
+                 )
 
                ]
                                    )

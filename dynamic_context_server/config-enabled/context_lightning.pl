@@ -92,7 +92,7 @@ plot(Request) :-
     http_parameters(Request, [kind(waveform, []),
 			      limit(Limit, [number]),
                               t_units(TUnits, []),
-                              evaluate(Characteristic, [])]),
+                              evaluate(Characteristic, [default(single)])]),
 
     Time range [0.0, 0.0002]/0.000001*TUnits,
     (

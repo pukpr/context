@@ -27,8 +27,9 @@ foundational(Subject, Link) :-
 foundational(_Subject, '').
 
 
-link_view('', _, _, Subject, Docs) -->
-    html(p([b(Subject), ' has no categorized ', Docs])), !.
+link_view('', _, _, _Subject, _Docs) -->
+    % html(p([b(Subject), ' has no categorized ', Docs])),
+    !.
 
 link_view(Link, Target, Image, Subject, Text) -->
     {

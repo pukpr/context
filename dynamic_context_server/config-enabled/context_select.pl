@@ -88,7 +88,7 @@ dispatch(fine_terrain) -->
               \g(workflow,
 		 a([href('/context_obstacles/navigate')], 'Obstacle workflow')),
 	      \g(workflow,
-		 a([href('/context_profile/navigate')], 'Recently profiled terrains')),
+		 a([href('/context_profile/navigate')], 'Semi-Markov Nodel profiled terrains')),
 	      \ref_search('realmBiolBiome:Terrain', 'Terrain references'),
 	      \g(resources,
 		 a([href='/context_soil/soil_table',

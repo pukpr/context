@@ -454,10 +454,10 @@ rdf_('roughness', link, '/context_psd_workflow/navigate').
 rdf_('roughness', comment, 'Models of courses from power spectral density (PSD) datasets.').
 rdf_('roughness', foundation, [b,12]).
 
-rdf_('rainfall rate', link, '/context_model/navigate?characteristics=rainfall&render=render').
-rdf_('rainfall rate', target, target_iframe).
-rdf_('rainfall rate', comment, 'Models of rainfall intensity').
-rdf_('rainfall rate', foundation, [a,12]).
+rdf_('rainfall amount', link, '/context_model/navigate?characteristics=rainfall&render=render').
+rdf_('rainfall amount', target, target_iframe).
+rdf_('rainfall amount', comment, 'Models of rainfall intensity').
+rdf_('rainfall amount', foundation, [a,12]).
 
 rdf_('lake size', link, '/context_model/navigate?characteristics=lakeSize&render=render').
 rdf_('lake size', target, target_iframe).
@@ -506,6 +506,9 @@ rdf_('requirements', foundation, [d,10]).
 rdf_('thermal', link, '/context_thermal/navigate').
 rdf_('thermal', comment, 'Model of thermal transients.').
 rdf_('thermal', foundation, [c,10]).
+
+rdf_('daily and seasonal', link, '/context_select/navigate?category=thermal').
+rdf_('daily and seasonal', comment, 'Models and data for daily and seasonal temperatures').
 
 rdf_('corrosion', link, '/context_corrosion/navigate').
 rdf_('corrosion', comment, 'Model of corrosive growth.').
