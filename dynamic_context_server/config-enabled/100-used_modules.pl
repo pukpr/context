@@ -82,6 +82,7 @@
 :- use_module(context_dbpedia).
 :- use_module(context_autocorr).
 :- use_module(context_elements).
+:- use_module(context_xml).
 
 
 

@@ -25,7 +25,9 @@
 :- context:register(context_atm:plot).
 
 
-%  decorate(X, option([value(X)],[X])).
+%%   navigate(+Request)
+%
+%    Dynamic page to atmospheric models
 
 navigate(Request) :-
    rdfS(ent:standardAtmosphere, ent:description, Description),
@@ -72,6 +74,9 @@ navigate(Request) :-
      ]
 		  ).
 
+%%   plot(+Request)
+%
+%    Plot atmospheric model characteristic
 
 plot(Request) :-
     http_parameters(Request, [kind(Kind, []),

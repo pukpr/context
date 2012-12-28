@@ -1,3 +1,5 @@
+:- module(context_xml, [xml/1]).
+
 /** <module> XML generate rules
     * Converts prolog to XML structure
     *
