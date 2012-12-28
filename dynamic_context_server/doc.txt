@@ -1,0 +1,2975 @@
+
+
+context_acronyms.pl:acronym_definition('LL',
+%%   'log-log
+%
+%
+context_ar7038.pl
+%%   list_climate_design_types(Target) -->
+%
+%
+context_ar7038.pl
+%%   navigate(+Request)
+%
+%    Dynamic page to environmental specification for nominal use
+
+context_ar7038.pl
+%%   plot(Request)
+%
+%    Plot nominal environmental characteristic
+
+context_ar7038.pl
+%%   rdf_local(ent
+%
+%
+context_ar7038.pl
+%%   store_local
+%
+%
+context_atm.pl
+%%   navigate(+Request).
+%
+%    Dynamic page to atmospheric models
+
+context_atm.pl
+%%   plot(+Request)
+%
+%    Plot atmospheric model characteristic
+
+context_atm.pl
+%%   atmPartialPressureWater(+Temperature, -Pressure)
+%
+%    Unit-sensitive lookup of pressure wrt temperature
+
+context_atm.pl
+%%   atmTemperatureForPartialPressureWater(+Pressure, -Temperature)
+%
+%    Unit sensitive lookup of temperature wrt pressure
+
+context_atm.pl
+%%   atmPressureDryAdiabatic(+Altitude, -Pressure)
+%
+%    Unit-sensitive lookup of pressure wrt to altitude
+
+context_atm.pl
+%%   atmAltitudeAtPressureDryAdiabatic(+Pressure, -Altitude)
+%
+%    Unit-sensitive lookup of altitude wrt pressure
+
+context_atm.pl
+%%   boilingPointH20(+Altitude, -Temperature)
+%
+%    Unit-sensitive lookup of temperature wrt altitude
+
+context_atm.pl
+%%   idealPressure(Pressure, MW*au, D*Mass/Vol^3, T*Temperature, P)
+%
+%    Unit-sensitive lookup of
+context_atm.pl
+%%   idealTemperature(Temperature, D*Mass/Vol^3, MW*au, P*Pressure, T*Temperature)
+%
+%
+context_atm.pl
+%%   idealDensity(+MW, +Temperature, +Pressure, -D)
+%
+%    Unit-sensitive lookup of density of ideal gas given MW of gas, temperature and pressure
+
+context_atm.pl
+%%   plancks_law(T*Temperature, Lambda*Wavelength, P/Wavelength)
+%
+%    Unit-sensitive lookup of PDF wavelength at temperature
+
+context_atm.pl
+%%   plancks_law_wavenumber(Wavenumber, T*Temperature, WN*Wavenumber, P)
+%
+%
+context_atm.pl
+%%   plancks_law_frequency(T*Temperature, WN*Wavenumber, P/Wavenumber)
+%
+%
+context_atm.pl
+%%   generate_pressure_curve(T,P)
+%
+%
+context_autocorr.pl
+%%   rdf_data(Name)
+%
+%
+context_autocorr.pl
+%%   get_all_sections(List)
+%
+%
+context_autocorr.pl
+%%   navigate(+Request)
+%
+%    Dynamic page to gross terrain correlation models
+
+context_autocorr.pl
+%%   list_min([[L|_]|Ls], Min)
+%
+%    
+context_autocorr.pl
+%%   flat(Fraction, X, Y, Partial) 
+%
+%    
+context_autocorr.pl
+%%   ou_model0(N,D,L,X,Y, Fraction, Result) 
+%
+%    
+context_autocorr.pl
+%%   ou_maxent_model0(N,D,L,X,Y, Fraction, Result) 
+%
+%    
+context_autocorr.pl
+%%   ou_gamma_model0(N,D,L,X,Y, Fraction, Result) 
+%
+%    
+context_autocorr.pl
+%%   ou_model(N,D,L,X,Y, Fraction, Result) 
+%
+%    
+context_autocorr.pl
+%%   ou_maxent_model(N,D,L,X,Y, Fraction, Result) 
+%
+%    
+context_autocorr.pl
+%%   ou_mixent_model(N,D,L,X,Y, Fraction, Result) 
+%
+%    
+context_autocorr.pl
+%%   instance_ou(Model,Name, N,D,L, Fraction, Q) 
+%
+%    
+context_autocorr.pl
+%%   model_fit(Model, Name, N0,D0,L0, F0, D, L, F, Quality) 
+%
+%    
+context_autocorr.pl
+%%   find_best_model(Name, Quality, Df, Lf, N) 
+%
+%    
+context_autocorr.pl
+%%   find_model(_Model, Name, 1, 0.01, 0.1, N_Max, 0.1) 
+%
+%    
+context_autocorr.pl
+%%   find_best_model(Model, Name, Quality, Df, Lf, Nf, F) 
+%
+%    
+context_autocorr.pl
+%%   generate_model(_Model, _,   _,  _,  [],  [], _Fraction, F, R)
+%
+%    
+context_autocorr.pl
+%%   generate_model_stats(_Model, _URI, _,   _,  _,  [],  [], _Fraction, F, R) 
+%
+%    
+context_autocorr.pl
+%%   random_walker(Request) 
+%
+%    
+context_autocorr.pl
+%%   google_profile(Request) 
+%
+%    
+context_autocorr.pl
+%%   load_dem(URI) 
+%
+%    
+context_autocorr.pl
+%%   exp_regression(URI, X, Lbar) 
+%
+%    
+context_autocorr.pl
+%%   find_theta(URI, X1, X2, Theta, D) 
+%
+%    
+context_autocorr.pl
+%%   find_avg(URI, Theta,D) 
+%
+%    
+context_autocorr.pl
+%%   pair_summer([], Total, Total).
+%
+%    
+context_autocorr.pl
+%%   pair_sum(List, Sum) 
+%
+%    
+context_autocorr.pl
+%%   calc_avg(URI, Theta, Diffusion) 
+%
+%    
+context_autocorr.pl
+%%   negate(true,color).
+%
+%    
+context_autocorr.pl
+%%   maintain(true,contour).
+%
+%    
+context_autocorr.pl
+%%   model_options([], _URI, _Opt, _Contour) --> !.
+%
+%    
+context_autocorr.pl
+%%   rcontour(Image, X,Y,Z, Contour) -->
+%
+%
+context_autocorr.pl
+%%   contour_display(Opt, URI, Contour, Lat, Lon, Info) 
+%
+%    
+context_autocorr.pl
+%%   variance(Request) 
+%
+%    
+context_autocorr.pl
+%%   mean(Request) 
+%
+%    
+context_autocorr.pl
+%%   contour(Request) 
+%
+%    
+context_autocorr.pl
+%%   data_row(URI,ZList) 
+%
+%    
+context_autocorr.pl
+%%   data_table(URI, table(ZTable)) 
+%
+%    
+context_autocorr.pl
+%%   data_service(Request) 
+%
+%    
+context_autocorr.pl
+%%   collect_info(Lat, Lon, ['U'=URI, 'D'=Df, 'theta'=Lf, 'Q'=Q, 'E'=Err,
+%
+%    
+context_autocorr.pl
+%%   run_sections 
+%
+%    
+context_autocorr.pl
+%%   run_all_sections 
+%
+%    
+context_autocorr.pl
+%%   aggregate_info(URI) 
+%
+%    
+context_autocorr.pl
+%%   aggregate_all_sections 
+%
+%    
+context_autocorr.pl
+%%   find_all_elevs(X,Z, Total) 
+%
+%    
+context_autocorr.pl
+%%   sum_all_sections 
+%
+%    
+context_autocorr.pl
+%%   ou_maxent_model(N,D,L,X,Y, Result)
+%
+%    
+context_browse.pl
+%%   create_list([]) --> [].
+%
+%    
+context_browse.pl
+%%   foundational(Subject, Link) 
+%
+%    
+context_browse.pl
+%%   link_view('', _, _, _Subject, _Docs) -->
+%
+%    
+context_browse.pl
+%%   link_view(Link, Target, Image, Subject, Text) -->
+%
+%    
+context_browse.pl
+%%   view_tree(Request, Subject) -->
+%
+%    
+context_browse.pl
+%%   navigate(+Request) 
+%
+%    Dynamic page to feaure browser
+
+context_clutter.pl
+%%   navigate(+Request)
+%
+%    Dynamic page to EMI clutter models
+
+context_clutter.pl
+%%   clutter_integrate(Parameter,X,Y) 
+%
+%    
+context_clutter.pl
+%%   other_fxn(Parameter,X,Y) 
+%
+%    
+context_clutter.pl
+%%   plot(Request) 
+%
+%    
+context_codegen.pl
+%%   symbolic_to_string(Symbolic, String) 
+%
+%    
+context_codegen.pl
+%%   generate_from_symbolic_skeleton(Begin, Inner, End, Code) 
+%
+%    
+context_complex.pl
+%%   real(R&_, R).
+%
+%    
+context_complex.pl
+%%   imag(_&I, I).
+%
+%    
+context_complex.pl
+%%   sum(Ra&Ia, Rb&Ib, Rc&Ic) 
+%
+%    
+context_complex.pl
+%%   product(Ra&Ia, Rb&Ib, Rc&Ic) 
+%
+%    
+context_complex.pl
+%%   magnitude(_, L, L, Final, F) 
+%
+%    
+context_complex.pl
+%%   absolute([],Final, F) 
+%
+%    
+context_complex.pl
+%%   reciprocal(_, L, L, _, _, Final, F) 
+%
+%    
+context_complex.pl
+%%   construct([], Xc, X) 
+%
+%    
+context_complex.pl
+%%   parse([], Xc, X, Yc, Y) 
+%
+%    
+context_complex.pl
+%%   tuple_list([], [], Initial, Final) 
+%
+%    
+context_complex.pl
+%%   fft(1, Ft, Ft) 
+%
+%    
+context_complex.pl
+%%   product_and_sum([], [], _, _, Ft, Ft).
+%
+%    
+context_complex.pl
+%%   evens_and_odds([], [], []).
+%
+%    
+context_complex.pl
+%%   w(     1, 1.0 & 0.0).
+%
+%    
+context_complex.pl
+%%   scale_down([], _S, Xc, X) 
+%
+%    
+context_complex.pl
+%%   fft_squared(X,Y, Sx, Sy) 
+%
+%
+context_complex.pl
+%%   fft_length(Input, Length) 
+%
+%    
+context_complex.pl
+%%   fft_pad(Input, Padded) 
+%
+%    
+context_corrosion.pl
+%%   collect_component_materials(Metal, List) 
+%
+%    
+context_corrosion.pl
+%%   materials(Query, Resource, Title) 
+%
+%    
+context_corrosion.pl
+%%   corrosion_components(Request) 
+%
+%    
+context_corrosion.pl
+%%   navigate(+Request) 
+%
+%    Dynamic page to corrosion models
+
+context_corrosion.pl
+%%   check_margin(Z, Limit, 'Margin failed') 
+%
+%
+context_corrosion.pl
+%%   get_location(Characteristic, Lat, Lon, Location_Name, Class, EC, Examples) 
+%
+%    
+context_corrosion.pl
+%%   corrosionModel(Diff, Drag, X0, T*Time, Z*Thickness) 
+%
+%    
+context_corrosion.pl
+%%   plot(Request) 
+%
+%    
+context_corrosion.pl
+%%   standard(Names) 
+%
+%    
+context_corrosion.pl
+%%   scale([Value, Env, Ext, Int, Steel, Zinc, Units]) 
+%
+%    
+context_corrosion.pl
+%%   corrosion_scale_table(_Request) 
+%
+%    
+context_csir.pl
+%%   path_to_obstacles_files(
+%
+%    
+context_csir.pl
+%%   get_all_course_files(List) 
+%
+%    
+context_csir.pl
+%%   csv_name_file_pair(Name, Pred, FilePath) 
+%
+%    
+context_csir.pl
+%%   capture(URI) 
+%
+%    
+context_csir.pl
+%%   generate 
+%
+%    
+context_data_files.pl
+%%   directory_location(obstacles,
+%
+%    
+context_data_files.pl
+%%   file_json(obstacles, 'ATC-MTA-3InchSpacedBump.JSON').
+%
+%    
+context_data_files.pl
+%%   storeRDF(A, E, B, C) 
+%
+%    
+context_data_files.pl
+%%   prefix('ent').
+%
+%    
+context_data_files.pl
+%%   make_name(Name, Ent, E) 
+%
+%    
+context_data_files.pl
+%%   read_json(FN) 
+%
+%    
+context_data_files.pl
+%%   populate_rdf_with_file_data(Class) 
+%
+%    
+context_dbpedia.pl
+%%   get_uri(Location, URI) 
+%
+%    
+context_dbpedia.pl
+%%   get_lat_lon(Location, Lat, Lon) 
+%
+%    
+context_dbpedia.pl
+%%   get_depiction(Location, Image) 
+%
+%    
+context_dbpedia.pl
+%%   get_page(Location, Page) 
+%
+%    
+context_demos.pl
+%%   terrain_selection(Name) -->
+%
+%    
+context_demos.pl
+%%   navigate(+Request)
+%
+%    Dynamic page to secondary demos
+
+context_demos.pl
+%%   exponential_sample_draw(+Result)
+%
+%    
+context_demos.pl
+%%   exp_slopes(_,R) -->
+%
+%    
+context_demos.pl
+%%   json_complete(x(_,[]), y(_,[],_), In, Out) 
+%
+%    
+context_demos.pl
+%%   json_concat(x(X,S), y(Y,P,Shape), In, Out) 
+%
+%    
+context_demos.pl
+%%   exp_slopes_json(X,Y,ID,M,R) -->
+%
+%    
+context_demos.pl
+%%   bessel_slopes(_,R) -->
+%
+%    
+context_demos.pl
+%%   two_random_walker_csv(_,  _, 0, Out, Out).
+%
+%    
+context_demos.pl
+%%   dygraph(_) 
+%
+%    
+context_demos.pl
+%%   dygraph_test(_) 
+%
+%    
+context_demos.pl
+%%   random_walker(_, 0, In, Out) 
+%
+%    
+context_demos.pl
+%%   charting(_) 
+%
+%    
+context_demos.pl
+%%   gross_terrain_compute(Mean_Slope, 'local', 'pdf', _, _) 
+%
+%
+context_demos.pl
+%%   gross_terrain(+Request)
+%
+%    Demo of a gross-terrain slope model
+
+context_demos.pl
+%%   get_elevation(+Request)
+%
+%    
+context_demos.pl
+%%   median_slope(0.039).
+%
+%    
+context_demos.pl
+%%   nominal_mileage(10.0).
+%
+%    
+context_demos.pl
+%%   sample_data(_) 
+%
+%    
+context_demos.pl
+%%   http
+%
+%    
+context_demos.pl
+%%   reference_name('TOC', 'TheOilConundrum.pdf').
+%
+%    
+context_demos.pl
+%%   reference_link(Name, Dest, Link) 
+%
+%    
+context_demos.pl
+%%   find_maximum_density('material', 1).
+%
+%    
+context_demos.pl
+%%   max_density_example(_) 
+%
+%    
+context_demos.pl
+%%   find_wind_ref_example(_) 
+%
+%    
+context_demos.pl
+%%   find_requirement_example(_) 
+%
+%    
+context_demos.pl
+%%   sample_alg_example(_) 
+%
+%    
+context_demos.pl
+%%   frequencies(S, _, Result, Result) 
+%
+%    
+context_demos.pl
+%%   delayed_exponent(L, Alpha, S, R)
+%
+%    
+context_demos.pl
+%%   two_level_model(L1, Alpha1, L2, Alpha2, S, R) 
+%
+%    
+context_demos.pl
+%%   two_level_spectrum(_, _, _, _, S, Result, Result) 
+%
+%    
+context_demos.pl
+%%   builtin_complex(Length, Scale, F, Result) 
+%
+%    
+context_demos.pl
+%%   construct_psd([], [], Out, Out).
+%
+%    
+context_demos.pl
+%%   complex_psd(+Request)
+%
+%    Demo of a PSD generated from a Markov model
+
+context_demos.pl
+%%   complex_psd_semi_markov(+Request)
+%
+%    Demo of a PSD generated from a semi-Markov model
+
+context_demos.pl
+%%   semi(_) 
+%
+%    
+context_demos.pl
+%%   semi_fft(_) 
+%
+%    
+context_demos.pl
+%%   demo(_) 
+%
+%    
+context_demos.pl
+%%   demo_ou(_) 
+%
+%    
+context_demos.pl
+%%   model_index(+Request) 
+%
+%    Demo of a guided model characteristic
+
+context_demos.pl
+%%   model_format(+Request)
+%
+%    Demo of a guided model characteristic
+
+context_demos.pl
+%%   model_characteristic(+Request)
+%
+%    Demo of a guided model characteristic
+
+context_demos.pl
+%%   generate_random_walk_1(X, Z) 
+%
+%
+context_demos.pl
+%%   generate_random_walk_2(Period, X, Z) 
+%
+%    
+context_demos.pl
+%%   sos(+Request)
+%
+%    Demo of a fine-terrain generated from superposition of sines vis PSD
+
+context_demos.pl
+%%   sos_config(+Request)
+%
+%    Demo of a fine-terrain generated from superposition of sines vis PSD
+
+context_elements.pl
+%%   element(option([label(Name), value(El)],[Name])) 
+%
+%    
+context_elements.pl
+%%   navigate(+Request) 
+%
+%    Dynamic page to periodic table of elements
+
+context_elements.pl
+%%   registry(ID, a([href(U),target(target_iframe)],
+%
+%    
+context_elements.pl
+%%   property(+Request)
+%
+%    Dynamic page to periodic table of elements properties
+
+context_elements.pl
+%%   row(Row, Period) 
+%
+%    
+context_elements.pl
+%%   spacer(N, td([colspan(N)],[])).
+%
+%    
+context_elements.pl
+%%   span('He', T) 
+%
+%    
+context_elements.pl
+%%   cell_color('Actinoid', 'Wheat').
+%
+%    
+context_elements.pl
+%%   periodic_row(_,[]) --> !.
+%
+%    
+context_elements.pl
+%%   periodic_table(_,[]) --> !.
+%
+%    
+context_elements.pl
+%%   table(+Request)
+%
+%    Render the periodic table of elements
+
+context_emi.pl
+%%   emi_doc('foundation/cable_EMI_susceptibility.pdf').
+%
+%    
+context_emi.pl
+%%   ref(Key, Contents) -->
+%
+%    
+context_emi.pl
+%%   navigate(+Request) 
+%
+%    Dynamic page to EMI models and documentation
+
+context_file_reading.pl
+%%   get_context_dir(Path) 
+%
+%    
+context_file_reading.pl
+%%   download(+Request)
+%
+%
+context_file_reading.pl
+%%   read_tabbed_csv(FN, X, Y, Arity, Data) 
+%
+%    
+context_file_reading.pl
+%%   parse([], Xc, X, Yc, Y) 
+%
+%    
+context_file_reading.pl
+%%   read_tabbed_csv(FN, X, Y, Arity, XV, YV) 
+%
+%    
+context_file_reading.pl
+%%   excluded([
+%
+%    
+context_file_reading.pl
+%%   is_dir(Path, File, Dir) 
+%
+%    
+context_file_reading.pl
+%%   print_if_files_in_dir(File) 
+%
+%    
+context_file_reading.pl
+%%   if_file_found(Dir, File, FilePath) 
+%
+%    
+context_file_reading.pl
+%%   traverse_dirs(_Path, []).
+%
+%    
+context_file_reading.pl
+%%   traverse(Root) 
+%
+%    
+context_file_reading.pl
+%%   find(File, FilePath)
+%
+%    
+context_file_reading.pl
+%%   crawl(_Request) 
+%
+%    
+context_fording.pl
+%%   collect_names_options(List) 
+%
+%    
+context_fording.pl
+%%   navigate(+Request)
+%
+%    Dynamic page to stream and river flow rate and fording models
+
+context_fording.pl
+%%   speed_scaling(AreaUnits, Factor, Cross, X, Y) 
+%
+%    
+context_fording.pl
+%%   power_raise(X, Y) 
+%
+%    
+context_fording.pl
+%%   log_factor(0.1).
+%
+%    
+context_fording.pl
+%%   plot(+Request)
+%
+%    Plotting the stream flow CDF
+
+context_fording.pl
+%%   non_zero([], [], Range, Data, RFinal, DFinal) 
+%
+%    
+context_friction.pl
+%%   standard(Names) 
+%
+%    
+context_friction.pl
+%%   coeff([Value, Desc, DSF, DFF, WSF, WFF, Constraint, Note]) 
+%
+%    
+context_friction.pl
+%%   coefficient_friction_table(_Request) 
+%
+%    
+context_functions.pl
+%%   complement(X, Y) 
+%
+%    
+context_functions.pl
+%%   random_phase(_,V) 
+%
+%    
+context_functions.pl
+%%   exp(Mean, X, Y) 
+%
+%    
+context_functions.pl
+%%   depth_constants(2.7, 1.05).
+%
+%    
+context_functions.pl
+%%   depth_factor(Mean, Depth, X, F) 
+%
+%    
+context_functions.pl
+%%   bessel_seastate(Order, Mean, Depth, pdf, X, Y) 
+%
+%    
+context_functions.pl
+%%   root_sea_state(M,D,YP,X) 
+%
+%    
+context_functions.pl
+%%   exp(Mean, pdf, X, Y) 
+%
+%    
+context_functions.pl
+%%   power_law_2(Median, pdf, X, Y) 
+%
+%    
+context_functions.pl
+%%   power_law_2_area(Median, pdf, X, Y) 
+%
+%
+context_functions.pl
+%%   exp_area(Mean, pdf, X, Y) 
+%
+%    
+context_functions.pl
+%%   besselk0(Mean, pdf, X, Y) 
+%
+%    
+context_functions.pl
+%%   besselk0_sqrt(Mean, pdf, X, Y) 
+%
+%    
+context_functions.pl
+%%   diffusion_accel(Diff, Accel, pdf, X, Y) 
+%
+%    
+context_functions.pl
+%%   pierson_moskowitz(Mean, pdf, X, Y) 
+%
+%    
+context_functions.pl
+%%   thermal_dispersion(Mean, Mag, X, Result) 
+%
+%    
+context_functions.pl
+%%   besselk1(Mean, X, Y) 
+%
+%    
+context_functions.pl
+%%   corrected_bessel(Mean, _Depth, X, Y) 
+%
+%    
+context_functions.pl
+%%   besselk1_sqrt(Mean, X, Y) 
+%
+%    
+context_functions.pl
+%%   power_law_2_pdf_symbolic(Median, X, Y) 
+%
+%    
+context_functions.pl
+%%   power_law_2_cdf(Median, X, Y) 
+%
+%    
+context_functions.pl
+%%   power_law_2_sampling(Median,_,Variate) 
+%
+%    
+context_functions.pl
+%%   exponential_pdf_symbolic(Mean, X, Y) 
+%
+%    
+context_functions.pl
+%%   exponential_pdf(Mean, X, Y) 
+%
+%    
+context_functions.pl
+%%   exponential_cdf_symbolic(Mean, X, Y)
+%
+%    
+context_functions.pl
+%%   exponential_cdf(Mean, X, Y) 
+%
+%    
+context_functions.pl
+%%   exponential_sampling(Mean,_,Variate) 
+%
+%    
+context_functions.pl
+%%   besselk_1_cdf(Mean, X_Array, Y_Array) 
+%
+%    
+context_functions.pl
+%%   besselk_0_pdf(Mean, X_Array, Y_Array) 
+%
+%    
+context_functions.pl
+%%   besselk_1_sampling(Mean,_,Variate) 
+%
+%    
+context_geo.pl
+%%   ll_to_utm(Lat, Lon, Zone, Easting, Northing) 
+%
+%    
+context_geo.pl
+%%   zone_from_section_designator(Info, Zone) 
+%
+%    
+context_geo.pl
+%%   get_elevation(Lat, Lon, Elev) 
+%
+%    
+context_geo.pl
+%%   genRequestPairs([[Lat],[Lon]], Li, List) 
+%
+%    
+context_geo.pl
+%%   collectResponse([], List, List).
+%
+%    
+context_geo.pl
+%%   get_elevation(LatLonList, ElevList) 
+%
+%    
+context_geo.pl
+%%   get_elevation_path(LatLonList, Samples, ElevList) 
+%
+%    
+context_geo.pl
+%%   get_elevation(Easting, Northing, Zone, Southhemi, Elev) 
+%
+%    
+context_geo.pl
+%%   convert_lat_lon([[],[]], _, _, List, List).
+%
+%
+context_geo.pl
+%%   get_elevation(EastingNorthingList, Zone, Southhemi, Elev) 
+%
+%    
+context_geo.pl
+%%   get_elevation_path(EastingNorthingList, Zone, Southhemi, Samples, Elev) 
+%
+%    
+context_geo.pl
+%%   get_elevation_current_dem(X,Y,Elev) 
+%
+%    
+context_geo.pl
+%%   find_dem_section(Lat, Lon, Name, Info) 
+%
+%    
+context_geo.pl
+%%   store_dem_pos(_Name, [[]], _, _) 
+%
+%    
+context_geo.pl
+%%   store_dem_row(_Name, [[]], _) 
+%
+%    
+context_geo.pl
+%%   prep_dem_section(Name) 
+%
+%    
+context_geo.pl
+%%   cleanup_dem 
+%
+%    
+context_geo.pl
+%%   size_of_dem(L) 
+%
+%    
+context_geo.pl
+%%   find_elev(Distance, DiffElev, (DX,DE)) 
+%
+%    
+context_geo.pl
+%%   label_elev(Distance, DiffElev) 
+%
+%    
+context_geo.pl
+%%   store_elev_diff(Distance, DiffElev) 
+%
+%    
+context_geo.pl
+%%   count_elev(Distance) 
+%
+%    
+context_geo.pl
+%%   find_elevs(Distance, DiffElev, N) 
+%
+%    
+context_geo.pl
+%%   label_elevs(N)
+%
+%    
+context_geo.pl
+%%   count_elevs 
+%
+%    
+context_geo.pl
+%%   save_file_json 
+%
+%    
+context_geo.pl
+%%   write_triple([X,Y,Z]) 
+%
+%    
+context_geo.pl
+%%   save_file_csv 
+%
+%    
+context_geo.pl
+%%   grid_values_y(X) 
+%
+%    
+context_geo.pl
+%%   grid_values_x 
+%
+%    
+context_geo.pl
+%%   grid_values_y(Name, X) 
+%
+%    
+context_geo.pl
+%%   grid_values_x(Name) 
+%
+%    
+context_geo.pl
+%%   save_file_grid(N) 
+%
+%    
+context_geo.pl
+%%   calc_diff(D0, D1, L) 
+%
+%    
+context_geo.pl
+%%   save_file_grid(N, Name) 
+%
+%    
+context_geo.pl
+%%   plot_ac 
+%
+%    
+context_graphing.pl
+%%   is_log(lin, 0).
+%
+%    
+context_graphing.pl
+%%   json_complete(x(_,[]), y(_,[],_), In, Out) 
+%
+%
+context_graphing.pl
+%%   json_concat(x(X,S), y(Y,P,Shape), In, Out) 
+%
+%    
+context_graphing.pl
+%%   construct_json(X, Y, ID, [[V]], [[P]], In, Out) 
+%
+%    
+context_graphing.pl
+%%   pre_scatter_script_load -->
+%
+%    
+context_graphing.pl
+%%   scatter_script_load -->
+%
+%    
+context_graphing.pl
+%%   scatter_plot(LogScale,XAxis,YAxis,[X,Y]) -->
+%
+%    
+context_graphing.pl
+%%   scatter_plot(LogScale,X,Y,Data) -->
+%
+%    
+context_graphing.pl
+%%   pre_chart_script_load -->
+%
+%    
+context_graphing.pl
+%%   chart_script_load -->
+%
+%    
+context_graphing.pl
+%%   chart_plot(Log, Xaxis, Yaxis, Title, Data) -->
+%
+%    
+context_graphing.pl
+%%   check_list(X,QX) 
+%
+%    
+context_graphing.pl
+%%   check_data('',X,X) 
+%
+%    
+context_graphing.pl
+%%   dygraph_script_load -->
+%
+%    
+context_graphing.pl
+%%   pre_dygraph_script_load -->
+%
+%    
+context_graphing.pl
+%%   dygraph_plot(LogScale, Headings, Xaxis, Yaxis, Title, Data) -->
+%
+%    
+context_graphing.pl
+%%   dygraph_native(LogScale, Headings, Xaxis, Yaxis, Title, Data) -->
+%
+%    
+context_graphing.pl
+%%   dygraph_error_bars(LogScale, Headings, Xaxis, Yaxis, Title, Data) -->
+%
+%    
+context_graphing.pl
+%%   construct_csv([], Out, Out).
+%
+%    
+context_graphing.pl
+%%   quote_string(Term, Term) 
+%
+%    
+context_graphing.pl
+%%   concat_strings(List, Quoted_String) 
+%
+%    
+context_graphing.pl
+%%   axis_label(Label, Units, Output) 
+%
+%    
+context_graphing.pl
+%%   plain_axis_label(Label, Units, Name) 
+%
+%    
+context_graphing.pl
+%%   plot(dynamic, LogScale, Headings, Xaxis, Yaxis, Title, Data) -->
+%
+%    
+context_graphing.pl
+%%   plot_log(false, Headings, Xaxis, Yaxis, Title, Data) -->
+%
+%    
+context_graphing.pl
+%%   pre_map_load -->
+%
+%    
+context_graphing.pl
+%%   map_native(Lat, Lon, Title) -->
+%
+%    
+context_graphing.pl
+%%   get_elevation(Lat, Lon) -->
+%
+%    
+context_lakes.pl
+%%   navigate(+Request) 
+%
+%    Dynamic page to lake models
+
+context_lakes.pl
+%%   plot_chart(+Request)
+%
+%    Plot ice-out data over a historical range of interest
+
+context_lakes.pl
+%%   set_yearly_range(+Request) 
+%
+%    
+context_lakes.pl
+%%   minnesota_dnr_ice_out('http
+%
+%    
+context_lakes.pl
+%%   assert_temperature(Name, Lat, Year, Month, Date, Days) 
+%
+%    
+context_lakes.pl
+%%   store_record(Term) 
+%
+%    
+context_lakes.pl
+%%   get_ice_out(Year) 
+%
+%    
+context_lakes.pl
+%%   remove_temperatures 
+%
+%    
+context_lakes.pl
+%%   temperature_lat(Lat_Range,Year,Time) 
+%
+%    
+context_lakes.pl
+%%   lat_list(FN, Lat, Years, Times, N, Slope) 
+%
+%
+context_lakes.pl
+%%   get_all_records(1843).
+%
+%    
+context_lightning.pl
+%%   navigate(+Request) 
+%
+%    Dynamic page to lightning models
+
+context_lightning.pl
+%%   lightningA(I0,Alpha,Beta,X*_Units,Y) 
+%
+%    
+context_lightning.pl
+%%   lightningD(I0,Alpha,Beta,X*_Units,Y) 
+%
+%    
+context_lightning.pl
+%%   plot(+Request)
+%
+%    Plot the lightning stroke temporal profile
+
+context_lightning.pl
+%%   effects_table([CC, Desc, I0, Alpha, Beta, PeakI, ActionInt, Decay50, Time10, Time90, TimePeak, RR, PRR]) 
+%
+%    
+context_lookup.pl
+%%   nth(Input, Table, Output) 
+%
+%
+context_lookup.pl
+%%   lookup_table(Scale, Offset, Table, Input, Output) 
+%
+%    
+context_lookup.pl
+%%   lookup_list(xlist=Xlist,
+%
+%    
+context_main.pl
+%%   server(Port) 
+%
+%    
+context_main.pl
+%%   nav_aids(Key, Path, Title) -->
+%
+%    
+context_main.pl
+%%   index_page(+Request)
+%
+%    Main index page for context server
+
+context_main.pl
+%%   run_unit_tests(_Request) 
+%
+%    
+context_main.pl
+%%   acronym_list(_Request) 
+%
+%    
+context_map.pl
+%%   minutes_to_degrees((Deg,Min,Sec), Degrees) 
+%
+%    
+context_map.pl
+%%   get_location(URI, Lat, Lon, Title) 
+%
+%    
+context_map.pl
+%%   view(+Request)
+%
+%    
+context_map.pl
+%%   available_location(Locale, Title, Model, Feature)
+%
+%
+context_map.pl
+%%   navigate_locale(+Request)
+%
+%    Dynamic page to geospatial location search
+
+context_map.pl
+%%   find_locs(-Option)
+%
+%    Generates selection options
+
+context_map.pl
+%%   find_loc(Query, URI, Title)
+%
+%
+context_map.pl
+%%   find_example(Query, URI, Title)
+%
+%
+context_map.pl
+%%   autocompletions(Query, Max, Count, Completions)
+%
+%
+context_map.pl
+%%   ac_result([Obj,Type], json([ label=Type,
+%
+%
+context_map.pl
+%%   find_locale(+Request)
+%
+%
+context_map.pl
+%%   navigate(+Request)
+%
+%    Dynamic page to geospatial search
+
+context_map.pl
+%%   max_lat(52.5).
+%
+%    
+context_map.pl
+%%   min_lat(23.5).
+%
+%
+context_map.pl
+%%   max_lon(-52.5).
+%
+%    
+context_map.pl
+%%   min_lon(-125.5).
+%
+%    
+context_map.pl
+%%   image_width(350).   %250
+%
+%    
+context_map.pl
+%%   image_height(210).  %150
+%
+%    
+context_map.pl
+%%   get_ll_extent(Lat, Lon, X, Y, W, H) 
+%
+%    
+context_map.pl
+%%   section_name(Lat, Lon, Title) 
+%
+%    
+context_map.pl
+%%   lon_regions(_URI, _Target, _Lat, Lon) -->
+%
+%    
+context_map.pl
+%%   lat_regions(_URI, _Target, Lat, _Lon) -->
+%
+%    
+context_map.pl
+%%   usa_map(URI,Target) -->
+%
+%    
+context_materials.pl
+%%   navigate(+Request)
+%
+%    Dynamic page to materials properties index
+
+context_math.pl
+%%   separate([], Xc, X) 
+%
+%    
+context_math.pl
+%%   dotproduct([],[],Final,Final).
+%
+%    
+context_math.pl
+%%   dotexpand([],[],Initial,Final) 
+%
+%    
+context_math.pl
+%%   dotdivision([],[],Final,Final).
+%
+%    
+context_math.pl
+%%   dotexpanddiv([],[],Initial,Final) 
+%
+%    
+context_math.pl
+%%   dotexpandsum([],[],Initial,Final) 
+%
+%    
+context_math.pl
+%%   dotexpandsubtract([],[],Initial,Final) 
+%
+%    
+context_math.pl
+%%   dotscale(_,[],Initial,Final) 
+%
+%    
+context_math.pl
+%%   dotadd(_,[],Initial,Final) 
+%
+%    
+context_math.pl
+%%   ones_list([], _, Final, Final).
+%
+%    
+context_math.pl
+%%   ones(0, _, Final, Final).
+%
+%    
+context_math.pl
+%%   constants(Length, Scalar, Final)
+%
+%    
+context_math.pl
+%%   uniform(Length, Final) 
+%
+%    
+context_math.pl
+%%   number_line(Start, End, Final, Final) 
+%
+%    
+context_math.pl
+%%   linear_range(Start, End, Range) 
+%
+%    
+context_math.pl
+%%   linear_fractional_range(Start, End, Fraction, Range) 
+%
+%    
+context_math.pl
+%%   number_log(Start, End, _, Final, Final) 
+%
+%    
+context_math.pl
+%%   log_range(Start, End, Frac, Range) 
+%
+%    
+context_math.pl
+%%   units_apply([], _Decoration, In, Out) 
+%
+%    
+context_math.pl
+%%   gather_map([], _Z, X, X).
+%
+%    
+context_math.pl
+%%   convolution([],[],_,_,Initial,Final) 
+%
+%    
+context_math.pl
+%%   padZerosPrep([], [], L, L1) 
+%
+%    
+context_math.pl
+%%   padZeros(La0, Lb0, La1, Lb1)
+%
+%    
+context_math.pl
+%%   change_sign(X, Y) 
+%
+%    
+context_math.pl
+%%   derive(X,Y,Initial,Derivatives) 
+%
+%    
+context_math.pl
+%%   accumulation([], [], _, _, Probs, Final) 
+%
+%
+context_math.pl
+%%   integral(X,Y,Initial,Running_Integral) 
+%
+%    
+context_math.pl
+%%   cumulative_histogram(List, Variates, Probs) 
+%
+%    
+context_math.pl
+%%   derivatives([], [], _, _, Probs, Final) 
+%
+%    
+context_math.pl
+%%   subtract([], [], In, Final) 
+%
+%    
+context_math.pl
+%%   tuple_merge([],[],Initial,Final) 
+%
+%    
+context_math.pl
+%%   strip([],Initial,Final) 
+%
+%    
+context_math.pl
+%%   histogram(List, Variates, Probs) 
+%
+%    
+context_math.pl
+%%   list_summer([], Total, Total).
+%
+%    
+context_math.pl
+%%   sum_list(List, Sum) 
+%
+%    
+context_math.pl
+%%   truncate(_, [], Init, Final) 
+%
+%    
+context_math.pl
+%%   sconvolution(Y,Window,Initial,Final) 
+%
+%    
+context_math.pl
+%%   intersect(_, [], F, Final) 
+%
+%    
+context_math.pl
+%%   intersect_and_pad([], L, F, Final) 
+%
+%    
+context_math.pl
+%%   reduce_by(0, X, X).
+%
+%    
+context_math.pl
+%%   split_n(_N, [], Xc, X)
+%
+%    
+context_math.pl
+%%   splitter(0, _Tuples, List, List).
+%
+%    
+context_math.pl
+%%   index(List, Pos, Index) 
+%
+%    
+context_math.pl
+%%   spatial(List, Pos, Value) 
+%
+%    
+context_model.pl
+%%   css(URL) -->
+%
+%    
+context_model.pl
+%%   row(Characteristic,
+%
+%    
+context_model.pl
+%%   navigate(+Request)
+%
+%    Dynamic page to indexed PDF models
+
+context_model.pl
+%%   distribution(pdf, 'Probability Density').
+%
+%
+context_model.pl
+%%   present_and_next_state(Present, Units, Dist, DistUnits, Next)
+%
+%
+context_model.pl
+%%   flip_log(true, false, 'Semi-Log Scale').
+%
+%    
+context_model.pl
+%%   display(Model, Render, Dist, Scale*Xaxis, LogLog) 
+%
+%    
+context_model.pl
+%%   find_random_slot(List, Value) 
+%
+%    
+context_model.pl
+%%   get_sample(_*Dist, Sample) 
+%
+%    
+context_model.pl
+%%   data_generator(+Request)
+%
+%    Generates monte-carlo data from PDF models
+
+context_model.pl
+%%   code_generator(+Request)
+%
+%    Generates code for drawing from monte-carlo model
+%    @tbd stub
+
+context_model.pl
+%%   data_service(+Request)
+%
+%    Link to web service for accessing monte-carlo data
+
+context_model.pl
+%%   apply(+Request) 
+%
+%    
+context_model.pl
+%%   find_optional_units(Named_Unit,NList,DList) 
+%
+%    
+context_obstacles.pl
+%%   rdf_data(ID, Name) 
+%
+%    
+context_obstacles.pl
+%%   get_all_obstacle_sets(List) 
+%
+%    
+context_obstacles.pl
+%%   navigate(+Request)
+%
+%    Dynamic page to obstacle models
+
+context_obstacles.pl
+%%   read_rdf(URI, UX, UY, [DataX, DataY, DataZ], 'X,Z1,Z2') 
+%
+%    
+context_obstacles.pl
+%%   download(+Request)
+%
+%    Download obstacle profile as a text file
+
+context_obstacles.pl
+%%   plot_fft(+Request)
+%
+%    Plot FFT of obstacle profile
+
+context_obstacles_csv.pl
+%%   get_all_obstacle_files(List) 
+%
+%    
+context_obstacles_csv.pl
+%%   navigate(_)
+%
+%    Dynamic page to CSV obstacle files
+%    @deprecated *context_obstacles:navigate*
+
+context_obstacles_csv.pl
+%%   read_csv(+Request) 
+%
+%    
+context_ont_utils.pl
+%%   navigate(_)
+%
+%    Dynamic page to ontological utilities
+
+context_ont_utils.pl
+%%   load_resource(File)
+%
+%
+context_ont_utils.pl
+%%   load_data(+Request) 
+%
+%    
+context_ont_utils.pl
+%%   print_all_subjects 
+%
+%    
+context_ont_utils.pl
+%%   any_model_index(_Request) 
+%
+%    
+context_ont_utils.pl
+%%   write_object(Name) 
+%
+%    
+context_ont_utils.pl
+%%   find_ent_predicates(_Request) 
+%
+%    
+context_ont_utils.pl
+%%   find_ent_subjects(_Request)  
+%
+%    
+context_ont_utils.pl
+%%   find_ent_objects(_Request)
+%
+%    
+context_ont_utils.pl
+%%   restart(_Request) 
+%
+%    
+context_ou.pl
+%%   ou_variance(D,Theta,X,Y) 
+%
+%    
+context_ou.pl
+%%   maxent_ou_variance(_D,_Theta,_Flat,0,0).
+%
+%    
+context_ou.pl
+%%   maxent_ou_mean(_D,_Theta,_Flat,0,0).
+%
+%    
+context_ou.pl
+%%   maxent_ou_sum(_D,_Theta,_Flat,0,0).
+%
+%    
+context_ou.pl
+%%   ou_model(_D,_Theta,0,0) 
+%
+%
+context_ou.pl
+%%   make_df(X,Y)
+%
+%
+context_ou.pl
+%%   multi_regression(Lbar)
+%
+%
+context_ou.pl
+%%   mr(LS)
+%
+%
+context_ou.pl
+%%   exp_regression(URI, X, Lbar)
+%
+%
+context_ou.pl
+%%   find_theta(URI, X1, X2, Theta, D)
+%
+%
+context_ou.pl
+%%   find_avg(URI, Theta,D)
+%
+%
+context_ou.pl
+%%   pair_summer([], Total, Total).
+%
+%
+context_ou.pl
+%%   pair_sum(List, Sum)
+%
+%
+context_ou.pl
+%%   calc_avg(URI, Theta, Diffusion)
+%
+%
+context_ou.pl
+%%   xrange(0,40).
+%
+%
+context_ou.pl
+%%   yrange(0,20).
+%
+%
+context_ou.pl
+%%   scale(Size)
+%
+%
+context_ou.pl
+%%   y(URI, X, YElev)
+%
+%
+context_ou.pl
+%%   var(URI, X, Var)
+%
+%
+context_ou.pl
+%%   multivar(URI, Vars)
+%
+%
+context_ou.pl
+%%   rms_data(URI, Vars)
+%
+%
+context_ou.pl
+%%   mean(URI, X, Mean)
+%
+%
+context_ou.pl
+%%   multimean(URI, Means)
+%
+%
+context_ou.pl
+%%   mean_data(URI, Means)
+%
+%
+context_ou.pl
+%%   setup_parameters
+%
+%
+context_ou.pl
+%%   mean_from_ou(data(X,Y),Diffusion,Drag,Flatness,Error)
+%
+%
+context_ou.pl
+%%   deviation_from_ou(data(X,Y),Diffusion,Drag,Flatness,Error)
+%
+%
+context_ou.pl
+%%   find_min([], Min, Min).
+%
+%
+context_ou.pl
+%%   find_minimum(List, Min, Param)
+%
+%
+context_ou.pl
+%%   optimize_rms(URI, Diffusion, Drag, Flat, Err)
+%
+%
+context_ou.pl
+%%   optimize_mean(URI, Diffusion, Drag, Flat, Err)
+%
+%
+context_params.pl
+%%   param(domain, [oneof([slopes,wind,lakes,particles,rain,clutter,none]),
+%
+%
+context_pdf.pl
+%%   data
+%
+%
+context_pdf.pl
+%%   service_req('/context_pdf/process?locale=conus&property=terrain_slopes&operation=sample&quantity=1').
+%
+%
+context_pdf.pl
+%%   plot_table(Title, X, Mean, Min, Max, Delta, Log) -->
+%
+%
+context_pdf.pl
+%%   render_pdf_artifacts(Title, X, Mean, Min, Max, Delta, Log)
+%
+%
+context_pdf.pl
+%%   plot_pdf(besselk1, Mean, Min, Max, Delta, X, Title, Log)
+%
+%
+context_pdf.pl
+%%   sampling_power_law(Median,_,V)
+%
+%
+context_pdf.pl
+%%   sample_from_pdf(besselk1, Mean, 1, X, Title, _)
+%
+%
+context_pdf.pl
+%%   plot_directed_graph
+%
+%
+context_pdf.pl
+%%   process(+Request)
+%
+%    Example dynamic page for generating a PDF, from *example*
+
+context_pdf.pl
+%%   loglin(+Request)
+%
+%
+context_pdf.pl
+%%   encode_service(Hostname, Port, Cmd, Service)
+%
+%
+context_pdf.pl
+%%   generate_service(+Request)
+%
+%
+context_pdf.pl
+%%   example//
+%
+%    Example inline dynamic page for generating a PDF
+
+context_pdf.pl
+%%   log_or_linear(_, 1)
+%
+%
+context_pdf.pl
+%%   log_value(1, true).
+%
+%
+context_pdf.pl
+%%   check_log(Input, OutputLogical, OutputNumeric)
+%
+%
+context_physical.pl
+%%   rdf_units(Sub, Pred, Obj)
+%
+%
+context_physical.pl
+%%   find_entries(Name, List)
+%
+%
+context_physical.pl
+%%   find_units(List)
+%
+%
+context_physical.pl
+%%   navigate(+Request)
+%
+%    Dynamic page to physical parameters and constants
+
+context_physical.pl
+%%   rdf_old_units(ent
+%
+%    
+context_physical.pl
+%%   store_as_triples 
+%
+%    
+context_profile.pl
+%%   get_all_course_files(List) 
+%
+%    
+context_profile.pl
+%%   navigate(+Request)
+%
+%    Dynamic page to fine-terrain profiling using semi-Markov models
+
+context_profile.pl
+%%   window_filter(0, X, X) 
+%
+%    
+context_profile.pl
+%%   window_filter(N, X, Z) 
+%
+%    
+context_profile.pl
+%%   mc_model_component([], _, WW, WW).
+%
+%    
+context_profile.pl
+%%   mc_model(List, Filter, X, WWW) 
+%
+%    
+context_profile.pl
+%%   sync(W, S, Result) 
+%
+%    
+context_profile.pl
+%%   hat(W, Scale, S, Result) 
+%
+%    
+context_profile.pl
+%%   semi_markov_model_component([], _, WW, WW).
+%
+%    
+context_profile.pl
+%%   semi_markov_model(List, Weight, N, % XV,
+%
+%    
+context_profile.pl
+%%   process_profile(+Request)
+%
+%    Process specific selected terrain profile
+
+context_psd.pl
+%%   delayed_exponent(L, Alpha, S, R) 
+%
+%    
+context_psd.pl
+%%   two_level_model(L1, Alpha1, L2, Alpha2, Weight, S, R) 
+%
+%    
+context_psd.pl
+%%   two_level(Course_Name, S, Result) 
+%
+%    
+context_psd.pl
+%%   two_level(Course_Name, S, Result) 
+%
+%    
+context_psd_workflow.pl
+%%   rdf_data(ID, Name) 
+%
+%    
+context_psd_workflow.pl
+%%   get_all_psd_sets(List)
+%
+%    
+context_psd_workflow.pl
+%%   navigate(+Request)
+%
+%    Dynamic page to indexed fine-terrain power spectral densities
+
+context_psd_workflow.pl
+%%   read_rdf(URI, UX, UY, [DataX, DataY], 'X,Z') 
+%
+%    
+context_psd_workflow.pl
+%%   reference_name('TOPS1', '1-1-010_Vehicle_Test_Course_Severity__Surface_Roughness.pdf').
+%
+%    
+context_psd_workflow.pl
+%%   reference_link(Name, Dest, Link) 
+%
+%    
+context_psd_workflow.pl
+%%   read_rdf_data(+Request)
+%
+%    Process specific PSD data set
+
+context_psd_workflow.pl
+%%   sos([], _, _, _, Final, Final).
+%
+%    
+context_psd_workflow.pl
+%%   simulate_walk(+Request)
+%
+%    Monte carlo simulation from PSD data set
+
+context_psd_workflow.pl
+%%   soil_display(+Request)
+%
+%    Display soil categories
+
+context_psd_workflow_json.pl
+%%   path_to_tops_psd_files('../../../../Models/Land/terrains/grades_slopes/data/WaveNumberSpectra/LogSpaced/').
+%
+%    
+context_psd_workflow_json.pl
+%%   psd_name_file_pair(Name, FilePath) 
+%
+%    
+context_psd_workflow_json.pl
+%%   psd_index(_) 
+%
+%    
+context_psd_workflow_json.pl
+%%   get_all_tops_psd_files(List) 
+%
+%    
+context_psd_workflow_json.pl
+%%   psd_files(_) 
+%
+%    
+context_psd_workflow_json.pl
+%%   psd_results(_) 
+%
+%    
+context_psd_workflow_json.pl
+%%   plot_xy([], S, Result) 
+%
+%    
+context_psd_workflow_json.pl
+%%   create_data_list([],[],_,_,_,F,F).
+%
+%    
+context_psd_workflow_json.pl
+%%   read_psd_json(FN, [File,Name,Title,Date,DX,UX,DY,UY], Data, S,P) 
+%
+%    
+context_psd_workflow_json.pl
+%%   read_tops(+Request)
+%
+%                       
+context_query.pl
+%%   model_elements(option([value(Short)],[Name])) 
+%
+%    
+context_query.pl
+%%   owl(Query, Resource, Title) 
+%
+%    
+context_query.pl
+%%   ent_result(+Request)
+%
+%    Return matches from the "ent" namespace.
+
+context_query.pl
+%%   owl_result(+Request)
+%
+%    Return matches from the owl subclass scheme
+
+context_query.pl
+%%   triple(S,P,O) 
+%
+%    
+context_query.pl
+%%   pquery(+Request)
+%
+%    Generates a Prolog query and view the result.
+
+context_query.pl
+%%   navigate(+Request)
+%
+%    Dynamic page to general queries to the knowledge-base.
+
+context_r.pl
+%%   r_open_session
+%
+%
+context_r.pl
+%%   dquote(+X, -Y)
+%
+%    Double-quote ("") a term
+
+context_r.pl
+%%   rhist2d(X,Y) 
+%
+%    
+context_r.pl
+%%   rplot(X,Y) 
+%
+%    
+context_r.pl
+%%   rplot_with_regression(Image, X, Y, Title, X_Axis, Y_Axis, Slope) 
+%
+%    
+context_r_demo.pl
+%%   xy([], Xc, X, Yc, Y) 
+%
+%    
+context_r_demo.pl
+%%   xyz([], Xc, X, Yc, Y, Zc, Z) 
+%
+%    
+context_r_demo.pl
+%%   r_open_session 
+%
+%    
+context_r_demo.pl
+%%   open_mat(N, Lat, Lon) 
+%
+%    
+context_r_demo.pl
+%%   rtest 
+%
+%
+context_r_demo.pl
+%%   rbessel 
+%
+%    
+context_r_demo.pl
+%%   delayed_exponent_R(L, Alpha, S, R) 
+%
+%    
+context_r_demo.pl
+%%   two_level_model_R(L1, Alpha1, L2, Alpha2, S, R) 
+%
+%    
+context_r_demo.pl
+%%   frequencies(S, _, Result, Result) 
+%
+%    
+context_r_demo.pl
+%%   two_level_spectrum_R(_, _, _, _, S, Result, Result) 
+%
+%    
+context_r_demo.pl
+%%   dquote(X, Y) 
+%
+%    
+context_r_demo.pl
+%%   r_complex(FileName) 
+%
+%    
+context_r_demo.pl
+%%   r_app(_) 
+%
+%    
+context_random_walk.pl
+%%   semi_run(L, A, Value) 
+%
+%    
+context_random_walk.pl
+%%   flip_step(L, A, R, R, Semi, Semi, Z, Z, L, A) 
+%
+%    
+context_random_walk.pl
+%%   semi_random_walker([], _Delta, _L, _A, _Z, _Semi, _Run, Out, Out).
+%
+%    
+context_random_walk.pl
+%%   two_level_random_walk(Course_Name, X, Z, Result) 
+%
+%    
+context_random_walk.pl
+%%   random_walker([], _, Out, Out).
+%
+%    
+context_random_walk.pl
+%%   ou_random_walker(_X1, _X2, _Drag, [], _, O, Out) 
+%
+%    
+context_rdf_data.pl
+%%   ref_m('fine terrain features',     model, '/context_select/navigate?category=fine_terrain').
+%
+%    
+context_rdf_data.pl
+%%   ref_(URL, feature, Feature) 
+%
+%    
+context_ref.pl
+%%   navigate(+Request)
+%
+%    Dynamic page to references and citation knowledgebase
+
+context_ref_search.pl
+%%   spec('humanEnvirStandards
+%
+%    
+context_ref_search.pl
+%%   foundation('humanResearch
+%
+%    
+context_ref_search.pl
+%%   requirement('humanDecision
+%
+%    
+context_ref_search.pl
+%%   objective('humanDecision
+%
+%    
+context_ref_search.pl
+%%   author_order('_1', 'lead author')
+%
+%    
+context_ref_search.pl
+%%   article_link(Article, Title, a(href(Link),Title) ) 
+%
+%    
+context_ref_search.pl
+%%   find_title(Name, tr([td(Full_Name), td(Order),td(b(Doc)), td(b(Link))])) 
+%
+%    
+context_ref_search.pl
+%%   cite(+Request)
+%
+%    Return references and citations according to criteria
+
+context_ref_search.pl
+%%   search_results(_,[]) -->
+%
+%    
+context_ref_search.pl
+%%   search_sweet(+Request)
+%
+%    Return references and citations which have the SWEET classification tag
+
+context_ref_search.pl
+%%   graph(+Request)
+%
+%    Plot the semantic graph of a reference search request
+
+context_ref_search.pl
+%%   find_context_requirement(Term, tr([td(Comment),
+%
+%    
+context_ref_search.pl
+%%   list_requirements(+Request) 
+%
+%    Display a list of applicable requirements to the search request
+
+context_render.pl
+%%   process_two_track(_, _, [_],[_],[_], Final, Final).
+%
+%    
+context_render.pl
+%%   process_xyz(_, _, [_],[_],[_], Final, Final).
+%
+%    
+context_render.pl
+%%   create(+Request)
+%
+%    Create a 3D representation according to a specific deterministic profile geometry
+
+context_render.pl
+%%   surface(+Request)
+%
+%
+
+context_render.pl
+%%   render(URI, Contents) 
+%
+%    
+context_require.pl
+%%   find_requirement_topics(option([value(Name)],[Local])) 
+%
+%
+context_require.pl
+%%   navigate(+Request)
+%
+%    Dynamic page to requirements lookup
+
+context_search.pl
+%%   find_requirement_topics(option([value(Name)],[Local])) 
+%
+%    
+context_search.pl
+%%   find_characteristics(option([value(Ch)],[Ch])) 
+%
+%    
+context_search.pl
+%%   find_pages(option([value(UID)],[UID])) 
+%
+%    
+context_search.pl
+%%   find_categories(option([value(Cat)],[NS, ' 
+%
+%    
+context_search.pl
+%%   model_elements(option([value(Short)],[Name])) 
+%
+%    
+context_search.pl
+%%   my_search_filter(+Request) 
+%
+%
+context_search.pl
+%%   owl(Query, Resource, Title) 
+%
+%    
+context_search.pl
+%%   owl_result(+Request)
+%
+%    Look-ahead filter to capture OWL subclassed terms
+
+context_search.pl
+%%   navigate(+Request)
+%
+%    Dynamic page to semantic term search
+
+context_search.pl
+%%   list_pages(+Request)
+%
+%    List dynamic pages relevant to the search terms
+
+context_search.pl
+%%   available_pages(Cat, Model, UID) 
+%
+%    
+context_search.pl
+%%   list_cats(+Request)
+%
+%    List categories relevant to the search terms
+
+context_seastate.pl
+%%   navigate(+Request)
+%
+%    Dynamic page to seatstate model
+
+context_seastate.pl
+%%   check_margin(Z, Limit, 'Margin failed') 
+%
+%    
+context_seastate.pl
+%%   find_cumulative_point(0.0, _, _, [0,1]).
+%
+%    
+context_seastate.pl
+%%   plot(+Request)
+%
+%    Graph the seastate model against the appropriate wave-height model
+
+context_seastate.pl
+%%   waveHeight(Mean, Depth,  H*Height, P*cdf) 
+%
+%    
+context_seastate.pl
+%%   sea_states([Value, Low, High, Units, Description]) 
+%
+%    
+context_seastate.pl
+%%   sea_state_low(Value, Low*Units) 
+%
+%    
+context_seastate.pl
+%%   sea_state_high(Value, High*Units) 
+%
+%
+context_seastate.pl
+%%   seastate_table(_Request) 
+%
+%    
+context_select.pl
+%%   ref_search(Term, Description) -->
+%
+%    
+context_select.pl
+%%   g(Type, Contents) -->
+%
+%    
+context_select.pl
+%%   icon_cell_link(Highlight,
+%
+%    
+context_select.pl
+%%   icon_bar(Highlight) -->
+%
+%    
+context_select.pl
+%%   dispatch(lakes) -->
+%
+%    
+context_select.pl
+%%   navigate(+Request)
+%
+%    Dynamic page to feature selection
+
+context_soil.pl
+%%   rdf_local(ent
+%
+%    
+context_soil.pl
+%%   soil_combination([C, Desc, TG, [Desc, ' containing ', Graininess]]) 
+%
+%    
+context_soil.pl
+%%   soil_table(_Request) 
+%
+%    
+context_soil.pl
+%%   soil_range(Element, li([i(Item), ' 
+%
+%    
+context_soil.pl
+%%   process_soil_types([], Input, Output) 
+%
+%    
+context_soil.pl
+%%   parse_request(Soils, List) 
+%
+%    
+context_soil.pl
+%%   soil_collect(Element, Item) 
+%
+%    
+context_soil.pl
+%%   collect_soil_types([], Input, Output) 
+%
+%    
+context_soil.pl
+%%   collect(Soils, List) 
+%
+%    
+context_soil.pl
+%%   search(Name, List) 
+%
+%    
+context_soil.pl
+%%   store_local 
+%
+%    
+context_solar.pl
+%%   list_solar_models(Target) -->
+%
+%    
+context_solar.pl
+%%   navigate(+Request)
+%
+%    Dynamic page to solar insolation models
+
+context_solar.pl
+%%   plot(+Request)
+%
+%    Graph the solar insolation model
+
+context_sos.pl
+%%   sos([], _, _, _, Final, Final).
+%
+%    
+context_sos.pl
+%%   generate_sos_profile(X, psd(Sx, Sz), Z) 
+%
+%    
+context_standard_atmosphere.pl
+%%   navigate(+Request)
+%
+%    Dynamic page to standard atmosphere models
+
+context_standard_atmosphere.pl
+%%   limit_value(Value, X, 1.0) 
+%
+%    
+context_standard_atmosphere.pl
+%%   plot(+Request)
+%
+%    Graph the standard atmospheric characteristics
+
+context_sweet_utils.pl
+%%   rdf_server(_) 
+%
+%    
+context_sweet_utils.pl
+%%   sweet_uri('http
+%
+%    
+context_sweet_utils.pl
+%%   load_standard(true) 
+%
+%    
+context_sweet_utils.pl
+%%   load_sweet_remote 
+%
+%    
+context_sweet_utils.pl
+%%   import_sweet(+Request)
+%
+%    Import the SWEET ontology into the semantic knowledgebase
+
+context_sweet_utils.pl
+%%   sweet_category(human, 'human activity').
+%
+%    
+context_sweet_utils.pl
+%%   prefix_each(F) 
+%
+%    
+context_sweet_utils.pl
+%%   register_sweet 
+%
+%    
+context_sweet_utils.pl
+%%   belongs_to_sweet_category(URI, Prefix, Category, Description) 
+%
+%    
+context_sweet_utils.pl
+%%   sweet_subject(Name)
+%
+%    
+context_sweet_utils.pl
+%%   string_to_rdf(String,RDF, NS, Local) 
+%
+%    
+context_sweet_utils.pl
+%%   find_sweets(option([value(Out)],[NS, ' 
+%
+%    
+context_sweet_utils.pl
+%%   find_sweet_pairs([Name,Out]) 
+%
+%    
+context_sweet_utils.pl
+%%   store_sweet([Name,Out]) 
+%
+%    
+context_sweet_utils.pl
+%%   process_sweets 
+%
+%    
+context_sweet_utils.pl
+%%   print_all_sweet_subjects 
+%
+%    
+context_sweet_utils.pl
+%%   save_sweet_db 
+%
+%    
+context_temperature.pl
+%%   calculate_symbolic_temperature(Site, T, S) 
+%
+%    
+context_temperature.pl
+%%   calculate_numeric_temperature(Site, T, Temperature) 
+%
+%    
+context_temperature.pl
+%%   generate_yearly_temperature_profile(Site, Timespan, Profile) 
+%
+%    
+context_temperature.pl
+%%   begin_c_skeleton('
+%
+%    
+context_temperature.pl
+%%   float Get_Temperature (float time) {
+%
+%    
+context_temperature.pl
+%%   end_c_skeleton(');
+%
+%    
+context_temperature.pl
+%%   generate_c_code(Site, Code) 
+%
+%
+context_temperature.pl
+%%   temperature(+Request)
+%
+%    
+context_temperature.pl
+%%   example -->
+%
+%    
+context_temperature.pl
+%%   max_results_displayed(100).
+%
+%    
+context_temperature.pl
+%%   prolog
+%
+%    
+context_temperature.pl
+%%   navigate -->
+%
+%    Dynamic page to temperature models
+
+context_temperature.pl
+%%   get_all_temperature_sets(List) 
+%
+%    
+context_temperature.pl
+%%   available_location(Locale, Title) 
+%
+%
+context_temperature.pl
+%%   months(     [jan,feb,mar,apr,may,jun,jul,aug,sep,oct,nov,dec]).
+%
+%    
+context_temperature.pl
+%%   middle_days([ 15, 45, 75,105,135,165,195,225,255,285,315,350]).
+%
+%    
+context_temperature.pl
+%%   month_number([ 1,  2,  3,  4,  5,  6,  7,  8,  9, 10, 11, 12]).
+%
+%    
+context_temperature.pl
+%%   get_month(Day, Month) 
+%
+%    
+context_temperature.pl
+%%   temperature_spread(Month, Q) 
+%
+%    
+context_temperature.pl
+%%   format_temperature_query(Text) 
+%
+%    
+context_temperature.pl
+%%   strip_numbers([], Input, Final) 
+%
+%    
+context_temperature.pl
+%%   get_lat_lon(Location, Lat, Lon) 
+%
+%    
+context_temperature.pl
+%%   get_depiction(Location, Image) 
+%
+%    
+context_temperature.pl
+%%   get_page(Location, Page) 
+%
+%    
+context_temperature.pl
+%%   get_temperature_spread(Location, Lows, Highs, Name) 
+%
+%    
+context_temperature.pl
+%%   find_min([], [], Final, Final, Day, Day).
+%
+%    
+context_temperature.pl
+%%   find_min_index(List, Highs, Min, Day, Max) 
+%
+%    
+context_temperature.pl
+%%   find_max([], [], Final, Final, Day, Day).
+%
+%    
+context_temperature.pl
+%%   find_max_index(List, Lows, Max, Day, Min)
+%
+%    
+context_temperature.pl
+%%   process_location(Location,
+%
+%    
+context_temperature.pl
+%%   select distinct ?Concept where { dbpedia
+%
+%    
+context_temperature.pl
+%%   connect_for_data(Location) 
+%
+%    
+context_temperature.pl
+%%   mydata(
+%
+%    
+context_temperature.pl
+%%   test_dbpedia 
+%
+%    
+context_thermal.pl
+%%   navigate(+Request)
+%
+%    Dynamic page to transient thermal models
+
+context_thermal.pl
+%%   thermalModelHeat(Diff, X0, T*Time, Z*Temperature)
+%
+%    
+context_thermal.pl
+%%   thermalModelCool(Diff, X0, T*Time, Z*Temperature) 
+%
+%    
+context_thermal.pl
+%%   plot(+Request)
+%
+%    Graph a thermal trasnient model in a cooling or heating phase
+
+context_unit_tests.pl
+%%   within(Low, Value, High) 
+%
+%    
+context_unit_tests.pl
+%%   near(Value,Actual) 
+%
+%    
+context_unit_tests.pl
+%%   test(integrate_and_derivative) 
+%
+%    
+context_units.pl
+%%   alias(mmhg, torr).
+%
+%    
+context_units.pl
+%%   relation(number/mol, 6.02214129e23).  % Avogadro's constant
+%
+%    
+context_units.pl
+%%   check_intermediate_length(List) 
+%
+%    
+context_units.pl
+%%   scale(From, To, X, X, _List) 
+%
+%    
+context_units.pl
+%%   convert([], [], _, Final, Final) 
+%
+%    
+context_units.pl
+%%   convert(From*c, To*f, To) 
+%
+%    
+context_units.pl
+%%   convert_apply([], _, Input, Output) 
+%
+%    
+context_units.pl
+%%   convert([F|L], To, Output) 
+%
+%    
+context_units.pl
+%%   check_lengths(From, To) 
+%
+%
+context_units.pl
+%%   lower_list([], In, Out) 
+%
+%    
+context_units.pl
+%%   init_relations 
+%
+%    
+context_units.pl
+%%   check_relations(X, Y, 'NaN') 
+%
+%    
+context_units.pl
+%%   collect_unit_options(Functor, List) 
+%
+%    
+context_units.pl
+%%   scaling(From, To, Scale) 
+%
+%    
+context_water.pl
+%%   freshwater_density(
+%
+%    
+context_water.pl
+%%   table_density(Input, Output) 
+%
+%    
+context_water.pl
+%%   rhocalc(T, Rho) 
+%
+%    
+context_water.pl
+%%   rhoscalc(Rho,Conc,T,R) 
+%
+%    
+context_water.pl
+%%   alg_density(T, Conc,Rhos) 
+%
+%    
+context_water.pl
+%%   density_test(+Request)
+%
+%
+context_water.pl
+%%   chart(+Request)
+%
+%    Chart of water properties
+
+context_water.pl
+%%   density_cells([Liquid,Temperature,Density]) 
+%
+%    
+context_water.pl
+%%   densities(_Request) 
+%
+%    
+context_water.pl
+%%   liquids(Query, Resource, Title)
+%
+%    
+context_water.pl
+%%   liquid_densities(+Request)
+%
+%    Table of liquid density properties
+
+context_water.pl
+%%   navigate(+Request)
+%
+%    Dynamic page to water properties models
+
+context_water.pl
+%%   salt_density(Parameter,X*_Units,Y) 
+%
+%    
+context_water.pl
+%%   fresh_density(X*_Units,Y) 
+%
+%    
+context_water.pl
+%%   plot(+Request)
+%
+%    Graph water density versus temperature
+
+context_weather.pl
+%%   months(     [jan,feb,mar,apr,may,jun,jul,aug,sep,oct,nov,dec]).
+%
+%    
+context_weather.pl
+%%   middle_days([ 15, 45, 75,105,135,165,195,225,255,285,315,350]).
+%
+%    
+context_weather.pl
+%%   month_number([ 1,  2,  3,  4,  5,  6,  7,  8,  9, 10, 11, 12]).
+%
+%    
+context_weather.pl
+%%   get_month(Day, Month) 
+%
+%    
+context_weather.pl
+%%   measure_spread(Month, Measure, Q) 
+%
+%    
+context_weather.pl
+%%   format_measure_query(Text, Measure) 
+%
+%    
+context_weather.pl
+%%   get_measure_spread(Location, Measure, Measures, Name) 
+%
+%    
+context_weather.pl
+%%   find_min([], [], Final, Final, Day, Day).
+%
+%    
+context_weather.pl
+%%   find_min_index(List, Min, Day) 
+%
+%
+context_weather.pl
+%%   find_max([], [], Final, Final, Day, Day).
+%
+%
+context_weather.pl
+%%   find_max_index(List, Max, Day)
+%
+%
+context_weather.pl
+%%   process_location(Location,
+%
+%
+context_weather.pl
+%%   get_all_weather_sets(List)
+%
+%
+context_weather.pl
+%%   available_location(Locale, Title)
+%
+%
+context_weather.pl
+%%   units('SnowInch', 'Snowfall', in).
+%
+%
+context_weather.pl
+%%   navigate -->
+%
+%    Dynamic page to monthly meteorological data
+
+context_weather.pl
+%%   measure(+Request)
+%
+%
+context_workflow.pl
+%%   navigate(+Request)
+%
+%    Dynamic page to workflows
+
+context_xml.pl
+%%   xml(Prolog)
+%
+%    
