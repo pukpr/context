@@ -1,31 +1,28 @@
-
-
-context_acronyms.pl:acronym_definition('LL',
-%%   'log-log
-%
-%
 context_ar7038.pl
-%%   list_climate_design_types(Target) -->
+%%   list_climate_design_types(+Target)//
 %
-%
+%    Inline of climate types selection
+
 context_ar7038.pl
 %%   navigate(+Request)
 %
 %    Dynamic page to environmental specification for nominal use
 
 context_ar7038.pl
-%%   plot(Request)
+%%   plot(+Request)
 %
 %    Plot nominal environmental characteristic
 
 context_ar7038.pl
 %%   rdf_local(ent
 %
-%
+%    Temp rdf
+
 context_ar7038.pl
 %%   store_local
 %
-%
+%    Temp rdf
+
 context_atm.pl
 %%   navigate(+Request).
 %
@@ -229,7 +226,7 @@ context_autocorr.pl
 %
 %    
 context_autocorr.pl
-%%   contour(Request) 
+%%   contour(Request)
 %
 %    
 context_autocorr.pl
@@ -327,21 +324,25 @@ context_codegen.pl
 %
 %    
 context_complex.pl
-%%   real(R&_, R).
+%%   real(+Complex, -Real)
 %
-%    
+%    Pull out the real part of a complex number
+
 context_complex.pl
-%%   imag(_&I, I).
+%%   imag(+Complex, -Imag)
 %
-%    
+%    Pull out the imaginary part of a complex number
+
 context_complex.pl
-%%   sum(Ra&Ia, Rb&Ib, Rc&Ic) 
+%%   sum(+C1, +C2, -C3)
 %
-%    
+%    Sum of two complex numbers
+
 context_complex.pl
-%%   product(Ra&Ia, Rb&Ib, Rc&Ic) 
+%%   product(+C1, +C2, -C3)
 %
-%    
+%    Product of two complex numbers
+
 context_complex.pl
 %%   magnitude(_, L, L, Final, F) 
 %
@@ -367,17 +368,19 @@ context_complex.pl
 %
 %    
 context_complex.pl
-%%   fft(1, Ft, Ft) 
+%%   fft(+N, +Initial, -Ft)
 %
-%    
+%    Fast Fourier Transform
+
 context_complex.pl
-%%   product_and_sum([], [], _, _, Ft, Ft).
+%%   product_and_sum(+L1, +L2, +W1, +W2, -F1, -F2).
 %
-%    
+%    Used by *fft*
+
 context_complex.pl
 %%   evens_and_odds([], [], []).
 %
-%    
+%
 context_complex.pl
 %%   w(     1, 1.0 & 0.0).
 %
@@ -391,13 +394,15 @@ context_complex.pl
 %
 %
 context_complex.pl
-%%   fft_length(Input, Length) 
+%%   fft_length(+Input, -Length)
 %
-%    
+%    Returns the size of an FFT comp
+
 context_complex.pl
-%%   fft_pad(Input, Padded) 
+%%   fft_pad(+Input, -Padded)
 %
-%    
+%    Pad an array to return a 2^n FFT size
+
 context_corrosion.pl
 %%   collect_component_materials(Metal, List) 
 %
@@ -504,13 +509,15 @@ context_dbpedia.pl
 %
 %    
 context_dbpedia.pl
-%%   get_page(Location, Page) 
+%%   get_page(+Location, -Page) 
 %
-%    
+%    Get a page from dbpedia
+
 context_demos.pl
-%%   terrain_selection(Name) -->
+%%   terrain_selection(+Name)//
 %
-%    
+%    Demo of selecting options
+
 context_demos.pl
 %%   navigate(+Request)
 %
@@ -519,51 +526,48 @@ context_demos.pl
 context_demos.pl
 %%   exponential_sample_draw(+Result)
 %
-%    
+%    Demo of exponential sample draw
+
 context_demos.pl
-%%   exp_slopes(_,R) -->
+%%   exp_slopes(+M,+R)//
 %
-%    
+%    Inline table demo
+
 context_demos.pl
-%%   json_complete(x(_,[]), y(_,[],_), In, Out) 
+%%   json_concat(+X, +Y, +In, -Out)
 %
-%    
+%    Demo of concat json
+
 context_demos.pl
-%%   json_concat(x(X,S), y(Y,P,Shape), In, Out) 
+%%   exp_slopes_json(+X,+Y,+ID,+M,+R)//
 %
-%    
+%    Inline table demo
+
 context_demos.pl
-%%   exp_slopes_json(X,Y,ID,M,R) -->
+%%   bessel_slopes(+M,+R)//
 %
-%    
+%    Inline table demo
+
 context_demos.pl
-%%   bessel_slopes(_,R) -->
+%%   dygraph(+Request)
 %
-%    
+%    Demo of dygraph plotting
+
 context_demos.pl
-%%   two_random_walker_csv(_,  _, 0, Out, Out).
+%%   dygraph_test(+Request)
 %
-%    
+%    Demo of dygraph plotting
+
 context_demos.pl
-%%   dygraph(_) 
+%%   random_walker(+Z, +N, +In, -Out)
 %
-%    
+%    Demo of random walk
+
 context_demos.pl
-%%   dygraph_test(_) 
+%%   charting(+Request)
 %
-%    
-context_demos.pl
-%%   random_walker(_, 0, In, Out) 
-%
-%    
-context_demos.pl
-%%   charting(_) 
-%
-%    
-context_demos.pl
-%%   gross_terrain_compute(Mean_Slope, 'local', 'pdf', _, _) 
-%
-%
+%    Demo of charting
+
 context_demos.pl
 %%   gross_terrain(+Request)
 %
@@ -572,75 +576,73 @@ context_demos.pl
 context_demos.pl
 %%   get_elevation(+Request)
 %
-%    
+%    Read elevation from Google maps API
+
 context_demos.pl
-%%   median_slope(0.039).
+%%   median_slope(-Median).
 %
-%    
+%    Data
+
 context_demos.pl
-%%   nominal_mileage(10.0).
+%%   nominal_mileage(-MPG).
 %
-%    
+%    Data
+
 context_demos.pl
-%%   sample_data(_) 
+%%   sample_data(+Request)
 %
-%    
+%    Demo for sampling data
+
 context_demos.pl
-%%   http
+%%   reference_name(+Key, -Doc).
 %
-%    
+%    Demo on keyed ref doc
+
 context_demos.pl
-%%   reference_name('TOC', 'TheOilConundrum.pdf').
+%%   reference_link(+Name, -Dest, -Link)
 %
-%    
+%    Demo on providing reference links
+
 context_demos.pl
-%%   reference_link(Name, Dest, Link) 
+%%   find_maximum_density(+Mat, -Density).
 %
-%    
+%    Used by *max_density_example*
+
 context_demos.pl
-%%   find_maximum_density('material', 1).
+%%   max_density_example(+Request)
 %
-%    
+%    Trivial demo
+
 context_demos.pl
-%%   max_density_example(_) 
+%%   find_wind_ref_example(+Request)
 %
-%    
+%    Demo of finding a reference
+
 context_demos.pl
-%%   find_wind_ref_example(_) 
+%%   find_requirement_example(+Request)
 %
-%    
+%    Demo of finding a requirement
+
 context_demos.pl
-%%   find_requirement_example(_) 
+%%   sample_alg_example(+Request)
 %
-%    
+%    Sampling algorithm demo
+
 context_demos.pl
-%%   sample_alg_example(_) 
+%%   delayed_exponent(+L, +Alpha, +S, -R)
 %
-%    
+%    Demo delayed exponent for semi-markov model
+
 context_demos.pl
-%%   frequencies(S, _, Result, Result) 
+%%   two_level_model(+L1, +Alpha1, +L2, +Alpha2, +S, -R)
 %
-%    
+%    Semi-markov demo
+
 context_demos.pl
-%%   delayed_exponent(L, Alpha, S, R)
+%%   builtin_complex(+Length, +Scale, +F, -Result)
 %
-%    
-context_demos.pl
-%%   two_level_model(L1, Alpha1, L2, Alpha2, S, R) 
-%
-%    
-context_demos.pl
-%%   two_level_spectrum(_, _, _, _, S, Result, Result) 
-%
-%    
-context_demos.pl
-%%   builtin_complex(Length, Scale, F, Result) 
-%
-%    
-context_demos.pl
-%%   construct_psd([], [], Out, Out).
-%
-%    
+%    used  by *complex_psd*
+
 context_demos.pl
 %%   complex_psd(+Request)
 %
@@ -652,21 +654,25 @@ context_demos.pl
 %    Demo of a PSD generated from a semi-Markov model
 
 context_demos.pl
-%%   semi(_) 
+%%   semi(+Request)
 %
-%    
+%    semi markov demo
+
 context_demos.pl
-%%   semi_fft(_) 
+%%   semi_fft(+Request)
 %
-%    
+%    semi-makov FFT demo
+
 context_demos.pl
-%%   demo(_) 
+%%   demo(+Request)
 %
-%    
+%    random walk demo
+
 context_demos.pl
-%%   demo_ou(_) 
+%%   demo_ou(+Request)
 %
-%    
+%    Ornstein-Uhlenbeck random-walk demo
+
 context_demos.pl
 %%   model_index(+Request) 
 %
@@ -701,9 +707,10 @@ context_demos.pl
 %    Demo of a fine-terrain generated from superposition of sines vis PSD
 
 context_elements.pl
-%%   element(option([label(Name), value(El)],[Name])) 
+%%   element(-Option) 
 %
-%    
+%    Search elements for returning selection options
+
 context_elements.pl
 %%   navigate(+Request) 
 %
@@ -748,13 +755,15 @@ context_elements.pl
 %    Render the periodic table of elements
 
 context_emi.pl
-%%   emi_doc('foundation/cable_EMI_susceptibility.pdf').
+%%   emi_doc(-Doc).
 %
-%    
+%    returns the main EMI doc
+
 context_emi.pl
-%%   ref(Key, Contents) -->
+%%   ref(+Key, -Contents)//
 %
-%    
+%    Inline references a pointer to a document from a key
+
 context_emi.pl
 %%   navigate(+Request) 
 %
@@ -824,15 +833,16 @@ context_fording.pl
 context_fording.pl
 %%   speed_scaling(AreaUnits, Factor, Cross, X, Y) 
 %
-%    
+%    Scale current speed based
 context_fording.pl
 %%   power_raise(X, Y) 
 %
 %    
 context_fording.pl
-%%   log_factor(0.1).
+%%   log_factor(-Scale)
 %
-%    
+%    Log interval for fording example
+
 context_fording.pl
 %%   plot(+Request)
 %
@@ -841,139 +851,172 @@ context_fording.pl
 context_fording.pl
 %%   non_zero([], [], Range, Data, RFinal, DFinal) 
 %
-%    
+%
 context_friction.pl
-%%   standard(Names) 
+%%   standard(-Names)
 %
-%    
+%    Returns a list of (ISO) standard's for friction coefficients
+
 context_friction.pl
-%%   coeff([Value, Desc, DSF, DFF, WSF, WFF, Constraint, Note]) 
+%%   coeff(-Friction_Info)
 %
-%    
+%     Return a tuple of cofficients of friction
+
 context_friction.pl
-%%   coefficient_friction_table(_Request) 
+%%   coefficient_friction_table(+Request)
 %
-%    
+%    Render HTML Table of coefficients of friction
+
 context_functions.pl
-%%   complement(X, Y) 
+%%   complement(+X, -Y)
 %
-%    
+%    The complement of X
+
 context_functions.pl
-%%   random_phase(_,V) 
+%%   random_phase(+In,-Value)
 %
-%    
+%    Return a random phase between 0 and 360 degrees
+
 context_functions.pl
-%%   exp(Mean, X, Y) 
+%%   exp(+Mean, +X, -Y)
 %
-%    
+%    Exponential function
+
 context_functions.pl
-%%   depth_constants(2.7, 1.05).
+%%   depth_constants(-A, -B)
 %
-%    
+%    Standard crest and depth coefficients
+
 context_functions.pl
-%%   depth_factor(Mean, Depth, X, F) 
+%%   depth_factor(+Mean, +Depth, +X, -F)
 %
-%    
+%    Depth adjustment fro sea-state model
+
 context_functions.pl
-%%   bessel_seastate(Order, Mean, Depth, pdf, X, Y) 
+%%   bessel_seastate(+Order, +Mean, +Depth, +Pdf, +X, -Y)
 %
-%    
+%    Bessel sea-state model
+
 context_functions.pl
-%%   root_sea_state(M,D,YP,X) 
+%%   root_sea_state(+M,+D,+YP,-X)
 %
-%    
+%    Find root of sea-state model
+
 context_functions.pl
-%%   exp(Mean, pdf, X, Y) 
+%%   exp(+Mean, +Pdf, +X, -Y)
 %
-%    
+%    Exponential model
+
 context_functions.pl
-%%   power_law_2(Median, pdf, X, Y) 
+%%   power_law_2(+Median, +Pdf, +X, -Y)
 %
-%    
+%   Power law of index 2 
+
 context_functions.pl
-%%   power_law_2_area(Median, pdf, X, Y) 
+%%   power_law_2_area(+Median, +Pdf, +X, -Y)
 %
-%
+%    Power law of index 2 for areas
+
 context_functions.pl
-%%   exp_area(Mean, pdf, X, Y) 
+%%   exp_area(+Mean, +Pdf, +X, -Y)
 %
-%    
+%    Exponential areal function
+
 context_functions.pl
-%%   besselk0(Mean, pdf, X, Y) 
+%%   besselk0(+Mean, +Pdf, +X, -Y)
 %
-%    
+%    Bessel K 0 function
+
 context_functions.pl
-%%   besselk0_sqrt(Mean, pdf, X, Y) 
+%%   besselk0_sqrt(+Mean, +Pdf, +X, -Y)
 %
-%    
+%    Bessel K 0 Square Root function
+
 context_functions.pl
 %%   diffusion_accel(Diff, Accel, pdf, X, Y) 
 %
-%    
+%    Diffusion with acceleration factor, used for lightning
+
 context_functions.pl
 %%   pierson_moskowitz(Mean, pdf, X, Y) 
 %
-%    
+%    Pierson-Moskowitz function for wave frequency
+
 context_functions.pl
-%%   thermal_dispersion(Mean, Mag, X, Result) 
+%%   thermal_dispersion(+Mean, +Mag, +X, -Result)
 %
-%    
+%    Thermal dispersive growth mode
+
 context_functions.pl
-%%   besselk1(Mean, X, Y) 
+%%   besselk1(+Mean, +X, -Y)
 %
-%    
+%    Bessel K 1 PDF function
+
 context_functions.pl
-%%   corrected_bessel(Mean, _Depth, X, Y) 
+%%   corrected_bessel(+Mean, +Depth, +X, -Y)
 %
-%    
+%    Seastate bessel function which has depth corrections
+
 context_functions.pl
-%%   besselk1_sqrt(Mean, X, Y) 
+%%   besselk1_sqrt(+Mean, +X, -Y)
 %
-%    
+%    BesselK1 Square Root function
+
 context_functions.pl
 %%   power_law_2_pdf_symbolic(Median, X, Y) 
 %
-%    
+%    Power law of index 2 symbolic function
+
 context_functions.pl
 %%   power_law_2_cdf(Median, X, Y) 
 %
-%    
+%    Power law of index 2 CDF function
+
 context_functions.pl
-%%   power_law_2_sampling(Median,_,Variate) 
+%%   power_law_2_sampling(+Median,+NA,-Variate)
 %
-%    
+%    Power law of index 2 sampling function
+
 context_functions.pl
-%%   exponential_pdf_symbolic(Mean, X, Y) 
+%%   exponential_pdf_symbolic(+Mean, +X, -Y)
 %
-%    
+%    Exponential PDF symbolic function
+
 context_functions.pl
-%%   exponential_pdf(Mean, X, Y) 
+%%   exponential_pdf(+Mean, +X, -Y)
 %
-%    
+%    Exponential PDF function
+
 context_functions.pl
-%%   exponential_cdf_symbolic(Mean, X, Y)
+%%   exponential_cdf_symbolic(+Mean, +X, -Y)
 %
-%    
+%    Exponential CDF function symbolic form
+
 context_functions.pl
-%%   exponential_cdf(Mean, X, Y) 
+%%   exponential_cdf(+Mean, +X, -Y)
 %
-%    
+%    Exponential CDF function
+
 context_functions.pl
-%%   exponential_sampling(Mean,_,Variate) 
+%%   exponential_sampling(+Mean, +NA, -Variate)
 %
-%    
+%    Exponential sampling function
+
 context_functions.pl
-%%   besselk_1_cdf(Mean, X_Array, Y_Array) 
+%%   besselk_1_cdf(+Mean, +X_Array, -Y_Array)
 %
-%    
+%    Bessel K 1 CDF function
+
 context_functions.pl
-%%   besselk_0_pdf(Mean, X_Array, Y_Array) 
+%%   besselk_0_pdf(+Mean, +X_Array, -Y_Array)
 %
-%    
+%    Bessel K 1 CDF function
+
 context_functions.pl
-%%   besselk_1_sampling(Mean,_,Variate) 
+%%   besselk_1_sampling(+Mean, +NA, -Variate)
 %
-%    
+%    Bessel K 1 sampling function 
+
 context_geo.pl
 %%   ll_to_utm(Lat, Lon, Zone, Easting, Northing) 
 %
@@ -1436,17 +1479,19 @@ context_math.pl
 %
 %    
 context_math.pl
-%%   dotproduct([],[],Final,Final).
+%%   dotproduct(+L1,+L2,+Initial_Value,-Value).
 %
-%    
+%   Dot product of two lists
+
 context_math.pl
 %%   dotexpand([],[],Initial,Final) 
 %
 %    
 context_math.pl
-%%   dotdivision([],[],Final,Final).
+%%   dotdivision(+L1,+L2,+Initial_Value,-Value).
 %
-%    
+%   Dot division of two lists
+
 context_math.pl
 %%   dotexpanddiv([],[],Initial,Final) 
 %
@@ -1460,113 +1505,126 @@ context_math.pl
 %
 %    
 context_math.pl
-%%   dotscale(_,[],Initial,Final) 
+%%   dotscale(+Scale,+List,+Initial_Value,-Value)
 %
-%    
+%    Scaled unit list dot product
+
 context_math.pl
 %%   dotadd(_,[],Initial,Final) 
 %
 %    
+
 context_math.pl
 %%   ones_list([], _, Final, Final).
 %
 %    
 context_math.pl
-%%   ones(0, _, Final, Final).
+%%   ones(+Length, _, Final, Final)
 %
-%    
+%    Generate a ones list
 context_math.pl
-%%   constants(Length, Scalar, Final)
+%%   constants(+Length, +Scalar, -List)
 %
-%    
+%    Generate a list of constants
+
 context_math.pl
-%%   uniform(Length, Final) 
+%%   uniform(+Length, -Final)
 %
-%    
+%    Generate a list of normalized uniform constants such that total is unity
+
 context_math.pl
-%%   number_line(Start, End, Final, Final) 
+%%   number_line(+Start, +End, +Initial, -Final)
 %
-%    
+%    Generate a integer numbered list
+
 context_math.pl
-%%   linear_range(Start, End, Range) 
+%%   linear_range(+Start, +End, -Range)
 %
-%    
+%    Generate an integer numbered list
+
 context_math.pl
-%%   linear_fractional_range(Start, End, Fraction, Range) 
+%%   linear_fractional_range(+Start, +End, +Fraction, -Range)
 %
-%    
+%    Generate a fractional linear range
+
 context_math.pl
-%%   number_log(Start, End, _, Final, Final) 
+%%   number_log(+Start, +End, +Proportional_Fraction, +Initial, -Final)
 %
-%    
+%    Generate a logarithmic range
+
 context_math.pl
-%%   log_range(Start, End, Frac, Range) 
+%%   log_range(+Start, +End, +Frac, -Range)
 %
-%    
+%    Generate a logarithmic range
+
 context_math.pl
-%%   units_apply([], _Decoration, In, Out) 
+%%   units_apply([], _Decoration, In, Out)
 %
-%    
+%
 context_math.pl
 %%   gather_map([], _Z, X, X).
 %
-%    
-context_math.pl
-%%   convolution([],[],_,_,Initial,Final) 
 %
-%    
 context_math.pl
-%%   padZerosPrep([], [], L, L1) 
+%%   convolution([],[],_,_,Initial,Final)
 %
-%    
+%    List convolution
+context_math.pl
+%%   padZerosPrep([], [], L, L1)
+%
+%
 context_math.pl
 %%   padZeros(La0, Lb0, La1, Lb1)
 %
-%    
-context_math.pl
-%%   change_sign(X, Y) 
 %
-%    
 context_math.pl
-%%   derive(X,Y,Initial,Derivatives) 
+%%   change_sign(+X, -Y)
 %
-%    
+%    Change sign of value
+
 context_math.pl
-%%   accumulation([], [], _, _, Probs, Final) 
+%%   derive(X,Y,Initial,Derivatives)
 %
 %
 context_math.pl
-%%   integral(X,Y,Initial,Running_Integral) 
+%%   accumulation([], [], _, _, Probs, Final)
 %
-%    
+%
 context_math.pl
-%%   cumulative_histogram(List, Variates, Probs) 
+%%   integral(+X,+Y,+Initial,-Running_Integral)
 %
-%    
+%    Integral of list X with delta increments in Y
+
 context_math.pl
-%%   derivatives([], [], _, _, Probs, Final) 
+%%   cumulative_histogram(+List, -Variates, -Probs)
 %
-%    
+%    Cumulative histogram of list generating Variates and Probs
+
 context_math.pl
-%%   subtract([], [], In, Final) 
+%%   derivatives([], [], _, _, Probs, Final)
 %
-%    
+%
 context_math.pl
-%%   tuple_merge([],[],Initial,Final) 
+%%   subtract(+L1, +L1, +Initial, -Final)
 %
-%    
+%    Subtract two lists
+
 context_math.pl
-%%   strip([],Initial,Final) 
+%%   tuple_merge([],[],Initial,Final)
 %
-%    
+%
 context_math.pl
-%%   histogram(List, Variates, Probs) 
+%%   strip([],Initial,Final)
 %
-%    
+%
+context_math.pl
+%%   histogram(List, Variates, Probs)
+%
+%
 context_math.pl
 %%   list_summer([], Total, Total).
 %
-%    
+%
 context_math.pl
 %%   sum_list(List, Sum) 
 %
@@ -2116,9 +2174,10 @@ context_psd_workflow_json.pl
 %
 %                       
 context_query.pl
-%%   model_elements(option([value(Short)],[Name])) 
+%%   model_elements(-Option)
 %
-%    
+%    Search elements for returning selection options
+
 context_query.pl
 %%   owl(Query, Resource, Title) 
 %
@@ -2336,34 +2395,39 @@ context_render.pl
 %
 %    
 context_require.pl
-%%   find_requirement_topics(option([value(Name)],[Local])) 
+%%   find_requirement_topics(-Option)
 %
-%
+%    Search elements for returning selection options
+
 context_require.pl
 %%   navigate(+Request)
 %
 %    Dynamic page to requirements lookup
 
 context_search.pl
-%%   find_requirement_topics(option([value(Name)],[Local])) 
+%%   find_requirement_topics(-Option)
 %
-%    
+%    Search elements for returning selection options
+
 context_search.pl
-%%   find_characteristics(option([value(Ch)],[Ch])) 
+%%   find_characteristics(-Options)
 %
-%    
+%    Search elements for returning selection options
+
 context_search.pl
-%%   find_pages(option([value(UID)],[UID])) 
+%%   find_pages(-Option)
 %
-%    
+%    Search elements for returning selection options
+
 context_search.pl
-%%   find_categories(option([value(Cat)],[NS, ' 
+%%   find_categories(-Option)
 %
-%    
+%    Search elements for returning selection options
 context_search.pl
-%%   model_elements(option([value(Short)],[Name])) 
+%%   model_elements(-Option)
 %
-%    
+%    Search elements for returning selection options
+
 context_search.pl
 %%   my_search_filter(+Request) 
 %
@@ -2402,58 +2466,65 @@ context_seastate.pl
 %    Dynamic page to seatstate model
 
 context_seastate.pl
-%%   check_margin(Z, Limit, 'Margin failed') 
+%%   check_margin(Z, Limit, 'Margin failed')
 %
-%    
+%
 context_seastate.pl
 %%   find_cumulative_point(0.0, _, _, [0,1]).
 %
-%    
+%
 context_seastate.pl
 %%   plot(+Request)
 %
 %    Graph the seastate model against the appropriate wave-height model
 
 context_seastate.pl
-%%   waveHeight(Mean, Depth,  H*Height, P*cdf) 
+%%   waveHeight(+Mean, +Depth,  -Height, -Cdf)
 %
-%    
+%    Unit sensitive lookup of PDF value of waveheight for a model with mean and depth
+
 context_seastate.pl
-%%   sea_states([Value, Low, High, Units, Description]) 
+%%   sea_states(-Info_Tuple)
 %
-%    
+%    Seastate information lookup returned as tuple
+
 context_seastate.pl
-%%   sea_state_low(Value, Low*Units) 
+%%   sea_state_low(+Value, -Low)
 %
-%    
+%    Unit-adjusted seastate lookup, lower boundary
+
 context_seastate.pl
-%%   sea_state_high(Value, High*Units) 
+%%   sea_state_high(+Value, -High)
 %
-%
+%    Unit-adjusted seastate lookup, upper boundary
+
 context_seastate.pl
-%%   seastate_table(_Request) 
+%%   seastate_table(+Request)
 %
-%    
+%    Generate sea-state table
+
 context_select.pl
 %%   ref_search(Term, Description) -->
 %
-%    
+%
 context_select.pl
 %%   g(Type, Contents) -->
 %
-%    
+%
 context_select.pl
 %%   icon_cell_link(Highlight,
 %
-%    
-context_select.pl
-%%   icon_bar(Highlight) -->
 %
-%    
 context_select.pl
-%%   dispatch(lakes) -->
+%%   icon_bar(+Highlight)//
 %
-%    
+%    Generate an icon bar of feature categories, highlighting currently selected
+
+context_select.pl
+%%   dispatch(+Feature_Category)//
+%
+%    Generate an inline list of available models corresponding to feature category
+
 context_select.pl
 %%   navigate(+Request)
 %
@@ -2462,51 +2533,52 @@ context_select.pl
 context_soil.pl
 %%   rdf_local(ent
 %
-%    
-context_soil.pl
-%%   soil_combination([C, Desc, TG, [Desc, ' containing ', Graininess]]) 
 %
-%    
 context_soil.pl
-%%   soil_table(_Request) 
+%%   soil_combination([C, Desc, TG, [Desc, ' containing ', Graininess]])
 %
-%    
+%
 context_soil.pl
-%%   soil_range(Element, li([i(Item), ' 
+%%   soil_table(_Request)
 %
-%    
+%
 context_soil.pl
-%%   process_soil_types([], Input, Output) 
+%%   soil_range(Element, li([i(Item), '
 %
-%    
+%
 context_soil.pl
-%%   parse_request(Soils, List) 
+%%   process_soil_types([], Input, Output)
 %
-%    
+%
 context_soil.pl
-%%   soil_collect(Element, Item) 
+%%   parse_request(Soils, List)
 %
-%    
+%
 context_soil.pl
-%%   collect_soil_types([], Input, Output) 
+%%   soil_collect(Element, Item)
 %
-%    
+%
 context_soil.pl
-%%   collect(Soils, List) 
+%%   collect_soil_types([], Input, Output)
 %
-%    
+%
 context_soil.pl
-%%   search(Name, List) 
+%%   collect(Soils, List)
 %
-%    
+%
 context_soil.pl
-%%   store_local 
+%%   search(Name, List)
 %
-%    
+%
+context_soil.pl
+%%   store_local
+%
+%
 context_solar.pl
-%%   list_solar_models(Target) -->
+%%   list_solar_models(+Target)//
 %
-%    
+%    Inline generation of solar model list targeting a named window or frame
+
 context_solar.pl
 %%   navigate(+Request)
 %
@@ -2520,82 +2592,93 @@ context_solar.pl
 context_sos.pl
 %%   sos([], _, _, _, Final, Final).
 %
-%    
-context_sos.pl
-%%   generate_sos_profile(X, psd(Sx, Sz), Z) 
 %
-%    
+context_sos.pl
+%%   generate_sos_profile(X, psd(Sx, Sz), Z)
+%
+%
 context_standard_atmosphere.pl
 %%   navigate(+Request)
 %
 %    Dynamic page to standard atmosphere models
 
 context_standard_atmosphere.pl
-%%   limit_value(Value, X, 1.0) 
+%%   limit_value(Value, X, 1.0)
 %
-%    
+%
 context_standard_atmosphere.pl
 %%   plot(+Request)
 %
 %    Graph the standard atmospheric characteristics
 
 context_sweet_utils.pl
-%%   rdf_server(_) 
+%%   rdf_server(+Request)
 %
-%    
+%    This provides the terminology (OWL subclasses) for the dynamic context server
+
 context_sweet_utils.pl
-%%   sweet_uri('http
+%%   sweet_uri(-Site)
 %
-%    
+%    Location of the SWEET terminology
+
 context_sweet_utils.pl
-%%   load_standard(true) 
+%%   load_standard(+All)
 %
-%    
+%    Load all terminology or minimal, default is minimal
+
 context_sweet_utils.pl
 %%   load_sweet_remote 
 %
-%    
+%    Load SWEET off of remote site. Current default is to use local fast-loading database,
+
 context_sweet_utils.pl
 %%   import_sweet(+Request)
 %
 %    Import the SWEET ontology into the semantic knowledgebase
 
 context_sweet_utils.pl
-%%   sweet_category(human, 'human activity').
+%%   sweet_category(+Cat, -Description).
 %
-%    
+%    Descriptions of SWEET cataegories
+
 context_sweet_utils.pl
-%%   prefix_each(F) 
+%%   prefix_each(F)
 %
-%    
+%     Used by *register_sweet*
+
 context_sweet_utils.pl
 %%   register_sweet 
 %
-%    
+%    Find all namespaces that SWEET uses so thay can be registered by Prolog
+
 context_sweet_utils.pl
 %%   belongs_to_sweet_category(URI, Prefix, Category, Description) 
 %
-%    
-context_sweet_utils.pl
-%%   sweet_subject(Name)
 %
-%    
 context_sweet_utils.pl
-%%   string_to_rdf(String,RDF, NS, Local) 
+%%   sweet_subject(-Name)
 %
-%    
+%    Returns a SWEET subject, use with findall
+
 context_sweet_utils.pl
-%%   find_sweets(option([value(Out)],[NS, ' 
+%%   string_to_rdf(+String,-RDF, -NS, -Local)
 %
-%    
+%    Breakup string into global term and namespace:local
+
 context_sweet_utils.pl
-%%   find_sweet_pairs([Name,Out]) 
+%%   find_sweets(-Option)
 %
-%    
+%    Search elements for returning selection options
+
+context_sweet_utils.pl
+%%   find_sweet_pairs(+Pair)
+%
+%    Returns string and global SWEET subjects
+
 context_sweet_utils.pl
 %%   store_sweet([Name,Out]) 
 %
-%    
+%
 context_sweet_utils.pl
 %%   process_sweets 
 %
@@ -2623,7 +2706,7 @@ context_temperature.pl
 context_temperature.pl
 %%   begin_c_skeleton('
 %
-%    
+%
 context_temperature.pl
 %%   float Get_Temperature (float time) {
 %
@@ -2682,69 +2765,69 @@ context_temperature.pl
 %
 %    
 context_temperature.pl
-%%   temperature_spread(Month, Q) 
+%%   temperature_spread(Month, Q)
 %
-%    
+%
 context_temperature.pl
-%%   format_temperature_query(Text) 
+%%   format_temperature_query(Text)
 %
-%    
+%
 context_temperature.pl
-%%   strip_numbers([], Input, Final) 
+%%   strip_numbers([], Input, Final)
 %
-%    
+%
 context_temperature.pl
-%%   get_lat_lon(Location, Lat, Lon) 
+%%   get_lat_lon(Location, Lat, Lon)
 %
-%    
+%
 context_temperature.pl
-%%   get_depiction(Location, Image) 
+%%   get_depiction(Location, Image)
 %
-%    
+%
 context_temperature.pl
-%%   get_page(Location, Page) 
+%%   get_page(Location, Page)
 %
-%    
+%
 context_temperature.pl
-%%   get_temperature_spread(Location, Lows, Highs, Name) 
+%%   get_temperature_spread(Location, Lows, Highs, Name)
 %
-%    
+%
 context_temperature.pl
 %%   find_min([], [], Final, Final, Day, Day).
 %
-%    
-context_temperature.pl
-%%   find_min_index(List, Highs, Min, Day, Max) 
 %
-%    
+context_temperature.pl
+%%   find_min_index(List, Highs, Min, Day, Max)
+%
+%
 context_temperature.pl
 %%   find_max([], [], Final, Final, Day, Day).
 %
-%    
+%
 context_temperature.pl
 %%   find_max_index(List, Lows, Max, Day, Min)
 %
-%    
+%
 context_temperature.pl
 %%   process_location(Location,
 %
-%    
+%
 context_temperature.pl
 %%   select distinct ?Concept where { dbpedia
 %
-%    
-context_temperature.pl
-%%   connect_for_data(Location) 
 %
-%    
+context_temperature.pl
+%%   connect_for_data(Location)
+%
+%
 context_temperature.pl
 %%   mydata(
 %
-%    
-context_temperature.pl
-%%   test_dbpedia 
 %
-%    
+context_temperature.pl
+%%   test_dbpedia
+%
+%
 context_thermal.pl
 %%   navigate(+Request)
 %
@@ -2753,36 +2836,41 @@ context_thermal.pl
 context_thermal.pl
 %%   thermalModelHeat(Diff, X0, T*Time, Z*Temperature)
 %
-%    
-context_thermal.pl
-%%   thermalModelCool(Diff, X0, T*Time, Z*Temperature) 
 %
-%    
+context_thermal.pl
+%%   thermalModelCool(Diff, X0, T*Time, Z*Temperature)
+%
+%
 context_thermal.pl
 %%   plot(+Request)
 %
 %    Graph a thermal trasnient model in a cooling or heating phase
 
 context_unit_tests.pl
-%%   within(Low, Value, High) 
+%%   within(+Low, +Value, +High)
 %
-%    
+%    Fails unless Value is between Low and High
+
 context_unit_tests.pl
-%%   near(Value,Actual) 
+%%   near(+Value,+Actual)
 %
-%    
+%    Fails unless Value is near Actual floating point value
+
 context_unit_tests.pl
-%%   test(integrate_and_derivative) 
+%%   test(+Name)
 %
-%    
+%    Named unit tests, fails if doesn't pass the test
+
 context_units.pl
-%%   alias(mmhg, torr).
+%%   alias(+Name, -Alias).
 %
-%    
+%    Alias of unit, i.e. mmHg=Torr
+
 context_units.pl
-%%   relation(number/mol, 6.02214129e23).  % Avogadro's constant
+%%   relation(+Relational_Divisor, -Scale)
 %
-%    
+%    Dimensional relation of units
+
 context_units.pl
 %%   check_intermediate_length(List) 
 %
@@ -2814,11 +2902,12 @@ context_units.pl
 context_units.pl
 %%   lower_list([], In, Out) 
 %
-%    
+%
 context_units.pl
 %%   init_relations 
 %
-%    
+%    Initialize dimensional unit relations
+
 context_units.pl
 %%   check_relations(X, Y, 'NaN') 
 %
@@ -2889,46 +2978,50 @@ context_water.pl
 context_water.pl
 %%   fresh_density(X*_Units,Y) 
 %
-%    
+%
 context_water.pl
 %%   plot(+Request)
 %
 %    Graph water density versus temperature
 
 context_weather.pl
-%%   months(     [jan,feb,mar,apr,may,jun,jul,aug,sep,oct,nov,dec]).
+%%   months( -Symbolic_months).
 %
-%    
+%    Short 3-letter abbreviations for months
+
 context_weather.pl
-%%   middle_days([ 15, 45, 75,105,135,165,195,225,255,285,315,350]).
+%%   middle_days(-Ordinal_Days)
 %
-%    
+%    List of days corresponding to middle of month
+
 context_weather.pl
-%%   month_number([ 1,  2,  3,  4,  5,  6,  7,  8,  9, 10, 11, 12]).
+%%   month_number(-Ordinal_months).
 %
-%    
+%    Ordinal month numbers
+
 context_weather.pl
-%%   get_month(Day, Month) 
+%%   get_month(+Day, -Month)
 %
-%    
+%    Get month corresponding to day
+
 context_weather.pl
 %%   measure_spread(Month, Measure, Q) 
 %
-%    
-context_weather.pl
-%%   format_measure_query(Text, Measure) 
 %
-%    
 context_weather.pl
-%%   get_measure_spread(Location, Measure, Measures, Name) 
+%%   format_measure_query(Text, Measure)
 %
-%    
+%
+context_weather.pl
+%%   get_measure_spread(Location, Measure, Measures, Name)
+%
+%
 context_weather.pl
 %%   find_min([], [], Final, Final, Day, Day).
 %
-%    
+%
 context_weather.pl
-%%   find_min_index(List, Min, Day) 
+%%   find_min_index(List, Min, Day)
 %
 %
 context_weather.pl
@@ -2970,6 +3063,6 @@ context_workflow.pl
 %    Dynamic page to workflows
 
 context_xml.pl
-%%   xml(Prolog)
+%%   xml(Prolog)//
 %
-%    
+%    Generate an XML data structure based on Prolog structure
