@@ -59,13 +59,15 @@ context_atm.pl
 %    Unit-sensitive lookup of temperature wrt altitude
 
 context_atm.pl
-%%   idealPressure(Pressure, MW*au, D*Mass/Vol^3, T*Temperature, P)
+%%   idealPressure(+PressureUnits, +MW, +D, +Temperature, -P)
 %
-%    Unit-sensitive lookup of
+%    Unit-sensitive lookup of pressure
+
 context_atm.pl
-%%   idealTemperature(Temperature, D*Mass/Vol^3, MW*au, P*Pressure, T*Temperature)
+%%   idealTemperature(+TemperatureUnits, +D, +MW, +Pressure, -Temperature)
 %
-%
+%    Unit sensitive lookup of temperature
+
 context_atm.pl
 %%   idealDensity(+MW, +Temperature, +Pressure, -D)
 %
@@ -77,182 +79,202 @@ context_atm.pl
 %    Unit-sensitive lookup of PDF wavelength at temperature
 
 context_atm.pl
-%%   plancks_law_wavenumber(Wavenumber, T*Temperature, WN*Wavenumber, P)
+%%   plancks_law_wavenumber(+Temperature, -Wavenumber, -P)
 %
-%
+%    Plancks law in wavenumber
+
 context_atm.pl
-%%   plancks_law_frequency(T*Temperature, WN*Wavenumber, P/Wavenumber)
+%%   plancks_law_frequency(+Temperature, -Wavenumber, -P)
 %
-%
+%    Plancks law in frequency
+
 context_atm.pl
-%%   generate_pressure_curve(T,P)
+%%   generate_pressure_curve(+T,-P)
 %
-%
+%    Generate a pressure curve
+
 context_autocorr.pl
-%%   rdf_data(Name)
+%%   rdf_data(-Name)
 %
-%
+%    Local RDF data
+
 context_autocorr.pl
-%%   get_all_sections(List)
+%%   get_all_sections(-List)
 %
-%
+%    Getting DEM sections as list
+
 context_autocorr.pl
 %%   navigate(+Request)
 %
 %    Dynamic page to gross terrain correlation models
 
 context_autocorr.pl
-%%   list_min([[L|_]|Ls], Min)
+%%   list_min(+List, -Min)
+%
+%    Minimimum value in a list
+
+context_autocorr.pl
+%%   flat(Fraction, +X, +Y, Partial)
 %
 %    
 context_autocorr.pl
-%%   flat(Fraction, X, Y, Partial) 
+%%   ou_model0(+N,+D,+L,+X,+Y, +Fraction, -Result)
 %
-%    
+%    Ornstein uhlenbeck model
+
 context_autocorr.pl
-%%   ou_model0(N,D,L,X,Y, Fraction, Result) 
+%%   ou_maxent_model0(+N,+D,+L,+X,+Y, +Fraction, -Result)
 %
-%    
+%    Ornstein uhlenbeck model   MaxEnt version
+
 context_autocorr.pl
-%%   ou_maxent_model0(N,D,L,X,Y, Fraction, Result) 
+%%   ou_gamma_model0(+N,+D,+L,+X,+Y, +Fraction, -Result)
 %
-%    
+%    Ornstein uhlenbeck model  Gamma version
+
 context_autocorr.pl
-%%   ou_gamma_model0(N,D,L,X,Y, Fraction, Result) 
+%%   ou_model(+N,+D,+L,+X,+Y, +Fraction, -Result)
 %
-%    
+%    Ornstein uhlenbeck model
+
 context_autocorr.pl
-%%   ou_model(N,D,L,X,Y, Fraction, Result) 
+%%   ou_maxent_model(+N,+D,+L,+X,+Y, +Fraction, -Result)
 %
-%    
+%    Ornstein uhlenbeck model Maxent version
+
 context_autocorr.pl
-%%   ou_maxent_model(N,D,L,X,Y, Fraction, Result) 
+%%   ou_mixent_model(+N,+D,+L,+X,+Y, +Fraction, -Result)
 %
-%    
+%    Ornstein uhlenbeck model Mixent version
+
 context_autocorr.pl
-%%   ou_mixent_model(N,D,L,X,Y, Fraction, Result) 
+%%   instance_ou(+Model,+Name, +N,+D,+L, +Fraction, -Q)
 %
-%    
+%    Instance of Ornstein uhlenbeck model
+
 context_autocorr.pl
-%%   instance_ou(Model,Name, N,D,L, Fraction, Q) 
+%%   model_fit(+Model, +Name, +N0,+D0,+L0, +F0, +D, +L, +F, -Quality)
 %
-%    
+%    Model fit procedure
+
 context_autocorr.pl
-%%   model_fit(Model, Name, N0,D0,L0, F0, D, L, F, Quality) 
+%%   find_best_model(+Name, +Quality, +Df, +Lf, +Nf, +F)
 %
-%    
-context_autocorr.pl
-%%   find_best_model(Name, Quality, Df, Lf, N) 
-%
-%    
-context_autocorr.pl
-%%   find_model(_Model, Name, 1, 0.01, 0.1, N_Max, 0.1) 
-%
-%    
-context_autocorr.pl
-%%   find_best_model(Model, Name, Quality, Df, Lf, Nf, F) 
-%
-%    
+%    Finds the best model parameters
+
 context_autocorr.pl
 %%   generate_model(_Model, _,   _,  _,  [],  [], _Fraction, F, R)
 %
-%    
+%
 context_autocorr.pl
 %%   generate_model_stats(_Model, _URI, _,   _,  _,  [],  [], _Fraction, F, R) 
 %
 %    
 context_autocorr.pl
-%%   random_walker(Request) 
+%%   random_walker(+Request) 
 %
-%    
+%    Generate a random walk profile
+
 context_autocorr.pl
-%%   google_profile(Request) 
+%%   google_profile(+Request)
 %
-%    
+%    Create a Google map elevation profile
+
 context_autocorr.pl
-%%   load_dem(URI) 
+%%   load_dem(+URI)
 %
-%    
+%    Load a DEM corresponding to URI
+
 context_autocorr.pl
-%%   exp_regression(URI, X, Lbar) 
+%%   exp_regression(+URI, +X, -Lbar)
 %
-%    
+%    Regresses for fit
+
 context_autocorr.pl
-%%   find_theta(URI, X1, X2, Theta, D) 
+%%   find_theta(+URI, +X1, +X2, +Theta, -D)
 %
-%    
+%    Find a drag value
+
 context_autocorr.pl
-%%   find_avg(URI, Theta,D) 
+%%   find_avg(+URI, +Theta,-D)
 %
-%    
+%    Find average
+
 context_autocorr.pl
-%%   pair_summer([], Total, Total).
+%%   pair_summer(+List, +Initial, -Total)
 %
-%    
+%    See *pair_sum*
+
 context_autocorr.pl
-%%   pair_sum(List, Sum) 
+%%   pair_sum(+List, -Sum)
 %
-%    
+%    Sum pairs in list
+
 context_autocorr.pl
-%%   calc_avg(URI, Theta, Diffusion) 
+%%   calc_avg(+URI, +Theta, -Diffusion)
 %
-%    
+%    Calculate average
+
 context_autocorr.pl
-%%   negate(true,color).
+%%   model_options(+L, +URI, +Opt, +Contour)//
 %
-%    
+%    Inline options
+
 context_autocorr.pl
-%%   maintain(true,contour).
+%%   rcontour(+Image, +X,+Y,+Z, +Contour)//
 %
-%    
+%    Display a contour or color image from R
+
 context_autocorr.pl
-%%   model_options([], _URI, _Opt, _Contour) --> !.
+%%   contour_display(+Opt, +URI, +Contour, +Lat, +Lon, +Info)
 %
-%    
+%    Display a contour or color image
+
 context_autocorr.pl
-%%   rcontour(Image, X,Y,Z, Contour) -->
+%%   variance(+Request)
 %
-%
+%    Do the variance of pair-correlation
+
 context_autocorr.pl
-%%   contour_display(Opt, URI, Contour, Lat, Lon, Info) 
+%%   mean(+Request)
 %
-%    
+%    Do the mean of pair correlation
+
 context_autocorr.pl
-%%   variance(Request) 
+%%   contour(+Request)
 %
-%    
+%    Contour dynamic page
+
 context_autocorr.pl
-%%   mean(Request) 
+%%   data_row(+URI,-ZList)
 %
-%    
+%    Get data row of section
+
 context_autocorr.pl
-%%   contour(Request)
+%%   data_table(+URI,-Table)
 %
-%    
+%    Get used table
+
 context_autocorr.pl
-%%   data_row(URI,ZList) 
+%%   data_service(+Request) 
 %
-%    
+%    Access the data service
+
 context_autocorr.pl
-%%   data_table(URI, table(ZTable)) 
+%%   collect_info(+Lat, +Lon, -Info)
 %
-%    
-context_autocorr.pl
-%%   data_service(Request) 
-%
-%    
-context_autocorr.pl
-%%   collect_info(Lat, Lon, ['U'=URI, 'D'=Df, 'theta'=Lf, 'Q'=Q, 'E'=Err,
-%
-%    
+%    Info at lat and lon
+
 context_autocorr.pl
 %%   run_sections 
 %
-%    
+%    Process DEMs
+
 context_autocorr.pl
 %%   run_all_sections 
 %
-%    
+%    Process all DEMS
+
 context_autocorr.pl
 %%   aggregate_info(URI) 
 %
@@ -260,7 +282,7 @@ context_autocorr.pl
 context_autocorr.pl
 %%   aggregate_all_sections 
 %
-%    
+%
 context_autocorr.pl
 %%   find_all_elevs(X,Z, Total) 
 %
@@ -274,29 +296,29 @@ context_autocorr.pl
 %
 %    
 context_browse.pl
-%%   create_list([]) --> [].
+%%   create_list(+L)//
 %
-%    
+%    Part of the browser tree
+
 context_browse.pl
-%%   foundational(Subject, Link) 
+%%   foundational(+Subject, -Link)
 %
-%    
+%    Link to a foundational article
+
 context_browse.pl
-%%   link_view('', _, _, _Subject, _Docs) -->
+%%   link_view(+Link, +Target, +Image, +Subject, +Text)//
 %
-%    
+%    Link inline view
+
 context_browse.pl
-%%   link_view(Link, Target, Image, Subject, Text) -->
+%%   view_tree(+Request, +Subject)//
 %
-%    
-context_browse.pl
-%%   view_tree(Request, Subject) -->
-%
-%    
+%    View browser tree inline
+
 context_browse.pl
 %%   navigate(+Request) 
 %
-%    Dynamic page to feaure browser
+%    Dynamic page to feature browser
 
 context_clutter.pl
 %%   navigate(+Request)
@@ -304,25 +326,25 @@ context_clutter.pl
 %    Dynamic page to EMI clutter models
 
 context_clutter.pl
-%%   clutter_integrate(Parameter,X,Y) 
+%%   clutter_integrate(+Parameter,+X,+Y)
 %
-%    
+%    Intgerate the stochastic clutter model
+
 context_clutter.pl
-%%   other_fxn(Parameter,X,Y) 
+%%   plot(+Request) 
 %
-%    
-context_clutter.pl
-%%   plot(Request) 
-%
-%    
+%    Plot clutter model
+
 context_codegen.pl
-%%   symbolic_to_string(Symbolic, String) 
+%%   symbolic_to_string(+Symbolic, -String)
 %
-%    
+%    Convert symbolic token representation to string
+
 context_codegen.pl
-%%   generate_from_symbolic_skeleton(Begin, Inner, End, Code) 
+%%   generate_from_symbolic_skeleton(+Begin, +Inner, +End, -Code)
 %
-%    
+%    Generate code from skeleton
+
 context_complex.pl
 %%   real(+Complex, -Real)
 %
@@ -344,11 +366,11 @@ context_complex.pl
 %    Product of two complex numbers
 
 context_complex.pl
-%%   magnitude(_, L, L, Final, F) 
+%%   magnitude(_, L, L, Final, F)
 %
 %    
 context_complex.pl
-%%   absolute([],Final, F) 
+%%   absolute([],Final, F)
 %
 %    
 context_complex.pl
@@ -412,42 +434,49 @@ context_corrosion.pl
 %
 %    
 context_corrosion.pl
-%%   corrosion_components(Request) 
+%%   corrosion_components(+Request) 
 %
-%    
+%    Corrosion components
+
 context_corrosion.pl
 %%   navigate(+Request) 
 %
 %    Dynamic page to corrosion models
 
 context_corrosion.pl
-%%   check_margin(Z, Limit, 'Margin failed') 
+%%   check_margin(+Z, +Limit, =Failed)
 %
-%
+%    Check if within margin
+
 context_corrosion.pl
-%%   get_location(Characteristic, Lat, Lon, Location_Name, Class, EC, Examples) 
+%%   get_location(+Characteristic, +Lat, +Lon, +Location_Name, +Class, +EC, -Examples)
 %
-%    
+%    Get location of the empirical data set
+
 context_corrosion.pl
-%%   corrosionModel(Diff, Drag, X0, T*Time, Z*Thickness) 
+%%   corrosionModel(+Diff, +Drag, +X0, +Time, -Thickness)
 %
-%    
+%    Corrosion growth model
+
 context_corrosion.pl
-%%   plot(Request) 
+%%   plot(+Request) 
 %
-%    
+%    Plot corrosion curvepage
+
 context_corrosion.pl
-%%   standard(Names) 
+%%   standard(-Names)
 %
-%    
+%    Name of ISO standard corrosion docs
+
 context_corrosion.pl
 %%   scale([Value, Env, Ext, Int, Steel, Zinc, Units]) 
 %
 %    
 context_corrosion.pl
-%%   corrosion_scale_table(_Request) 
+%%   corrosion_scale_table(+Request)
 %
-%    
+%    Corrosion scale table page
+
 context_csir.pl
 %%   path_to_obstacles_files(
 %
@@ -463,7 +492,7 @@ context_csir.pl
 context_csir.pl
 %%   capture(URI) 
 %
-%    
+%
 context_csir.pl
 %%   generate 
 %
@@ -509,7 +538,7 @@ context_dbpedia.pl
 %
 %    
 context_dbpedia.pl
-%%   get_page(+Location, -Page) 
+%%   get_page(+Location, -Page)
 %
 %    Get a page from dbpedia
 
@@ -689,13 +718,15 @@ context_demos.pl
 %    Demo of a guided model characteristic
 
 context_demos.pl
-%%   generate_random_walk_1(X, Z) 
+%%   generate_random_walk_1(+X, -Z)
 %
-%
+%    Demo of random walk
+
 context_demos.pl
-%%   generate_random_walk_2(Period, X, Z) 
+%%   generate_random_walk_2(+Period, +X, -Z)
 %
-%    
+%    Demo of random walk
+
 context_demos.pl
 %%   sos(+Request)
 %
@@ -742,11 +773,11 @@ context_elements.pl
 %
 %    
 context_elements.pl
-%%   periodic_row(_,[]) --> !.
+%%   periodic_row(_,[])//
 %
 %    
 context_elements.pl
-%%   periodic_table(_,[]) --> !.
+%%   periodic_table(_,[])//
 %
 %    
 context_elements.pl
@@ -772,7 +803,7 @@ context_emi.pl
 context_file_reading.pl
 %%   get_context_dir(Path) 
 %
-%    
+%
 context_file_reading.pl
 %%   download(+Request)
 %
@@ -790,37 +821,45 @@ context_file_reading.pl
 %
 %    
 context_file_reading.pl
-%%   excluded([
+%%   excluded(-List)
 %
-%    
+%    Used by *crawl*
+
 context_file_reading.pl
-%%   is_dir(Path, File, Dir) 
+%%   is_dir(+Path, +File, -Dir)
 %
-%    
+%    Used by *crawl*
+
 context_file_reading.pl
-%%   print_if_files_in_dir(File) 
+%%   print_if_files_in_dir(+File)
 %
-%    
+%    Used by *crawl*
+
 context_file_reading.pl
-%%   if_file_found(Dir, File, FilePath) 
+%%   if_file_found(+Dir, +File, -FilePath)
 %
-%    
+%    Used by *crawl*
+
 context_file_reading.pl
-%%   traverse_dirs(_Path, []).
+%%   traverse_dirs(+Path, -Final).
 %
-%    
+%    Used by *crawl*
+
 context_file_reading.pl
 %%   traverse(Root) 
 %
-%    
+%    Used by *crawl*
+
 context_file_reading.pl
 %%   find(File, FilePath)
 %
-%    
+%    Used by *crawl*
+
 context_file_reading.pl
-%%   crawl(_Request) 
+%%   crawl(+Request)
 %
-%    
+%    Crawl throught a directory path
+
 context_fording.pl
 %%   collect_names_options(List) 
 %
@@ -831,9 +870,10 @@ context_fording.pl
 %    Dynamic page to stream and river flow rate and fording models
 
 context_fording.pl
-%%   speed_scaling(AreaUnits, Factor, Cross, X, Y) 
+%%   speed_scaling(+AreaUnits, +Factor, +Cross, +X, -Y)
 %
-%    Scale current speed based
+%    Scale current speed based on cross-section
+
 context_fording.pl
 %%   power_raise(X, Y) 
 %
@@ -1026,9 +1066,10 @@ context_geo.pl
 %
 %    
 context_geo.pl
-%%   get_elevation(Lat, Lon, Elev) 
+%%   get_elevation(+Lat, +Lon, -Elev)
 %
-%    
+%    Get elevation from lat/lon
+
 context_geo.pl
 %%   genRequestPairs([[Lat],[Lon]], Li, List) 
 %
@@ -1040,7 +1081,8 @@ context_geo.pl
 context_geo.pl
 %%   get_elevation(LatLonList, ElevList) 
 %
-%    
+%    Get elevation list from lat/lon list
+
 context_geo.pl
 %%   get_elevation_path(LatLonList, Samples, ElevList) 
 %
@@ -1062,9 +1104,10 @@ context_geo.pl
 %
 %    
 context_geo.pl
-%%   get_elevation_current_dem(X,Y,Elev) 
+%%   get_elevation_current_dem(+X,+Y,-Elev)
 %
-%    
+%    Get elevation of current DEM
+
 context_geo.pl
 %%   find_dem_section(Lat, Lon, Name, Info) 
 %
@@ -1078,17 +1121,20 @@ context_geo.pl
 %
 %    
 context_geo.pl
-%%   prep_dem_section(Name) 
+%%   prep_dem_section(+Name)
 %
-%    
+%    Prepare a DEM section
+
 context_geo.pl
 %%   cleanup_dem 
 %
-%    
+%    Remove DEM from memory
+
 context_geo.pl
-%%   size_of_dem(L) 
+%%   size_of_dem(-L)
 %
-%    
+%    Size OF DEM
+
 context_geo.pl
 %%   find_elev(Distance, DiffElev, (DX,DE)) 
 %
@@ -1160,11 +1206,13 @@ context_geo.pl
 context_geo.pl
 %%   plot_ac 
 %
-%    
+%    Plot an autocorrelation
+
 context_graphing.pl
-%%   is_log(lin, 0).
+%%   is_log(+Log, -Bool).
 %
-%    
+%    If log selected
+
 context_graphing.pl
 %%   json_complete(x(_,[]), y(_,[],_), In, Out) 
 %
@@ -1178,31 +1226,35 @@ context_graphing.pl
 %
 %    
 context_graphing.pl
-%%   pre_scatter_script_load -->
+%%   pre_scatter_script_load//
+%
+%    Javascript preload
+
+context_graphing.pl
+%%   scatter_script_load//
+%
+%    Javascript preload
+
+context_graphing.pl
+%%   scatter_plot(LogScale,XAxis,YAxis,[X,Y])//
 %
 %    
 context_graphing.pl
-%%   scatter_script_load -->
+%%   scatter_plot(LogScale,X,Y,Data)//
 %
 %    
 context_graphing.pl
-%%   scatter_plot(LogScale,XAxis,YAxis,[X,Y]) -->
+%%   pre_chart_script_load//
 %
-%    
+%    Javascript preload
+
 context_graphing.pl
-%%   scatter_plot(LogScale,X,Y,Data) -->
+%%   chart_script_load//
 %
-%    
+%    Javascript preload
+
 context_graphing.pl
-%%   pre_chart_script_load -->
-%
-%    
-context_graphing.pl
-%%   chart_script_load -->
-%
-%    
-context_graphing.pl
-%%   chart_plot(Log, Xaxis, Yaxis, Title, Data) -->
+%%   chart_plot(Log, Xaxis, Yaxis, Title, Data)//
 %
 %    
 context_graphing.pl
@@ -1214,23 +1266,25 @@ context_graphing.pl
 %
 %    
 context_graphing.pl
-%%   dygraph_script_load -->
+%%   dygraph_script_load//
+%
+%    Javascript preload
+
+context_graphing.pl
+%%   pre_dygraph_script_load//
+%
+%    Javascript preload
+
+context_graphing.pl
+%%   dygraph_plot(LogScale, Headings, Xaxis, Yaxis, Title, Data)//
 %
 %    
 context_graphing.pl
-%%   pre_dygraph_script_load -->
+%%   dygraph_native(LogScale, Headings, Xaxis, Yaxis, Title, Data)//
 %
 %    
 context_graphing.pl
-%%   dygraph_plot(LogScale, Headings, Xaxis, Yaxis, Title, Data) -->
-%
-%    
-context_graphing.pl
-%%   dygraph_native(LogScale, Headings, Xaxis, Yaxis, Title, Data) -->
-%
-%    
-context_graphing.pl
-%%   dygraph_error_bars(LogScale, Headings, Xaxis, Yaxis, Title, Data) -->
+%%   dygraph_error_bars(LogScale, Headings, Xaxis, Yaxis, Title, Data)//
 %
 %    
 context_graphing.pl
@@ -1238,13 +1292,15 @@ context_graphing.pl
 %
 %    
 context_graphing.pl
-%%   quote_string(Term, Term) 
+%%   quote_string(+Term, -Q)
 %
-%    
+%    Quote a term
+
 context_graphing.pl
-%%   concat_strings(List, Quoted_String) 
+%%   concat_strings(+List, -Quoted_String)
 %
-%    
+%    Concat strings into quoted string
+
 context_graphing.pl
 %%   axis_label(Label, Units, Output) 
 %
@@ -1254,23 +1310,26 @@ context_graphing.pl
 %
 %    
 context_graphing.pl
-%%   plot(dynamic, LogScale, Headings, Xaxis, Yaxis, Title, Data) -->
+%%   plot(+Dynamic, +LogScale, +Headings, +Xaxis, +Yaxis, +Title, +Data)//
+%
+%    Dynamic plot
+
+context_graphing.pl
+%%   plot_log(+Log, +Headings, +Xaxis, +Yaxis, +Title, +Data)//
+%
+%    Log plot
+
+context_graphing.pl
+%%   pre_map_load//
+%
+%    Preloading javascript
+
+context_graphing.pl
+%%   map_native(Lat, Lon, Title)//
 %
 %    
 context_graphing.pl
-%%   plot_log(false, Headings, Xaxis, Yaxis, Title, Data) -->
-%
-%    
-context_graphing.pl
-%%   pre_map_load -->
-%
-%    
-context_graphing.pl
-%%   map_native(Lat, Lon, Title) -->
-%
-%    
-context_graphing.pl
-%%   get_elevation(Lat, Lon) -->
+%%   get_elevation(Lat, Lon)//
 %
 %    
 context_lakes.pl
@@ -1302,7 +1361,7 @@ context_lakes.pl
 context_lakes.pl
 %%   get_ice_out(Year) 
 %
-%    
+%
 context_lakes.pl
 %%   remove_temperatures 
 %
@@ -1325,26 +1384,29 @@ context_lightning.pl
 %    Dynamic page to lightning models
 
 context_lightning.pl
-%%   lightningA(I0,Alpha,Beta,X*_Units,Y) 
+%%   lightningA(+I0,+Alpha,+Beta,+X,-Y)
 %
-%    
+%    Lightning A stroke profile
+
 context_lightning.pl
-%%   lightningD(I0,Alpha,Beta,X*_Units,Y) 
+%%   lightningD(+I0,+Alpha,+Beta,+X,-Y)
 %
-%    
+%    Lightning B stroke profile
+
 context_lightning.pl
 %%   plot(+Request)
 %
 %    Plot the lightning stroke temporal profile
 
 context_lightning.pl
-%%   effects_table([CC, Desc, I0, Alpha, Beta, PeakI, ActionInt, Decay50, Time10, Time90, TimePeak, RR, PRR]) 
+%%   effects_table(-Tuple)
 %
-%    
+%    Create lightning effects table
+
 context_lookup.pl
 %%   nth(Input, Table, Output) 
 %
-%
+%    Nth value of nput
 context_lookup.pl
 %%   lookup_table(Scale, Offset, Table, Input, Output) 
 %
@@ -1354,42 +1416,50 @@ context_lookup.pl
 %
 %    
 context_main.pl
-%%   server(Port) 
+%%   server(+Port)
 %
-%    
+%    Instancing server for Cliopatria
+
 context_main.pl
-%%   nav_aids(Key, Path, Title) -->
+%%   nav_aids(Key, Path, Title)//
 %
-%    
+%    Inline generation of navigation aids
+
 context_main.pl
 %%   index_page(+Request)
 %
 %    Main index page for context server
 
 context_main.pl
-%%   run_unit_tests(_Request) 
+%%   run_unit_tests(+Request)
 %
-%    
+%    Run all unit tests
+
 context_main.pl
-%%   acronym_list(_Request) 
+%%   acronym_list(+Request)
 %
-%    
+%    Generate an acronym list table
+
 context_map.pl
-%%   minutes_to_degrees((Deg,Min,Sec), Degrees) 
+%%   minutes_to_degrees(+DMS, -Degrees)
 %
-%    
+%    Convert degrees/minutes/seconds to frational degrees
+
 context_map.pl
-%%   get_location(URI, Lat, Lon, Title) 
+%%   get_location(+URI, -Lat, -Lon, -Title)
 %
-%    
+%    Get location for a URI
+
 context_map.pl
 %%   view(+Request)
 %
-%    
+%    View map of locale
+
 context_map.pl
-%%   available_location(Locale, Title, Model, Feature)
+%%   available_location(+Locale, -Title, -Model, -Feature)
 %
-%
+%    Deteremines if locale has available features
+
 context_map.pl
 %%   navigate_locale(+Request)
 %
@@ -1403,72 +1473,81 @@ context_map.pl
 context_map.pl
 %%   find_loc(Query, URI, Title)
 %
-%
+%    Finds matches to query
+
 context_map.pl
-%%   find_example(Query, URI, Title)
+%%   find_example(+Query, -URI, -Title)
 %
-%
+%    Finds matches to query, same as *find_loc*
+
 context_map.pl
-%%   autocompletions(Query, Max, Count, Completions)
+%%   autocompletions(+Query, +Max, -Count, -Completions)
 %
-%
-context_map.pl
-%%   ac_result([Obj,Type], json([ label=Type,
-%
-%
+%    Autocompletion query
+
 context_map.pl
 %%   find_locale(+Request)
 %
-%
+%    Dynamic page for locale
+
 context_map.pl
 %%   navigate(+Request)
 %
 %    Dynamic page to geospatial search
 
 context_map.pl
-%%   max_lat(52.5).
+%%   max_lat(-Lat).
+%
+%    Fixed Max
+
+context_map.pl
+%%   min_lat(-Lat).
+%
+%    Fixed Min
+
+context_map.pl
+%%   max_lon(-Lon).
+%
+%    Fixed Max
+
+context_map.pl
+%%   min_lon(-Lon).
+%
+%    Fixed Min
+
+context_map.pl
+%%   image_width(-W)
+%
+%    Fixed Width
+
+context_map.pl
+%%   image_height(-H)
+%
+%    Fixed Height
+
+context_map.pl
+%%   get_ll_extent(+Lat, +Lon, +X, +Y, +W, +H)
+%
+%    Get Lat/Lon extents as rectiliear coordinates for mapping
+
+context_map.pl
+%%   section_name(+Lat, +Lon, -Title)
+%
+%    Section name for Lat/Lon 
+
+context_map.pl
+%%   lon_regions(URI, Target, Lat, Lon)//
 %
 %    
 context_map.pl
-%%   min_lat(23.5).
-%
-%
-context_map.pl
-%%   max_lon(-52.5).
+%%   lat_regions(_URI, _Target, Lat, _Lon)//
 %
 %    
 context_map.pl
-%%   min_lon(-125.5).
+%%   usa_map(+URI,+Target)//
 %
-%    
-context_map.pl
-%%   image_width(350).   %250
-%
-%    
-context_map.pl
-%%   image_height(210).  %150
-%
-%    
-context_map.pl
-%%   get_ll_extent(Lat, Lon, X, Y, W, H) 
-%
-%    
-context_map.pl
-%%   section_name(Lat, Lon, Title) 
-%
-%    
-context_map.pl
-%%   lon_regions(_URI, _Target, _Lat, Lon) -->
-%
-%    
-context_map.pl
-%%   lat_regions(_URI, _Target, Lat, _Lon) -->
-%
-%    
-context_map.pl
-%%   usa_map(URI,Target) -->
-%
-%    
+%    Inline Map of USA to use as selection
+
 context_materials.pl
 %%   navigate(+Request)
 %
@@ -1666,7 +1745,7 @@ context_math.pl
 %
 %    
 context_model.pl
-%%   css(URL) -->
+%%   css(URL)//
 %
 %    
 context_model.pl
@@ -1783,31 +1862,38 @@ context_ont_utils.pl
 context_ont_utils.pl
 %%   print_all_subjects 
 %
-%    
+%    Print subjects names to standard output
+
 context_ont_utils.pl
-%%   any_model_index(_Request) 
+%%   any_model_index(+Request)
 %
-%    
+%    Not implemented
+
 context_ont_utils.pl
-%%   write_object(Name) 
+%%   write_object(+Name) 
 %
-%    
+%    Write object name
+
 context_ont_utils.pl
-%%   find_ent_predicates(_Request) 
+%%   find_ent_predicates(+Request)
 %
-%    
+%    Find predicates for "ent" namespace
+
 context_ont_utils.pl
-%%   find_ent_subjects(_Request)  
+%%   find_ent_subjects(+Request)
 %
-%    
+%    Find subjects for "ent" namespace
+
 context_ont_utils.pl
-%%   find_ent_objects(_Request)
+%%   find_ent_objects(+Request)
 %
-%    
+%    Find objects for "ent" namespace
+
 context_ont_utils.pl
-%%   restart(_Request) 
+%%   restart(+Request)
 %
-%    
+%    Not implemented
+
 context_ou.pl
 %%   ou_variance(D,Theta,X,Y) 
 %
@@ -1865,13 +1951,15 @@ context_ou.pl
 %
 %
 context_ou.pl
-%%   xrange(0,40).
+%%   xrange(-X_low, -X_high).
 %
-%
+%    X range
+
 context_ou.pl
-%%   yrange(0,20).
+%%   yrange(-Y_low, -Y_low).
 %
-%
+%    Y range
+
 context_ou.pl
 %%   scale(Size)
 %
@@ -1907,7 +1995,8 @@ context_ou.pl
 context_ou.pl
 %%   setup_parameters
 %
-%
+%    Setup parameters for OU model
+
 context_ou.pl
 %%   mean_from_ou(data(X,Y),Diffusion,Drag,Flatness,Error)
 %
@@ -1932,10 +2021,6 @@ context_ou.pl
 %%   optimize_mean(URI, Diffusion, Drag, Flat, Err)
 %
 %
-context_params.pl
-%%   param(domain, [oneof([slopes,wind,lakes,particles,rain,clutter,none]),
-%
-%
 context_pdf.pl
 %%   data
 %
@@ -1945,7 +2030,7 @@ context_pdf.pl
 %
 %
 context_pdf.pl
-%%   plot_table(Title, X, Mean, Min, Max, Delta, Log) -->
+%%   plot_table(Title, X, Mean, Min, Max, Delta, Log)//
 %
 %
 context_pdf.pl
@@ -1967,7 +2052,8 @@ context_pdf.pl
 context_pdf.pl
 %%   plot_directed_graph
 %
-%
+%   Plot directed graph from PDF class
+
 context_pdf.pl
 %%   process(+Request)
 %
@@ -1976,153 +2062,163 @@ context_pdf.pl
 context_pdf.pl
 %%   loglin(+Request)
 %
-%
+%    Switch from log to lin
+
 context_pdf.pl
 %%   encode_service(Hostname, Port, Cmd, Service)
 %
-%
+%    Encode service call
+
 context_pdf.pl
 %%   generate_service(+Request)
 %
-%
+%    Generate service call
+
 context_pdf.pl
 %%   example//
 %
 %    Example inline dynamic page for generating a PDF
 
 context_pdf.pl
-%%   log_or_linear(_, 1)
+%%   log_or_linear(+Log, -Set)
 %
-%
+%    Check if log or linear
+
 context_pdf.pl
-%%   log_value(1, true).
+%%   log_value(+Num, -Bool).
 %
-%
+%    Log set
+
 context_pdf.pl
-%%   check_log(Input, OutputLogical, OutputNumeric)
+%%   check_log(+Input, -OutputLogical, -OutputNumeric)
 %
-%
+%    If logarithmic
+
 context_physical.pl
-%%   rdf_units(Sub, Pred, Obj)
+%%   rdf_units(+Sub, +Pred, +Obj)
 %
-%
+%    Units as triples
+
 context_physical.pl
-%%   find_entries(Name, List)
+%%   find_entries(+Name, -List)
 %
-%
+%    Find entries from physical constant list
+
 context_physical.pl
-%%   find_units(List)
+%%   find_units(-List)
 %
-%
+%    Find relevant Units list
+
 context_physical.pl
 %%   navigate(+Request)
 %
 %    Dynamic page to physical parameters and constants
 
 context_physical.pl
-%%   rdf_old_units(ent
-%
-%    
-context_physical.pl
 %%   store_as_triples 
 %
-%    
+%    Create as triples
+
 context_profile.pl
-%%   get_all_course_files(List) 
+%%   get_all_course_files(+List)
 %
-%    
+%    Get all course files
+
 context_profile.pl
 %%   navigate(+Request)
 %
 %    Dynamic page to fine-terrain profiling using semi-Markov models
 
 context_profile.pl
-%%   window_filter(0, X, X) 
+%%   window_filter(+N, +X, -Z)
 %
-%    
+%    Window filter
+
 context_profile.pl
-%%   window_filter(N, X, Z) 
+%%   mc_model_component(+List, +X, +W, -WW).
 %
-%    
+%    Monte Carlo model component
+
 context_profile.pl
-%%   mc_model_component([], _, WW, WW).
+%%   mc_model(+List, +Filter, +X, -WWW)
 %
-%    
+%    Monte Carlo model component list process
+
 context_profile.pl
-%%   mc_model(List, Filter, X, WWW) 
+%%   sync(+W, +S, -Result)
 %
-%    
+%    Window function sync
+
 context_profile.pl
-%%   sync(W, S, Result) 
+%%   hat(+W, +Scale, +S, -Result)
 %
-%    
+%    Window function hat
+
 context_profile.pl
-%%   hat(W, Scale, S, Result) 
+%%   semi_markov_model_component(+R, +X, +W, -W1).
 %
-%    
+%    Component of semiMarkov model
+
 context_profile.pl
-%%   semi_markov_model_component([], _, WW, WW).
+%%   semi_markov_model(+List, +Weight, +N, +Sx, -Filtered)
 %
-%    
-context_profile.pl
-%%   semi_markov_model(List, Weight, N, % XV,
-%
-%    
+%    SemiMarkov model weighted
+
 context_profile.pl
 %%   process_profile(+Request)
 %
 %    Process specific selected terrain profile
 
 context_psd.pl
-%%   delayed_exponent(L, Alpha, S, R) 
+%%   delayed_exponent(+L, +Alpha, +S, -R)
 %
-%    
+%    Delayed exponent PSD for semiMarkov
+
 context_psd.pl
-%%   two_level_model(L1, Alpha1, L2, Alpha2, Weight, S, R) 
+%%   two_level_model(+L1, +Alpha1, +L2, +Alpha2, +Weight, +S, -R)
 %
-%    
+%    Two level semi-Markov PSD model
+
 context_psd.pl
-%%   two_level(Course_Name, S, Result) 
+%%   two_level(+Course_Name, +S, -Result)
 %
-%    
-context_psd.pl
-%%   two_level(Course_Name, S, Result) 
-%
-%    
+%    Generate a two level PSD
+
 context_psd_workflow.pl
-%%   rdf_data(ID, Name) 
+%%   rdf_data(+ID, -Name)
 %
-%    
+%    Local RDF data
+
 context_psd_workflow.pl
-%%   get_all_psd_sets(List)
+%%   get_all_psd_sets(-List)
 %
-%    
+%    Get all PSD sets
+
 context_psd_workflow.pl
 %%   navigate(+Request)
 %
 %    Dynamic page to indexed fine-terrain power spectral densities
 
 context_psd_workflow.pl
-%%   read_rdf(URI, UX, UY, [DataX, DataY], 'X,Z') 
+%%   read_rdf(+URI, +UX, +UY, +XY, +Axis)
 %
-%    
+%    Read PSD from RDF
+
 context_psd_workflow.pl
-%%   reference_name('TOPS1', '1-1-010_Vehicle_Test_Course_Severity__Surface_Roughness.pdf').
+%%   reference_name(+Ref, -File).
 %
-%    
+%    Reference name giving file
+
 context_psd_workflow.pl
-%%   reference_link(Name, Dest, Link) 
+%%   reference_link(+Name, -Dest, -Link)
 %
-%    
+%    Reference Link for PSD data
+
 context_psd_workflow.pl
 %%   read_rdf_data(+Request)
 %
 %    Process specific PSD data set
 
-context_psd_workflow.pl
-%%   sos([], _, _, _, Final, Final).
-%
-%    
 context_psd_workflow.pl
 %%   simulate_walk(+Request)
 %
@@ -2134,54 +2230,64 @@ context_psd_workflow.pl
 %    Display soil categories
 
 context_psd_workflow_json.pl
-%%   path_to_tops_psd_files('../../../../Models/Land/terrains/grades_slopes/data/WaveNumberSpectra/LogSpaced/').
+%%   path_to_tops_psd_files(-Path).
 %
-%    
+%    Path to JSON files
+
 context_psd_workflow_json.pl
-%%   psd_name_file_pair(Name, FilePath) 
+%%   psd_name_file_pair(+Name, -FilePath)
 %
-%    
+%    File retrieve
+
 context_psd_workflow_json.pl
-%%   psd_index(_) 
+%%   psd_index(+Request)
 %
-%    
+%    Generate index based on JSON files
+
 context_psd_workflow_json.pl
-%%   get_all_tops_psd_files(List) 
+%%   get_all_tops_psd_files(+List)
 %
-%    
+%    Find all TOPS PSD files
+
 context_psd_workflow_json.pl
-%%   psd_files(_) 
+%%   psd_files(+Request)
 %
-%    
+%    PSD file reaad
+
 context_psd_workflow_json.pl
-%%   psd_results(_) 
+%%   psd_results(+Request)
 %
-%    
+%    PSD results page
+
 context_psd_workflow_json.pl
-%%   plot_xy([], S, Result) 
+%%   plot_xy(+Input, +Data)
 %
-%    
+%    Plot XY
+
 context_psd_workflow_json.pl
 %%   create_data_list([],[],_,_,_,F,F).
 %
 %    
 context_psd_workflow_json.pl
-%%   read_psd_json(FN, [File,Name,Title,Date,DX,UX,DY,UY], Data, S,P) 
+%%   read_psd_json(+FN, +Tuple, +Data, -S,-P)
 %
-%    
+%    Read the PSD from JSON
+
 context_psd_workflow_json.pl
 %%   read_tops(+Request)
 %
-%                       
+%    Read a TOPS PSD 
+
 context_query.pl
 %%   model_elements(-Option)
 %
 %    Search elements for returning selection options
 
 context_query.pl
-%%   owl(Query, Resource, Title) 
+%%   owl(+Query, -Resource, -Title)
 %
-%    
+%    OWL lookahead query
+
 context_query.pl
 %%   ent_result(+Request)
 %
@@ -2195,7 +2301,8 @@ context_query.pl
 context_query.pl
 %%   triple(S,P,O) 
 %
-%    
+%    Subject/Predicate/Object triple query
+
 context_query.pl
 %%   pquery(+Request)
 %
@@ -2209,108 +2316,128 @@ context_query.pl
 context_r.pl
 %%   r_open_session
 %
-%
+%    Open an R session, needed for Linux
+
 context_r.pl
 %%   dquote(+X, -Y)
 %
 %    Double-quote ("") a term
 
 context_r.pl
-%%   rhist2d(X,Y) 
+%%   rhist2d(+X,+Y)
 %
-%    
+%    2D histogram Plot using R
+
 context_r.pl
-%%   rplot(X,Y) 
+%%   rplot(+X,+Y)
 %
-%    
+%    XY Plot using R
+
 context_r.pl
-%%   rplot_with_regression(Image, X, Y, Title, X_Axis, Y_Axis, Slope) 
+%%   rplot_with_regression(+Image, +X, +Y, +Title, +X_Axis, +Y_Axis, +Slope)
 %
-%    
+%    Demo rplot with regression
+
 context_r_demo.pl
-%%   xy([], Xc, X, Yc, Y) 
+%%   xy(+L, -X, -Y)
 %
-%    
+%    Tuple untangle
+
 context_r_demo.pl
-%%   xyz([], Xc, X, Yc, Y, Zc, Z) 
+%%   xyz(+L, -X, -Y, -Z)
 %
-%    
+%    Tuple untangle
+
 context_r_demo.pl
-%%   r_open_session 
+%%   r_open_session
 %
-%    
+%    Open R session
+
 context_r_demo.pl
-%%   open_mat(N, Lat, Lon) 
+%%   open_mat(N, Lat, Lon)
 %
-%    
+%    Open Matlab file in R
+
 context_r_demo.pl
-%%   rtest 
+%%   rtest
 %
-%
+%    R test
+
 context_r_demo.pl
-%%   rbessel 
+%%   rbessel
 %
-%    
+%    Demo of plotting Bessel function in R
+
 context_r_demo.pl
-%%   delayed_exponent_R(L, Alpha, S, R) 
+%%   delayed_exponent_R(L, Alpha, S, R)
 %
-%    
+%    Demo of delayed exponent in R
+
 context_r_demo.pl
-%%   two_level_model_R(L1, Alpha1, L2, Alpha2, S, R) 
+%%   two_level_model_R(+L1, +Alpha1, +L2, +Alpha2, +S, -R)
 %
-%    
+%    Demo of computing semi-Markov Model in R
+
 context_r_demo.pl
-%%   frequencies(S, _, Result, Result) 
+%%   two_level_spectrum_R(+L1, +Alpha1, +L2, +Alpha2, +S, +Init, -Result)
 %
-%    
+%    Demo of computing spectrum in R
+
 context_r_demo.pl
-%%   two_level_spectrum_R(_, _, _, _, S, Result, Result) 
+%%   dquote(+X, -Y)
 %
-%    
+%    Double quote a string
+
 context_r_demo.pl
-%%   dquote(X, Y) 
+%%   r_complex(+FileName)
 %
-%    
+%    Demo of write a plot to fileusing R
+
 context_r_demo.pl
-%%   r_complex(FileName) 
+%%   r_app(+Request)
 %
-%    
-context_r_demo.pl
-%%   r_app(_) 
-%
-%    
+%    R demo page
+
 context_random_walk.pl
-%%   semi_run(L, A, Value) 
+%%   semi_run(+L, +A, +Value)
 %
-%    
+%    A semiMarkov run length
+
 context_random_walk.pl
-%%   flip_step(L, A, R, R, Semi, Semi, Z, Z, L, A) 
+%%   flip_step(+L_in, +A, +R_in, +R, +Semi_in, +Semi, +Z_in, +Z, +L, -Flip)
 %
-%    
+%    Whether to flip a step
+
 context_random_walk.pl
-%%   semi_random_walker([], _Delta, _L, _A, _Z, _Semi, _Run, Out, Out).
+%%   semi_random_walker(+X, +Delta, +L, +A, +Z, +Semi, +Run, +In, -Out)
 %
-%    
+%    Semi-Markov random walker
+
 context_random_walk.pl
-%%   two_level_random_walk(Course_Name, X, Z, Result) 
+%%   two_level_random_walk(+Course_Name, +X, +Z, -Result)
 %
-%    
+%    Semi-Markov random walker
+
 context_random_walk.pl
-%%   random_walker([], _, Out, Out).
+%%   random_walker(+X, +Value, +In, -Out)
 %
-%    
+%    Classical random walk
+
 context_random_walk.pl
-%%   ou_random_walker(_X1, _X2, _Drag, [], _, O, Out) 
+%%   ou_random_walker(+X1, +X2, +Drag, +Y, +Value, +N, -Out)
 %
-%    
+%    Ornstein-Uhlenbeck random walk
+
 context_rdf_data.pl
-%%   ref_m('fine terrain features',     model, '/context_select/navigate?category=fine_terrain').
+%%   ref_m(+N, +Type, -Path).
 %
-%    
+%    Internal triple mechanism to map feature path
+
 context_rdf_data.pl
-%%   ref_(URL, feature, Feature) 
+%%   ref_(+URL, +Type, -Feature)
 %
-%    
+%    Internal triple mechanism to map feature
+
 context_ref.pl
 %%   navigate(+Request)
 %
@@ -2319,40 +2446,48 @@ context_ref.pl
 context_ref_search.pl
 %%   spec('humanEnvirStandards
 %
-%    
+%    SWEET for spec doc
+
 context_ref_search.pl
 %%   foundation('humanResearch
 %
-%    
+%    SWEET for foundation doc
+
 context_ref_search.pl
 %%   requirement('humanDecision
 %
-%    
+%    SWEET for requirement doc
+
 context_ref_search.pl
 %%   objective('humanDecision
 %
-%    
+%    SWEET for objective doc
+
 context_ref_search.pl
-%%   author_order('_1', 'lead author')
+%%   author_order(+Ordinal, -Role)
 %
-%    
+%    Author order rule
+
 context_ref_search.pl
-%%   article_link(Article, Title, a(href(Link),Title) ) 
+%%   article_link(+Article, +Title, -Href )
 %
-%    
+%    Create an article link
+
 context_ref_search.pl
-%%   find_title(Name, tr([td(Full_Name), td(Order),td(b(Doc)), td(b(Link))])) 
+%%   find_title(+Name, -Row)
 %
-%    
+%    Create a title ref
+
 context_ref_search.pl
 %%   cite(+Request)
 %
 %    Return references and citations according to criteria
 
 context_ref_search.pl
-%%   search_results(_,[]) -->
+%%   search_results(+Color,+Result)//
 %
-%    
+%    SWEET search Results
+
 context_ref_search.pl
 %%   search_sweet(+Request)
 %
@@ -2364,9 +2499,10 @@ context_ref_search.pl
 %    Plot the semantic graph of a reference search request
 
 context_ref_search.pl
-%%   find_context_requirement(Term, tr([td(Comment),
+%%   find_context_requirement(+Term, -Row)
 %
-%    
+%    Find a context requirement table row
+
 context_ref_search.pl
 %%   list_requirements(+Request) 
 %
@@ -2388,12 +2524,13 @@ context_render.pl
 context_render.pl
 %%   surface(+Request)
 %
-%
+%    Create a surface representation
 
 context_render.pl
-%%   render(URI, Contents) 
+%%   render(+URI, -Contents)
 %
-%    
+%    Render the URI object
+
 context_require.pl
 %%   find_requirement_topics(-Option)
 %
@@ -2423,6 +2560,7 @@ context_search.pl
 %%   find_categories(-Option)
 %
 %    Search elements for returning selection options
+
 context_search.pl
 %%   model_elements(-Option)
 %
@@ -2431,11 +2569,13 @@ context_search.pl
 context_search.pl
 %%   my_search_filter(+Request) 
 %
-%
+%    Search filter
+
 context_search.pl
-%%   owl(Query, Resource, Title) 
+%%   owl(+Query, -Resource, -Title)
 %
-%    
+%    Search on OWL subclasses with query substring
+
 context_search.pl
 %%   owl_result(+Request)
 %
@@ -2452,9 +2592,10 @@ context_search.pl
 %    List dynamic pages relevant to the search terms
 
 context_search.pl
-%%   available_pages(Cat, Model, UID) 
+%%   available_pages(+Cat, -Model, -UID)
 %
-%    
+%    Available pages for category
+
 context_search.pl
 %%   list_cats(+Request)
 %
@@ -2466,13 +2607,15 @@ context_seastate.pl
 %    Dynamic page to seatstate model
 
 context_seastate.pl
-%%   check_margin(Z, Limit, 'Margin failed')
+%%   check_margin(+Z, +Limit, -PassFailWarning)
 %
-%
+%    Check margin of seastate value
+
 context_seastate.pl
-%%   find_cumulative_point(0.0, _, _, [0,1]).
+%%   find_cumulative_point(+Value, +X, +Y, -Range).
 %
-%
+%    Find cumulative point
+
 context_seastate.pl
 %%   plot(+Request)
 %
@@ -2504,17 +2647,20 @@ context_seastate.pl
 %    Generate sea-state table
 
 context_select.pl
-%%   ref_search(Term, Description) -->
+%%   ref_search(+Term, +Description)//
 %
-%
+%    List inline refs that match term
+
 context_select.pl
-%%   g(Type, Contents) -->
+%%   g(+Type, +Contents)//
 %
-%
+%    Create a GIF inline icon
+
 context_select.pl
-%%   icon_cell_link(Highlight,
+%%   icon_cell_link(+Highlight, -Td)
 %
-%
+%    Create a cell link to feature
+
 context_select.pl
 %%   icon_bar(+Highlight)//
 %
@@ -2531,49 +2677,55 @@ context_select.pl
 %    Dynamic page to feature selection
 
 context_soil.pl
-%%   rdf_local(ent
+%%   rdf_local(+A,+B,+C)
 %
-%
+%    Temporary local RDF
+
 context_soil.pl
-%%   soil_combination([C, Desc, TG, [Desc, ' containing ', Graininess]])
+%%   soil_combination(-Tuple)
 %
-%
+%    Used to generate all soil combinations
+
 context_soil.pl
-%%   soil_table(_Request)
+%%   soil_table(+Request)
 %
-%
+%    Make soil table
+
 context_soil.pl
-%%   soil_range(Element, li([i(Item), '
+%%   soil_range(+Element, -Li)
 %
-%
+%    Create a list item, from a soil range
+
 context_soil.pl
-%%   process_soil_types([], Input, Output)
+%%   process_soil_types(+List, +Input, -Output)
 %
-%
+%    Recurse through soils, created a list
+
 context_soil.pl
 %%   parse_request(Soils, List)
 %
-%
+%    Take soil data and create a list
+
 context_soil.pl
 %%   soil_collect(Element, Item)
 %
-%
+%    Undecorated list of soil types.
+
 context_soil.pl
-%%   collect_soil_types([], Input, Output)
+%%   collect_soil_types(+List, +Input, -Output)
 %
-%
+%    Collect soil types
+
 context_soil.pl
-%%   collect(Soils, List)
+%%   collect(+Soils, -List)
 %
-%
+%    Feeds into *collect_soil_types*
+
 context_soil.pl
-%%   search(Name, List)
+%%   search(+Name, -List)
 %
-%
-context_soil.pl
-%%   store_local
-%
-%
+%    Create soil classification types
+
 context_solar.pl
 %%   list_solar_models(+Target)//
 %
@@ -2590,22 +2742,20 @@ context_solar.pl
 %    Graph the solar insolation model
 
 context_sos.pl
-%%   sos([], _, _, _, Final, Final).
+%%   generate_sos_profile(+X, +PSD, -Z)
 %
-%
-context_sos.pl
-%%   generate_sos_profile(X, psd(Sx, Sz), Z)
-%
-%
+%    Generates a SOS profile from a PSD
+
 context_standard_atmosphere.pl
 %%   navigate(+Request)
 %
 %    Dynamic page to standard atmosphere models
 
 context_standard_atmosphere.pl
-%%   limit_value(Value, X, 1.0)
+%%   limit_value(+Value, +X, +Limit)
 %
-%
+%    Limits a value
+
 context_standard_atmosphere.pl
 %%   plot(+Request)
 %
@@ -2652,9 +2802,10 @@ context_sweet_utils.pl
 %    Find all namespaces that SWEET uses so thay can be registered by Prolog
 
 context_sweet_utils.pl
-%%   belongs_to_sweet_category(URI, Prefix, Category, Description) 
+%%   belongs_to_sweet_category(+URI, -Prefix, -Category, -Description)
 %
-%
+%    Query if belongs to a SWEET category
+
 context_sweet_utils.pl
 %%   sweet_subject(-Name)
 %
@@ -2676,45 +2827,50 @@ context_sweet_utils.pl
 %    Returns string and global SWEET subjects
 
 context_sweet_utils.pl
-%%   store_sweet([Name,Out]) 
+%%   store_sweet(-Tuple)
 %
-%
+%    Store a SWEET tuple
+
 context_sweet_utils.pl
 %%   process_sweets 
 %
-%    
+%    Process individual SWEET classes
+
 context_sweet_utils.pl
 %%   print_all_sweet_subjects 
 %
-%    
+%    Print all SWEET subject names
+
 context_sweet_utils.pl
 %%   save_sweet_db 
 %
-%    
+%    Save the SWEET database for quickkaccess
+
 context_temperature.pl
-%%   calculate_symbolic_temperature(Site, T, S) 
+%%   calculate_symbolic_temperature(+Site, -T, -S)
 %
-%    
+%    Generate a symbolic algebraic expression
+
 context_temperature.pl
-%%   calculate_numeric_temperature(Site, T, Temperature) 
+%%   calculate_numeric_temperature(+Site, +T, -Temperature)
 %
-%    
+%    Generate a numeric from symbolic
+
 context_temperature.pl
-%%   generate_yearly_temperature_profile(Site, Timespan, Profile) 
+%%   generate_yearly_temperature_profile(+Site, +Timespan, -Profile)
 %
-%    
+%    Generate Yearly Temperature Profile
+
 context_temperature.pl
-%%   begin_c_skeleton('
+%%   begin_c_skeleton(-Code)
 %
-%
+%    Skeleton generator Begin section
+
 context_temperature.pl
-%%   float Get_Temperature (float time) {
+%%   end_c_skeleton(-Code);
 %
-%    
-context_temperature.pl
-%%   end_c_skeleton(');
-%
-%    
+%    Skeleton generator End section
+
 context_temperature.pl
 %%   generate_c_code(Site, Code) 
 %
@@ -2724,7 +2880,7 @@ context_temperature.pl
 %
 %    
 context_temperature.pl
-%%   example -->
+%%   example//
 %
 %    
 context_temperature.pl
@@ -2736,7 +2892,7 @@ context_temperature.pl
 %
 %    
 context_temperature.pl
-%%   navigate -->
+%%   navigate//
 %
 %    Dynamic page to temperature models
 
@@ -2880,13 +3036,10 @@ context_units.pl
 %
 %    
 context_units.pl
-%%   convert([], [], _, Final, Final) 
+%%   convert(+From, +To, -Units)
 %
-%    
-context_units.pl
-%%   convert(From*c, To*f, To) 
-%
-%    
+%    Convert units
+
 context_units.pl
 %%   convert_apply([], _, Input, Output) 
 %
@@ -2954,13 +3107,15 @@ context_water.pl
 %
 %    
 context_water.pl
-%%   densities(_Request) 
+%%   densities(+Request)
 %
-%    
+%    Table of liquid densities
+
 context_water.pl
-%%   liquids(Query, Resource, Title)
+%%   liquids(+Query, -Resource, -Title)
 %
-%    
+%    Find a liquid that matches Query
+
 context_water.pl
 %%   liquid_densities(+Request)
 %
@@ -3009,9 +3164,10 @@ context_weather.pl
 %
 %
 context_weather.pl
-%%   format_measure_query(Text, Measure)
+%%   format_measure_query(+Text, -Measure)
 %
-%
+%    Format the characteristic measure
+
 context_weather.pl
 %%   get_measure_spread(Location, Measure, Measures, Name)
 %
@@ -3021,9 +3177,10 @@ context_weather.pl
 %
 %
 context_weather.pl
-%%   find_min_index(List, Min, Day)
+%%   find_min_index(+List, -Min, -Day)
 %
-%
+%    Find the minimum index
+
 context_weather.pl
 %%   find_max([], [], Final, Final, Day, Day).
 %
@@ -3033,30 +3190,35 @@ context_weather.pl
 %
 %
 context_weather.pl
-%%   process_location(Location,
+%%   process_location(+Location, -Data)
 %
-%
+%    Process a weather location for extrema
+
 context_weather.pl
-%%   get_all_weather_sets(List)
+%%   get_all_weather_sets(-List)
 %
-%
+%    Get all weather sets as a list
+
 context_weather.pl
-%%   available_location(Locale, Title)
+%%   available_location(+Locale, -Title)
 %
-%
+%    Find an available location for weather
+
 context_weather.pl
-%%   units('SnowInch', 'Snowfall', in).
+%%   units(+Name, -Title, -Units).
 %
-%
+%    Unit lookup
+
 context_weather.pl
-%%   navigate -->
+%%   navigate//
 %
 %    Dynamic page to monthly meteorological data
 
 context_weather.pl
 %%   measure(+Request)
 %
-%
+%    Plot a specific weather measurement
+
 context_workflow.pl
 %%   navigate(+Request)
 %
