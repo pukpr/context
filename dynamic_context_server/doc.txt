@@ -114,9 +114,10 @@ context_autocorr.pl
 %    Minimimum value in a list
 
 context_autocorr.pl
-%%   flat(Fraction, +X, +Y, Partial)
+%%   flat(Fraction, +X, +Y, -Partial)
 %
-%    
+%    How flat a surface is
+
 context_autocorr.pl
 %%   ou_model0(+N,+D,+L,+X,+Y, +Fraction, -Result)
 %
@@ -163,13 +164,15 @@ context_autocorr.pl
 %    Finds the best model parameters
 
 context_autocorr.pl
-%%   generate_model(_Model, _,   _,  _,  [],  [], _Fraction, F, R)
+%%   generate_model
 %
-%
+%    Gnenerate model
+
 context_autocorr.pl
-%%   generate_model_stats(_Model, _URI, _,   _,  _,  [],  [], _Fraction, F, R) 
+%%   generate_model_stats
 %
-%    
+%    Generate model stats
+
 context_autocorr.pl
 %%   random_walker(+Request) 
 %
@@ -276,25 +279,30 @@ context_autocorr.pl
 %    Process all DEMS
 
 context_autocorr.pl
-%%   aggregate_info(URI) 
+%%   aggregate_info(+URI)
 %
-%    
+%    Assert info on a section
+
 context_autocorr.pl
 %%   aggregate_all_sections 
 %
-%
+%    Do *aggregate_info* on all sections
+
 context_autocorr.pl
-%%   find_all_elevs(X,Z, Total) 
+%%   find_all_elevs(+X,+Z, -Total)
 %
-%    
+%    Find all elevs and sum to total
+
 context_autocorr.pl
 %%   sum_all_sections 
 %
-%    
+%    Sum all sections
+
 context_autocorr.pl
-%%   ou_maxent_model(N,D,L,X,Y, Result)
+%%   ou_maxent_model(+N,+D,+L,+X,+Y, -Result)
 %
-%    
+%    Ornstein-Uhlenbeck MaxEnt model
+
 context_browse.pl
 %%   create_list(+L)//
 %
@@ -366,29 +374,35 @@ context_complex.pl
 %    Product of two complex numbers
 
 context_complex.pl
-%%   magnitude(_, L, L, Final, F)
+%%   magnitude(+Array, +L, +Count, +Initial, -Final)
 %
-%    
+%    Calculate conjugate-squared magnitude of complex array
+
 context_complex.pl
-%%   absolute([],Final, F)
+%%   absolute(List,Final, F)
 %
-%    
+%    Calculate absolute valute
+
 context_complex.pl
-%%   reciprocal(_, L, L, _, _, Final, F) 
+%%   reciprocal(+List, +L, +C, +X, +Sx, +Init, -Recip)
 %
-%    
+%    Gnerate a reciprocal space
+
 context_complex.pl
-%%   construct([], Xc, X) 
+%%   construct(+Reals, +Init, -X)
 %
-%    
+%    Construct a list of complex from reals
+
 context_complex.pl
-%%   parse([], Xc, X, Yc, Y) 
+%%   parse(+Tuple, +Xc, -X, +Yc, -Y)
 %
-%    
+%    Parse out tuple list into X and Y
+
 context_complex.pl
-%%   tuple_list([], [], Initial, Final) 
+%%   tuple_list(+X, +Y, +Initial, -Y)
 %
-%    
+%    Construct XY tuples out of X and Y list
+
 context_complex.pl
 %%   fft(+N, +Initial, -Ft)
 %
@@ -400,21 +414,25 @@ context_complex.pl
 %    Used by *fft*
 
 context_complex.pl
-%%   evens_and_odds([], [], []).
+%%   evens_and_odds(+A, +B, +C).
 %
-%
+%    Used by *fft*
+
 context_complex.pl
-%%   w(     1, 1.0 & 0.0).
+%%   w(+A, +B).
 %
-%    
+%    Used by *fft*
+
 context_complex.pl
-%%   scale_down([], _S, Xc, X) 
+%%   scale_down(+L, +Scale, +Xc, -X)
 %
-%    
+%    Scale elements in a list down by a factor
+
 context_complex.pl
-%%   fft_squared(X,Y, Sx, Sy) 
+%%   fft_squared(+X,+Y, -Sx, -Sy)
 %
-%
+%    FFT mag squared
+
 context_complex.pl
 %%   fft_length(+Input, -Length)
 %
@@ -426,13 +444,15 @@ context_complex.pl
 %    Pad an array to return a 2^n FFT size
 
 context_corrosion.pl
-%%   collect_component_materials(Metal, List) 
+%%   collect_component_materials(+Metal, -List)
 %
-%    
+%    Collect component materials
+
 context_corrosion.pl
-%%   materials(Query, Resource, Title) 
+%%   materials(+Query, -Resource, -Title)
 %
-%    
+%    Lookahead on materials
+
 context_corrosion.pl
 %%   corrosion_components(+Request) 
 %
@@ -469,74 +489,90 @@ context_corrosion.pl
 %    Name of ISO standard corrosion docs
 
 context_corrosion.pl
-%%   scale([Value, Env, Ext, Int, Steel, Zinc, Units]) 
+%%   scale(-Tuple
 %
-%    
+%    Scale info as tuple set
+
 context_corrosion.pl
 %%   corrosion_scale_table(+Request)
 %
 %    Corrosion scale table page
 
 context_csir.pl
-%%   path_to_obstacles_files(
+%%   path_to_obstacles_files(-Path)
 %
-%    
+%    Path to obstacle files
+
 context_csir.pl
-%%   get_all_course_files(List) 
+%%   get_all_course_files(-List)
 %
-%    
+%    Get all course files
+
 context_csir.pl
-%%   csv_name_file_pair(Name, Pred, FilePath) 
+%%   csv_name_file_pair(+Name, +Pred, -FilePath)
 %
-%    
+%    Get CSV version of file
+
 context_csir.pl
 %%   capture(URI) 
 %
-%
+%    One time capture of data to RDF
+
 context_csir.pl
 %%   generate 
 %
-%    
+%    Generate list of course files
+
 context_data_files.pl
-%%   directory_location(obstacles,
+%%   directory_location(+Type, -Dir)
 %
-%    
+%    Get directory location
+
 context_data_files.pl
-%%   file_json(obstacles, 'ATC-MTA-3InchSpacedBump.JSON').
+%%   file_json(+Type, -Name)
 %
-%    
+%    Name infor for JSON file
+
 context_data_files.pl
-%%   storeRDF(A, E, B, C) 
+%%   storeRDF(+A, +E, +B, +C)
 %
-%    
+%    Permanent RDF store
+
 context_data_files.pl
-%%   prefix('ent').
+%%   prefix(-Ent).
 %
-%    
+%    Get RDF prefix used
+
 context_data_files.pl
-%%   make_name(Name, Ent, E) 
+%%   make_name(+Name, +Ent, -E)
 %
-%    
+%    Make global name from prefix
+
 context_data_files.pl
-%%   read_json(FN) 
+%%   read_json(+FN)
 %
-%    
+%    Read FileName
+
 context_data_files.pl
 %%   populate_rdf_with_file_data(Class) 
 %
-%    
+%    Generate RDF info
+
 context_dbpedia.pl
-%%   get_uri(Location, URI) 
+%%   get_uri(+Location, -URI)
 %
-%    
+%    Get dbpedia URI location
+
 context_dbpedia.pl
-%%   get_lat_lon(Location, Lat, Lon) 
+%%   get_lat_lon(+Location, -Lat, -Lon)
 %
-%    
+%    Get lat/lon for location
+
 context_dbpedia.pl
-%%   get_depiction(Location, Image) 
+%%   get_depiction(+Location, -Image)
 %
-%    
+%    Dbpedia locations have an image
+
 context_dbpedia.pl
 %%   get_page(+Location, -Page)
 %
@@ -748,38 +784,45 @@ context_elements.pl
 %    Dynamic page to periodic table of elements
 
 context_elements.pl
-%%   registry(ID, a([href(U),target(target_iframe)],
+%%   registry(+ID, -Link],
 %
-%    
+%    Link to a registry for element
+
 context_elements.pl
 %%   property(+Request)
 %
 %    Dynamic page to periodic table of elements properties
 
 context_elements.pl
-%%   row(Row, Period) 
+%%   row(+Row, -Period)
 %
-%    
+%    PTOE row
+
 context_elements.pl
-%%   spacer(N, td([colspan(N)],[])).
+%%   spacer(+N, -Spacer).
 %
-%    
+%    Make table spacer
+
 context_elements.pl
-%%   span('He', T) 
+%%   span(+El, -T)
 %
-%    
+%    Special spanning elemants
+
 context_elements.pl
-%%   cell_color('Actinoid', 'Wheat').
+%%   cell_color(+Family, -Color).
 %
-%    
+%    Color cell according to element family
+
 context_elements.pl
-%%   periodic_row(_,[])//
+%%   periodic_row(+U,+R)//
 %
-%    
+%    Row of table
+
 context_elements.pl
-%%   periodic_table(_,[])//
+%%   periodic_table(+U,+T)//
 %
-%    
+%    Complete inline table
+
 context_elements.pl
 %%   table(+Request)
 %
@@ -801,25 +844,30 @@ context_emi.pl
 %    Dynamic page to EMI models and documentation
 
 context_file_reading.pl
-%%   get_context_dir(Path) 
+%%   get_context_dir(-Path)
 %
-%
+%    Get dir
+
 context_file_reading.pl
 %%   download(+Request)
 %
-%
+%    Download
+
 context_file_reading.pl
-%%   read_tabbed_csv(FN, X, Y, Arity, Data) 
+%%   read_tabbed_csv(+FN, -X, -Y, -Arity, -Data)
 %
-%    
+%    Read CSV
+
 context_file_reading.pl
-%%   parse([], Xc, X, Yc, Y) 
+%%   parse(+L, +Xc, +X, +Yc, +Y)
 %
-%    
+%    Parse file
+
 context_file_reading.pl
-%%   read_tabbed_csv(FN, X, Y, Arity, XV, YV) 
+%%   read_tabbed_csv(+FN, -X, -Y, -Arity, -XV, -YV)
 %
-%    
+%    Read tabbed CSV
+
 context_file_reading.pl
 %%   excluded(-List)
 %
@@ -861,9 +909,10 @@ context_file_reading.pl
 %    Crawl throught a directory path
 
 context_fording.pl
-%%   collect_names_options(List) 
+%%   collect_names_options(-List)
 %
-%    
+%    Collect Names Options
+
 context_fording.pl
 %%   navigate(+Request)
 %
@@ -875,9 +924,10 @@ context_fording.pl
 %    Scale current speed based on cross-section
 
 context_fording.pl
-%%   power_raise(X, Y) 
+%%   power_raise(+X, -Y)
 %
-%    
+%    Raise 10^x
+
 context_fording.pl
 %%   log_factor(-Scale)
 %
@@ -888,10 +938,6 @@ context_fording.pl
 %
 %    Plotting the stream flow CDF
 
-context_fording.pl
-%%   non_zero([], [], Range, Data, RFinal, DFinal) 
-%
-%
 context_friction.pl
 %%   standard(-Names)
 %
@@ -1058,75 +1104,76 @@ context_functions.pl
 %    Bessel K 1 sampling function 
 
 context_geo.pl
-%%   ll_to_utm(Lat, Lon, Zone, Easting, Northing) 
+%%   ll_to_utm(+Lat, +Lon, -Zone, -Easting, -Northing)
 %
-%    
+%    lat/Lon to UTM
+
 context_geo.pl
-%%   zone_from_section_designator(Info, Zone) 
+%%   zone_from_section_designator(+Info, -Zone)
 %
-%    
+%    Find UTM zone
+
 context_geo.pl
 %%   get_elevation(+Lat, +Lon, -Elev)
 %
 %    Get elevation from lat/lon
 
 context_geo.pl
-%%   genRequestPairs([[Lat],[Lon]], Li, List) 
+%%   genRequestPairs(+LL, -Li, -List)
 %
-%    
+%    Generate request pairs from *get_elevation*
+
 context_geo.pl
 %%   collectResponse([], List, List).
 %
-%    
+%    Collect Response from *get_elevation*
+
 context_geo.pl
 %%   get_elevation(LatLonList, ElevList) 
 %
-%    Get elevation list from lat/lon list
+%    Get elevation list from lat/lon list via Google Maps API
 
 context_geo.pl
-%%   get_elevation_path(LatLonList, Samples, ElevList) 
+%%   get_elevation_path(+LatLonList, +Samples, -ElevList)
 %
-%    
+%    Get elevation path from Lat/Lon list
+
 context_geo.pl
-%%   get_elevation(Easting, Northing, Zone, Southhemi, Elev) 
+%%   get_elevation(+Easting, +Northing, +Zone, +Southhemi, -Elev)
 %
-%    
+%    Get elevation for UTM
+
 context_geo.pl
 %%   convert_lat_lon([[],[]], _, _, List, List).
 %
 %
 context_geo.pl
-%%   get_elevation(EastingNorthingList, Zone, Southhemi, Elev) 
+%%   get_elevation(+EastingNorthingList, +Zone, +Southhemi, -Elev)
 %
-%    
+%    Get elevation from UTM list
+
 context_geo.pl
-%%   get_elevation_path(EastingNorthingList, Zone, Southhemi, Samples, Elev) 
+%%   get_elevation_path(EastingNorthingList, Zone, Southhemi, Samples, Elev)
 %
-%    
+%    Get elevation path from UTM list 
+
 context_geo.pl
 %%   get_elevation_current_dem(+X,+Y,-Elev)
 %
 %    Get elevation of current DEM
 
 context_geo.pl
-%%   find_dem_section(Lat, Lon, Name, Info) 
+%%   find_dem_section(+Lat, +Lon, -Name, -Info)
 %
-%    
-context_geo.pl
-%%   store_dem_pos(_Name, [[]], _, _) 
-%
-%    
-context_geo.pl
-%%   store_dem_row(_Name, [[]], _) 
-%
-%    
+%    Find DEM section name and info within Lat/Lon
+
 context_geo.pl
 %%   prep_dem_section(+Name)
 %
 %    Prepare a DEM section
 
 context_geo.pl
-%%   cleanup_dem 
+%%   cleanup_dem
 %
 %    Remove DEM from memory
 
@@ -1136,73 +1183,85 @@ context_geo.pl
 %    Size OF DEM
 
 context_geo.pl
-%%   find_elev(Distance, DiffElev, (DX,DE)) 
+%%   find_elev(+Distance, +DiffElev, -Pair)
 %
-%    
+%    Find pair with elev difference separated by distance
+
 context_geo.pl
-%%   label_elev(Distance, DiffElev) 
+%%   label_elev(+Distance, -DiffElev)
 %
-%    
+%    Label elev
+
 context_geo.pl
-%%   store_elev_diff(Distance, DiffElev) 
+%%   store_elev_diff(+Distance, +DiffElev)
 %
-%    
+%    Store elevation difference
+
 context_geo.pl
-%%   count_elev(Distance) 
+%%   count_elev(-Distance)
 %
-%    
+%    Calculate elev diff for lateral distance
+
 context_geo.pl
 %%   find_elevs(Distance, DiffElev, N) 
 %
-%    
+%    Using *find_elev* to return all pairs
+
 context_geo.pl
 %%   label_elevs(N)
 %
-%    
+%    Label elevs
+
 context_geo.pl
 %%   count_elevs 
 %
-%    
+%    Count elevs
+
 context_geo.pl
 %%   save_file_json 
 %
-%    
+%    Save section as JSON file
+
 context_geo.pl
-%%   write_triple([X,Y,Z]) 
+%%   write_triple(+Triple)
 %
-%    
+%    Write triple as CCV line
+
 context_geo.pl
 %%   save_file_csv 
 %
-%    
+%    Save section as CSV file
+
 context_geo.pl
 %%   grid_values_y(X) 
 %
-%    
+%    Picking grid values
+
 context_geo.pl
 %%   grid_values_x 
 %
-%    
+%    Picking grid values
+
 context_geo.pl
-%%   grid_values_y(Name, X) 
+%%   grid_values_y(+Name, +X)
 %
-%    
+%    Picking grid values  
+
 context_geo.pl
-%%   grid_values_x(Name) 
+%%   grid_values_x(+Name)
 %
-%    
+%    Picking grid values
+
 context_geo.pl
-%%   save_file_grid(N) 
+%%   calc_diff(+D0, +D1, -L)
 %
-%    
+%    Calc difference al log ratio
+
 context_geo.pl
-%%   calc_diff(D0, D1, L) 
+%%   save_file_grid(+N, +Name)
 %
-%    
-context_geo.pl
-%%   save_file_grid(N, Name) 
-%
-%    
+%    Save file grid as a spreadheet
+
 context_geo.pl
 %%   plot_ac 
 %
@@ -1214,17 +1273,20 @@ context_graphing.pl
 %    If log selected
 
 context_graphing.pl
-%%   json_complete(x(_,[]), y(_,[],_), In, Out) 
+%%   json_complete(+X, +Y, +In, -Out)
 %
-%
+%    Custom JSON parse
+
 context_graphing.pl
-%%   json_concat(x(X,S), y(Y,P,Shape), In, Out) 
+%%   json_concat(+X, +Y, +In, -Out)
 %
-%    
+%    Custom JSON parse
+
 context_graphing.pl
-%%   construct_json(X, Y, ID, [[V]], [[P]], In, Out) 
+%%   construct_json(+X, +Y, +ID, +V, +P, +In, -Out)
 %
-%    
+%    Special JSON parse
+
 context_graphing.pl
 %%   pre_scatter_script_load//
 %
@@ -1236,13 +1298,10 @@ context_graphing.pl
 %    Javascript preload
 
 context_graphing.pl
-%%   scatter_plot(LogScale,XAxis,YAxis,[X,Y])//
+%%   scatter_plot(+LogScale,+XAxis,+YAxis,+XY)//
 %
-%    
-context_graphing.pl
-%%   scatter_plot(LogScale,X,Y,Data)//
-%
-%    
+%    Scatter plot graph
+
 context_graphing.pl
 %%   pre_chart_script_load//
 %
@@ -1254,17 +1313,20 @@ context_graphing.pl
 %    Javascript preload
 
 context_graphing.pl
-%%   chart_plot(Log, Xaxis, Yaxis, Title, Data)//
+%%   chart_plot(+Log, +Xaxis, +Yaxis, +Title, +Data)//
 %
-%    
+%    Chart plot routine
+
 context_graphing.pl
-%%   check_list(X,QX) 
+%%   check_list(+X,-QX)
 %
-%    
+%    Check list of data for proper quotes, etc.
+
 context_graphing.pl
-%%   check_data('',X,X) 
+%%   check_data(+Headings, +List, -CSV)
 %
-%    
+%    Generates a CSV list appropiate for charting
+
 context_graphing.pl
 %%   dygraph_script_load//
 %
@@ -1276,21 +1338,25 @@ context_graphing.pl
 %    Javascript preload
 
 context_graphing.pl
-%%   dygraph_plot(LogScale, Headings, Xaxis, Yaxis, Title, Data)//
+%%   dygraph_plot(+LogScale, +Headings, +Xaxis, +Yaxis, +Title, +Data)//
 %
-%    
+%    Dynamic Graph plot
+
 context_graphing.pl
-%%   dygraph_native(LogScale, Headings, Xaxis, Yaxis, Title, Data)//
+%%   dygraph_native(+LogScale, +Headings, +Xaxis, +Yaxis, +Title, +Data)//
 %
-%    
+%    Dynamic Graph plot, using the native format which is most efficient
+
 context_graphing.pl
-%%   dygraph_error_bars(LogScale, Headings, Xaxis, Yaxis, Title, Data)//
+%%   dygraph_error_bars(+LogScale, +Headings, +Xaxis, +Yaxis, +Title, +Data)//
 %
-%    
+%    Dygraph error bar prototype, still under development
+
 context_graphing.pl
-%%   construct_csv([], Out, Out).
+%%   construct_csv(+XY, +In, -Out).
 %
-%    
+%    Construct a CSV list
+
 context_graphing.pl
 %%   quote_string(+Term, -Q)
 %
@@ -1302,13 +1368,15 @@ context_graphing.pl
 %    Concat strings into quoted string
 
 context_graphing.pl
-%%   axis_label(Label, Units, Output) 
+%%   axis_label(+Label, +Units, -Output)
 %
-%    
+%    Label an axis
+
 context_graphing.pl
-%%   plain_axis_label(Label, Units, Name) 
+%%   plain_axis_label(+Label, +Units, N-ame)
 %
-%    
+%    Non-quoted *axis_label*
+
 context_graphing.pl
 %%   plot(+Dynamic, +LogScale, +Headings, +Xaxis, +Yaxis, +Title, +Data)//
 %
@@ -1325,13 +1393,15 @@ context_graphing.pl
 %    Preloading javascript
 
 context_graphing.pl
-%%   map_native(Lat, Lon, Title)//
+%%   map_native(+Lat, +Lon, +Title)//
 %
-%    
+%    Display map
+
 context_graphing.pl
-%%   get_elevation(Lat, Lon)//
+%%   get_elevation(+Lat, +Lon)//
 %
-%    
+%    Inline elevation
+
 context_lakes.pl
 %%   navigate(+Request) 
 %
@@ -1345,39 +1415,48 @@ context_lakes.pl
 context_lakes.pl
 %%   set_yearly_range(+Request) 
 %
-%    
+%    Set yearly range for collecting data
+
 context_lakes.pl
-%%   minnesota_dnr_ice_out('http
+%%   minnesota_dnr_ice_out(-URL)
 %
-%    
+%    Location of ice-out data
+
 context_lakes.pl
-%%   assert_temperature(Name, Lat, Year, Month, Date, Days) 
+%%   assert_temperature(+Name, +Lat, +Year, +Month, +Date, +Days)
 %
-%    
+%    Not really a temperature but asserting the date of ice-out
+
 context_lakes.pl
-%%   store_record(Term) 
+%%   store_record(+Term)
 %
-%    
+%    Store record
+
 context_lakes.pl
-%%   get_ice_out(Year) 
+%%   get_ice_out(-Year)
 %
-%
+%    Retrieve data from remote server for given year and save
+
 context_lakes.pl
 %%   remove_temperatures 
 %
-%    
+%    Clear out ice-out data
+
 context_lakes.pl
-%%   temperature_lat(Lat_Range,Year,Time) 
+%%   temperature_lat(+Lat_Range,-Year,-Time)
 %
-%    
+%    Query to data at a given latitude
+
 context_lakes.pl
-%%   lat_list(FN, Lat, Years, Times, N, Slope) 
+%%   lat_list(+FN, +Lat, -Years, -Times, -N, -Slope)
 %
-%
+%    Plot all records at a given latitude
+
 context_lakes.pl
-%%   get_all_records(1843).
+%%   get_all_records(+Year).
 %
-%    
+%    get all records up to year
+
 context_lightning.pl
 %%   navigate(+Request) 
 %
@@ -1406,15 +1485,18 @@ context_lightning.pl
 context_lookup.pl
 %%   nth(Input, Table, Output) 
 %
-%    Nth value of nput
+%    Nth value of Table
+
 context_lookup.pl
-%%   lookup_table(Scale, Offset, Table, Input, Output) 
+%%   lookup_table(+Scale, +Offset, +Table, +Input, 1Output)
 %
-%    
+%    Lookup table
+
 context_lookup.pl
-%%   lookup_list(xlist=Xlist,
+%%   lookup_list(+Xlist,+Ylist,-X,-Y)
 %
-%    
+%    Not used lookup list
+
 context_main.pl
 %%   server(+Port)
 %
@@ -1536,13 +1618,15 @@ context_map.pl
 %    Section name for Lat/Lon 
 
 context_map.pl
-%%   lon_regions(URI, Target, Lat, Lon)//
+%%   lon_regions(+URI, +Target, +Lat, +Lon)//
 %
-%    
+%    Inline Longitudinal regions
+
 context_map.pl
-%%   lat_regions(_URI, _Target, Lat, _Lon)//
+%%   lat_regions(+URI, +Target, +Lat, +Lon)//
 %
-%    
+%    Inline Latitudinal regions
+
 context_map.pl
 %%   usa_map(+URI,+Target)//
 %
@@ -1554,9 +1638,10 @@ context_materials.pl
 %    Dynamic page to materials properties index
 
 context_math.pl
-%%   separate([], Xc, X) 
+%%   separate(+L, -X)
 %
-%    
+%    Separate off functor
+
 context_math.pl
 %%   dotproduct(+L1,+L2,+Initial_Value,-Value).
 %
@@ -1572,35 +1657,40 @@ context_math.pl
 %   Dot division of two lists
 
 context_math.pl
-%%   dotexpanddiv([],[],Initial,Final) 
+%%   dotexpanddiv(+X,+Y,+Initial,-Final)
 %
-%    
+%    Helper function
+
 context_math.pl
-%%   dotexpandsum([],[],Initial,Final) 
+%%   dotexpandsum(+X,+Y,+Initial,-Final)
 %
-%    
+%    Helper function
+
 context_math.pl
-%%   dotexpandsubtract([],[],Initial,Final) 
+%%   dotexpandsubtract(+X,+Y,+Initial,-Final)
 %
-%    
+%    Helper function
+
 context_math.pl
 %%   dotscale(+Scale,+List,+Initial_Value,-Value)
 %
 %    Scaled unit list dot product
 
 context_math.pl
-%%   dotadd(_,[],Initial,Final) 
+%%   dotadd(+S,+Y,+Initial,-Final)
 %
-%    
+%    Dot add scalar to list
 
 context_math.pl
-%%   ones_list([], _, Final, Final).
+%%   ones_list(+X, +Scalar, +Initial, -Final).
 %
-%    
+%    Ones (scalar) list creator
+
 context_math.pl
-%%   ones(+Length, _, Final, Final)
+%%   ones(+Length, +Scalar, +Initial, -Final)
 %
 %    Generate a ones list
+
 context_math.pl
 %%   constants(+Length, +Scalar, -List)
 %
@@ -1662,9 +1752,10 @@ context_math.pl
 %    Change sign of value
 
 context_math.pl
-%%   derive(X,Y,Initial,Derivatives)
+%%   derive(+X,+Y,+Initial,-Derivatives)
 %
-%
+%    Derivative of Y with respect to X
+
 context_math.pl
 %%   accumulation([], [], _, _, Probs, Final)
 %
@@ -1713,9 +1804,10 @@ context_math.pl
 %
 %    
 context_math.pl
-%%   sconvolution(Y,Window,Initial,Final) 
+%%   sconvolution(+Y,+Window,+Initial,-Final)
 %
-%    
+%    Convolution against window function
+
 context_math.pl
 %%   intersect(_, [], F, Final) 
 %
@@ -1758,29 +1850,30 @@ context_model.pl
 %    Dynamic page to indexed PDF models
 
 context_model.pl
-%%   distribution(pdf, 'Probability Density').
+%%   distribution(+Pdf, -Name).
 %
-%
+%    Name of distro
+
 context_model.pl
-%%   present_and_next_state(Present, Units, Dist, DistUnits, Next)
+%%   present_and_next_state(+Present, +Units, +Dist, +DistUnits, -Next)
 %
-%
+%    Change info depending on present data
+
 context_model.pl
-%%   flip_log(true, false, 'Semi-Log Scale').
+%%   flip_log(+From, +To, -Scale).
 %
-%    
+%    Flip the log scale state 
+
 context_model.pl
-%%   display(Model, Render, Dist, Scale*Xaxis, LogLog) 
+%%   display(+Model, +Render, +Dist, +Scale, +LogLog)
 %
-%    
+%    Display the model
+
 context_model.pl
-%%   find_random_slot(List, Value) 
+%%   get_sample(+Dist, -Sample)
 %
-%    
-context_model.pl
-%%   get_sample(_*Dist, Sample) 
-%
-%    
+%    Get sample from distro
+
 context_model.pl
 %%   data_generator(+Request)
 %
@@ -1800,28 +1893,33 @@ context_model.pl
 context_model.pl
 %%   apply(+Request) 
 %
-%    
+%    Generate PDF
+
 context_model.pl
-%%   find_optional_units(Named_Unit,NList,DList) 
+%%   find_optional_units(+Named_Unit,+NList,-DList)
 %
-%    
+%    Find units appropriate for PDF
+
 context_obstacles.pl
-%%   rdf_data(ID, Name) 
+%%   rdf_data(+ID, +Name)
 %
-%    
+%    Local RDF data
+
 context_obstacles.pl
-%%   get_all_obstacle_sets(List) 
+%%   get_all_obstacle_sets(-List)
 %
-%    
+%    Get obstacle sets
+
 context_obstacles.pl
 %%   navigate(+Request)
 %
 %    Dynamic page to obstacle models
 
 context_obstacles.pl
-%%   read_rdf(URI, UX, UY, [DataX, DataY, DataZ], 'X,Z1,Z2') 
+%%   read_rdf(+URI, -UX, -UY, -Data, -Header)
 %
-%    
+%    Read RDF
+
 context_obstacles.pl
 %%   download(+Request)
 %
@@ -1833,9 +1931,10 @@ context_obstacles.pl
 %    Plot FFT of obstacle profile
 
 context_obstacles_csv.pl
-%%   get_all_obstacle_files(List) 
+%%   get_all_obstacle_files(-List)
 %
-%    
+%    Get obstacle sets
+
 context_obstacles_csv.pl
 %%   navigate(_)
 %
@@ -1845,20 +1944,23 @@ context_obstacles_csv.pl
 context_obstacles_csv.pl
 %%   read_csv(+Request) 
 %
-%    
+%    Read from CSV
+
 context_ont_utils.pl
-%%   navigate(_)
+%%   navigate(+Request)
 %
 %    Dynamic page to ontological utilities
 
 context_ont_utils.pl
-%%   load_resource(File)
+%%   load_resource(+File)
 %
-%
+%    Load resource
+
 context_ont_utils.pl
 %%   load_data(+Request) 
 %
-%    
+%    Load data
+
 context_ont_utils.pl
 %%   print_all_subjects 
 %
@@ -1895,15 +1997,17 @@ context_ont_utils.pl
 %    Not implemented
 
 context_ou.pl
-%%   ou_variance(D,Theta,X,Y) 
+%%   ou_variance(+D,+Theta,-X,-Y)
 %
-%    
+%    Ornstein-Uhlenbeck variance
+
 context_ou.pl
-%%   maxent_ou_variance(_D,_Theta,_Flat,0,0).
+%%   maxent_ou_variance(+D,+Theta,+Flat,-X,-Y)
 %
-%    
+%    Ornstein-Uhlenbeck MaxEnt variance
+
 context_ou.pl
-%%   maxent_ou_mean(_D,_Theta,_Flat,0,0).
+%%   maxent_ou_mean(D,Theta,Flat,X,Y)
 %
 %    
 context_ou.pl
@@ -1915,41 +2019,40 @@ context_ou.pl
 %
 %
 context_ou.pl
-%%   make_df(X,Y)
+%%   make_df(-X,-Y)
 %
-%
+%    Labeled search
+
 context_ou.pl
-%%   multi_regression(Lbar)
+%%   exp_regression(+URI, +X, -Lbar)
 %
-%
+%    Using R to do a regression fit
+
 context_ou.pl
-%%   mr(LS)
+%%   find_theta(+URI, +X1, +X2, -Theta, -D)
 %
-%
+%    Find drag value
+
 context_ou.pl
-%%   exp_regression(URI, X, Lbar)
+%%   find_avg(+URI, -Theta,-D)
 %
-%
+%    Find average drag values
+
 context_ou.pl
-%%   find_theta(URI, X1, X2, Theta, D)
+%%   pair_summer(+Liswt, +Initial, -Total).
 %
-%
+%    Pair summer
+
 context_ou.pl
-%%   find_avg(URI, Theta,D)
+%%   pair_sum(+List, -Sum)
 %
-%
+%    Sum pairs in list
+
 context_ou.pl
-%%   pair_summer([], Total, Total).
+%%   calc_avg(+URI, -Theta, -Diffusion)
 %
-%
-context_ou.pl
-%%   pair_sum(List, Sum)
-%
-%
-context_ou.pl
-%%   calc_avg(URI, Theta, Diffusion)
-%
-%
+%    Calculate average drag and diffusion
+
 context_ou.pl
 %%   xrange(-X_low, -X_high).
 %
@@ -1961,50 +2064,60 @@ context_ou.pl
 %    Y range
 
 context_ou.pl
-%%   scale(Size)
+%%   scale(-Size)
 %
-%
+%    Scale of DEM
+
 context_ou.pl
-%%   y(URI, X, YElev)
+%%   y(+URI, +X, -YElev)
 %
-%
+%    Y elev projection
+
 context_ou.pl
-%%   var(URI, X, Var)
+%%   var(+URI, +X, -Var)
 %
-%
+%    Calculate Variance on x slice
+
 context_ou.pl
-%%   multivar(URI, Vars)
+%%   multivar(+URI, -Vars)
 %
-%
+%    Do all *var*
+
 context_ou.pl
-%%   rms_data(URI, Vars)
+%%   rms_data(+URI, -Vars)
 %
-%
+%    Run RMS on section
+
 context_ou.pl
-%%   mean(URI, X, Mean)
+%%   mean(+URI, +X, -Mean)
 %
-%
+%    Calculate Mean on x slice
+
 context_ou.pl
-%%   multimean(URI, Means)
+%%   multimean(+URI, -Means)
 %
-%
+%    Do all *mean"
+
 context_ou.pl
-%%   mean_data(URI, Means)
+%%   mean_data(+URI, -Means)
 %
-%
+%    Run mean on section
+
 context_ou.pl
 %%   setup_parameters
 %
 %    Setup parameters for OU model
 
 context_ou.pl
-%%   mean_from_ou(data(X,Y),Diffusion,Drag,Flatness,Error)
+%%   mean_from_ou(+Data,+Diffusion,+Drag,+Flatness,+Error)
 %
-%
+%    Calculate Mean on OU model
+
 context_ou.pl
-%%   deviation_from_ou(data(X,Y),Diffusion,Drag,Flatness,Error)
+%%   deviation_from_ou(+Data,+Diffusion,+Drag,+Flatness,+Error)
 %
-%
+%    Calculate RMS on OU model
+
 context_ou.pl
 %%   find_min([], Min, Min).
 %
@@ -2014,45 +2127,44 @@ context_ou.pl
 %
 %
 context_ou.pl
-%%   optimize_rms(URI, Diffusion, Drag, Flat, Err)
+%%   optimize_rms(+URI, -Diffusion, -Drag, -Flat, -Err)
 %
-%
+%    Find optimal RMS
+
 context_ou.pl
-%%   optimize_mean(URI, Diffusion, Drag, Flat, Err)
+%%   optimize_mean(+URI, -Diffusion, -Drag, -Flat, -Err)
 %
-%
+%    Find optimal mean
+
 context_pdf.pl
-%%   data
+%%   service_req(-Web_URL).
 %
-%
+%    Get web service URL
+
 context_pdf.pl
-%%   service_req('/context_pdf/process?locale=conus&property=terrain_slopes&operation=sample&quantity=1').
+%%   plot_table(+Title, +X, +Mean, +Min, +Max, +Delta, +Log)//
 %
-%
+%    Plot PDF table
+
 context_pdf.pl
-%%   plot_table(Title, X, Mean, Min, Max, Delta, Log)//
+%%   render_pdf_artifacts(+Title, +X, +Mean, +Min, +Max, +Delta, +Log)
 %
-%
+%    Display PDF artifacts
+
 context_pdf.pl
-%%   render_pdf_artifacts(Title, X, Mean, Min, Max, Delta, Log)
+%%   plot_pdf(+Model, +Mean, +Min, +Max, +Delta, +X, +Title, +Log)
 %
-%
+%    Plot PDF
+
 context_pdf.pl
-%%   plot_pdf(besselk1, Mean, Min, Max, Delta, X, Title, Log)
+%%   sample_from_pdf(+PDF_Model, +Mean, +N, +X, +Title, +Log)
 %
-%
-context_pdf.pl
-%%   sampling_power_law(Median,_,V)
-%
-%
-context_pdf.pl
-%%   sample_from_pdf(besselk1, Mean, 1, X, Title, _)
-%
-%
+%    Create sample from PDF  and place in table
+
 context_pdf.pl
 %%   plot_directed_graph
 %
-%   Plot directed graph from PDF class
+%    Plot directed graph from PDF class
 
 context_pdf.pl
 %%   process(+Request)
@@ -2872,131 +2984,120 @@ context_temperature.pl
 %    Skeleton generator End section
 
 context_temperature.pl
-%%   generate_c_code(Site, Code) 
+%%   generate_c_code(+Site, -Code)
 %
-%
+%    Generate C code to describe expected seasonal temperature data
+
 context_temperature.pl
 %%   temperature(+Request)
 %
-%    
+%    Plot temperature page
+
 context_temperature.pl
 %%   example//
 %
-%    
-context_temperature.pl
-%%   max_results_displayed(100).
-%
-%    
-context_temperature.pl
-%%   prolog
-%
-%    
+%    Inline temperature example
+
 context_temperature.pl
 %%   navigate//
 %
 %    Dynamic page to temperature models
 
 context_temperature.pl
-%%   get_all_temperature_sets(List) 
+%%   get_all_temperature_sets(-List)
 %
-%    
+%    Get all locales that have temperature
+
 context_temperature.pl
-%%   available_location(Locale, Title) 
+%%   available_location(+Locale, -Title)
 %
-%
+%    Temperature info for locale available
+
 context_temperature.pl
-%%   months(     [jan,feb,mar,apr,may,jun,jul,aug,sep,oct,nov,dec]).
+%%   months(-Month_Acronyms]).
 %
-%    
+%    List of month acronyms
+
 context_temperature.pl
-%%   middle_days([ 15, 45, 75,105,135,165,195,225,255,285,315,350]).
+%%   middle_days(-Middle_days).
 %
-%    
+%    List of middle days of month
+
 context_temperature.pl
-%%   month_number([ 1,  2,  3,  4,  5,  6,  7,  8,  9, 10, 11, 12]).
+%%   month_number(-Ordinal).
 %
-%    
+%    Month ordinals
+
 context_temperature.pl
-%%   get_month(Day, Month) 
+%%   get_month(+Day, -Month)
 %
-%    
+%    Get month for day
+
 context_temperature.pl
-%%   temperature_spread(Month, Q)
+%%   temperature_spread(+Month, -Q)
 %
-%
+%    Format temperature measure query
+
 context_temperature.pl
-%%   format_temperature_query(Text)
+%%   format_temperature_query(+Text)
 %
-%
+%    Format temperature query
+
 context_temperature.pl
-%%   strip_numbers([], Input, Final)
+%%   strip_numbers(+List, +Input, -Final)
 %
-%
+%    Strip numbers from RDF list
+
 context_temperature.pl
-%%   get_lat_lon(Location, Lat, Lon)
+%%   get_lat_lon(+Location, -Lat, -Lon)
 %
-%
+%    Get Lat/Lon from location
+
 context_temperature.pl
-%%   get_depiction(Location, Image)
+%%   get_depiction(+Location, -Image)
 %
-%
+%    Location has a image associated
+
 context_temperature.pl
-%%   get_page(Location, Page)
+%%   get_page(+Location, -Page)
 %
-%
+%    Get page for location
+
 context_temperature.pl
-%%   get_temperature_spread(Location, Lows, Highs, Name)
+%%   get_temperature_spread(+Location, -Lows, -Highs, -Name)
 %
-%
+%    Get the temperature spread for a location
+
 context_temperature.pl
-%%   find_min([], [], Final, Final, Day, Day).
+%%   find_min_index(+List, +Highs, -Min, -Day, -Max)
 %
-%
+%    Find minimum day index
+
 context_temperature.pl
-%%   find_min_index(List, Highs, Min, Day, Max)
+%%   find_max_index(+List, +Lows, -Max, -Day, -Min)
 %
-%
+%    Find maximum day index
+
 context_temperature.pl
-%%   find_max([], [], Final, Final, Day, Day).
+%%   process_location(Location, Data)
 %
-%
-context_temperature.pl
-%%   find_max_index(List, Lows, Max, Day, Min)
-%
-%
-context_temperature.pl
-%%   process_location(Location,
-%
-%
-context_temperature.pl
-%%   select distinct ?Concept where { dbpedia
-%
-%
-context_temperature.pl
-%%   connect_for_data(Location)
-%
-%
-context_temperature.pl
-%%   mydata(
-%
-%
-context_temperature.pl
-%%   test_dbpedia
-%
-%
+%    Process temperature data for a location
+
 context_thermal.pl
 %%   navigate(+Request)
 %
 %    Dynamic page to transient thermal models
 
 context_thermal.pl
-%%   thermalModelHeat(Diff, X0, T*Time, Z*Temperature)
+%%   thermalModelHeat(+Diff, +X0, +Time, -Temperature)
 %
-%
+%    Transient thermal model heat
+
 context_thermal.pl
-%%   thermalModelCool(Diff, X0, T*Time, Z*Temperature)
+%%   thermalModelCool(+Diff, +X0, +Time, -Temperature)
 %
-%
+%    Transient thermal model cool
+
 context_thermal.pl
 %%   plot(+Request)
 %
@@ -3028,84 +3129,99 @@ context_units.pl
 %    Dimensional relation of units
 
 context_units.pl
-%%   check_intermediate_length(List) 
+%%   check_intermediate_length(+List)
 %
-%    
+%    Make sure symbolic dimesions have the same length
+
 context_units.pl
-%%   scale(From, To, X, X, _List) 
+%%   scale(+From, +To, +X, -Y, +List)
 %
-%    
+%    Scale according to dimensionality
+
 context_units.pl
 %%   convert(+From, +To, -Units)
 %
 %    Convert units
 
 context_units.pl
-%%   convert_apply([], _, Input, Output) 
-%
-%    
-context_units.pl
-%%   convert([F|L], To, Output) 
-%
-%    
-context_units.pl
-%%   check_lengths(From, To) 
+%%   convert_apply([], _, Input, Output)
 %
 %
 context_units.pl
-%%   lower_list([], In, Out) 
+%%   convert(+From, +To, -Output)
 %
+%    Comvert from one unit dimensionality to another
+
+context_units.pl
+%%   check_lengths(+From, +To)
 %
+%    Check to make sure symbolic dimensional expressions the same length
+
+context_units.pl
+%%   lower_list(+List, +In, -Out)
+%
+%    Convert to lower case
+
 context_units.pl
 %%   init_relations 
 %
 %    Initialize dimensional unit relations
 
 context_units.pl
-%%   check_relations(X, Y, 'NaN') 
+%%   check_relations(+X, +Y, -Warning)
 %
-%    
+%    Check for convergence
+
 context_units.pl
-%%   collect_unit_options(Functor, List) 
+%%   collect_unit_options(+Functor, -List)
 %
-%    
+%    Generic collector of measures that have diff unit dimensionalities
+
 context_units.pl
-%%   scaling(From, To, Scale) 
+%%   scaling(+From, +To, -Scale)
 %
-%    
+%    Scaling dimension
+
 context_water.pl
-%%   freshwater_density(
+%%   freshwater_density
 %
-%    
+%    Water data
+
 context_water.pl
-%%   table_density(Input, Output) 
+%%   table_density(+Input, -Output)
 %
-%    
+%    Water density table
+
 context_water.pl
-%%   rhocalc(T, Rho) 
+%%   rhocalc(+T, -Rho)
 %
-%    
+%    Calculate rho, temp dependent density
+
 context_water.pl
 %%   rhoscalc(Rho,Conc,T,R) 
 %
-%    
+%    temp and conc dependent density
+
 context_water.pl
 %%   alg_density(T, Conc,Rhos) 
 %
-%    
+%    Algorithm temp and conc dependent desnity
+
 context_water.pl
 %%   density_test(+Request)
 %
-%
+%    Example of evaluating density
+
 context_water.pl
 %%   chart(+Request)
 %
 %    Chart of water properties
 
 context_water.pl
-%%   density_cells([Liquid,Temperature,Density]) 
+%%   density_cells(-Tuple)
 %
-%    
+%    Information for liquid density
+
 context_water.pl
 %%   densities(+Request)
 %
@@ -3127,13 +3243,15 @@ context_water.pl
 %    Dynamic page to water properties models
 
 context_water.pl
-%%   salt_density(Parameter,X*_Units,Y) 
+%%   salt_density(+Parameter,+X,-Y)
 %
-%    
+%    Salt-water density
+
 context_water.pl
-%%   fresh_density(X*_Units,Y) 
+%%   fresh_density(X,Y)
 %
-%
+%    Fresh-water density
+
 context_water.pl
 %%   plot(+Request)
 %
@@ -3160,35 +3278,30 @@ context_weather.pl
 %    Get month corresponding to day
 
 context_weather.pl
-%%   measure_spread(Month, Measure, Q) 
+%%   measure_spread(+Month, +Measure, -Q)
 %
-%
+%    Generate a sparql format to get weather measure
+
 context_weather.pl
 %%   format_measure_query(+Text, -Measure)
 %
 %    Format the characteristic measure
 
 context_weather.pl
-%%   get_measure_spread(Location, Measure, Measures, Name)
+%%   get_measure_spread(+Location, +Measure, -Measures, -Name)
 %
-%
-context_weather.pl
-%%   find_min([], [], Final, Final, Day, Day).
-%
-%
+%    Get the weather measure spread for a location
+
 context_weather.pl
 %%   find_min_index(+List, -Min, -Day)
 %
 %    Find the minimum index
 
 context_weather.pl
-%%   find_max([], [], Final, Final, Day, Day).
+%%   find_max_index(+List, -Max, -Day)
 %
-%
-context_weather.pl
-%%   find_max_index(List, Max, Day)
-%
-%
+%    Find max index for list
+
 context_weather.pl
 %%   process_location(+Location, -Data)
 %
