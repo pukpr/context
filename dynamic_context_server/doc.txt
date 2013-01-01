@@ -996,7 +996,7 @@ context_functions.pl
 context_functions.pl
 %%   power_law_2(+Median, +Pdf, +X, -Y)
 %
-%   Power law of index 2 
+%   Power law of index 2
 
 context_functions.pl
 %%   power_law_2_area(+Median, +Pdf, +X, -Y)
@@ -1019,7 +1019,7 @@ context_functions.pl
 %    Bessel K 0 Square Root function
 
 context_functions.pl
-%%   diffusion_accel(Diff, Accel, pdf, X, Y) 
+%%   diffusion_accel(Diff, Accel, pdf, X, Y)
 %
 %    Diffusion with acceleration factor, used for lightning
 
@@ -1054,7 +1054,7 @@ context_functions.pl
 %    Power law of index 2 symbolic function
 
 context_functions.pl
-%%   power_law_2_cdf(Median, X, Y) 
+%%   power_law_2_cdf(Median, X, Y)
 %
 %    Power law of index 2 CDF function
 
@@ -1144,9 +1144,10 @@ context_geo.pl
 %    Get elevation for UTM
 
 context_geo.pl
-%%   convert_lat_lon([[],[]], _, _, List, List).
+%%   convert_lat_lon(+E,+N,+Zone, +South, +Init, -L_List)
 %
-%
+%    Convert UTM to Lat/lon
+
 context_geo.pl
 %%   get_elevation(+EastingNorthingList, +Zone, +Southhemi, -Elev)
 %
@@ -1648,9 +1649,10 @@ context_math.pl
 %   Dot product of two lists
 
 context_math.pl
-%%   dotexpand([],[],Initial,Final) 
+%%   dotexpand(+X,+Y,+Initial,-Final)
 %
-%    
+%   Dot helper function
+
 context_math.pl
 %%   dotdivision(+L1,+L2,+Initial_Value,-Value).
 %
@@ -1727,25 +1729,30 @@ context_math.pl
 %    Generate a logarithmic range
 
 context_math.pl
-%%   units_apply([], _Decoration, In, Out)
+%%   units_apply(+List, +Decoration, +In, -Out)
 %
-%
+%    Units apply to list
+
 context_math.pl
-%%   gather_map([], _Z, X, X).
+%%   gather_map
 %
-%
+%    Used by *mapdot*
+
 context_math.pl
 %%   convolution([],[],_,_,Initial,Final)
 %
 %    List convolution
+
 context_math.pl
-%%   padZerosPrep([], [], L, L1)
+%%   padZerosPrep
 %
-%
+%    Used by *padZeros*
+
 context_math.pl
-%%   padZeros(La0, Lb0, La1, Lb1)
+%%   padZeros(+La0, +Lb0, -La1, -Lb1)
 %
-%
+%    Pad zeros on one array to it matches the other
+
 context_math.pl
 %%   change_sign(+X, -Y)
 %
@@ -1757,9 +1764,10 @@ context_math.pl
 %    Derivative of Y with respect to X
 
 context_math.pl
-%%   accumulation([], [], _, _, Probs, Final)
+%%   accumulation(+P, +V, +LP, +LV, -Probs, -Final)
 %
-%
+%    Accumulation of values, used for CDF, e.g.
+
 context_math.pl
 %%   integral(+X,+Y,+Initial,-Running_Integral)
 %
@@ -1771,79 +1779,90 @@ context_math.pl
 %    Cumulative histogram of list generating Variates and Probs
 
 context_math.pl
-%%   derivatives([], [], _, _, Probs, Final)
+%%   derivatives(+P, +V, +LP, +LV, -Probs, -Final)
 %
-%
+%    Derivative of values, used for PDF,, e.g.
+
 context_math.pl
 %%   subtract(+L1, +L1, +Initial, -Final)
 %
 %    Subtract two lists
 
 context_math.pl
-%%   tuple_merge([],[],Initial,Final)
+%%   tuple_merge(+X,+Y,+Initial,-Final)
 %
-%
+%    Tuple merge into a single list
+
 context_math.pl
-%%   strip([],Initial,Final)
+%%   strip(+L,+Initial,-Final)
 %
-%
+%    Strip units
+
 context_math.pl
-%%   histogram(List, Variates, Probs)
+%%   histogram(+List, -Variates, -Probs)
 %
-%
+%    Histogram  into variates and probability
+
 context_math.pl
-%%   list_summer([], Total, Total).
+%%   list_summer(+List, +Initial, -Total).
 %
-%
+%    Sum list (already built-in)
+
 context_math.pl
-%%   sum_list(List, Sum) 
+%%   sum_list(+List, -Sum)
 %
-%    
+%    Sum list (already built-in)
+
 context_math.pl
-%%   truncate(_, [], Init, Final) 
+%%   truncate(+X, +Y, +Init, -Final)
 %
-%    
+%    Truncate to the smallest list
+
 context_math.pl
 %%   sconvolution(+Y,+Window,+Initial,-Final)
 %
 %    Convolution against window function
 
 context_math.pl
-%%   intersect(_, [], F, Final) 
+%%   intersect(+X, +Y, +Initial, -Final)
 %
-%    
+%    Intersection of two lists, same as *truncate*
+
 context_math.pl
-%%   intersect_and_pad([], L, F, Final) 
+%%   intersect_and_pad(+L1, +L2, +Initial, -Final)
 %
-%    
+%    Intersect but then pad afterwards
+
 context_math.pl
-%%   reduce_by(0, X, X).
+%%   reduce_by(+N, +L, -X).
 %
-%    
+%    Reduce list by N elements, used by *offset*
+
 context_math.pl
-%%   split_n(_N, [], Xc, X)
+%%   split_n(+N,+List, +Xc, -X)
 %
-%    
+%    Split after N value
+
 context_math.pl
-%%   splitter(0, _Tuples, List, List).
+%%   splitter(+L, +Tuples, +Initial, -List).
 %
-%    
+%    Split tuples
+
 context_math.pl
-%%   index(List, Pos, Index) 
+%%   index(+List, +Pos, -Index)
 %
-%    
+%    Index a list like an array
+
 context_math.pl
-%%   spatial(List, Pos, Value) 
+%%   spatial(+List, +Pos, -Value)
 %
-%    
+%    Index a list like an array
+
 context_model.pl
 %%   css(URL)//
 %
-%    
-context_model.pl
-%%   row(Characteristic,
-%
-%    
+%    Cascading style sheet
+
 context_model.pl
 %%   navigate(+Request)
 %
@@ -1862,7 +1881,7 @@ context_model.pl
 context_model.pl
 %%   flip_log(+From, +To, -Scale).
 %
-%    Flip the log scale state 
+%    Flip the log scale state
 
 context_model.pl
 %%   display(+Model, +Render, +Dist, +Scale, +LogLog)
@@ -1891,7 +1910,7 @@ context_model.pl
 %    Link to web service for accessing monte-carlo data
 
 context_model.pl
-%%   apply(+Request) 
+%%   apply(+Request)
 %
 %    Generate PDF
 
@@ -1942,7 +1961,7 @@ context_obstacles_csv.pl
 %    @deprecated *context_obstacles:navigate*
 
 context_obstacles_csv.pl
-%%   read_csv(+Request) 
+%%   read_csv(+Request)
 %
 %    Read from CSV
 
@@ -1957,12 +1976,12 @@ context_ont_utils.pl
 %    Load resource
 
 context_ont_utils.pl
-%%   load_data(+Request) 
+%%   load_data(+Request)
 %
 %    Load data
 
 context_ont_utils.pl
-%%   print_all_subjects 
+%%   print_all_subjects
 %
 %    Print subjects names to standard output
 
@@ -1972,7 +1991,7 @@ context_ont_utils.pl
 %    Not implemented
 
 context_ont_utils.pl
-%%   write_object(+Name) 
+%%   write_object(+Name)
 %
 %    Write object name
 
@@ -2007,17 +2026,20 @@ context_ou.pl
 %    Ornstein-Uhlenbeck MaxEnt variance
 
 context_ou.pl
-%%   maxent_ou_mean(D,Theta,Flat,X,Y)
+%%   maxent_ou_mean(+D,+Theta,+Flat,+X,-Y)
 %
-%    
+%    Mean for MaxEnt Ornstein-Uhlenbeck
+
 context_ou.pl
-%%   maxent_ou_sum(_D,_Theta,_Flat,0,0).
+%%   maxent_ou_sum(+D,+Theta,+Flat,+X,-Y).
 %
-%    
+%    Sum for MaxEnt Ornstein-Uhlenbeck
+
 context_ou.pl
-%%   ou_model(_D,_Theta,0,0) 
+%%   ou_model(D,Theta,+X,-Y)
 %
-%
+%    Ornstein-Uhlenbeck model assert
+
 context_ou.pl
 %%   make_df(-X,-Y)
 %
@@ -2119,13 +2141,15 @@ context_ou.pl
 %    Calculate RMS on OU model
 
 context_ou.pl
-%%   find_min([], Min, Min).
+%%   find_min(L, +Ini, -Min).
 %
-%
+%    Find minimumum
+
 context_ou.pl
-%%   find_minimum(List, Min, Param)
+%%   find_minimum(+List, +Min, -Param)
 %
-%
+%    Find minimumum
+
 context_ou.pl
 %%   optimize_rms(+URI, -Diffusion, -Drag, -Flat, -Err)
 %
@@ -2377,9 +2401,10 @@ context_psd_workflow_json.pl
 %    Plot XY
 
 context_psd_workflow_json.pl
-%%   create_data_list([],[],_,_,_,F,F).
+%%   create_data_list(+X,+Y,+XU,+YU,+ID,+Input,-Output)
 %
-%    
+%    Massage the data before plotting
+
 context_psd_workflow_json.pl
 %%   read_psd_json(+FN, +Tuple, +Data, -S,-P)
 %
@@ -2621,13 +2646,15 @@ context_ref_search.pl
 %    Display a list of applicable requirements to the search request
 
 context_render.pl
-%%   process_two_track(_, _, [_],[_],[_], Final, Final).
+%%   process_two_track(+MX, +MY, +X,+Y,+Z, +Input, -Final)
 %
-%    
+%    Process a two-track geometry
+
 context_render.pl
-%%   process_xyz(_, _, [_],[_],[_], Final, Final).
+%%   process_xyz+MX, +MY, +X,+Y,+Z, +Input, -Final)
 %
-%    
+%    Process an xyz path
+
 context_render.pl
 %%   create(+Request)
 %
