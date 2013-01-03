@@ -31,19 +31,27 @@
 :- use_module(context_math).
 :- use_module(library('R')).
 
-% utility functions
+%%   complement(+X, -Y)
 %
+%    The complement of X
 complement(X, Y) :-
    number(X),
    Y is 1.0 - X.
 
 % profile generation
 
+%%   random_phase(+In,-Value)
+%
+%    Return a random phase between 0 and 360 degrees
 random_phase(_,V) :-
    random(R),
    V is 2*pi*R.
 
 
+
+%%   exp(+Mean, +X, -Y)
+%
+%    Exponential function
 exp(Mean, X, Y) :-
    exponential_pdf(Mean, X, Y).
    % Y is exp(-X/Mean)/Mean.
@@ -52,8 +60,14 @@ exp(Mean, X, Y) :-
 % Sea-State BesselK,0
 %
 
+%%   depth_constants(-A, -B)
+%
+%    Standard crest and depth coefficients
 depth_constants(2.7, 1.05).
 
+%%   depth_factor(+Mean, +Depth, +X, -F)
+%
+%    Depth adjustment fro sea-state model
 depth_factor(Mean, Depth, X, F) :-
     depth_constants(A0, B0),
     A is A0*X/Depth,
@@ -78,6 +92,9 @@ depth_factor_derivative(Mean, Depth, X, F) :-
     ),
     F is F1 + F2.
 
+%%   bessel_seastate(+Order, +Mean, +Depth, +Pdf, +X, -Y)
+%
+%    Bessel sea-state model
 bessel_seastate(Order, Mean, Depth, pdf, X, Y) :-
     nonvar(X),
     depth_factor(Mean, Depth, X, F1),
@@ -113,6 +130,9 @@ bessel_seastate(1, Mean, Depth, sample, X, Sample) :-
     Pre_Sample is -log(R1) * log(R2) * log(R3),
     root_sea_state(Mean,Depth,Pre_Sample,Sample).
 
+%%   root_sea_state(+M,+D,+YP,-X)
+%
+%    Find root of sea-state model
 root_sea_state(M,D,YP,X) :-
     depth_constants(A0, B0),
     Y is YP,
@@ -121,8 +141,10 @@ root_sea_state(M,D,YP,X) :-
     X is M*sqrt(-3*(A-4*B)/(2*B^2*sqrt((36*A^2*B^2*(sqrt(Y*(256*A^2*B^3*Y^2+(128*A*B^2-144*A^2*B+27*A^3)*Y+16*B-4*A)/A)/(2*3^(3/2)*A^2*B^3)-(-72*A*B*Y+27*A^2*Y-2)/(54*A^3*B^3))^(2/3)+(9*A^2-24*A*B)*(sqrt(Y*(256*A^2*B^3*Y^2+(128*A*B^2-144*A^2*B+27*A^3)*Y+16*B-4*A)/A)/(2*3^(3/2)*A^2*B^3)-(-72*A*B*Y+27*A^2*Y-2)/(54*A^3*B^3))^(1/3)-48*A*B*Y+4)/(sqrt(Y*(256*A^2*B^3*Y^2+(128*A*B^2-144*A^2*B+27*A^3)*Y+16*B-4*A)/A)/(2*3^(3/2)*A^2*B^3)-(-72*A*B*Y+27*A^2*Y-2)/(54*A^3*B^3))^(1/3)))-(sqrt(Y*(256*A^2*B^3*Y^2+(128*A*B^2-144*A^2*B+27*A^3)*Y+16*B-4*A)/A)/(2*3^(3/2)*A^2*B^3)-(-72*A*B*Y+27*A^2*Y-2)/(54*A^3*B^3))^(1/3)+(12*A*B*Y-1)/(9*A^2*B^2*(sqrt(Y*(256*A^2*B^3*Y^2+(128*A*B^2-144*A^2*B+27*A^3)*Y+16*B-4*A)/A)/(2*3^(3/2)*A^2*B^3)-(-72*A*B*Y+27*A^2*Y-2)/(54*A^3*B^3))^(1/3))-1/(3*A*B)+(A-2*B)/(2*A*B^2))/2-sqrt((36*A^2*B^2*(sqrt(Y*(256*A^2*B^3*Y^2+(128*A*B^2-144*A^2*B+27*A^3)*Y+16*B-4*A)/A)/(2*3^(3/2)*A^2*B^3)-(-72*A*B*Y+27*A^2*Y-2)/(54*A^3*B^3))^(2/3)+(9*A^2-24*A*B)*(sqrt(Y*(256*A^2*B^3*Y^2+(128*A*B^2-144*A^2*B+27*A^3)*Y+16*B-4*A)/A)/(2*3^(3/2)*A^2*B^3)-(-72*A*B*Y+27*A^2*Y-2)/(54*A^3*B^3))^(1/3)-48*A*B*Y+4)/(sqrt(Y*(256*A^2*B^3*Y^2+(128*A*B^2-144*A^2*B+27*A^3)*Y+16*B-4*A)/A)/(2*3^(3/2)*A^2*B^3)-(-72*A*B*Y+27*A^2*Y-2)/(54*A^3*B^3))^(1/3))/(12*A*B)+1/(4*B).
 
 
-% Exponential
+
+%%   exp(+Mean, +Type, +X, -Y)
 %
+%    Exponential function
 
 exp(Mean, pdf, X, Y) :-
    nonvar(X),
@@ -145,6 +167,9 @@ exp(Mean, symbolic, X, Y) :-
 % Power law of order 2
 %
 
+%%   power_law_2(+Median, +Pdf, +X, -Y)
+%
+%   Power law of index 2
 power_law_2(Median, pdf, X, Y) :-
    nonvar(X),
    Y = 1.0/Median/(1.0+(X/Median)^2).  % This is symbolic but ends up being evaluated correctly
@@ -161,6 +186,9 @@ power_law_2(Median, sample, X, Sample) :-
 % Power law of order 2 for area
 %
 
+%%   power_law_2_area(+Median, +Pdf, +X, -Y)
+%
+%    Power law of index 2 for areas
 power_law_2_area(Median, pdf, X, Y) :-
    nonvar(X),
    Y = 2.0*X/Median^2/(1.0+(X/Median)^2)^2.  % This is symbolic but ends up being evaluated correctly
@@ -178,6 +206,9 @@ power_law_2_area(Median, sample, X, Sample) :-
 % Exponential area
 %
 
+%%   exp_area(+Mean, +Pdf, +X, -Y)
+%
+%    Exponential areal function
 exp_area(Mean, pdf, X, Y) :-
    nonvar(X),
    Y is 2.0*X/Mean^2 * exp(-((X/Mean)^2)).
@@ -194,8 +225,9 @@ exp_area(Mean, sample, X, Sample) :-
 exp_area(Mean, symbolic, X, Y) :-
    Y = 1.0/Mean * exp(-X/Mean).
 
-% BesselK,0
+%%   besselk0(+Mean, +Pdf, +X, -Y)
 %
+%    Bessel K 0 function
 besselk0(Mean, pdf, X, Y) :-
     nonvar(X),
     Input is 2*X/Mean,
@@ -217,8 +249,9 @@ besselk0(Mean, sample, X, Sample) :-
     Sample is Mean * log(R1_2) * log(R2_2).
 
 
-% BesselK,0 sqrt
+%%   besselk0_sqrt(+Mean, +Pdf, +X, -Y)
 %
+%    Bessel K 0 Square Root function
 besselk0_sqrt(Mean, pdf, X, Y) :-
     nonvar(X),
     Input is 2*sqrt(X/Mean),
@@ -239,8 +272,9 @@ besselk0_sqrt(Mean, sample, _X, Sample) :-
     random(R2),
     Sample is Mean * log(R1) * log(R2).
 
-% Diffusion Acceleration
+%%   diffusion_accel(+Diff, +Accel, +Pdf, +X, -Y)
 %
+%    Diffusion with acceleration factor, used for lightning
 diffusion_accel(Diff, Accel, pdf, X, Y) :-
     nonvar(X),  % $C$1/(1+$C$2*SQRT($B4)+$C$3*$B4^2)
     Y is 1.0/(1+Diff*sqrt(X)+Accel*(X^2)).
@@ -259,6 +293,9 @@ diffusion_accel(Diff, Accel, sample, X, Sample) :-
 
 % pierson_moskowitz
 
+%%   pierson_moskowitz(+Mean, +Pdf, +X, -Y)
+%
+%    Pierson-Moskowitz function for wave frequency
 pierson_moskowitz(Mean, pdf, X, Y) :-
     nonvar(X),  % 1/f^5*exp(-c/f^4)
     Y is 4.0*((Mean/X)^5)/Mean*exp(-((Mean/X)^4)).
@@ -275,6 +312,9 @@ pierson_moskowitz(Mean, sample, X, Sample) :-
 
 % unit step, thermal growth
 
+%%   thermal_dispersion(+Mean, +Mag, +X, -Result)
+%
+%    Thermal dispersive growth mode
 thermal_dispersion(Mean, Mag, X, Result) :-
     X1 is X/Mean,
     X1 > 0.99999,
@@ -299,6 +339,9 @@ thermal_dispersion(Mean, Mag, X, Y) :-
 %
 % Placeholder
 
+%%   besselk1(+Mean, +X, -Y)
+%
+%    Bessel K 1 PDF function
 besselk1(Mean, X, Y) :-
     % M is 1.0/Mean,
     % S mapdot M .* X,
@@ -309,23 +352,38 @@ besselk1(Mean, X, Y) :-
     Y is 2*Output/Mean.
 %   power_law_2_pdf(Mean, X, Y).
 
+%%   corrected_bessel(+Mean, +Depth, +X, -Y)
+%
+%    Seastate bessel function which has depth corrections
 corrected_bessel(Mean, _Depth, X, Y) :-
    power_law_2_pdf(Mean, X, Y).
 
+%%   besselk1_sqrt(+Mean, +X, -Y)
+%
+%    BesselK1 Square Root function
 besselk1_sqrt(Mean, X, Y) :-
    power_law_2_pdf(Mean, X, Y).
 
 % Power law of order 2
 % %%%%%%%%%%%%%%%%%%%%
 
+%%   power_law_2_pdf_symbolic(Median, X, Y)
+%
+%    Power law of index 2 symbolic function
 power_law_2_pdf_symbolic(Median, X, Y) :-
    Y = 1.0/Median/(1.0+(X/Median)^2).
 
+%%   power_law_2_pdf(+Median, +X, -Y)
+%
+%    Power law of index 2 CDF function
 power_law_2_pdf(Median, X, Y) :-
    number(Median),
    power_law_2_pdf_symbolic(Median, X, Y0),
    Y is Y0.
 
+%%   power_law_2_cdf(+Median, +X, -Y)
+%
+%    Power law of index 2 CDF function
 power_law_2_cdf_symbolic(Median, X, Y) :-
    Y = 1.0/(1.0+(Median/X)).
 
@@ -334,6 +392,9 @@ power_law_2_cdf(Median, X, Y) :-
    power_law_2_cdf_symbolic(Median, X, Y0),
    Y is Y0.
 
+%%   power_law_2_sampling(+Median,+NA,-Variate)
+%
+%    Power law of index 2 sampling function
 power_law_2_sampling(Median,_,Variate) :-
    random(R),
    Variate is Median/(1.0/R-1.0).
@@ -341,6 +402,12 @@ power_law_2_sampling(Median,_,Variate) :-
 
 % Exponential
 % %%%%%%%%%%%
+%%   exponential_pdf(+Mean, +X, -Y)
+%
+%    Exponential PDF function
+%%   exponential_pdf_symbolic(+Mean, +X, -Y)
+%
+%    Exponential PDF symbolic function
 exponential_pdf_symbolic(Mean, X, Y) :-
     Y = 1.0/Mean * exp(-X/Mean).
 
@@ -349,6 +416,9 @@ exponential_pdf(Mean, X, Y) :-
     exponential_pdf_symbolic(Mean, X, Y0),
     Y is Y0.
 
+%%   exponential_cdf_symbolic(+Mean, +X, -Y)
+%
+%    Exponential CDF function symbolic form
 exponential_cdf_symbolic(Mean, X, Y) :-
     Y = 1- exp(-X/Mean).
 
@@ -357,6 +427,9 @@ exponential_cdf(Mean, X, Y) :-
     exponential_cdf_symbolic(Mean, X, Y0),
     Y is Y0.
 
+%%   exponential_sampling(+Mean, +NA, -Variate)
+%
+%    Exponential sampling function
 exponential_sampling(Mean,_,Variate) :-
     random(R),
     Variate is -Mean * log(R).
@@ -364,6 +437,9 @@ exponential_sampling(Mean,_,Variate) :-
 % Bessel
 % %%%%%%
 
+%%   besselk_1_cdf(+Mean, +X_Array, -Y_Array)
+%
+%    Bessel K 1 CDF function
 besselk_1_cdf(Mean, X_Array, Y_Array) :-
     context_r:r_open_session,
     Input mapdot sqrt ~> (2/Mean) .* X_Array,
@@ -372,6 +448,9 @@ besselk_1_cdf(Mean, X_Array, Y_Array) :-
     Y_Array mapdot complement ~> Input * Y,
     r_close.
 
+%%   besselk_0_pdf(+Mean, +X_Array, -Y_Array)
+%
+%    Bessel K 1 CDF function
 besselk_0_pdf(Mean, X_Array, Y_Array) :-
     context_r:r_open_session,
     Input mapdot sqrt ~> (2/Mean) .* X_Array,
@@ -380,6 +459,9 @@ besselk_0_pdf(Mean, X_Array, Y_Array) :-
     Y_Array mapdot (1/Mean) .* Y,
     r_close.
 
+%%   besselk_1_sampling(+Mean, +NA, -Variate)
+%
+%    Bessel K 1 sampling function
 besselk_1_sampling(Mean,_,Variate) :-
     random(R1),
     random(R2),

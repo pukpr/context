@@ -12,6 +12,9 @@
 :- use_module(context_math).
 :- use_module(context_psd).
 
+%%   get_all_obstacle_files(-List)
+%
+%    Get obstacle sets
 get_all_obstacle_files(List) :-
     findall(option([value(FilePath)],[Name]),
 	    (
@@ -19,6 +22,9 @@ get_all_obstacle_files(List) :-
 	    rdf(URI, ent:name, literal(Name))
 	    ), List).
 
+%%   navigate(+Request)
+%
+%    Dynamic page to CSV obstacle files
 navigate(_) :-
    get_all_obstacle_files(List),
    reply_html_page(
@@ -59,6 +65,9 @@ navigate(_) :-
 headings(2, ['x','y']).
 headings(3, ['x','y','z']).
 
+%%   read_csv(+Request)
+%
+%    Read from CSV
 read_csv(Request) :-
    http_parameters(Request, [plot_scaling(LL),
                              file_name(FN),

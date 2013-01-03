@@ -25,6 +25,9 @@
 		[]).
 */
 
+%%   server(+Port)
+%
+%    Instancing server for Cliopatria
 server(Port) :-
    http_server(http_dispatch, [port(Port)]).
 
@@ -69,6 +72,9 @@ cliopatria:menu_item(query/'/context_query/navigate', 'Generic').
 :- context:register(context_main:run_unit_tests).
 :- context:register(context_main:acronym_list).
 
+%%   nav_aids(Key, Path, Title)//
+%
+%    Inline generation of navigation aids
 nav_aids(Key, Path, Title) -->
     {
      (	 rdf_(Key, ent:narrative, Narration);
@@ -95,6 +101,9 @@ nav_aids(Key, Path, Title) -->
             ])
         ).
 
+%%   index_page(+Request)
+%
+%    Main index page for context server
 index_page(Request) :-
     reply_html_page(
         cliopatria(default),
@@ -126,6 +135,9 @@ index_page(Request) :-
                    ).
 
 
+%%   run_unit_tests(+Request)
+%
+%    Run all unit tests
 run_unit_tests(_Request) :-
     call_showing_messages(
     (   run_tests ),
@@ -133,6 +145,9 @@ run_unit_tests(_Request) :-
                          ).
 
 
+%%   acronym_list(+Request)
+%
+%    Generate an acronym list table
 acronym_list(_Request) :-
     findall(tr([th(Acronym),td(Definition)]),
             acronym_definition(Acronym,Definition),

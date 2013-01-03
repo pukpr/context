@@ -14,6 +14,9 @@
 :- context:register(context_thermal:plot).
 
 
+%%   navigate(+Request)
+%
+%    Dynamic page to transient thermal models
 navigate(Request) :-
    collect_unit_options(temperature, Hunits),
    collect_unit_options(time, Tunits),
@@ -51,6 +54,9 @@ navigate(Request) :-
      ]
 		  ).
 
+%%   thermalModelHeat(+Diff, +X0, +Time, +TemperatureUnits, +Temprature)
+%
+%    Transient thermal model heat
 thermalModelHeat(Diff, X0, T*Time, Z*Temperature) :-
    context_units:convert(T*Time, T1*day, T1),
    thermal_dispersion(Diff, X0, T1, Z1),
@@ -59,6 +65,9 @@ thermalModelHeat(Diff, X0, Temperature, T*Time, Z) :-
    thermalModelHeat(Diff, X0, T*Time, Z*Temperature).
 
 
+%%   thermalModelCool(+Diff, +X0, +Time, +TemperatureUnits, +Temprature)
+%
+%    Transient thermal model cool
 thermalModelCool(Diff, X0, T*Time, Z*Temperature) :-
    context_units:convert(T*Time, T1*day, T1),
    thermal_dispersion(Diff, X0, T1, Z1),
@@ -76,6 +85,9 @@ thermalModelCool(Diff, X0, Thickness, T*Time, Z) :-
    thermalModelCool(Diff, X0, T*Time, Z*Thickness).
 */
 
+%%   plot(+Request)
+%
+%    Graph a thermal trasnient model in a cooling or heating phase
 plot(Request) :-
     http_parameters(Request, [kind(Kind, []),
 			      limit(Limit, [number]),

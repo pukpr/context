@@ -6,17 +6,29 @@
     *
 */
 
+%%   path_to_obstacles_files(-Path)
+%
+%    Path to obstacle files
 path_to_obstacles_files(
     '../../../../Models/Land/terrains/grades_slopes/tools/Unity/RoadExperiments/Assets/Resources/Obstacles/').
 
+%%   get_all_course_files(-List)
+%
+%    Get all course files
 get_all_course_files(List) :-
     findall(Name, rdf_(Name, crg, _), List).
 
+%%   csv_name_file_pair(+Name, +Pred, -FilePath)
+%
+%    Get CSV version of file
 csv_name_file_pair(Name, Pred, FilePath) :-
     rdf_(Name, Pred, File),
     path_to_obstacles_files(Path),
     atom_concat(Path,File,FilePath).
 
+%%   capture(URI) 
+%
+%    One time capture of data to RDF
 capture(URI) :-
    context:prefix(E),
    csv_name_file_pair(URI, crg, FN),
@@ -45,6 +57,9 @@ capture(URI) :-
    context:storeRDF(URI, E, date, '1 September 2012'),
    context:storeRDF(URI, E, title, 'CSIR track profile').
 
+%%   generate 
+%
+%    Generate list of course files
 generate :-
     get_all_course_files(List),
     maplist(capture, List).

@@ -31,11 +31,21 @@
 :- use_module(context_math).
 
 
-% real(?Complex, ?RealPart)
+
+%%   real(+Complex, -Real)
+%
+%    Pull out the real part of a complex number
 real(R&_, R).
 
-% imag(?Complex, ?ImaginaryPart)
+
+%%   imag(+Complex, -Imag)
+%
+%    Pull out the imaginary part of a complex number
 imag(_&I, I).
+
+%%   isx(+X, Y)
+%
+%    Create a complex number
 
 W&X isx Y&Z :-
     X is Z,
@@ -108,6 +118,10 @@ W&X isx A*exp(i*B) :-    % Constructor
     W is A*cos(B),
     X is A*sin(B), !.
 
+%%   mapx(+X, Y)
+%
+%    Create a complex list
+
 [] mapx [].
 [W|X] mapx [Y|Z] :-  % List constructor
    W = Y&0.0,
@@ -116,11 +130,17 @@ W&X isx A*exp(i*B) :-    % Constructor
 % Faster versions, for FFT, etc.
 
 % sum(A, B, C) is true if C is the sum of the complex numbers A and B.
+%%   sum(+C1, +C2, -C3)
+%
+%    Sum of two complex numbers
 sum(Ra&Ia, Rb&Ib, Rc&Ic) :-
     Rc is Ra + Rb,
     Ic is Ia + Ib.
 
 % product(A, B, C) is true if C is the product of the complex numbers A and B.
+%%   product(+C1, +C2, -C3)
+%
+%    Product of two complex numbers
 product(Ra&Ia, Rb&Ib, Rc&Ic) :-
     Rc is Ra*Rb - Ia*Ib,
     Ic is Ra*Ib + Ia*Rb.
@@ -128,6 +148,9 @@ product(Ra&Ia, Rb&Ib, Rc&Ic) :-
 % list operations
 %
 
+%%   magnitude(+Array, +L, +Count, +Initial, -Final)
+%
+%    Calculate conjugate-squared magnitude of complex array
 magnitude(_, L, L, Final, F) :- reverse(Final, F).
 magnitude([Real&Im|Rest], L, Count, Initial, Final) :-
    Mag is Real*Real + Im*Im,
@@ -139,11 +162,17 @@ magnitude([Real&Im|Rest], Initial, Final) :-
    Mag is Real*Real + Im*Im,
    magnitude(Rest, [Mag|Initial], Final).
 */
+%%   absolute(List,Final, F)
+%
+%    Calculate absolute valute
 absolute([],Final, F) :- reverse(Final, F).
 absolute([Real&Im|Rest], Initial, Final) :-
    Abs is sqrt(Real*Real + Im*Im),
    absolute(Rest, [Abs|Initial], Final).
 
+%%   reciprocal(+List, +L, +C, +X, +Sx, +Init, -Recip)
+%
+%    Gnerate a reciprocal space
 reciprocal(_, L, L, _, _, Final, F) :- reverse(Final, F).
 reciprocal([_|Rest], L, Count, Xm, Sx, Initial, Final) :-
    S is 2*pi/Xm + Sx,
@@ -155,16 +184,25 @@ reciprocal([_|Rest], Xm, Sx, Initial, Final) :-
    S is 2*pi/Xm + Sx,
    reciprocal(Rest, Xm, S, [S|Initial], Final).
 */
+%%   construct(+Reals, +Init, -X)
+%
+%    Construct a list of complex from reals
 construct([], Xc, X) :- reverse(Xc, X).
 construct([X|Rest], Init, Xc) :-
     construct(Rest, [X&0.0|Init], Xc).
 
+%%   parse(+Tuple, +Xc, -X, +Yc, -Y)
+%
+%    Parse out tuple list into X and Y
 parse([], Xc, X, Yc, Y) :- reverse(Xc, X), reverse(Yc, Y).
 % parse([xy(X,Y)|Rest], Ix, Xc, Iy, Yc) :-
 %    parse(Rest, [X|Ix], Xc, [Y|Iy], Yc).
 parse([[X,Y|_]|Rest], Ix, Xc, Iy, Yc) :-
     parse(Rest, [X|Ix], Xc, [Y|Iy], Yc).
 
+%%   tuple_list(+X, +Y, +Initial, -Y)
+%
+%    Construct XY tuples out of X and Y list
 tuple_list([], [], Initial, Final) :- reverse(Initial, Final).
 tuple_list([X|XR], [Y|YR], Initial, Final) :-
     tuple_list(XR, YR, [[X,Y]|Initial], Final).
@@ -183,6 +221,9 @@ tuple_list([X|XR], [Y|YR], Initial, Final) :-
 % the N -- a power of two -- samples in the list F.  Each sample is a
 % complex number represented by c(RealPart, ImaginaryPart).
 
+%%   fft(+N, +Initial, -Ft)
+%
+%    Fast Fourier Transform
 fft(1, Ft, Ft) :- !.
 fft(N, F, Ft) :-
     N > 1,
@@ -197,6 +238,9 @@ fft(N, F, Ft) :-
     product_and_sum(Et, Ot, W1, Wn, Ft, Gt).
 
 % Multiply and Add vectors
+%%   product_and_sum(+L1, +L2, +W1, +W2, -F1, -F2)
+%
+%    Used by *fft*
 product_and_sum([], [], _, _, Ft, Ft).
 product_and_sum([E| Et], [O| Ot], Wk, Wn, [F| Ft], Fu) :-
     /* these are slower
@@ -214,11 +258,17 @@ product_and_sum([E| Et], [O| Ot], Wk, Wn, [F| Ft], Fu) :-
 %   odd-positioned elements of the list Xs, where the first element of Xs
 %   is considered to be at an even position.
 
+%%   evens_and_odds(+A, +B, +C)
+%
+%    Used by *fft*
 evens_and_odds([], [], []).
 evens_and_odds([X| Xs], [X| Ys], Zs) :-
     evens_and_odds(Xs, Zs, Ys).
 
 
+%%   w(+A, +B)
+%
+%    Used by *fft*
 w(     1, 1.0 & 0.0).
 w(     2, -1.0 & 0.0).
 w(     4, 0.0 & 1.0).
@@ -241,11 +291,17 @@ w(262144, 0.999999999712757 & 0.000023968449808).
 w(524288, 0.999999999928189 & 0.000011984224905).
 
 
+%%   scale_down(+L, +Scale, +Xc, -X)
+%
+%    Scale elements in a list down by a factor
 scale_down([], _S, Xc, X) :- reverse(Xc, X).
 scale_down([X|Rest], S, Init, Xc) :-
     XX is X/S,
     scale_down(Rest, S, [XX|Init], Xc).
 
+%%   fft_squared(+X,+Y, -Sx, -Sy)
+%
+%    FFT mag squared
 fft_squared(X,Y, Sx, Sy) :-
     sumlist(Y, Total),
     length(Y,Tn),
@@ -280,11 +336,17 @@ fft_squared([X,Y], List) :-
     fft_squared(X,Y, Sx, Sy),
     tuple_list(Sx,Sy, [], List),!.
 
+%%   fft_length(+Input, -Length)
+%
+%    Returns the size of an FFT comp
 fft_length(Input, Length) :-
     length(Input, L),
     w(Length, _),
     Length >= L, !.
 
+%%   fft_pad(+Input, -Padded)
+%
+%    Pad an array to return a 2^n FFT size
 fft_pad(Input, Padded) :-
     fft_length(Input, Length),
     length(Input, L),
@@ -292,6 +354,10 @@ fft_pad(Input, Padded) :-
     context_math:constants(Extra, 0.0, Zeros),
     append(Input, Zeros, Padded).
 
+
+%%   fft(+X, +Y)
+%
+%    Fast Fourier Transform
 
 Y fft X :-  % assumes a real array coming in
     length(X, N),

@@ -7,12 +7,17 @@
 
 :- use_module(context_math).
 
+%%   nth(Input, Table, Output)
+%
+%    Nth value of Table
 nth(Input, Table, Output) :-
    nth0(Input, Table, Output), !.
 nth(_I, _Table, 0.0).
 
-% uses 5-point Lagrange interpolation.
+%%   lookup_table(+Scale, +Offset, +Table, +Input, -Output)
 %
+%    Lookup table
+%    uses 5-point Lagrange interpolation.
 lookup_table(Scale, Offset, Table, Input, Output) :-
     I is floor(Scale*(Input-Offset)),
     P is Scale*(Input-Offset)-I,
@@ -32,6 +37,9 @@ lookup_table(Scale, Offset, Table, Input, Output) :-
               - (P+1)*P*P2m4*Tp1/6.0 + P2m1*P*(P+2)*Tp2/24.0).
 
 
+%%   lookup_list(+Xlist,+Ylist,-X,-Y)
+%
+%    Not used lookup list
 lookup_list(xlist=Xlist,
             ylist=Ylist,
             x=X,

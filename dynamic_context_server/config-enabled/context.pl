@@ -33,6 +33,11 @@ ac_result([Obj,Type], json([ label=Type,
                               href='javascript:location.reload(false);'
                             ])).
 
+
+%%   find_term(+Request)
+%
+%    Lookahead on term
+
 find_term(Request) :-
     http_parameters(Request,
                     [ query(Query, [description('Typed string')]),
@@ -51,35 +56,60 @@ find_term(Request) :-
                     ])).
 
 
+%%   ref_link_to_pdf(+FileName, +Dest, +Link)
+%
+%    Create a named ref link to a PDF doc
 ref_link_to_pdf(FileName, Dest, Link) :-
    format(atom(Link), '/ref/~s#nameddest=~s', [FileName,Dest]).
+
+%%   page_link_to_pdf(+FileName, +Page, +Link)
+%
+%    Create a page link to a PDF doc
 page_link_to_pdf(FileName, Page, Link) :-
    format(atom(Link), '/ref/~s#page=~d', [FileName,Page]).
 
+%%   strip_numbers(+List, +Input, -Output)
+%
+%    Pull literals out of a RDF list
 strip_numbers([], Input, Final) :- reverse(Input, Final).
 strip_numbers([literal(type(_, Str))| Rest], Input, Final) :-
     atom_number(Str, Num),
     strip_numbers(Rest, [Num|Input], Final).
 
+%%   cgi_pairs(+KeyValues, +Input, -Output)
+%
+%    Create CGI pairs
 cgi_pairs([[Key,Value]], Input, Output) :-
     atomic_list_concat([Input, Key, '=', Value], Output).
 cgi_pairs([[Key,Value]|R], Input, Output) :-
     atomic_list_concat([Input, Key, '=', Value, '&'], Next),
     !, cgi_pairs(R, Next, Output).
 
+%%   encode_cgi(+Action, +CGI_List, -URL)
+%
+%    Encode CGI
 encode_cgi(Action, CGI_List, URL) :-
     atomic_list_concat([Action, '?'], Next),
     cgi_pairs(CGI_List, Next, URL).
 
+%%   encode_service(+Hostname, +Port, +Cmd, -Service)
+%
+%    Encode URI service
 encode_service(Hostname, Port, Cmd, Service) :-
     atomic_list_concat(['http://', Hostname, ':', Port, Cmd], Service).
 
+%%   create_url(+Request, +Service, +CGIs, -URL)
+%
+%    Create URL from serice and CGI
 create_url(Request, Service, CGIs, URL) :-
     http_current_host(Request, Hostname, Port, [global(true)]),
     % print(user_error, [Hostname, Port]),
     encode_service(Hostname, Port, Service, Serv),
     encode_cgi(Serv, CGIs, URL).
 
+%%   referer(-N)
+%
+%    Find referer from current request
 referer(N) :-
       http_current_request(Request),
       member(referer(URL), Request),
@@ -91,6 +121,9 @@ referer(N) :-
           N = Name
       ).
 
+%%   holder(+Request,-URI)
+%
+%    URI holder of request
 holder(Request,URI) :-
       member(request_uri(URI), Request), !.
 holder(_Request,aaa).
@@ -100,6 +133,9 @@ replace(_, _, [], []).
 replace(O, R, [O|T], [R|T2]) :- replace(O, R, T, T2).
 replace(O, R, [H|T], [H|T2]) :- H \= O, replace(O, R, T, T2).
 
+%%   replace_chars(+This, +That, +Input, -Output)
+%
+%    Replace a set of characters
 replace_chars(This, That, Input, Output) :-
    write_to_chars(Input,Chars),
    atom_codes(This, [C]),
@@ -107,6 +143,9 @@ replace_chars(This, That, Input, Output) :-
    replace(C, S, Chars, String),
    atom_to_chars(Output, String).
 
+%%   replace_word(+Old, +New, +Orig, -Replaced)
+%
+%    Replace  a word in a string
 replace_word(Old, New, Orig, Replaced) :-
     atomic_list_concat(Split, Old, Orig),
     atomic_list_concat(Split, New, Replaced), !.
@@ -122,8 +161,15 @@ max_min([H|T], Max, Min, Mx, Mn) :-
     CX is max(Max, H),
     CN is min(Min, H),
     max_min(T, CX, CN, Mx, Mn).
+
+%%   max_min(+List, -Max, -Min)
+%
+%    Find a max and min in a list
 max_min([H|T], Max, Min) :- max_min(T, H, H, Max, Min).
 
+%%   uri_index_link(+URI, +Title, +Target, +Link)
+%
+%   Create a URI link to an RDF resource
 uri_index_link(URI, Link) :-
    uri_encoded(path, URI, U),
    Link = a(href('/browse/list_resource?r='+U),'[link]').
@@ -153,11 +199,16 @@ ac_hook(ModuleHandler) :-
    http_handler(RestCB, ModuleHandler, []).
 */
 
+%%   rdf_term(+Atom, -URI)
+%
+%    Create a global RDF term
 rdf_term(Atom, URI) :-
     atom_to_term(Atom, Term, []),
     rdf_global_term(Term, URI).
 
-% literal to URI version
+%%   create_global_term(+Literal, +Term)
+%
+%    literal to URI version
 create_global_term(Literal, Term) :-
    atom(Literal),
    atomic_list_concat([W1,W2], ':', Literal),
@@ -181,6 +232,9 @@ find_and_break_out_terms(Subtext, Text, Begin, Middle, End) :-
    sub_string(Text, Start, Length, _After, Subtext),
    find_and_break_out_terms(Text, Start, Length, Begin, Middle, End).
 
+%%   rdf_default(+Subj, +Pred, -Obj, +Default)
+%
+%    Select an RDF object, and choose default if not found
 rdf_default(Subj, Pred, Obj, _Default) :-
    rdf_global_term(Pred, P),
    rdf(Subj, P, literal(Obj)), !.
@@ -189,6 +243,9 @@ rdf_default(_, _, Default, Default).
 
 % Storing RDF triples
 
+%%   storeRDF(+A, +E, +B, +C)
+%
+%    Store RDF object permanently
 storeRDF(A, E, B, C) :-
     is_list(C),
     with_output_to(atom(S), write(C)),
@@ -205,8 +262,14 @@ storeRDF(A, _E, B, C) :-
 storeRDF(A, _E, B, C) :-
     print(user_error, [skipped, A,B,C, '\n']).
 
+%%   prefix(-Entity)
+%
+%    Context modeling prefix
 prefix('ent').
 
+%%   make_name(+Name, +Ent, -E)
+%
+%    Make context entity
 make_name(Name, Ent, E) :-
     prefix(Ent),
     rdf_global_term(Ent:Name, E0),
@@ -214,6 +277,9 @@ make_name(Name, Ent, E) :-
 
 % Storing RDF triples
 
+%%   storeRDF_to_graph(+A, +B, +C, +E)
+%
+%    Store RDF entities to a graph for later rendering
 storeRDF_to_graph(A, B, F:C, E) :-
     rdf_global_term(B, BB),
     rdf_global_term(A, AA),
@@ -241,6 +307,9 @@ storeRDF_to_graph(A, B, C, _E) :-
 
 % RDF utilities
 
+%%   rdfR(+Subj, +Pred, +Obj)
+%
+%    RDF real number input
 rdfR(Subj, Pred, Obj) :-
     (
      rdf(Subj, Pred, literal(type(xsd:decimal, Val)))
@@ -250,6 +319,10 @@ rdfR(Subj, Pred, Obj) :-
      rdf(Subj, Pred, literal(type(xsd:float, Val)))
     ),
     atom_number(Val, Obj).
+
+%%   rdfI(+Subj, +Pred, +Obj)
+%
+%    RDF intger number input
 rdfI(Subj, Pred, Obj) :-
     (
      rdf(Subj, Pred, literal(type(xsd:integer, Val)))
@@ -257,12 +330,24 @@ rdfI(Subj, Pred, Obj) :-
      rdf(Subj, Pred, literal(type(xsd:int, Val)))
     ),
     atom_number(Val, Obj).
+
+%%   rdfL(+Subj, +Pred, +Obj).
+%
+%    RDF list input
 rdfL(Subj, Pred, Obj) :-
     rdf(Subj, Pred, literal(Val)),
     atom_to_term(Val, Obj, _).
+
+%%   rdfV(+Subj, +Pred, +Obj, +Vars)
+%
+%    RDF variable list input, unbound on output
 rdfV(Subj, Pred, Obj, Vars) :-
     rdf(Subj, Pred, literal(Val)),
     atom_to_term(Val, Obj, Vars).
+
+%%   rdfS(Subj, Pred, Obj)
+%
+%    RDF string input
 rdfS(Subj, Pred, Obj) :-
     (
        rdf(Subj, Pred, literal(type(xsd:string, Obj)))
@@ -270,6 +355,10 @@ rdfS(Subj, Pred, Obj) :-
        rdf(Subj, Pred, literal(Obj)),
        atom(Obj)
     ).
+
+%%   rdfE(+Subj, +Pred, +Obj)
+%
+%    RDF with entity input
 rdfE(Subj, Pred, Obj) :-
     rdf(Subj, Pred, O),
     concise_term(O, Obj).
@@ -277,11 +366,16 @@ rdfE(Subj, Pred, Obj) :-
 
 :- dynamic(rdf_temp/3).
 
-% Long URI to literal version
+%%   concise_term(+URI, +PrefixNotation)
+%
+%    Long URI to literal version
 concise_term(URI, PrefixNotation) :-
     rdf_global_id(Prefix:Local, URI),
     atomic_list_concat([Prefix, :, Local], PrefixNotation).
 
+%%   rdf_store(+A, +B, +C)
+%
+%    RDF store
 rdf_store(A, B, C) :-
     % print(user_error, [A, B, C, '\n']),
     not(rdf_temp(A,B,C)), % Don't store duplicates
@@ -289,12 +383,21 @@ rdf_store(A, B, C) :-
     asserta(rdf_temp(A,B,C)).
 rdf_store(_A, _B, _C).
 
+%%   rdfx_collect(List)
+%
+%    Collect a temporary list of RDF items
 rdfx_collect(List) :-
     findall(rdf(A,B,C), rdf_temp(A,B,C), List).
 
+%%   rdfx_clean
+%
+%    Clean a temporary list of RDF items
 rdfx_clean :-
     retractall(rdf_temp(_,_,_)).
 
+%%   check_rdf(+Term, +Short)
+%
+%    Check if input RDF matches a literal or global
 check_rdf(literal(type(_,A)), Atom) :-
     atomic_list_concat(['"', A, '"'], Atom).
 check_rdf(literal(A), Atom) :-
@@ -303,6 +406,9 @@ check_rdf(Term, Short) :-
     concise_term(Term, Short).
 
 
+%%   rdfx(+Subj, +Pred, +Value)
+%
+%    A temporary RDF structure for storage
 rdfx(Subj, Pred, Value) :-
     (
     rdf(Subj, Pred, literal(type(xsd:decimal, Val))),
@@ -328,6 +434,9 @@ rdfx(Subj, Pred, Obj) :-
 
 :- dynamic(local_stored_rdf_graph_list/1).
 
+%%   display_directed_graph(+Request)
+%
+%    Display directed graph
 display_directed_graph(_) :-
     rdfx_collect(List),
     % retract(local_stored_rdf_graph_list(_)),

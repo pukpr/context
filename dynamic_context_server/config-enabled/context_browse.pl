@@ -7,6 +7,9 @@
 :- context:register(context_browse:navigate).
 
 
+%%   create_list(+L)//
+%
+%    Part of the browser tree
 create_list([]) --> [].
 create_list([First|Rest]) -->
     { findall(Next, rdf_(First, child, Next), List) },
@@ -20,6 +23,9 @@ create_list([First|Rest]) -->
 	 ]
 	).
 
+%%   foundational(+Subject, -Link)
+%
+%    Link to a foundational article
 foundational(Subject, Link) :-
       rdf_(Subject, foundation, [Doc,Page]),
       rdf_(Doc, foundation_doc, FileName),
@@ -27,6 +33,9 @@ foundational(Subject, Link) :-
 foundational(_Subject, '').
 
 
+%%   link_view(+Link, +Target, +Image, +Subject, +Text)//
+%
+%    Link inline view
 link_view('', _, _, _Subject, _Docs) -->
     % html(p([b(Subject), ' has no categorized ', Docs])),
     !.
@@ -44,6 +53,9 @@ link_view(Link, Target, Image, Subject, Text) -->
           )),
     !.
 
+%%   view_tree(+Request, +Subject)//
+%
+%    View browser tree inline
 view_tree(Request, Subject) -->
     { findall(Class, rdf_(Subject, child, Class), List),
       rdf_(Subject, comment, Comment),
@@ -112,6 +124,9 @@ view_tree(Request, Subject) -->
          ]
         ).
 
+%%   navigate(+Request) 
+%
+%    Dynamic page to feature browser
 navigate(Request) :-
     http_parameters(Request, [term(Term, [string, default(context)])]),
     reply_html_page(

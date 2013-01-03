@@ -17,6 +17,9 @@
 
 :- op(400, xfx, ~).
 
+%%   r_open_session
+%
+%    Open an R session, needed for Linux
 r_open_session :-
     % getenv('OS', 'Windows_NT'),
     current_prolog_flag(windows, true),
@@ -24,9 +27,15 @@ r_open_session :-
 r_open_session :-
     r_open([with(non_interactive)]).
 
+%%   dquote(+X, -Y)
+%
+%    Double-quote () a term
 dquote(X, Y) :-
     atomic_list_concat(['".', X, '"'], Y).
 
+%%   rhist2d(+X,+Y)
+%
+%    2D histogram Plot using R
 rhist2d(X,Y) :-
      r_open_session,
      y <- Y,
@@ -39,6 +48,9 @@ rhist2d(X,Y) :-
      r_print( 'dev.off()' ),
      r_close.
 
+%%   rplot(+X,+Y)
+%
+%    XY Plot using R
 rplot(X,Y) :-
      r_open_session,
      y <- Y,
@@ -50,6 +62,9 @@ rplot(X,Y) :-
      r_print( 'dev.off()' ),
      r_close.
 
+%%   rplot_with_regression(+Image, +X, +Y, +Title, +X_Axis, +Y_Axis, +Slope)
+%
+%    Demo rplot with regression
 rplot_with_regression(Image, X, Y, Title, X_Axis, Y_Axis, Slope) :-
      r_open_session,
      y <- Y,

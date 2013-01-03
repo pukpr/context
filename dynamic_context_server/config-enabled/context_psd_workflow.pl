@@ -13,13 +13,22 @@
 :- use_module(context_math).
 :- use_module(context_functions).
 
+%%   rdf_data(+ID, -Name)
+%
+%    Local RDF data
 rdf_data(ID, Name) :-
     rdf(ID, ent:type, literal(terrain_psd)),
     rdf(ID, ent:name, literal(Name)).
 
+%%   get_all_psd_sets(-List)
+%
+%    Get all PSD sets
 get_all_psd_sets(List) :-
     findall(option([value(ID)],[Name]), rdf_data(ID, Name), List).
 
+%%   navigate(+Request)
+%
+%    Dynamic page to indexed fine-terrain power spectral densities
 navigate(Request) :-
    get_all_psd_sets(List),
    reply_html_page(
@@ -60,20 +69,32 @@ navigate(Request) :-
 		  ).
 
 
+%%   read_rdf(+URI, +UX, +UY, +XY, +Axis)
+%
+%    Read PSD from RDF
 read_rdf(URI, UX, UY, [DataX, DataY], 'X,Z') :-
     rdfS(URI, ent:units_x, UX),
     rdfS(URI, ent:units_y, UY),
     rdfL(URI, ent:data_x, DataX),
     rdfL(URI, ent:data_y, DataY).
 
+%%   reference_name(+Ref, -File)
+%
+%    Reference name giving file
 reference_name('TOPS1', '1-1-010_Vehicle_Test_Course_Severity__Surface_Roughness.pdf').
 
+%%   reference_link(+Name, -Dest, -Link)
+%
+%    Reference Link for PSD data
 reference_link(Name, Dest, Link) :-
    % reference_server(Server),
    % reference_dir(Dir),
    reference_name(Name, File),
    format(atom(Link), '/ref/~s#nameddest=~s', [File,Dest]).
 
+%%   read_rdf_data(+Request)
+%
+%    Process specific PSD data set
 read_rdf_data(Request) :-
    http_parameters(Request, [plot_scaling(LL),
                              data_set(URI),
@@ -146,6 +167,9 @@ sos([X|Rest], Sx, Phi, Amp, Initial, Final) :-
 */
 
 
+%%   simulate_walk(+Request)
+%
+%    Monte carlo simulation from PSD data set
 simulate_walk(Request) :-
    http_parameters(Request,
 		   [data_set(URI)],
@@ -170,6 +194,9 @@ simulate_walk(Request) :-
         */
 
 
+%%   soil_display(+Request)
+%
+%    Display soil categories
 soil_display(Request) :-
    http_parameters(Request,
 		   [soil(Soil, [])]

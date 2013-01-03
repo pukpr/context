@@ -15,8 +15,14 @@
 :- context:register(context_emi:plot).
 
 % /ref/cable_EMI_susceptibility.pdf#nameddest=CS_BCI
+%%   emi_doc(-Doc)
+%
+%    returns the main EMI doc
 emi_doc('foundation/cable_EMI_susceptibility.pdf').
 
+%%   ref(+Key, -Contents)//
+%
+%    Inline references a pointer to a document from a key
 ref(Key, Contents) -->
     {
      emi_doc(FileName),
@@ -31,6 +37,9 @@ ref(Key, Contents) -->
 	).
 
 
+%%   navigate(+Request) 
+%
+%    Dynamic page to EMI models and documentation
 navigate(Request) :-
    reply_html_page(cliopatria(default),
                    [title('general EMI models')],

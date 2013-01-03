@@ -10,6 +10,9 @@
 :- context:register(context_standard_atmosphere:navigate).
 :- context:register(context_standard_atmosphere:plot).
 
+%%   navigate(+Request)
+%
+%    Dynamic page to standard atmosphere models
 navigate(Request) :-
    collect_unit_options(length, Lunits), % elevation
    rdfS(ent:altitude, rdfs:comment, XDesc),
@@ -56,12 +59,18 @@ navigate(Request) :-
 		  ).
 
 
+%%   limit_value(+Value, +X, +Limit)
+%
+%    Limits a value
 limit_value(Value, X, 1.0) :- X =< Value, !.
 limit_value(_, _, 0.0).
 
 
 
 
+%%   plot(+Request)
+%
+%    Graph the standard atmospheric characteristics
 plot(Request) :-
     http_parameters(Request, [kind(Kind, []),
 			      limit(Limit, [number]),

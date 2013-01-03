@@ -29,6 +29,9 @@
 %
 %    Dynamic page to atmospheric models
 
+%%   navigate(+Request)
+%
+%    Dynamic page to atmospheric models
 navigate(Request) :-
    rdfS(ent:standardAtmosphere, ent:description, Description),
    /*
@@ -78,6 +81,9 @@ navigate(Request) :-
 %
 %    Plot atmospheric model characteristic
 
+%%   plot(+Request)
+%
+%    Plot atmospheric model characteristic
 plot(Request) :-
     http_parameters(Request, [kind(Kind, []),
                               t_units(TUnits, []),
@@ -135,6 +141,9 @@ plot(Request) :-
 		  ).
 
 
+%%   atmPartialPressureWater(+Temperature, -Pressure)
+%
+%    Unit-sensitive lookup of pressure wrt temperature
 atmPartialPressureWater(T*Temperature, P*Pressure) :-
    context_units:convert(T*Temperature, T1*c, T1),
    % var(P), % second term is var
@@ -150,6 +159,9 @@ atmPartialPressureWater(T*Temperature, P*Pressure) :-
 atmPartialPressureWater(PressureUnits, T*Temperature, P) :-
 	atmPartialPressureWater(T*Temperature, P*PressureUnits).
 
+%%   atmTemperatureForPartialPressureWater(+Pressure, -Temperature)
+%
+%    Unit sensitive lookup of temperature wrt pressure
 atmTemperatureForPartialPressureWater(P*Pressure, T*Temperature) :-
    context_units:convert(P*Pressure, P1*atm, P1),
    % var(T),
@@ -163,6 +175,9 @@ atmTemperatureForPartialPressureWater(P*Pressure, T*Temperature) :-
 atmTemperatureForPartialPressureWater(TemperatureUnits, P*Pressure, T) :-
 	atmTemperatureForPartialPressureWater(P*Pressure, T*TemperatureUnits).
 
+%%   atmPressureDryAdiabatic(+Altitude, -Pressure)
+%
+%    Unit-sensitive lookup of pressure wrt to altitude
 atmPressureDryAdiabatic(Alt*Altitude, P*Pressure) :-
    context_units:convert(Alt*Altitude, Alt1*km, Alt1),
    % var(P),
@@ -175,6 +190,9 @@ atmPressureDryAdiabatic(Alt*Altitude, P*Pressure) :-
 atmPressureDryAdiabatic(PressureUnits, Alt*Altitude, P) :-
 	atmPressureDryAdiabatic(Alt*Altitude, P*PressureUnits).
 
+%%   atmAltitudeAtPressureDryAdiabatic(+Pressure, -Altitude)
+%
+%    Unit-sensitive lookup of altitude wrt pressure
 atmAltitudeAtPressureDryAdiabatic(P*Pressure, Alt*Altitude) :-
    context_units:convert(P*Pressure, P1*atm, P1),
    % var(Alt),
@@ -187,6 +205,9 @@ atmAltitudeAtPressureDryAdiabatic(AltitudeUnits, P*Pressure, Alt) :-
 	atmAltitudeAtPressureDryAdiabatic(P*Pressure, Alt*AltitudeUnits).
 
 
+%%   boilingPointH20(+Altitude, -Temperature)
+%
+%    Unit-sensitive lookup of temperature wrt altitude
 boilingPointH20(Alt*Altitude, T*Temperature) :-
    context_units:convert(Alt*Altitude, Alt1*km, Alt1),
    % var(T),
@@ -198,6 +219,9 @@ boilingPointH20(TemperatureUnits, Alt*Altitude, T) :-
 
 
 
+%%   idealPressure(+PressureUnits, +MW, +D, +Temperature, -P)
+%
+%    Unit-sensitive lookup of pressure
 idealPressure(MW*au, D*Mass/Vol^3, T*Temperature, P*Pressure) :-
    context_units:convert(T*Temperature, T1*k, T1),
    context_units:convert(D*Mass/Vol^3, D1*g/m^3, D1),
@@ -208,6 +232,9 @@ idealPressure(Pressure, MW*au, D*Mass/Vol^3, T*Temperature, P) :-
     idealPressure(MW*au, D*Mass/Vol^3, T*Temperature, P*Pressure).
 
 
+%%   idealTemperature(+TemperatureUnits, +D, +MW, +Pressure, -Temperature)
+%
+%    Unit sensitive lookup of temperature
 idealTemperature(MW*au, D*Mass/Vol^3, P*Pressure, T*Temperature) :-
    context_units:convert(P*Pressure, P1*pa, P1),
    context_units:convert(D*Mass/Vol^3, D1*g/m^3, D1),
@@ -217,6 +244,9 @@ idealTemperature(MW*au, D*Mass/Vol^3, P*Pressure, T*Temperature) :-
 idealTemperature(Temperature, D*Mass/Vol^3, MW*au, P*Pressure, T*Temperature) :-
     idealTemperature(MW*au, D*Mass/Vol^3, P*Pressure, T).
 
+%%   idealDensity(+MW, +Temperature, +Pressure, -D)
+%
+%    Unit-sensitive lookup of density of ideal gas given MW of gas, temperature and pressure
 idealDensity(MW*au, T*Temperature, P*Pressure, D*Mass/Vol^3) :-
    context_units:convert(T*Temperature, T1*k, T1),
    context_units:convert(P*Pressure, P1*pa, P1),
@@ -227,6 +257,9 @@ idealDensity(Mass/Vol^3, MW*au, T*Temperature, P*Pressure, D) :-
     idealDensity(MW*au, T*Temperature, P*Pressure, D*Mass/Vol^3).
 
 
+%%   plancks_law(+Temperature, +WavelengthUnits, -Wavelength)
+%
+%    Unit-sensitive lookup of PDF wavelength at temperature
 plancks_law(T*Temperature, Lambda*Wavelength, P/Wavelength) :-
    context_units:convert(T*Temperature, T1*k, T1),
    context_units:convert(Lambda*Wavelength, WL*m, WL),
@@ -241,6 +274,9 @@ plancks_law(T*Temperature, Lambda*Wavelength, P/Wavelength) :-
 plancks_law(Wavelength, T*Temperature, Lambda*Wavelength, P) :-
    plancks_law(T*Temperature, Lambda*Wavelength, P/Wavelength).
 
+%%   plancks_law_wavenumber(+Temperature, -Wavenumber, -P)
+%
+%    Plancks law in wavenumber
 plancks_law_wavenumber(T*Temperature, WN/Wavenumber, P*Wavenumber) :-
    context_units:convert(T*Temperature, T1*k, T1),
    context_units:convert(WN/Wavenumber, S/m, S),
@@ -254,6 +290,9 @@ plancks_law_wavenumber(Wavenumber, T*Temperature, WN*Wavenumber, P) :-
    plancks_law_wavenumber(T*Temperature, WN/Wavenumber, P*Wavenumber).
 
 /*
+%%   plancks_law_frequency(+Temperature, -Wavenumber, -P)
+%
+%    Plancks law in frequency
 plancks_law_frequency(T*Temperature, WN*Wavenumber, P/Wavenumber) :-
    context_units:convert(T*Temperature, T1*k, T1),
    context_units:convert(WN*Wavenumber, S*m, S),
@@ -268,6 +307,9 @@ plancks_law_frequency(Wavenumber, T*Temperature, WN*Wavenumber, P) :-
 */
 
 
+%%   generate_pressure_curve(+T,-P)
+%
+%    Generate a pressure curve
 generate_pressure_curve(T,P) :-
    T range [0.0, 100.0]/10.0,
    P mapdot atmPartialPressureWater ~> T.

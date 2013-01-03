@@ -13,11 +13,26 @@
 :- context:register(context_ref_search:list_requirements).
 :- context:register(context_ref_search:graph).
 
+%%   spec(Spec)
+%
+%    SWEET for spec doc
 spec('humanEnvirStandards:EnvironmentalStandard').
+%%   foundation(+Foundation)
+%
+%    SWEET for foundation doc
 foundation('humanResearch:Publication').
+%%   requirement(+Req)
+%
+%    SWEET for requirement doc
 requirement('humanDecision:Allocation').
+%%   objective(+Obj)
+%
+%    SWEET for objective doc
 objective('humanDecision:Objective').
 
+%%   author_order(+Ordinal, -Role)
+%
+%    Author order rule
 author_order('_1', 'lead author') :- !.
 author_order('_2', 'second author') :- !.
 author_order(_, 'supporting author').
@@ -26,6 +41,9 @@ author_order(_, 'supporting author').
 %
 %  Generates an Href link from a Titled article Resource
 %
+%%   article_link(+Article, +Title, -Href )
+%
+%    Create an article link
 article_link(Article, Title, a(href(Link),Title) ) :-
    rdf(Article, dc:identifier, Ref),
    rdf(Ref, rdf:type, dcterms:'URI'),
@@ -35,6 +53,9 @@ article_link(Article, Title, Link) :-
    context:uri_index_link(Article, Title, Link).
 
 % Search for authors
+%%   find_title(+Name, -Row)
+%
+%    Create a title ref
 find_title(Name, tr([td(Full_Name), td(Order),td(b(Doc)), td(b(Link))])) :-
    rdf_reachable(Ref, rdfs:subClassOf, bib:'Reference'),
 %   rdf(Part, rdfs:subClassOf, bib:'Reference'),
@@ -96,6 +117,9 @@ find_title(N, tr([td(Name),td(Author_List), % [Author, ' : ', i(Order)]
 	   ),
 	   Author_List).
 
+%%   cite(+Request)
+%
+%    Return references and citations according to criteria
 cite(Request) :-
    http_parameters(Request, [name(Name, [])]),
    findall(Title, find_title(Name,Title), List),
@@ -110,6 +134,9 @@ cite(Request) :-
 %
 %  SWEET specific
 %
+%%   search_results(+Color,+Result)//
+%
+%    SWEET search Results
 search_results(_,[]) -->
    {}.
 search_results(M,[F|R]) -->
@@ -125,6 +152,9 @@ search_results(M,[F|R]) -->
    search_results(N, R).
 
 
+%%   search_sweet(+Request)
+%
+%    Return references and citations which have the SWEET classification tag
 search_sweet(Request) :-
    http_parameters(Request, [name(Name, [])]),
    context:create_global_term(Name, Term),
@@ -150,6 +180,9 @@ search_sweet(Request) :-
 	     % \(context_graph(Term, []))
            ]).
 
+%%   graph(+Request)
+%
+%    Plot the semantic graph of a reference search request
 graph(Request) :-
    http_parameters(Request, [name(Name, [])]),
    context:create_global_term(Name, Term),
@@ -268,6 +301,9 @@ find_context_requirement(Term, tr([td(Comment), td(Doc), td(Link),
    rdf(Req, dcterms:hasPart, literal(Part)).
 
 
+%%   list_requirements(+Request) 
+%
+%    Display a list of applicable requirements to the search request
 list_requirements(Request) :-
    http_parameters(Request, [name(Term, [])]),
    print(user_error, [Term]),

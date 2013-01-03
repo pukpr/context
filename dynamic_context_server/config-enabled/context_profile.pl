@@ -13,6 +13,9 @@
 :- use_module(context_math).
 :- use_module(context_psd).
 
+%%   get_all_course_files(+List)
+%
+%    Get all course files
 get_all_course_files(List) :-
     findall(option([value(URI)],[Name]),
 	    (	rdf(URI, ent:type, literal(terrain_profile)),
@@ -20,6 +23,9 @@ get_all_course_files(List) :-
 	    ),
 	    List).
 
+%%   navigate(+Request)
+%
+%    Dynamic page to fine-terrain profiling using semi-Markov models
 navigate(Request) :-
    get_all_course_files(L),
    sort(L,List),
@@ -60,11 +66,20 @@ navigate(Request) :-
 % Monte carlo generated from semiMarkov
 
 % This is dependent on discretized steps not on dimensional scale
+%%   window_filter(+N, +X, -Z)
+%
+%    Window filter
 window_filter(0, X, X) :- !.
 window_filter(N, X, Z) :-
     uniform(N, W),
     Z window X/W.
 
+%%   mc_model(+List, +Filter, +X, -WWW)
+%
+%    Monte Carlo model component list process
+%%   mc_model_component(+List, +X, +W, -WW)
+%
+%    Monte Carlo model component
 mc_model_component([], _, WW, WW).
 mc_model_component([F|R], XX, W, WW) :-
     two_level_random_walk(F, XX, W, W1),!,
@@ -78,11 +93,24 @@ mc_model(List, Filter, X, WWW) :-
 % PSD model for semiMarkov
 
 % Goes to context_functions
+
+%%   sync(+W, +S, -Result)
+%
+%    Window function sync
 sync(W, S, Result) :-
    Result is (sin(W*S)/(W*S))^2.
+%%   hat(+W, +Scale, +S, -Result)
+%
+%    Window function hat
 hat(W, Scale, S, Result) :-
    Result is Scale/(1+(W*S)^2).
 
+%%   semi_markov_model(+List, +Weight, +N, +Sx, -Filtered)
+%
+%    SemiMarkov model weighted
+%%   semi_markov_model_component(+R, +X, +W, -W1)
+%
+%    Component of semiMarkov model
 semi_markov_model_component([], _, WW, WW).
 semi_markov_model_component([F|R], X, W, WW) :-
     W1 mapdot W + (two_level(F) ~> X), !,
@@ -100,6 +128,9 @@ semi_markov_model(List, Weight, N, % XV,
     Filtered mapdot Model * (hat(Window, Scaling) ~> SX).
 
 
+%%   process_profile(+Request)
+%
+%    Process specific selected terrain profile
 process_profile(Request) :-
    http_parameters(Request, [plot_scaling(LL),
                              file_name(URI),

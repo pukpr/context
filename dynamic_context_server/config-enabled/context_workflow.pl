@@ -8,6 +8,9 @@
 
 :- context:register(context_workflow:navigate).
 
+%%   navigate(+Request)
+%
+%    Dynamic page to workflows
 navigate(Request) :-
    reply_html_page(cliopatria(default),
                    [title('Workflow navigate')],

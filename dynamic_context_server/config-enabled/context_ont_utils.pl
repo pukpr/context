@@ -17,6 +17,9 @@
 
 
 
+%%   navigate(+Request)
+%
+%    Dynamic page to ontological utilities
 navigate(_) :-
    reply_html_page(
        cliopatria(default),
@@ -59,9 +62,15 @@ navigate(_) :-
 % %%%%%% Library terms %%%
 % %%%%%%%%%%%%%%%%%%%%%%%%
 
+%%   load_resource(+File)
+%
+%    Load resource
 load_resource(File) :-
    rdf_load(File).
 
+%%   load_data(+Request)
+%
+%    Load data
 load_data(Request) :-   %% File name version
    http_parameters(Request, [file(Name, [ optional(true) ])]),
    nonvar(Name),
@@ -77,20 +86,32 @@ load_data(Request) :-   %% URL version
    reply_html_page(cliopatria(default), title('URL loader'), [p(URL), p(' load completed.')]).
 
 % command line only
+%%   print_all_subjects
+%
+%    Print subjects names to standard output
 print_all_subjects :-
    rdf(Subject, rdf:type, Sub),
    rdf_reachable(Sub, rdf:type, owl:'Class'),
    print(Subject), print(' '), print(Sub), nl,
    fail.
 
+%%   any_model_index(+Request)
+%
+%    Not implemented
 any_model_index(_Request) :-
    reply_html_page(cliopatria(default), title('Any Model'),
                    [ p('not yet implemented')]).
 
 
+%%   write_object(+Name)
+%
+%    Write object name
 write_object(Name) :-
     print_message(informational, format('~w', Name)).
 
+%%   find_ent_predicates(+Request)
+%
+%    Find predicates for ent namespace
 find_ent_predicates(_Request) :-
  call_showing_messages(
     (
@@ -107,6 +128,9 @@ find_ent_predicates(_Request) :-
                          ).
 
 
+%%   find_ent_subjects(+Request)
+%
+%    Find subjects for ent namespace
 find_ent_subjects(_Request)  :-
  call_showing_messages(
     (
@@ -123,6 +147,9 @@ find_ent_subjects(_Request)  :-
                          ).
 
 
+%%   find_ent_objects(+Request)
+%
+%    Find objects for ent namespace
 find_ent_objects(_Request)  :-
  call_showing_messages(
     (
@@ -148,6 +175,9 @@ find_ent_objects(_Request)  :-
 % %%%%%% I wish this worked to reboot %%%
 % %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 
+%%   restart(+Request)
+%
+%    Not implemented
 restart(_Request) :- halt.
 
 

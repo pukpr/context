@@ -18,6 +18,9 @@ get_context_dir(Path) :-
     ).
 
 
+%%   download(+Request)
+%
+%    Download
 download(Request) :-
     http_parameters(Request, [uri(URI, [string]),
                               type(Type, [string])]),
@@ -30,6 +33,12 @@ download(Request) :-
 
 
 % CSV -------------------------------------------
+%%   read_tabbed_csv(+FN, -X, -Y, -Arity, -XV, -YV)
+%
+%    Read tabbed CSV
+%%   read_tabbed_csv(+FN, -X, -Y, -Arity, -Data)
+%
+%    Read CSV
 read_tabbed_csv(FN, X, Y, Arity, Data) :-
     Arity = 2,
     csv_read_file(FN, [xy(X,Y)|Elements],
@@ -47,6 +56,9 @@ read_tabbed_csv(FN, X, Y, Arity, Data) :-
                        arity(Arity)]),
     separate(Elements, Data).
 
+%%   parse(+L, +Xc, +X, +Yc, +Y)
+%
+%    Parse file
 parse([], Xc, X, Yc, Y) :- reverse(Xc, X), reverse(Yc, Y).
 parse([[X,Y|_]|Rest], Ix, Xc, Iy, Yc) :-
     parse(Rest, [X|Ix], Xc, [Y|Iy], Yc).
@@ -65,6 +77,9 @@ read_tabbed_csv(FN, X, Y, Arity, XV, YV) :-
 
 %	 SVN crawler looks for models
 
+%%   excluded(-List)
+%
+%    Used by *crawl*
 excluded([
     '.',
     '..',
@@ -75,10 +90,16 @@ excluded([
     'test' ]).
 
 
+%%   is_dir(+Path, +File, -Dir)
+%
+%    Used by *crawl*
 is_dir(Path, File, Dir) :-
     atomic_list_concat([Path, '/', File], Dir),
     exists_directory(Dir).
 
+%%   print_if_files_in_dir(+File)
+%
+%    Used by *crawl*
 print_if_files_in_dir(File) :-
     directory_files(File, List),
     aggregate_all(count, ( member(F, List),is_dir(File, F, _) ), NS),
@@ -90,6 +111,9 @@ print_if_files_in_dir(File) :-
     % print(S), nl, !.
 print_if_files_in_dir(_File).
 
+%%   if_file_found(+Dir, +File, -FilePath)
+%
+%    Used by *crawl*
 if_file_found(Dir, File, FilePath) :-
     directory_files(Dir, List),
     member(File, List),
@@ -99,6 +123,12 @@ if_file_found(Dir, File, FilePath) :-
     !.
 
 % List all
+%%   traverse(Root) 
+%
+%    Used by *crawl*
+%%   traverse_dirs(+Path, -Final)
+%
+%    Used by *crawl*
 traverse_dirs(_Path, []).
 traverse_dirs(Path, [First|Rest]) :-
     excluded(Exclude),
@@ -142,6 +172,9 @@ traverse(Root) :-
     traverse_dirs(Root,List), !.
 
 
+%%   find(File, FilePath)
+%
+%    Used by *crawl*
 find(File, FilePath) :-
     get_context_dir(Path),
     exists_directory(Path),
@@ -152,6 +185,9 @@ find(_File, 'not found').
 
 
 
+%%   crawl(+Request)
+%
+%    Crawl throught a directory path
 crawl(_Request) :-
     get_context_dir(Path),
     call_showing_messages(

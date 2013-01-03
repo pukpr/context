@@ -11,8 +11,14 @@
 :- context:register(context_psd_workflow_json:psd_results).
 :- context:register(context_psd_workflow_json:psd_index).
 
+%%   path_to_tops_psd_files(-Path)
+%
+%    Path to JSON files
 path_to_tops_psd_files('../../../../Models/Land/terrains/grades_slopes/data/WaveNumberSpectra/LogSpaced/').
 
+%%   psd_name_file_pair(+Name, -FilePath)
+%
+%    File retrieve
 psd_name_file_pair(Name, FilePath) :-
     rdf(Set, ent:type, literal(terrain_psd)),
     rdf(Set, ent:'PSD_JSON_file', literal(File)),
@@ -20,6 +26,9 @@ psd_name_file_pair(Name, FilePath) :-
     path_to_tops_psd_files(Path),
     atom_concat(Path,File,FilePath).
 
+%%   psd_index(+Request)
+%
+%    Generate index based on JSON files
 psd_index(_) :-
    con_text:reply_frameset_page(
      [ frameset([cols('20%,80%'),border(1)],
@@ -29,9 +38,15 @@ psd_index(_) :-
                 )]
      ).
 
+%%   get_all_tops_psd_files(+List)
+%
+%    Find all TOPS PSD files
 get_all_tops_psd_files(List) :-
     findall(option([value(FilePath)],[Name]), psd_name_file_pair(Name, FilePath), List).
 
+%%   psd_files(+Request)
+%
+%    PSD file reaad
 psd_files(_) :-
    get_all_tops_psd_files(List),
    reply_html_page(
@@ -49,12 +64,18 @@ psd_files(_) :-
       ]
      ).
 
+%%   psd_results(+Request)
+%
+%    PSD results page
 psd_results(_) :-
    reply_html_page(
      title('results'),
      [p(b(u('Results'))) ]
      ).
 
+%%   plot_xy(+Input, +Data)
+%
+%    Plot XY
 plot_xy([], S, Result) :-
    context_demos:json_complete(x(_,[]),y(_,[],_), S, Result).
 plot_xy([[X,XU,Y,YU,ID]|Rest], S, R) :-
@@ -64,6 +85,9 @@ plot_xy([[X,XU,Y,YU,ID]|Rest], S, R) :-
 plot_xy(Input, Data) :-
    plot_xy(Input, '', Data).
 
+%%   create_data_list(+X,+Y,+XU,+YU,+ID,+Input,-Output)
+%
+%    Massage the data before plotting
 create_data_list([],[],_,_,_,F,F).
 % embedded data with one value list
 create_data_list([[X]|XR],[[Y]|YR],XU,YU,ID,Input,Output) :-
@@ -73,6 +97,9 @@ create_data_list([X|XR],[Y|YR],XU,YU,ID,Input,Output) :-
     create_data_list(XR,YR,XU,YU,ID,[[X,XU,Y,YU,ID]|Input],Output).
 
 
+%%   read_psd_json(+FN, +Tuple, +Data, -S,-P)
+%
+%    Read the PSD from JSON
 read_psd_json(FN, [File,Name,Title,Date,DX,UX,DY,UY], Data, S,P) :-
    (
    open(FN, read, F),
@@ -120,6 +147,9 @@ read_psd_json(FN, [File,Name,Title,Date,DX,UX,DY,UY], Data, S,P) :-
    create_data_list(X,Y,S,P,'x',[],Array),
    plot_xy(Array,Data).
 
+%%   read_tops(+Request)
+%
+%    Read a TOPS PSD 
 read_tops(Request) :-
    http_parameters(Request, [plot_scaling(LL),
                              file_name(FN)

@@ -14,6 +14,9 @@
 :- context:register(context_fording:plot).
 
 % http://waterdata.usgs.gov/nwis/dv?referred_module=sw&site_no=01100000
+%%   collect_names_options(-List)
+%
+%    Collect Names Options
 collect_names_options(List) :-
     findall(option([value(ID)],[Name]),
             (   rdf(ID, ent:river, _Data),
@@ -21,6 +24,9 @@ collect_names_options(List) :-
             ),
             List).
 
+%%   navigate(+Request)
+%
+%    Dynamic page to stream and river flow rate and fording models
 navigate(Request) :-
    collect_unit_options(area, Lunits),
    collect_names_options(Rivers),
@@ -58,6 +64,9 @@ navigate(Request) :-
 		  ).
 
 
+%%   speed_scaling(+AreaUnits, +Factor, +Cross, +X, -Y)
+%
+%    Scale current speed based on cross-section
 speed_scaling(AreaUnits, Factor, Cross, X, Y) :-
    XF is X * Factor,
    Value is 10^XF,
@@ -65,13 +74,22 @@ speed_scaling(AreaUnits, Factor, Cross, X, Y) :-
    Speed is Value/Scaled,
    Y is log(Speed)/log(10).
 
+%%   power_raise(+X, -Y)
+%
+%    Raise 10^x
 power_raise(X, Y) :-
     Y is 10^X.
 
+%%   log_factor(-Scale)
+%
+%    Log interval for fording example
 log_factor(0.1).
 
 
 
+%%   plot(+Request)
+%
+%    Plotting the stream flow CDF
 plot(Request) :-
     http_parameters(Request, [kind(log, []),
 			      cross_section(CrossSection, [number]),

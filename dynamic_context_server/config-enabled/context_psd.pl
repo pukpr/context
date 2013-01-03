@@ -11,12 +11,21 @@
 :- use_module(context_math).
 :- use_module(context_random_walk).
 
+%%   delayed_exponent(+L, +Alpha, +S, -R)
+%
+%    Delayed exponent PSD for semiMarkov
 delayed_exponent(L, Alpha, S, R) :-
     Theta is -L*S,
     Num isx 1.0*exp(i*Theta),
     Damp is Alpha*S,
     R isx Num / (1.0 & Damp).
 
+%%   two_level(+Course_Name, +S, -Result)
+%
+%    Generate a two level PSD
+%%   two_level_model(+L1, +Alpha1, +L2, +Alpha2, +Weight, +S, -R)
+%
+%    Two level semi-Markov PSD model
 two_level_model(L1, Alpha1, L2, Alpha2, Weight, S, R) :-
     delayed_exponent(L1, Alpha1, S, P),
     delayed_exponent(L2, Alpha2, S, Q),

@@ -16,29 +16,47 @@
 :- context:register(context_search:list_cats).
 % :- context:register(context_search:owl_result).
 
+%%   find_requirement_topics(-Option)
+%
+%    Search elements for returning selection options
 find_requirement_topics(option([value(Name)],[Local])) :-
    rdf(Name, rdf:type, req:'Requirement'),
    rdf_split_url(_, Local, Name).
 
+%%   find_characteristics(-Options)
+%
+%    Search elements for returning selection options
 find_characteristics(option([value(Ch)],[Ch])) :-
    rdfS(UID, ent:characteristic, Ch),
    rdfS(UID, ent:pdf, _PDF).
 
+%%   find_pages(-Option)
+%
+%    Search elements for returning selection options
 find_pages(option([value(UID)],[UID])) :-
    ref_m(UID, model, _Model),
    ref_m(UID, target_iframe, _Path).
 
+%%   find_categories(-Option)
+%
+%    Search elements for returning selection options
 find_categories(option([value(Cat)],[NS, ' :: ', Local])) :-
    ref_m(UID, category, Cat),
    ref_m(UID, model, _Model),
    atomic_list_concat([NS,Local], ':', Cat).
 /*
+%%   model_elements(-Option)
+%
+%    Search elements for returning selection options
 model_elements(option([value(Short)],[Name])) :-
     rdf(ID, rdfs:'subClassOf', _),
     rdf_global_id(ent:Name, ID),
     context:concise_term(ID, Short).
 */
 
+%%   my_search_filter(+Request) 
+%
+%    Search filter
 my_search_filter(Request) :-
    http_parameters(Request, [q(Q, [string])]),
    call_showing_messages(
@@ -47,6 +65,9 @@ my_search_filter(Request) :-
 			).
 /*
 
+%%   owl(+Query, -Resource, -Title)
+%
+%    Search on OWL subclasses with query substring
 owl(Query, Resource, Title) :-
     rdf(Resource, rdf:type, owl:'Class'),
     upcase_atom(Resource, R),
@@ -55,6 +76,9 @@ owl(Query, Resource, Title) :-
     context:concise_term(Resource, Title).
     % Title=Resource.
 
+%%   owl_result(+Request)
+%
+%    Look-ahead filter to capture OWL subclassed terms
 owl_result(Request) :-
    http_parameters(Request, [result(Result, [])]),
    context:create_global_term(Result, Graph),
@@ -71,6 +95,9 @@ owl_result(Request) :-
 		  ).
 */
 
+%%   navigate(+Request)
+%
+%    Dynamic page to semantic term search
 navigate(Request) :-
    % findall(Name, find_requirement_topics(Name), Ns),
    % sort(Ns, Names),
@@ -170,6 +197,9 @@ navigate(Request) :-
 
 
 
+%%   list_pages(+Request)
+%
+%    List dynamic pages relevant to the search terms
 list_pages(Request) :-
    http_parameters(Request, [name(UID, [])]),
    print(user_error, [UID]),
@@ -196,10 +226,16 @@ list_pages(Request) :-
 		   ]
                    ).
 
+%%   available_pages(+Cat, -Model, -UID)
+%
+%    Available pages for category
 available_pages(Cat, Model, UID) :-
    ref_m(UID, category, Cat),
    ref_m(UID, model, Model).
 
+%%   list_cats(+Request)
+%
+%    List categories relevant to the search terms
 list_cats(Request) :-
    http_parameters(Request, [name(Cat, [])]),
    % ref_m(UID, category, Cat),

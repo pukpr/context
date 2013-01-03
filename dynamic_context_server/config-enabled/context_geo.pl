@@ -443,11 +443,17 @@
         utmCentralMeridian(Zone, Cmeridian),
         mapXYToLatLon(X1, Y1, Cmeridian, [Lat,Lon]).
 
+%%   ll_to_utm(+Lat, +Lon, -Zone, -Easting, -Northing)
+%
+%    latLon to UTM
 ll_to_utm(Lat, Lon, Zone, Easting, Northing) :-
     degToRad(Lon,LonR),
     degToRad(Lat,LatR),
     latLonToUTMXY(LatR, LonR, Zone, [Easting,Northing]).
 
+%%   zone_from_section_designator(+Info, -Zone)
+%
+%    Find UTM zone
 zone_from_section_designator(Info, Zone) :-
     atom_codes(Info, [_,_,A,B|_]),
     number_to_chars( Zone, [A,B]), !.
@@ -459,6 +465,18 @@ zone_from_section_designator(_Info, -999).
 %
 % Latitude and Longitude
 
+%%   get_elevation(+EastingNorthingList, +Zone, +Southhemi, -Elev)
+%
+%    Get elevation from UTM list
+%%   get_elevation(+Easting, +Northing, +Zone, +Southhemi, -Elev)
+%
+%    Get elevation for UTM
+%%   get_elevation(LatLonList, ElevList) 
+%
+%    Get elevation list from latlon list via Google Maps API
+%%   get_elevation(+Lat, +Lon, -Elev)
+%
+%    Get elevation from latlon
 get_elevation(Lat, Lon, Elev) :-
 
    format(atom(S),
@@ -473,6 +491,9 @@ get_elevation(Lat, Lon, Elev) :-
                    ],
            status='OK']).
 
+%%   genRequestPairs(+LL, -Li, -List)
+%
+%    Generate request pairs from *get_elevation*
 genRequestPairs([[Lat],[Lon]], Li, List) :-
     atomic_list_concat([Lat, ',', Lon, '%7C', Li], List).
 genRequestPairs([[Lat|LatRest],
@@ -484,6 +505,9 @@ genRequestPairs([[Lat|LatRest],
     atomic_list_concat([Lat, ',', Lon, '%7C',Li], Next),
     genRequestPairs([LatRest,LonRest], Next, List).
 
+%%   collectResponse(+L, +Init, -List)
+%
+%    Collect Response from *get_elevation*
 collectResponse([], List, List).
 collectResponse([F|R], Li, List) :-
     F =  json([elevation=Elev,_,_]),
@@ -502,6 +526,12 @@ get_elevation(LatLonList, ElevList) :-
 		  status='OK']),
    collectResponse(List, [], ElevList).
 
+%%   get_elevation_path(EastingNorthingList, Zone, Southhemi, Samples, Elev)
+%
+%    Get elevation path from UTM list 
+%%   get_elevation_path(+LatLonList, +Samples, -ElevList)
+%
+%    Get elevation path from LatLon list
 get_elevation_path(LatLonList, Samples, ElevList) :-
    genRequestPairs(LatLonList, '', QueryList),
    format(atom(S),
@@ -522,6 +552,9 @@ get_elevation(Easting, Northing, Zone, Southhemi, Elev) :-
    radToDeg(Lon, Longitude),
    get_elevation(Latitude, Longitude, Elev).
 
+%%   convert_lat_lon(+E,+N,+Zone, +South, +Init, -L_List)
+%
+%    Convert UTM to LatLon
 convert_lat_lon([[],[]], _, _, List, List).
 convert_lat_lon([[E|ERest],
 		 [N|NRest]], Zone, South, [Lats,Lons], List) :-
@@ -547,11 +580,17 @@ get_elevation_path(EastingNorthingList, Zone, Southhemi, Samples, Elev) :-
 
 % need to load something in dem/2  first.
 %
+%%   get_elevation_current_dem(+X,+Y,-Elev)
+%
+%    Get elevation of current DEM
 get_elevation_current_dem(X,Y,Elev) :-
     dem(_,YL),
     nth0(Y,YL,XL),
     nth0(X,XL,Elev).
 
+%%   find_dem_section(+Lat, +Lon, -Name, -Info)
+%
+%    Find DEM section name and info within LatLon
 find_dem_section(Lat, Lon, Name, Info) :-
     var(Lat),
     var(Lon),
@@ -586,6 +625,9 @@ store_dem_row(Name, [First|Rows], RowNum) :-
     store_dem_pos(Name, First, RowNum, 0),
     store_dem_row(Name, Rows, NextRow).
 
+%%   prep_dem_section(+Name)
+%
+%    Prepare a DEM section
 prep_dem_section(Name) :-
     cleanup_dem,
     dem(Name,List),
@@ -595,14 +637,23 @@ prep_dem_section(Name) :-
 
 % prep_dem_section('saint_cloud-w').
 
+%%   cleanup_dem
+%
+%    Remove DEM from memory
 cleanup_dem :-
     retractall(demElev(_,_,_)),
     retractall(diffElev(_,_,_)).
 
+%%   size_of_dem(-L)
+%
+%    Size OF DEM
 size_of_dem(L) :-
     findall(N, demElev(_B,_C,N), List),
     length(List, L).
 
+%%   find_elev(+Distance, +DiffElev, -Pair)
+%
+%    Find pair with elev difference separated by distance
 find_elev(Distance, DiffElev, (DX,DE)) :-
     demElev(X0,Y, E0),
     demElev(X1,Y, E1),
@@ -612,6 +663,9 @@ find_elev(Distance, DiffElev, (DX,DE)) :-
     DiffElev > DE.
 
 
+%%   label_elev(+Distance, -DiffElev)
+%
+%    Label elev
 label_elev(Distance, DiffElev) :-
     X0 in 0..1200,
     Distance in 1..20,
@@ -625,6 +679,9 @@ label_elev(Distance, DiffElev) :-
     DiffElev < 21.
     % labeling([], [Distance,X0,Y]).
 
+%%   store_elev_diff(+Distance, +DiffElev)
+%
+%    Store elevation difference
 store_elev_diff(Distance, DiffElev) :-
     diffElev(Distance, DiffElev, N),
     retract(diffElev(Distance,DiffElev,N)),
@@ -635,6 +692,9 @@ store_elev_diff(Distance, DiffElev) :-
 
 
 
+%%   count_elev(-Distance)
+%
+%    Calculate elev diff for lateral distance
 count_elev(Distance) :-
     % X0 in 0..1200,
     % Y in 0..1200,
@@ -647,22 +707,34 @@ count_elev(Distance) :-
     % label([X0,Y]),
 
 
+%%   find_elevs(Distance, DiffElev, N) 
+%
+%    Using *find_elev* to return all pairs
 find_elevs(Distance, DiffElev, N) :-
     findall(Pair, find_elev(Distance, DiffElev,Pair), Elevs),
     length(Elevs, N).
 
+%%   label_elevs(N)
+%
+%    Label elevs
 label_elevs(N) :-
     findall([Dist,Elev], label_elev(Dist, Elev), Elevs),
     length(Elevs, N),
     context_file_reading:parse(Elevs, [], X, [], Y),
     context_r:rhist2d(X,Y).
 
+%%   count_elevs 
+%
+%    Count elevs
 count_elevs :-
     Distance in 1..40,
     label([Distance]),
     aggregate_all(count, count_elev(Distance), N),
     print(user_error, [Distance, N]).
 
+%%   save_file_json 
+%
+%    Save section as JSON file
 save_file_json :-
     dem(Name,_),
     findall([A,B,C],
@@ -672,11 +744,17 @@ save_file_json :-
     write(L),
     told.
 
+%%   write_triple(+Triple)
+%
+%    Write triple as CCV line
 write_triple([X,Y,Z]) :-
     write(X), write(','),
     write(Y), write(','),
     write(Z), write('\n').
 
+%%   save_file_csv 
+%
+%    Save section as CSV file
 save_file_csv :-
     dem(Name,_),
     findall([A,B,C],
@@ -687,6 +765,12 @@ save_file_csv :-
     maplist(write_triple, L),
     told.
 
+%%   grid_values_y(+Name, +X)
+%
+%    Picking grid values  
+%%   grid_values_y(X) 
+%
+%    Picking grid values
 grid_values_y(X) :-
     Y in 0..20,
     label([Y]),
@@ -696,6 +780,12 @@ grid_values_y(X) :-
 	write('\n');
     true).
 
+%%   grid_values_x(+Name)
+%
+%    Picking grid values
+%%   grid_values_x 
+%
+%    Picking grid values
 grid_values_x :-
     X in 1..40,
     label([X]),
@@ -717,6 +807,9 @@ grid_values_x(Name) :-
     grid_values_y(Name, X).
 
 
+%%   save_file_grid(+N, +Name)
+%
+%    Save file grid as a spreadheet
 save_file_grid(N) :-
     dem(Name,_),
     concat(Name, '.xls', File),
@@ -724,6 +817,9 @@ save_file_grid(N) :-
     aggregate_all(count, grid_values_x, N),
     told.
 
+%%   calc_diff(+D0, +D1, -L)
+%
+%    Calc difference al log ratio
 calc_diff(D0, D1, L) :-
     diffElev(1, 0, C0),
     diffElev(2, 0, C1),
@@ -740,6 +836,9 @@ save_file_grid(N, Name) :-
 
 % logBase10(X,Y) :- Y is log10(X).
 
+%%   plot_ac 
+%
+%    Plot an autocorrelation
 plot_ac :-
     findall([X,Y,Z],
 	    (	diffElev('saint_cloud-w',X,Y,Z),

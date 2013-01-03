@@ -13,25 +13,49 @@
 :- use_module(library(semweb/sparql_client)).
 :- use_module(context_dbpedia).
 
+%%   months( -Symbolic_months)
+%
+%    Short 3-letter abbreviations for months
 months(     [jan,feb,mar,apr,may,jun,jul,aug,sep,oct,nov,dec]).
+%%   middle_days(-Ordinal_Days)
+%
+%    List of days corresponding to middle of month
 middle_days([ 15, 45, 75,105,135,165,195,225,255,285,315,350]).
+%%   month_number(-Ordinal_months)
+%
+%    Ordinal month numbers
 month_number([ 1,  2,  3,  4,  5,  6,  7,  8,  9, 10, 11, 12]).
 
 
+%%   get_month(+Day, -Month)
+%
+%    Get month corresponding to day
 get_month(Day, Month) :-
      middle_days(Days),
      months(Months),
      nth0(MonthNum, Days, Day),
      nth0(MonthNum, Months, Month).
 
+%%   measure(+Request)
+%
+%    Plot a specific weather measurement
+%%   measure_spread(+Month, +Measure, -Q)
+%
+%    Generate a sparql format to get weather measure
 measure_spread(Month, Measure, Q) :-
    format(atom(Q),'dbpprop:~w~w ?~w~w; ', [Month, Measure, Month, Measure]).
 
+%%   format_measure_query(+Text, -Measure)
+%
+%    Format the characteristic measure
 format_measure_query(Text, Measure) :-
     months(Months),
     findall(Each, (member(Month,Months),
                    measure_spread(Month,Measure,Each)), Text).
 
+%%   get_measure_spread(+Location, +Measure, -Measures, -Name)
+%
+%    Get the weather measure spread for a location
 get_measure_spread(Location, Measure, Measures, Name) :-
     context_dbpedia:get_uri(Location, URI),
     print(user_error, ['======',URI, '======']),
@@ -53,6 +77,9 @@ find_min([Num | Rest],
     ;
         find_min(Rest, Rest_of_Days, Lowest, Final, Index, Final_Day)
     ).
+%%   find_min_index(+List, -Min, -Day)
+%
+%    Find the minimum index
 find_min_index(List, Min, Day) :-
     middle_days(Days),
     find_min(List, Days, 1000, Min, 0, Day), !.
@@ -67,10 +94,16 @@ find_max([Num | Rest],
     ;
         find_max(Rest, Rest_of_Days, Highest, Final, Index, Final_Day)
     ).
+%%   find_max_index(+List, -Max, -Day)
+%
+%    Find max index for list
 find_max_index(List, Max, Day) :-
     middle_days(Days),
     find_max(List, Days, -1000, Max, 0, Day), !.
 
+%%   process_location(+Location, -Data)
+%
+%    Process a weather location for extrema
 process_location(Location,
 		 Measure,
                  Min,
@@ -84,10 +117,16 @@ process_location(Location,
     find_max_index(Values, Max, MaxDay).
 
 
+%%   get_all_weather_sets(-List)
+%
+%    Get all weather sets as a list
 get_all_weather_sets(List) :-
     findall(option([value(ID)],[Name]), available_location(ID, Name), L),
     sort(L, List).
 
+%%   available_location(+Locale, -Title)
+%
+%    Find an available location for weather
 available_location(Locale, Title) :-
      rdfS(Locale, ent:title, Title),
      rdf(URI, ent:locale, Locale),
@@ -96,12 +135,18 @@ available_location(Locale, Title) :-
      rdfS(Locale, ent:title, Title),
      rdfS(Locale, ent:feature, 'thermal features').
 
+%%   units(+Name, -Title, -Units)
+%
+%    Unit lookup
 units('SnowInch', 'Snowfall', in).
 units('RainDays', 'Rain days', days).
 units('PrecipitationInch', 'Precipitation', in).
 units('Sun', 'Solar insolation', 'w/m^2').
 
 
+%%   navigate//
+%
+%    Dynamic page to monthly meteorological data
 navigate -->
     {
      get_all_weather_sets(List)

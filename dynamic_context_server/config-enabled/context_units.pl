@@ -8,11 +8,17 @@
     *
 */
 
+%%   alias(+Name, -Alias)
+%
+%    Alias of unit, i.e. mmHg=Torr
 alias(mmhg, torr).
 alias(cc, ml).
 alias(l, cubicdecimeter). % dm^3
 
 % Quantity
+%%   relation(+Relational_Divisor, -Scale)
+%
+%    Dimensional relation of units
 relation(number/mol, 6.02214129e23).  % Avogadro's constant
 
 % Distance -- English
@@ -126,6 +132,9 @@ relation(percent/fraction, 100).
 
 
 
+%%   check_intermediate_length(+List)
+%
+%    Make sure symbolic dimesions have the same length
 check_intermediate_length(List) :-
     length(List,N),
     N > 5,
@@ -134,6 +143,9 @@ check_intermediate_length(List) :-
 check_intermediate_length(_List).
 
 
+%%   scale(+From, +To, +X, -Y, +List)
+%
+%    Scale according to dimensionality
 scale(From, To, X, X, _List) :-
     (	alias(From, To);
         alias(To, From)), !.
@@ -155,6 +167,12 @@ scale(From, To, X, Y, List) :-
     scale(Intermediate, To, Z, Y, [Intermediate|List]).
 
 % convert(_, _, _, error, error).
+%%   convert(+From, +To, -Output)
+%
+%    Comvert from one unit dimensionality to another
+%%   convert(+From, +To, -Units)
+%
+%    Convert units
 convert([], [], _, Final, Final) :- !.
 convert(['*' |Fr], ['*'|Tr], _, Value, Final) :-
     !,
@@ -263,6 +281,9 @@ convert([F|L], To, Output) :-
 */
 
 
+%%   check_lengths(+From, +To)
+%
+%    Check to make sure symbolic dimensional expressions the same length
 check_lengths(From, To) :-
     findall(K1,sub_term(K1,From), F),
     findall(K2,sub_term(K2,To), T),
@@ -275,6 +296,9 @@ check_lengths(_, _) :-
 
     %       alias(LC, Alias)
 
+%%   lower_list(+List, +In, -Out)
+%
+%    Convert to lower case
 lower_list([], In, Out) :- reverse(In,Out). %, flatten(R, Out).
 lower_list([F|R], In, Out) :-
     (	var(F); number(F) ),
@@ -289,6 +313,9 @@ lower_list([F|R], In, Out) :-
 
 :- dynamic relations/1.
 
+%%   init_relations 
+%
+%    Initialize dimensional unit relations
 init_relations :-
    retractall(relations(_)),
    findall([X,Y], (relation(X/Y,_);
@@ -298,6 +325,9 @@ init_relations :-
 
 :- init_relations.
 
+%%   check_relations(+X, +Y, -Warning)
+%
+%    Check for convergence
 check_relations(X, Y, 'NaN') :-
     relations(L),
     (   not(member(X, L)),
@@ -315,6 +345,9 @@ check_relations(X, Y, 'NaN') :-
 %     ---------------------------------------------------
 
 
+%%   collect_unit_options(+Functor, -List)
+%
+%    Generic collector of measures that have diff unit dimensionalities
 collect_unit_options(Functor, List) :-
     findall(option([value(Value)],[Name]),
             (   rdfS(UID, ent:name, Functor),
@@ -324,5 +357,8 @@ collect_unit_options(Functor, List) :-
             ),
             List).
 
+%%   scaling(+From, +To, -Scale)
+%
+%    Scaling dimension
 scaling(From, To, Scale) :-
     context_units:convert(1*From, Scale*To, Scale).

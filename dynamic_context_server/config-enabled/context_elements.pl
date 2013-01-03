@@ -12,10 +12,16 @@
 :- context:register(context_elements:table).
 :- context:register(context_elements:property).
 
+%%   element(-Option)
+%
+%    Search elements for returning selection options
 element(option([label(Name), value(El)],[Name])) :-
    rdfS(El, pt:name, Name),
    rdfI(El, pt:atomicNumber, _).
 
+%%   navigate(+Request)
+%
+%    Dynamic page to periodic table of elements
 navigate(Request) :-
    findall(El, element(El), Elements),
    sort(Elements, Els),
@@ -50,6 +56,9 @@ navigate(Request) :-
 		  ).
 
 
+%%   registry(+ID, -Link)
+%
+%    Link to a registry for element
 registry(ID, a([href(U),target(target_iframe)],
 	       [img([src('/html/images/ref.gif'),
 		     title(Title)]),
@@ -58,6 +67,9 @@ registry(ID, a([href(U),target(target_iframe)],
     atom_concat('http://dbpedia.org/page/',ID, U),
     rdfS(pt:casRegistryID, rdfs:comment, Title).
 
+%%   property(+Request)
+%
+%    Dynamic page to periodic table of elements properties
 property(Request) :-
     http_parameters(Request, [element(El, []),
 			      kind(Kind, [])]),
@@ -99,14 +111,23 @@ property(Request) :-
       context_elements:table(Request)
     ).
 
+%%   row(+Row, -Period)
+%
+%    PTOE row
 row(Row, Period) :-
    rdf_global_term(Period, P),
    findall(N-Col, (rdf(Col, pt:period, P),
 		   rdfI(Col, pt:atomicNumber, N)), R),
    keysort(R, Row).
 
+%%   spacer(+N, -Spacer)
+%
+%    Make table spacer
 spacer(N, td([colspan(N)],[])).
 
+%%   span(+El, -T)
+%
+%    Special spanning elemants
 span('He', T) :- spacer(30,T), !.
 span('B',  T) :- spacer(24,T), !.
 span('Al', T) :- spacer(24,T), !.
@@ -114,6 +135,9 @@ span('Sc', T) :- spacer(14,T), !.
 span('Y',  T) :- spacer(14,T), !.
 span(_, '').
 
+%%   cell_color(+Family, -Color)
+%
+%    Color cell according to element family
 cell_color('Actinoid', 'Wheat').
 cell_color('Lanthanoid', 'LightGray').
 cell_color('Noble gas', 'SeaShell').
@@ -147,6 +171,9 @@ cellColor([Group|Rest]) -->
 cellColor([_|Rest]) --> !,
     cellColor(Rest).
 
+%%   periodic_row(+U,+R)//
+%
+%    Row of table
 periodic_row(_,[]) --> !.
 periodic_row(El, [_N-E|R]) -->
    {
@@ -167,11 +194,17 @@ periodic_row(El, [_N-E|R]) -->
    html([CS,td([title=Name,bgcolor=Color], small(HREF))]),
    periodic_row(El, R).
 
+%%   periodic_table(+U,+T)//
+%
+%    Complete inline table
 periodic_table(_,[]) --> !.
 periodic_table(El, [F|R]) -->
    html(tr(\(periodic_row(El,F)))),
    periodic_table(El, R).
 
+%%   table(+Request)
+%
+%    Render the periodic table of elements
 table(Request) :-
     http_parameters(Request, [element(El, [])]),
     rdfS(El, pt:name, Name),

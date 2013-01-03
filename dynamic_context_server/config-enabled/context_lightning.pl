@@ -14,6 +14,9 @@
 :- context:register(context_lightning:plot).
 :- context:register(context_lightning:lightning_indirect_effects_table).
 
+%%   navigate(+Request) 
+%
+%    Dynamic page to lightning models
 navigate(Request) :-
    collect_unit_options(time, Tunits),
 
@@ -54,9 +57,15 @@ navigate(Request) :-
 		  ).
 
 
+%%   lightningA(+I0,+Alpha,+Beta,+X,-Y)
+%
+%    Lightning A stroke profile
 lightningA(I0,Alpha,Beta,X*_Units,Y) :-
    Y is I0*(exp(-Alpha*X)-exp(-Beta*X)).
 
+%%   lightningD(+I0,+Alpha,+Beta,+X,-Y)
+%
+%    Lightning B stroke profile
 lightningD(I0,Alpha,Beta,X*_Units,Y) :-
    Y1 is I0*(exp(-Alpha*X)-exp(-Beta*X)),
    Delta = 1e-4,
@@ -67,6 +76,9 @@ lightningD(I0,Alpha,Beta,X*_Units,Y) :-
    ),
    Y is Y1 +Y2.
 
+%%   plot(+Request)
+%
+%    Plot the lightning stroke temporal profile
 plot(Request) :-
     http_parameters(Request, [kind(table, []),
 			      limit(_Limit, [number]),
@@ -130,6 +142,9 @@ plot(Request) :-
 		  ).
 
 
+%%   effects_table(-Tuple)
+%
+%    Create lightning effects table
 effects_table([CC, Desc, I0, Alpha, Beta, PeakI, ActionInt, Decay50, Time10, Time90, TimePeak, RR, PRR]) :-
     rdfS(UID, ent:current_component, CC),
     rdfS(UID, ent:description, Desc),

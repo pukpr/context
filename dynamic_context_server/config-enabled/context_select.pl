@@ -9,6 +9,9 @@
 
 :- context:register(context_select:navigate).
 
+%%   ref_search(+Term, +Description)//
+%
+%    List inline refs that match term
 ref_search(Term, Description) -->
     html(p([\(con_text:gif(ref)),
 	    a([href('/context_ref_search/search_sweet?name='+Term),
@@ -17,6 +20,9 @@ ref_search(Term, Description) -->
 	).
 
 
+%%   g(+Type, +Contents)//
+%
+%    Create a GIF inline icon
 g(Type, Contents) -->
     html(p([
 	     \(con_text:gif(Type)),
@@ -26,6 +32,9 @@ g(Type, Contents) -->
 	).
 
 
+%%   icon_cell_link(+Highlight, -Td)
+%
+%    Create a cell link to feature
 icon_cell_link(Highlight,
                td(a(href(Select+Obj),
                     img([height(Size),src(Path+Icon),
@@ -40,6 +49,9 @@ icon_cell_link(Highlight,
             Size=40
         ).
 
+%%   icon_bar(+Highlight)//
+%
+%    Generate an icon bar of feature categories, highlighting currently selected
 icon_bar(Highlight) -->
     {
      findall(Icon, icon_cell_link(Highlight, Icon), Icons)
@@ -47,6 +59,9 @@ icon_bar(Highlight) -->
     html(table([border(0)],
                [tr(Icons)])).
 
+%%   dispatch(+Feature_Category)//
+%
+%    Generate an inline list of available models corresponding to feature category
 dispatch(lakes) -->
 	html([h1('Inland water models'),
 	      \g(search,
@@ -246,6 +261,9 @@ dispatch(others) -->
 	     ]
 	    ).
 
+%%   navigate(+Request)
+%
+%    Dynamic page to feature selection
 navigate(Request) :-
     http_parameters(Request, [category(Cat, [default(others)])]),
     reply_html_page(

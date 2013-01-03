@@ -62,63 +62,95 @@
   such as dot product, convolution and functional mapping
 */
 
-% This removes a lead functor, not needed?
+
 separate([], Xc, X) :- reverse(Xc, X).
 separate([A|Rest], Ix, Xc) :-
     A =.. [_|X],
     separate(Rest, [X|Ix], Xc).
 
+%%   separate(+L, -X)
+%
+%    Separate off functor, removes a lead functor, not needed?
+%
 separate(List, X) :-
     separate(List, [], X).
 
 
+%%   dotproduct(+L1,+L2,+Initial_Value,-Value)
+%
+%   Dot product of two lists
 dotproduct([],[],Final,Final).
 dotproduct([YF|YR],[ZF|ZR],Initial,Final) :-
    Value is YF*ZF + Initial,
    dotproduct(YR,ZR,Value,Final).
 
+%%   dotexpand(+X,+Y,+Initial,-Final)
+%
+%   Dot helper function
 dotexpand([],[],Initial,Final) :-
    reverse(Initial, Final).
 dotexpand([YF|YR],[ZF|ZR],Initial,Final) :-
    Value is YF*ZF,
    dotexpand(YR,ZR,[Value|Initial],Final).
 
+%%   dotdivision(+L1,+L2,+Initial_Value,-Value)
+%
+%   Dot division of two lists
 dotdivision([],[],Final,Final).
 dotdivision([YF|YR],[ZF|ZR],Initial,Final) :-
    Value is YF/ZF + Initial,
    dotdivision(YR,ZR,Value,Final).
 
+%%   dotexpanddiv(+X,+Y,+Initial,-Final)
+%
+%    Helper function
 dotexpanddiv([],[],Initial,Final) :-
    reverse(Initial, Final).
 dotexpanddiv([YF|YR],[ZF|ZR],Initial,Final) :-
    Value is YF/ZF,
    dotexpanddiv(YR,ZR,[Value|Initial],Final).
 
+%%   dotexpandsum(+X,+Y,+Initial,-Final)
+%
+%    Helper function
 dotexpandsum([],[],Initial,Final) :-
    reverse(Initial, Final).
 dotexpandsum([YF|YR],[ZF|ZR],Initial,Final) :-
    Value is YF+ZF,
    dotexpandsum(YR,ZR,[Value|Initial],Final).
 
+%%   dotexpandsubtract(+X,+Y,+Initial,-Final)
+%
+%    Helper function
 dotexpandsubtract([],[],Initial,Final) :-
    reverse(Initial, Final).
 dotexpandsubtract([YF|YR],[ZF|ZR],Initial,Final) :-
    Value is YF-ZF,
    dotexpandsubtract(YR,ZR,[Value|Initial],Final).
 
+%%   dotscale(+Scale,+List,+Initial_Value,-Value)
+%
+%    Scaled unit list dot product
 dotscale(_,[],Initial,Final) :-
    reverse(Initial, Final).
 dotscale(A,[ZF|ZR],Initial,Final) :-
    Value is A*ZF,
    dotscale(A,ZR,[Value|Initial],Final).
 
+%%   dotadd(+S,+Y,+Initial,-Final)
+%
+%    Dot add scalar to list
 dotadd(_,[],Initial,Final) :-
    reverse(Initial, Final).
 dotadd(A,[ZF|ZR],Initial,Final) :-
    Value is A+ZF,
    dotadd(A,ZR,[Value|Initial],Final).
 
-% Clone an array list, substituting a scalar
+
+%%   ones_list(+X, +Scalar, +Initial, -Final)
+%
+%    Ones (scalar) list creator
+%    Clone an array list, substituting a scalar
 ones_list([], _, Final, Final).
 ones_list([_|ZR], Scalar, Y, Final) :-
    !,ones_list(ZR, Scalar, [Scalar|Y], Final).
@@ -129,15 +161,29 @@ ones(Length, Scalar, Y, Final) :-
    L is Length - 1, !,
    ones(L, Scalar, [Scalar|Y], Final).
 
+%%   ones(+Scalar, List)
+%
+%    Generate a ones list
+
 ones(Length, Final) :-
     ones(Length, 1, [], Final), !.
+
+%%   constants(+Length, +Scalar, -List)
+%
+%    Generate a list of constants
 constants(Length, Scalar, Final) :-
     ones(Length, Scalar, [], Final), !.
+%%   uniform(+Length, -Final)
+%
+%    Generate a list of normalized uniform constants such that total is unity
 uniform(Length, Final) :-
     Scalar is 1.0/Length,
     ones(Length, Scalar, [], Final), !.
 
-% same as numlist
+
+%%   number_line(+Start, +End, +Initial, -Final)
+%
+%    Generate a integer numbered list,  same as *numlist*
 number_line(Start, End, Final, Final) :-
    End < Start, !.
 number_line(Start, End, Y, Final) :-
@@ -150,16 +196,26 @@ number_line(Start, End, Line) :-
     reverse(Final, Line).
 */
 
-% This is the same as built-in => numlist(Start, End, List).
+
+%%   linear_range(+Start, +End, -Range)
+%
+%    Generate an integer numbered list.
+%    This is the same as built-in => numlist(Start, End, List)
 linear_range(Start, End, Range) :-
    number_line(Start, End, [], Range).
 
+%%   linear_fractional_range(+Start, +End, +Fraction, -Range)
+%
+%    Generate a fractional linear range
 linear_fractional_range(Start, End, Fraction, Range) :-
    Scaled_Start is Start/Fraction,
    Scaled_End is (End-Start)/Fraction + Scaled_Start,
    number_line(Scaled_Start, Scaled_End, [], Scaled_Range),
    Range mapdot Fraction .* Scaled_Range.
 
+%%   number_log(+Start, +End, +Proportional_Fraction, +Initial, -Final)
+%
+%    Generate a logarithmic range
 number_log(Start, End, _, Final, Final) :-
    End < Start.
 number_log(Start, End, Frac, Y, Final) :-
@@ -167,13 +223,22 @@ number_log(Start, End, Frac, Y, Final) :-
    L is Frac * End,
    number_log(Start, L, Frac, [End|Y], Final).
 
+%%   log_range(+Start, +End, +Frac, -Range)
+%
+%    Generate a logarithmic range
 log_range(Start, End, Frac, Range) :-
    number_log(Start, End, Frac, [], Range).
 
+%%   units_apply(+List, +Decoration, +In, -Out)
+%
+%    Units apply to list
 units_apply([], _Decoration, In, Out) :- reverse(In, Out).
 units_apply([F|R], Decoration, In, Out) :-
    !, units_apply(R, Decoration, [F*Decoration|In], Out).
 
+%%   range(+From,+To)
+%
+%    Range of numbers into a list
 X range [Y,Z]/W*Units :-    % linear range specifier
    X1 range [Y,Z]/W,
    units_apply(X1, Units, [], X), !.
@@ -208,6 +273,10 @@ X range W*[Y,Z] :-    % range specifier
    Y1 is Z-Y+1,
    constants(Y1, W, X), !.
 
+%%   dot(+X,+Y)
+%
+%    Dot product of two arrays or lists of the same length
+
 [] dot [].
 [W|X] dot [Y|Z] :-  % Simplifier
    W is Y,
@@ -225,6 +294,10 @@ X dot Y/Z :-    % Array dot division
    Z1 dot Z,
    dotdivision(Y1, Z1, 0, X), !.
 
+%%   mapdot(+X,+Y)
+%
+%    Map Dot is a dot product of individual elements, retaining the list
+%    structure.
 
 [] mapdot [].
 [W|X] mapdot [Y*Units|Z] :-  % Simplifier
@@ -298,6 +371,9 @@ X mapdot Y~>Z :-    % Map apply
    Z1 mapdot Z,
    maplist(Y, Z1, X), !.
 
+%%   gather_map
+%
+%    Used by *mapdot*
 gather_map([], _Z, X, X).
 gather_map([Scale*Y|R], Z, Xin, Xout) :-
    X mapdot Scale*Y~>Z,
@@ -306,6 +382,9 @@ gather_map([Scale*Y|R], Z, Xin, Xout) :-
 
 
 
+%%   convolution(+YZ, +YI, +ZI, +Init, -Final)
+%
+%    List convolution
 convolution([],[],_,_,Initial,Final) :-
    reverse(Initial,Final).
 convolution([YF|YR],[ZF|ZR],[],[],Initial,Final) :-
@@ -315,6 +394,12 @@ convolution([YF|YR],[ZF|ZR],YI,ZI,Initial,Final) :-
    dotproduct(YI_R,ZI,0.0,Value),
    convolution(YR,ZR,[YF|YI],[ZF|ZI],[Value|Initial],Final).
 
+%%   padZeros(+La0, +Lb0, -La1, -Lb1)
+%
+%    Pad zeros on one array to it matches the other
+%%   padZerosPrep
+%
+%    Used by *padZeros*
 padZerosPrep([], [], L, L1) :-
    reverse(L, L1).
 padZerosPrep([F1|R1], [], Initial, Final):-
@@ -331,6 +416,10 @@ padZeros(La0, Lb0, La1, Lb1):-
     append(La, Empty, La1),
     append(Lb, Empty, Lb1).
 
+%%   convolve(+X,+Y)
+%
+%    Convolve (convulution operator) list with another list.
+
 [] convolve [].
 [W|X] convolve [Y|Z] :-  % Simplifier
    W is Y,
@@ -341,6 +430,10 @@ X convolve Y*Z :-
    Z1 convolve Z,
    padZeros(Y1,Z1,Y2,Z2),
    convolution(Y2, Z2, [], [], [], X), !.
+
+%%   correlate(+X,+Y)
+%
+%    Pair correlate one list with another list.
 
 [] correlate [].
 [W|X] correlate [Y|Z] :-  % Simplifier
@@ -354,11 +447,22 @@ X correlate Y*Z :-
    padZeros(Y1,Z1_R,Y2,Z2),
    convolution(Y2, Z2, [], [], [], X), !.
 
+%%   change_sign(+X, -Y)
+%
+%    Change sign of value
 change_sign(X, Y) :-
     Y is -X.
+
+%   derive(+X,+Y,+Initial,-Derivatives)
+%
+%    Derivative of Y with respect to X
 derive(X,Y,Initial,Derivatives) :-
     derivatives(X, Y, 0, 0, Initial, D),
     maplist(change_sign, D, Derivatives).
+
+%%   derivative(+X,+Y)
+%
+%    Take the derivative of one list with respect to another list.
 
 [] derivative [].
 [W|X] derivative [Y|Z] :-  % Simplifier
@@ -370,14 +474,24 @@ X derivative Y/Z :-
    Z1 derivative Z,
    derive(Y1,Z1,[],X).
 
+%%   accumulation(+P, +V, +LP, +LV, -Probs, -Final)
+%
+%    Accumulation of values, used for CDF, e.g
 accumulation([], [], _, _, Probs, Final) :-
     reverse(Probs, Final).
 accumulation([P|PR], [V|VR], LastP, LastV, Probs, Final) :-
     Accumul is P*(V-LastV) + LastP,
     accumulation(PR, VR, Accumul, V, [Accumul|Probs], Final).
 
+%%   integral(+X,+Y,+Initial,-Running_Integral)
+%
+%    Integral of list X with delta increments in Y
 integral(X,Y,Initial,Running_Integral) :-
     accumulation(X, Y, 0, 0, Initial, Running_Integral).
+
+%%   integrate(+X,+Y)
+%
+%    Take the integral of one list with respect to another delta list.
 
 [] integrate [].
 [W|X] integrate [Y|Z] :-  % Simplifier
@@ -398,7 +512,9 @@ X integrate Y*Z :-
 % Y dot [3,3,3]*[3,3,3].
 %
 
-% create histogram array
+%%   cumulative_histogram(+List, -Variates, -Probs)
+%
+%    Cumulative histogram of list generating Variates and Probs
 cumulative_histogram(List, Variates, Probs) :-
     length(List,N),
     msort(List, Variates),
@@ -406,6 +522,9 @@ cumulative_histogram(List, Variates, Probs) :-
     linear_fractional_range(Increment, 1.0, Increment, P),
     reverse(P, Probs).
 
+%%   derivatives(+P, +V, +LP, +LV, -Probs, -Final)
+%
+%    Derivative of values, used for PDF,, e.g
 derivatives([], [], _, _, Probs, Final) :-
     reverse(Probs, Final).
 derivatives([P|PR], [V|VR], LastP, LastV, Probs, Final) :-
@@ -416,11 +535,18 @@ derivatives([P|PR], [V|VR], LastP, LastV, Probs, Final) :-
     derivatives(PR, VR, P, V, [Density|Probs], Final).
 
 
+%%   subtract(+L1, +L1, +Initial, -Final)
+%
+%    Subtract two lists
 subtract([], [], In, Final) :-
     reverse(In, Final).
 subtract([P|PR], [V|VR], Diffs, Final) :-
     Diff is P-V,
     subtract(PR, VR, [Diff|Diffs], Final).
+
+%%   difference(+X,+Y)
+%
+%    Take the difference of one list with respect to another list.
 
 [] difference [].
 [W|X] difference [Y|Z] :-  % Simplifier
@@ -432,11 +558,17 @@ X difference Y-Z :-
    Z1 difference Z,
    subtract(Y1,Z1,[],X).
 
+%%   tuple_merge(+X,+Y,+Initial,-Final)
+%
+%    Tuple merge into a single list
 tuple_merge([],[],Initial,Final) :- reverse(Initial, Final).
 tuple_merge([Y|YR],[Z|ZR],Initial,Final) :-
    flatten([Y,Z], Tuple),
    tuple_merge(YR,ZR,[Tuple|Initial],Final).
 
+%%   strip(+L,+Initial,-Final)
+%
+%    Strip units
 strip([],Initial,Final) :- reverse(Initial, Final).
 strip([F|R],Initial,Final) :-  %  --- remove any extra unit multipliers for the time being
    compound(F),
@@ -445,6 +577,9 @@ strip([F|R],Initial,Final) :-  %  --- remove any extra unit multipliers for the 
 strip([F|R],Initial,Final) :-
    !, strip(R,[F|Initial],Final).
 
+%%   tuple(+X,+Y)
+%
+%    Create a tuple list from two lists.
 
 [] tuple [].
 [W|X] tuple [Y|Z] :-  % Simplifier
@@ -463,7 +598,10 @@ X tuple Y+Z :-
    tuple_merge(Y1,Z1,[],X).
 
 
-% create cumulative histogram array, has problems with duplicates
+%%   histogram(+List, -Variates, -Probs)
+%
+%    Histogram  into variates and probability
+%    creating cumulative histogram array, has problems with duplicates
 histogram(List, Variates, Probs) :-
     cumulative_histogram(List, Variates, CProbs),
     % CProbs = [FirstP|RestP],
@@ -473,14 +611,24 @@ histogram(List, Variates, Probs) :-
     % , remove_dupes(Variates, V)
     .
 /*
+%%   list_summer(+List, +Initial, -Total)
+%
+%    Sum list (already built-in)
 list_summer([], Total, Total).
 list_summer([F|R], Total, Final) :-
     Sum is Total + F,
     list_summer(R, Sum, Final).
 
+%%   sum_list(+List, -Sum)
+%
+%    Sum list (already built-in)
 sum_list(List, Sum) :-
     list_summer(List, 0, Sum).   % can also use the built-in sumlist
 */
+
+%%   unbias(+X,-Y)
+%
+%    Remove the mean from a list of values, so the sum is zero.
 
 [] unbias [].
 X unbias Y :-
@@ -489,11 +637,19 @@ X unbias Y :-
    Offset is -N/L,
    dotadd(Offset, Y, [], X), !.
 
+%%   normalize(+X,-Y)
+%
+%    Normalize a list of values, so the sum is unity.
+
 [] normalize [].
 X normalize Y :-
    sumlist(Y,N),
    Scale is 1/N,
    dotscale(Scale, Y, [], X), !.
+
+%%   pdf(+X,-Y)
+%
+%   Create a PDF from a list of values.
 
 [] pdf [].
 X pdf Y :-
@@ -514,6 +670,9 @@ X pdf Y :-
    !.
 */
 
+%%   zshift(+X,-Y)
+%
+%   Do a DSP z-shift from a list.
 
 [] zshift [].
 [W|X] zshift [Y|Z] :-
@@ -528,10 +687,16 @@ X zshift Y-Y :-
    reverse(X1, [_|X2]),
    reverse(X2, X).
 
+%%   truncate(+X, +Y, +Init, -Final)
+%
+%    Truncate to the smallest list
 truncate(_, [], Init, Final) :- reverse(Init, Final).
 truncate([L|Long], [_|Short], Init, Final) :-
    truncate(Long, Short, [L|Init], Final).
 
+%%   sconvolution(+Y,+Window,+Initial,-Final)
+%
+%    Convolution against window function
 sconvolution(Y,Window,Initial,Final) :-
    length(Y, LY),
    length(Window, LW),
@@ -542,6 +707,9 @@ sconvolution([_|YR],Window,Initial,Final) :-
    dotproduct(YW,Window,0.0,Value),
    sconvolution(YR,Window,[Value|Initial],Final).
 
+%%   window(+X,-Y)
+%
+%   Do a lag-window or centered window on a list.
 
 [] window [].
 [W|X] window [Y|Z] :-  % Simplifier
@@ -568,10 +736,16 @@ X window Y*Z :-  % centered window
 
 
 
+%%   intersect(+X, +Y, +Initial, -Final)
+%
+%    Intersection of two lists, same as *truncate*
 intersect(_, [], F, Final) :- reverse(F, Final).
 intersect([F1|R1], [_|R2], Input, Final) :-
    intersect(R1, R2, [F1|Input], Final).
 
+%%   intersect_and_pad(+L1, +L2, +Initial, -Final)
+%
+%    Intersect but then pad afterwards
 intersect_and_pad([], L, F, Final) :-
     length(L,N),
     constants(N, 0, Append),
@@ -579,6 +753,10 @@ intersect_and_pad([], L, F, Final) :-
     append(F1, Append, Final).
 intersect_and_pad([F1|R1], [_|R2], Input, Final) :-
     intersect_and_pad(R1, R2, [F1|Input], Final).
+
+%%   shrink(+X,-Y)
+%
+%    Shrink a list to match the second.
 
 [] shrink [].
 [W|X] shrink [Y|Z] :-  % Simplifier
@@ -590,6 +768,10 @@ X shrink Y/Z :-
    Z1 shrink Z,
    intersect(Y1, Z1, [], X), !.
 
+%%   expand(+X,-Y)
+%
+%    Expand a list to match the second.
+
 [] expand [].
 [W|X] expand [Y|Z] :-  % Simplifier
    W = Y,
@@ -600,32 +782,51 @@ X expand Y+Z :-
    Z1 expand Z,
    intersect_and_pad(Y1, Z1, [], X), !.
 
+%%   cat(+X,-Y)
+%
+%    Flatten a list.
 
 [] cat [].
 X cat [First|Rest] :-
    flatten([First|Rest], X).
 
+%%   reduce_by(+N, +L, -X)
+%
+%    Reduce list by N elements, used by *offset*
 reduce_by(0, X, X).
 reduce_by(N, [_|R], Out) :-
     M is N-1,
     reduce_by(M, R, Out).
+
+%%   offset(+X,+Y)
+%
+%    Offset a list by N elements.
 
 [] offset [].
 X offset Y - N :-
    N > 0,
    reduce_by(N, Y, X), !.
 
+%%   ordinal(+X,+Y)
+%
+%    Create an ordinal (counting) list from a list.
 
 X ordinal Y :-
    length(Y,N),
    M is N-1,
    numlist(0, M, X).
 
+%%   split_n(+N,+List, +Xc, -X)
+%
+%    Split after N value
 split_n(_N, [], Xc, X) :- reverse(Xc, X).
 split_n(N, [X|Rest], Ix, Xc) :-
     nth1(N, X, El),!,
     split_n(N, Rest, [El|Ix], Xc).
 
+%%   splitter(+L, +Tuples, +Initial, -List)
+%
+%    Split tuples
 splitter(0, _Tuples, List, List).
 splitter(N, Tuples, List, Output) :-
     split_n(N, Tuples, [], FL),
@@ -638,17 +839,27 @@ splitter(Tuples, Output) :-
     length(F, N),
     splitter(N, Tuples, [], Output), !.
 
+%%   split(+X,+Y)
+%
+%    Split pairs of values into two sequential lists.
+
 [] split [].
 X split Y :-
    splitter(Y,X), !.
 
 
 
-% only on flat uniformly-space lists
+%%   index(+List, +Pos, -Index)
+%
+%    Index a list like an array, only on flat uniformly-space lists
 index(List, Pos, Index) :-
    [First,Second|_R] = List,
    Scale is Second-First,
    Index is floor((Pos-First)/Scale+1.5).
+
+%%   spatial(+List, +Pos, -Value)
+%
+%    Index a list like an array
 spatial(List, Pos, Value) :-
    [First,_Second|_R] = List,
    Index is Pos-First,

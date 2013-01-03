@@ -7,6 +7,9 @@
     * R -- Library interface
 */
 
+%%   is_log(+Log, -Bool)
+%
+%    If log selected
 is_log(lin, 0).
 is_log(log, 1).
 is_log(0, 0).
@@ -36,11 +39,17 @@ is_log(true, 1).
       pre_map_load(?,?),
       map_native(+,+,+,?,?).
 
+%%   json_complete(+X, +Y, +In, -Out)
+%
+%    Custom JSON parse
 json_complete(x(_,[]), y(_,[],_), In, Out) :-
    atomic_list_concat(['[', In,']'], Out).
 json_complete(x(X,S), y(Y,P,Shape), In, Out) :-
    atomic_list_concat(['"',Shape,' ',S,',',P,'"'], Id),
    atomic_list_concat(['[', In, '{"id":',Id,',',X,':',S,',',Y,':',P,'}]'], Out).
+%%   json_concat(+X, +Y, +In, -Out)
+%
+%    Custom JSON parse
 json_concat(x(X,S), y(Y,P,Shape), In, Out) :-
    % atomic_list_concat(['"',Shape,' ',S,',',P,'"'], Id),
    format(atom(Id), '"~w ~2g,~2g"', [Shape,S,P]),
@@ -48,6 +57,9 @@ json_concat(x(X,S), y(Y,P,Shape), In, Out) :-
    atom_concat(In, Str, Out).
    % atomic_list_concat([     In, '{"id":',Id,',',X,':',S,',',Y,':',P,'},'], Out).
 
+%%   construct_json(+X, +Y, +ID, +V, +P, +In, -Out)
+%
+%    Special JSON parse
 construct_json(X, Y, ID, [[V]], [[P]], In, Out) :-
     json_complete(x(X,V), y(Y,P,ID), In, Out).
 construct_json(X, Y, ID, [[V]|VR], [[P]|PR], In, Out) :-
@@ -62,6 +74,9 @@ construct_json(X, Y, ID, [V|VR], [P|PR], In, Out) :-
 
 
 
+%%   pre_scatter_script_load//
+%
+%    Javascript preload
 pre_scatter_script_load -->
     html([
         script([type('text/javascript'),src('/html/js/google-code.js')],     []),
@@ -75,9 +90,15 @@ pre_scatter_script_load -->
         script([type('text/javascript'),src('/html/js/handledata.js')],     [])
         ]).
 
+%%   scatter_script_load//
+%
+%    Javascript preload
 scatter_script_load -->
    html([meta([name('description'),content('graph page')])]).
 
+%%   scatter_plot(+LogScale,+XAxis,+YAxis,+XY)//
+%
+%    Scatter plot graph
 scatter_plot(LogScale,XAxis,YAxis,[X,Y]) -->
    {
      is_log(LogScale, Log),
@@ -115,6 +136,9 @@ scatter_plot(LogScale,X,Y,Data) -->
 % Chart Plot
 % %%%%%%%%%%%%
 
+%%   pre_chart_script_load//
+%
+%    Javascript preload
 pre_chart_script_load -->
    html([
          script([type('text/javascript'),src('https://www.google.com/jsapi')], []),
@@ -123,10 +147,16 @@ pre_chart_script_load -->
          script([type('text/javascript'),src('/html/js/handledata.js')], [])
         ]).
 
-% these meta terms are placeholders, not used
+%%   chart_script_load//
+%
+%    Javascript preload
+%    these meta terms are placeholders, not used
 chart_script_load -->
    html([meta([name('description'),content('graph page')])]).
 
+%%   chart_plot(+Log, +Xaxis, +Yaxis, +Title, +Data)//
+%
+%    Chart plot routine
 chart_plot(Log, Xaxis, Yaxis, Title, Data) -->
    html([
          \pre_chart_script_load,
@@ -149,12 +179,18 @@ chart_plot(Log, Xaxis, Yaxis, Title, Data) -->
 % dygraph Plot
 % %%%%%%%%%%%%
 
+%%   check_list(+X,-QX)
+%
+%    Check list of data for proper quotes, etc
 check_list(X,QX) :-
     atom(X),
     quote_string(X, QX).
 check_list(List, Quoted_String) :-
     concat_strings(List, Quoted_String).
 
+%%   check_data(+Headings, +List, -CSV)
+%
+%    Generates a CSV list appropiate for charting
 check_data('',X,X) :-
     atom(X).
 check_data(Headings, List, CSV) :-
@@ -162,9 +198,15 @@ check_data(Headings, List, CSV) :-
     quote_string(H, First_Line),
     construct_csv(List, First_Line, CSV).
 
+%%   dygraph_script_load//
+%
+%    Javascript preload
 dygraph_script_load -->
    html([meta([name('description'),content('graph page')])]).
 
+%%   pre_dygraph_script_load//
+%
+%    Javascript preload
 pre_dygraph_script_load -->
    html([
          script([type('text/javascript'),src('/html/js/dygraph-combined.js')], []),
@@ -172,6 +214,9 @@ pre_dygraph_script_load -->
         ]).
 
 
+%%   dygraph_plot(+LogScale, +Headings, +Xaxis, +Yaxis, +Title, +Data)//
+%
+%    Dynamic Graph plot
 dygraph_plot(LogScale, Headings, Xaxis, Yaxis, Title, Data) -->
    {check_list(Xaxis,X),
     check_list(Yaxis,Y),
@@ -188,6 +233,9 @@ dygraph_plot(LogScale, Headings, Xaxis, Yaxis, Title, Data) -->
          ])
         ]).
 
+%%   dygraph_native(+LogScale, +Headings, +Xaxis, +Yaxis, +Title, +Data)//
+%
+%    Dynamic Graph plot, using the native format which is most efficient
 dygraph_native(LogScale, Headings, Xaxis, Yaxis, Title, Data) -->
    {
     is_log(LogScale,Log),
@@ -206,6 +254,9 @@ dygraph_native(LogScale, Headings, Xaxis, Yaxis, Title, Data) -->
          ])
         ]).
 
+%%   dygraph_error_bars(+LogScale, +Headings, +Xaxis, +Yaxis, +Title, +Data)//
+%
+%    Dygraph error bar prototype, still under development
 dygraph_error_bars(LogScale, Headings, Xaxis, Yaxis, Title, Data) -->
    {
     is_log(LogScale,Log)
@@ -221,6 +272,9 @@ dygraph_error_bars(LogScale, Headings, Xaxis, Yaxis, Title, Data) -->
 
 
 % list of xy pairs
+%%   construct_csv(+XY, +In, -Out)
+%
+%    Construct a CSV list
 construct_csv([], Out, Out).
 construct_csv([xy(X,Y)|R], In, Out) :-
     atomic_list_concat([In, '+ "', X, ',', Y, '\\n"'], Next),!,
@@ -257,26 +311,41 @@ construct_csv([F|FR], [S|SR], [R|RR], In, Out) :-
     atomic_list_concat([In, '+ "', F, ',', S, ',', R, '\\n"'], Next),!,
     construct_csv(FR, SR, RR, Next, Out).
 
+%%   quote_string(+Term, -Q)
+%
+%    Quote a term
 quote_string(Term, Term) :-  % already has a quote
     atom_codes(Term, [34|_]), !.
 quote_string(Term, Quoted) :-
     atomic_list_concat(['"',Term,'"'], Quoted).
 
+%%   concat_strings(+List, -Quoted_String)
+%
+%    Concat strings into quoted string
 concat_strings(List, Quoted_String) :-
     atomic_list_concat(List, String),
     quote_string(String, Quoted_String).
 
 
+%%   axis_label(+Label, +Units, -Output)
+%
+%    Label an axis
 axis_label(Label, Units, Output) :-
     atomic_list_concat([Label, ' (', Units, ')'], Name),
     quote_string(Name, Output).
 
+%%   plain_axis_label(+Label, +Units, -Name)
+%
+%    Non-quoted *axis_label*
 plain_axis_label(Label, Units, Name) :-
     atomic_list_concat([Label, ' (', Units, ')'], Name).
 
 
 %  dispatching input
 %
+%%   plot(+Dynamic, +LogScale, +Headings, +Xaxis, +Yaxis, +Title, +Data)//
+%
+%    Dynamic plot
 plot(dynamic, LogScale, Headings, Xaxis, Yaxis, Title, Data) -->
    html([
        \(dygraph_plot(LogScale, Headings, Xaxis, Yaxis, Title, Data))
@@ -289,6 +358,9 @@ plot(scatter, LogScale, Headings, Xaxis, Yaxis, Title, Data) -->
         ]).
 
 %
+%%   plot_log(+Log, +Headings, +Xaxis, +Yaxis, +Title, +Data)//
+%
+%    Log plot
 plot_log(false, Headings, Xaxis, Yaxis, Title, Data) -->
    html([
        \(dygraph_plot(true, Headings, Xaxis, Yaxis, Title, Data))
@@ -310,6 +382,9 @@ plot_log(true, Headings, Xaxis, Yaxis, Title, Data) -->
 
 % Google Map
 
+%%   pre_map_load//
+%
+%    Preloading javascript
 pre_map_load -->
    html([
        script([type('text/javascript'),
@@ -321,6 +396,9 @@ pre_map_load -->
         ]).
 
 
+%%   map_native(+Lat, +Lon, +Title)//
+%
+%    Display map
 map_native(Lat, Lon, Title) -->
 	% html_requires(css('map.css')),
 	html_requires('/html/css/mapping.css'),
@@ -334,6 +412,9 @@ map_native(Lat, Lon, Title) -->
 	     ]).
 
 /*
+%%   get_elevation(+Lat, +Lon)//
+%
+%    Inline elevation
 get_elevation(Lat, Lon) -->
 	html_requires('/html/css/mapping.css'),
 	html([

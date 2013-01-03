@@ -15,6 +15,9 @@
 :- context:register(context_clutter:navigate).
 :- context:register(context_clutter:plot).
 
+%%   navigate(+Request)
+%
+%    Dynamic page to EMI clutter models
 navigate(Request) :-
    collect_unit_options(time, Tunits),
 
@@ -51,12 +54,18 @@ navigate(Request) :-
 		  ).
 
 
+%%   clutter_integrate(+Parameter,+X,+Y)
+%
+%    Intgerate the stochastic clutter model
 clutter_integrate(Parameter,X,Y) :-
    Y is Parameter*sqrt(X/(1-X)).
 other_fxn(Parameter,X,Y) :-
    Y is Parameter*X.
 
 
+%%   plot(+Request) 
+%
+%    Plot clutter model
 plot(Request) :-
     http_parameters(Request, [kind(Kind, []),
 			      limit(Limit, [number]),

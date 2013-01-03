@@ -16,6 +16,9 @@
 
 % :- context:ac_hook(context_map:locale).
 
+%%   minutes_to_degrees(+DMS, -Degrees)
+%
+%    Convert degreesminutesseconds to frational degrees
 minutes_to_degrees((Deg,Min,Sec), Degrees) :-
      (	 Deg < 0.0 ->
          Degrees is Deg - Min/60 - Sec/3600
@@ -24,6 +27,9 @@ minutes_to_degrees((Deg,Min,Sec), Degrees) :-
      ).
 
 
+%%   get_location(+URI, -Lat, -Lon, -Title)
+%
+%    Get location for a URI
 get_location(URI, Lat, Lon, Title) :-
     rdfS(URI, ent:title, Title),
     rdfR(URI, ent:lat, Lat),
@@ -46,6 +52,9 @@ get_location(URI, 0.0, 0.0, Title) :-
 
 
 
+%%   view(+Request)
+%
+%    View map of locale
 view(Request) :-
    http_parameters(Request, [lat(Lat, [float]),
 			     lon(Lon, [float]),
@@ -60,6 +69,9 @@ view(Request) :-
 	    ]
 		       ).
 
+%%   available_location(+Locale, -Title, -Model, -Feature)
+%
+%    Deteremines if locale has available features
 available_location(Locale, Title, Model, Feature) :-
      rdfS(Locale, ent:title, Title),
      rdf(URI, ent:locale, Locale),
@@ -73,6 +85,12 @@ available_location(Locale, Title, Model, Feature) :-
 % available_location(Locale, Locale, '#', Locale).
 
 
+%%   navigate(+Request)
+%
+%    Dynamic page to geospatial search
+%%   navigate_locale(+Request)
+%
+%    Dynamic page to geospatial location search
 navigate_locale(Request) :-
    http_parameters(Request, [locale(Locale_or_Title, [string]),
 			     action(Action, [])
@@ -127,6 +145,12 @@ navigate_locale(Request) :-
 	    ]
                   ).
 
+%%   find_loc(Query, URI, Title)
+%
+%    Finds matches to query
+%%   find_locs(-Option)
+%
+%    Generates selection options
 find_locs(option([value(Out)],[Name])) :-
    rdf(Out, ent:lat, _),
    rdf(Out, ent:lon, _),
@@ -137,12 +161,18 @@ find_loc(Query, URI, Title) :-
    rdf(URI, ent:lon, _),
    rdf(URI, ent:title, literal(substring(Query),Title)).
 
+%%   find_example(+Query, -URI, -Title)
+%
+%    Finds matches to query, same as *find_loc*
 find_example(Query, URI, Title) :-
    rdf(URI, ent:lat, _),
    rdf(URI, ent:lon, _),
    rdf(URI, ent:title, literal(substring(Query),Title)).
 
 
+%%   autocompletions(+Query, +Max, -Count, -Completions)
+%
+%    Autocompletion query
 autocompletions(Query, Max, Count, Completions) :-
     print(user_error,['Q', Query]),
     findall([URI,Type], find_loc(Query, URI, Type), Completions0),
@@ -162,6 +192,9 @@ ac_result([Obj,Type], json([ label=Type,
     atomic_list_concat(['javascript:retarget_frame(this,"', URL, '", "render");'], HREF).
     % print(user_error, ['HREF', HREF]).
 
+%%   find_locale(+Request)
+%
+%    Dynamic page for locale
 find_locale(Request) :-
     http_parameters(Request,
                     [ query(Query, [description('Typed string')]),
@@ -241,9 +274,21 @@ navigate(Request) :-
 % USA map
 
 /*
+%%   max_lat(-Lat)
+%
+%    Fixed Max
 max_lat(52.5).
+%%   min_lat(-Lat)
+%
+%    Fixed Min
 min_lat(23.5).
+%%   max_lon(-Lon)
+%
+%    Fixed Max
 max_lon(-52.5).
+%%   min_lon(-Lon)
+%
+%    Fixed Min
 min_lon(-125.5).
 */
 
@@ -253,9 +298,18 @@ max_lon(-65.0).
 min_lon(-129.0).
 
 
+%%   image_width(-W)
+%
+%    Fixed Width
 image_width(350).   %250
+%%   image_height(-H)
+%
+%    Fixed Height
 image_height(210).  %150
 
+%%   get_ll_extent(+Lat, +Lon, +X, +Y, +W, +H)
+%
+%    Get LatLon extents as rectiliear coordinates for mapping
 get_ll_extent(Lat, Lon, X, Y, W, H) :-
     max_lat(MaxLat),
     min_lat(MinLat),
@@ -270,6 +324,9 @@ get_ll_extent(Lat, Lon, X, Y, W, H) :-
     H is integer(IH/DiffLat) + Y,
     W is integer(IW/DiffLon) + X.
 
+%%   section_name(+Lat, +Lon, -Title)
+%
+%    Section name for LatLon 
 section_name(Lat, Lon, Title) :-
     rdfR(Ent, ent:lat_min, Lat),
     rdfR(Ent, ent:lon_min, Lon),
@@ -277,6 +334,9 @@ section_name(Lat, Lon, Title) :-
 %    context_geo:find_dem_section(Lat, Lon, Title), !.
 section_name(_Lat, _Lon, 'missing').
 
+%%   lon_regions(+URI, +Target, +Lat, +Lon)//
+%
+%    Inline Longitudinal regions
 lon_regions(_URI, _Target, _Lat, Lon) -->
     {
      min_lon(MinLon),
@@ -299,6 +359,9 @@ lon_regions(URI,Target,Lat, Lon) -->
               ])),
     lon_regions(URI, Target, Lat, NewLon).
 
+%%   lat_regions(+URI, +Target, +Lat, +Lon)//
+%
+%    Inline Latitudinal regions
 lat_regions(_URI, _Target, Lat, _Lon) -->
     {
      min_lat(MinLat),
@@ -311,6 +374,9 @@ lat_regions(URI, Target, Lat, Lon) -->
     lon_regions(URI, Target, Lat, Lon),
     lat_regions(URI, Target, NewLat, Lon).
 
+%%   usa_map(+URI,+Target)//
+%
+%    Inline Map of USA to use as selection
 usa_map(URI,Target) -->
     {
      max_lat(MaxLat),

@@ -22,6 +22,9 @@
 :- context:register(context_water:liquid_densities).
 
 
+%%   freshwater_density
+%
+%    Water data
 freshwater_density(
     low = -8.0,
     high = 108.0,
@@ -40,23 +43,38 @@ freshwater_density(
      0.9653230,0.9646486,0.9639693,0.9632854,0.9625967,0.9619033,0.9612052,0.9605025,0.9597951,0.9590831,
      0.9583665,0.957662 ,0.956937, 0.956207, 0.955472, 0.954733, 0.953989, 0.953240, 0.952488, 0.941730]).
 
+%%   table_density(+Input, -Output)
+%
+%    Water density table
 table_density(Input, Output) :-
      freshwater_density(low=Lo, _Hi, _IU, _OU, T),
      context_lookup:lookup_table(1.0, Lo, T, Input, Output).
 
+%%   rhocalc(+T, -Rho)
+%
+%    Calculate rho, temp dependent density
 rhocalc(T, Rho) :- %  temp dependent density
      Rho is 1000*(1.0-(T+288.9414)/(508929.2*(T+68.12963))*(T-3.9863)^2).
 
+%%   rhoscalc(+Rho,+Conc,+T,+R)
+%
+%    temp and conc dependent density
 rhoscalc(Rho,Conc,T,R) :- %  temp and conc dependent density
      A is 0.824493 - 0.0040899*T + 0.000076438*T^2-0.00000082467*T^3 + 0.0000000053675*T^4,
      B is -0.005724 + 0.00010227*T - 0.0000016546*T^2,
      R is Rho + A*Conc + B*Conc^(3/2) + 0.00048314*Conc^2.
 
+%%   alg_density(+T, +Conc,-Rhos)
+%
+%    Algorithm temp and conc dependent desnity
 alg_density(T, Conc,Rhos) :-
     C is Conc/1000,
     rhocalc(T, Rho),
     rhoscalc(Rho,C,T,Rhos).
 
+%%   density_test(+Request)
+%
+%    Example of evaluating density
 density_test(Request) :-
     http_parameters(Request, [input(Input, [float]),
 			      iunits(IUnits, [default('c')]),
@@ -75,6 +93,9 @@ density_test(Request) :-
 	[p(Result)]
 		   ).
 
+%%   chart(+Request)
+%
+%    Chart of water properties
 chart(_Request) :-
     X range [0.0, 100.0]/0.5,
     Y mapdot table_density ~> X,
@@ -91,11 +112,17 @@ chart(_Request) :-
                    ]).
 
 
+%%   density_cells(-Tuple)
+%
+%    Information for liquid density
 density_cells([Liquid,Temperature,Density]) :-
     rdfS(UID, ent:liquid, Liquid),
     rdfS(UID, ent:temperature, Temperature),
     rdfS(UID, ent:density, Density).
 
+%%   densities(+Request)
+%
+%    Table of liquid densities
 densities(_Request) :-
     findall(Row, density_cells(Row), Rows),
     reply_html_page([title('Liquid Densit info'),
@@ -106,11 +133,17 @@ densities(_Request) :-
                           Rows))
                    ]).
 
-% autocomplete info
+
+%%   liquids(+Query, -Resource, -Title)
+%
+%    Find a liquid that matches Query
 liquids(Query, Resource, Title) :-
     rdf(Resource, ent:liquid,  literal(substring(Query),Title)),
     rdf(Resource, ent:density, _Density).
 
+%%   liquid_densities(+Request)
+%
+%    Table of liquid density properties
 liquid_densities(Request) :-
     http_parameters(Request, [liquid(Liquid, [])]),
     rdfS(UID, ent:liquid, Liquid),
@@ -120,6 +153,9 @@ liquid_densities(Request) :-
                     [ \(con_text:def_list(Liquid=Density))]).
 %
 
+%%   navigate(+Request)
+%
+%    Dynamic page to water properties models
 navigate(Request) :-
    collect_unit_options(mass, Munits),
    collect_unit_options(volume, Vunits),
@@ -176,12 +212,21 @@ navigate(Request) :-
 		  ).
 
 
+%%   salt_density(+Parameter,+X,-Y)
+%
+%    Salt-water density
 salt_density(Parameter,X*_Units,Y) :-
    alg_density(X, Parameter, Y).
+%%   fresh_density(+X,+Y)
+%
+%    Fresh-water density
 fresh_density(X*_Units,Y) :-
    table_density(X, Y).
 
 
+%%   plot(+Request)
+%
+%    Graph water density versus temperature
 plot(Request) :-
     http_parameters(Request, [kind(Kind, []),
 			      mass(Mass, [number]),

@@ -9,6 +9,9 @@
 :- context:register(context_ref:navigate).
 
 
+%%   navigate(+Request)
+%
+%    Dynamic page to references and citation knowledgebase
 navigate(Request) :-
    setof(Sweet, Sweet ^ (context_sweet_utils:find_sweets(Sweet)), Sweets),
    reply_html_page(cliopatria(default),

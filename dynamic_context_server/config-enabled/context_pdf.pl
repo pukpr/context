@@ -30,8 +30,14 @@ data
 :- context:register(context_pdf:loglin).
 :- context:register(context_pdf:generate_service).
 
+%%   service_req(-Web_URL)
+%
+%    Get web service URL
 service_req('/context_pdf/process?locale=conus&property=terrain_slopes&operation=sample&quantity=1').
 
+%%   plot_table(+Title, +X, +Mean, +Min, +Max, +Delta, +Log)//
+%
+%    Plot PDF table
 plot_table(Title, X, Mean, Min, Max, Delta, Log) -->
     html(
         table([class('block'),border(1)],
@@ -47,6 +53,9 @@ plot_table(Title, X, Mean, Min, Max, Delta, Log) -->
               ])
         ).
 
+%%   render_pdf_artifacts(+Title, +X, +Mean, +Min, +Max, +Delta, +Log)
+%
+%    Display PDF artifacts
 render_pdf_artifacts(Title, X, Mean, Min, Max, Delta, Log) :-
     check_log(Log, _LogNum, LogSym),
     service_req(Service),
@@ -84,6 +93,9 @@ render_pdf_artifacts(Title, X, Mean, Min, Max, Delta, Log) :-
                    ]).
 
 
+%%   plot_pdf(+Model, +Mean, +Min, +Max, +Delta, +X, +Title, +Log)
+%
+%    Plot PDF
 plot_pdf(besselk1, Mean, Min, Max, Delta, X, Title, Log) :-
     render_pdf_artifacts(Title, X, Mean, Min, Max, Delta, Log).
 
@@ -93,6 +105,9 @@ sampling_power_law(Median,_,V) :-
    V is Median/(1.0/R-1.0).
 */
 
+%%   sample_from_pdf(+PDF_Model, +Mean, +N, +X, +Title, +Log)
+%
+%    Create sample from PDF  and place in table
 sample_from_pdf(besselk1, Mean, 1, X, Title, _) :-
     % Sampling mapdot power_law_2_sampling(Mean) ~> [1],
     besselk0_sqrt(Mean,sample, _, Sampling),
@@ -123,6 +138,9 @@ sample_from_pdf(besselk1, Mean, Quantity, X_Axis, Title, _Log) :-
                    ]).
 
 
+%%   plot_directed_graph
+%
+%    Plot directed graph from PDF class
 plot_directed_graph :-
     rdfx_collect(List),
     asserta(stored_rdf_graph_list(List)),
@@ -137,6 +155,9 @@ plot_directed_graph :-
 :- dynamic(stored_rdf_graph_list/1).
 
 
+%%   process(+Request)
+%
+%    Example dynamic page for generating a PDF, from *example*
 process(Property_Nickname, Locale_Nickname, Operation*Quantity) :-
     rdfx(Locale, ent:nickname, Locale_Nickname),
     rdfx(Property, ent:nickname, Property_Nickname),
@@ -178,6 +199,9 @@ process(Request) :-
     process(Property, Locale, Operation*Quantity).
 
 
+%%   loglin(+Request)
+%
+%    Switch from log to lin
 loglin(Request) :-
     http_parameters(Request, [loglin(Loglin, [boolean,
 					      default(true)])]),
@@ -207,9 +231,15 @@ loglin(Request) :-
                     ]).
 
 
+%%   encode_service(Hostname, Port, Cmd, Service)
+%
+%    Encode service call
 encode_service(Hostname, Port, Cmd, Service) :-
     atomic_list_concat(['http://', Hostname, ':', Port, Cmd], Service).
 
+%%   generate_service(+Request)
+%
+%    Generate service call
 generate_service(Request) :-
     http_parameters(Request, [service(Service, [string])]),
     http_current_host(Request, Hostname, Port, [global(true)]),
@@ -225,6 +255,9 @@ generate_service(Request) :-
 %  http://localhost:3020/context_pdf/process?locale=conus&property=terrain_slopes&operation=sample&quantity=1
 
 
+%%   example//
+%
+%    Example inline dynamic page for generating a PDF
 example -->
        html(
 	   \(con_text:table_form_target('What artifacts are available? >> ',
@@ -245,6 +278,9 @@ example -->
 
 :- dynamic(log_scale/1).
 
+%%   log_or_linear(+Log, -Set)
+%
+%    Check if log or linear
 log_or_linear(_, 1) :- log_scale(true).
 log_or_linear(_, 0) :- log_scale(false).
 log_or_linear(true, 1).
@@ -252,9 +288,15 @@ log_or_linear(false, 0).
 
 % toggle(1, false).
 % toggle(0, true).
+%%   log_value(+Num, -Bool)
+%
+%    Log set
 log_value(1, true).
 log_value(0, false).
 
+%%   check_log(+Input, -OutputLogical, -OutputNumeric)
+%
+%    If logarithmic
 check_log(Input, OutputLogical, OutputNumeric) :-
     log_or_linear(Input, OutputNumeric),
     log_value(OutputNumeric, OutputLogical).

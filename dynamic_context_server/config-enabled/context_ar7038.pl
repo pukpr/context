@@ -13,6 +13,9 @@
 
 
 
+%%   list_climate_design_types(+Target)//
+%
+%    Inline of climate types selection
 list_climate_design_types(Target) -->
     {findall(option([value(Name)],[Name]),
                     (rdf(ent:ar7038_climate, ent:climate_design_type, ID),
@@ -41,6 +44,9 @@ list_climate_design_types(Target) -->
         ).
 
 
+%%   navigate(+Request)
+%
+%    Dynamic page to environmental specification for nominal use
 navigate(Request) :-
    rdfS(ent:ar7038_spec, ent:description, Description),
    reply_html_page(cliopatria(default),
@@ -63,6 +69,9 @@ navigate(Request) :-
 		  ).
 
 
+%%   plot(+Request)
+%
+%    Plot nominal environmental characteristic
 plot(Request) :-
     http_parameters(Request, [kind(Kind, []),
                               climate_type(Climate_Name, []),
@@ -129,6 +138,9 @@ plot(Request) :-
 		  ).
 
 /*
+%%   rdf_local(ent)
+%
+%    Temp rdf
 rdf_local(ent:ashrae, ent:solarLoad, not_completed).
 
 rdf_local(ent:ar7038_spec, ent:description, 'Army Regulation 70-38, "Research, Development, Test and Evaluation of Materiel for Extreme Climatic Conditions", 9/15/1979').
@@ -525,6 +537,9 @@ rdf_local(ent:polymers, ent:site_with_high_deteroration_rate, ['open']).
 rdf_local(ent:textiles, ent:site_with_high_deteroration_rate, ['forest']).
 rdf_local(ent:metals, ent:site_with_high_deteroration_rate, ['coastal swamp', 'mangrove', 'forst']).
 
+%%   store_local
+%
+%    Temp rdf
 store_local :-
     context:make_name('AR-70-38_specs', Ent, E),
     print(user_error, Ent),

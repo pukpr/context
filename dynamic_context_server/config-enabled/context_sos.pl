@@ -17,6 +17,9 @@ sos([X|Rest], Sx, Phi, Amplitude, Initial, Final) :-
    !,
    sos(Rest, Sx, Phi, Amplitude, [Z|Initial], Final).
 
+%%   generate_sos_profile(+X, +PSD, -Z)
+%
+%    Generates a SOS profile from a PSD
 generate_sos_profile(X, psd(Sx, Sz), Z) :-
    Phi mapdot random_phase ~> Sx,
    Amp mapdot sqrt ~> Sz * Sx,

@@ -28,6 +28,9 @@
 
 :- use_module(context_math).
 
+%%   terrain_selection(+Name)//
+%
+%    Demo of selecting options
 terrain_selection(Name) -->
    html(form([action(Name),target(target_iframe)],
         [table(
@@ -45,6 +48,9 @@ terrain_selection(Name) -->
          ])])).
 
 
+%%   navigate(+Request)
+%
+%    Dynamic page to secondary demos
 navigate(Request) :-
    reply_html_page(
        cliopatria(default),
@@ -89,7 +95,7 @@ navigate(Request) :-
                    'Random walk using sum of sines applied to semi-Markov')),
 	       li(a([href='/context_model/apply?model=Canadian_lakes',
                     target=target_iframe],'Example PDF')),
-	       li(a([href='/context_demos/get_elevation?lat=44.0&lon=-120.0',
+	       li(a([href='context_demoscontext_demosget_elevation?lat=44.0&lon=-120.0',
                     target=target_iframe],'Example Elevation')),
 	       li([\(con_text:gif(workflow)),
 		   a(href('model_index'),
@@ -143,11 +149,17 @@ navigate(Request) :-
 % %% Slope sampling
 % %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 
+%%   exponential_sample_draw(+Result)
+%
+%    Demo of exponential sample draw
 exponential_sample_draw(Result) :-
    random(T),
    log(T,X),
    Result is -X.
 
+%%   exp_slopes(+M,+R)//
+%
+%    Inline table demo
 exp_slopes(_,R) -->
    {R < 0.0001}.
 exp_slopes(M, R) -->
@@ -161,11 +173,17 @@ json_complete(x(_,[]), y(_,[],_), In, Out) :-
 json_complete(x(X,S), y(Y,P,Shape), In, Out) :-
    atomic_list_concat(['"',Shape,' ',S,',',P,'"'], Id),
    atomic_list_concat(['[', In, '{"id":',Id,',',X,':',S,',',Y,':',P,'}]'], Out).
+%%   json_concat(+X, +Y, +In, -Out)
+%
+%    Demo of concat json
 json_concat(x(X,S), y(Y,P,Shape), In, Out) :-
    atomic_list_concat(['"',Shape,' ',S,',',P,'"'], Id),
    atomic_list_concat([     In, '{"id":',Id,',',X,':',S,',',Y,':',P,'},'], Out).
 
 
+%%   exp_slopes_json(+X,+Y,+ID,+M,+R)//
+%
+%    Inline table demo
 exp_slopes_json(X,Y,ID,M,R) -->
    {R < 0.0001,
     P is e**(-R/M),
@@ -179,6 +197,9 @@ exp_slopes_json(X,Y,ID,M,R) -->
 
 
 
+%%   bessel_slopes(+M,+R)//
+%
+%    Inline table demo
 bessel_slopes(_,R) -->
    {R < 0.0001}.
 bessel_slopes(M, R) -->
@@ -201,6 +222,9 @@ two_random_walker_csv(Z1,Z2, N, In, Out) :-
    two_random_walker_csv(Y1, Y2, M, Next, Out).
 
 
+%%   dygraph(+Request)
+%
+%    Demo of dygraph plotting
 dygraph(_) :-
    two_random_walker_csv(0.0, 0.0, 1000, '"X, Z1, Z2\\n"', Out),
    reply_html_page([title('chart'),
@@ -217,6 +241,9 @@ dygraph(_) :-
                                            Out ))
                    ]).
 
+%%   dygraph_test(+Request)
+%
+%    Demo of dygraph plotting
 dygraph_test(_) :-
    X range [1.0,50.0]/0.1,
    Y mapdot sin ~> X,
@@ -236,6 +263,9 @@ dygraph_test(_) :-
                                            Graph))
                    ]).
 
+%%   random_walker(+Z, +N, +In, -Out)
+%
+%    Demo of random walk
 random_walker(_, 0, In, Out) :-
    atomic_list_concat(['[', In,']'], Out).
 random_walker(Z, N, In, Out) :-
@@ -246,6 +276,9 @@ random_walker(Z, N, In, Out) :-
    random_walker(Y, M, Next, Out).
 
 
+%%   charting(+Request)
+%
+%    Demo of charting
 charting(_) :-
    random_walker(0.0, 1000, '["X", "Z"]', Out),
    reply_html_page(
@@ -267,6 +300,9 @@ charting(_) :-
 
 % %%%
 % % 1
+%%   gross_terrain(+Request)
+%
+%    Demo of a gross-terrain slope model
 gross_terrain_compute(Mean_Slope, 'local', 'pdf', _, _) :-
    A = '"Slope (rise/run)"',
    B = '"Probability"',
@@ -348,11 +384,14 @@ gross_terrain(Request) :-
 
 
 
+%%   get_elevation(+Request)
+%
+%    Read elevation from Google maps API
 get_elevation(Request) :-
    http_parameters(Request, [lat(Lat,[]),
                              lon(Lon,[])]),
    format(atom(S),
-          'http://maps.googleapis.com/maps/api/elevation/json?locations=~w,~w&sensor=false',
+          'http:context_demosmaps.googleapis.com/maps/api/elevation/json?locations=~w,~w&sensor=false',
           [Lat, Lon]),
    http_client:http_get(S, Response, []),
    % print(user_error, Response),
@@ -382,10 +421,19 @@ get_elevation(Request) :-
 % %%%%%% Example citation and data query %%%%
 % %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 
+%%   median_slope(-Median)
+%
+%    Data
 median_slope(0.039).
+%%   nominal_mileage(-MPG)
+%
+%    Data
 nominal_mileage(10.0).
 
 
+%%   sample_data(+Request)
+%
+%    Demo for sampling data
 sample_data(_) :-
    rdf(realmLandform:'LandSurface', rdf:type, owl:'Class'),
    reference_link('TOC', 'P.531', NamedDest),
@@ -413,14 +461,20 @@ sample_data(_) :-
 
 http:location(ref, '../../../library/reference', []).
 
-% reference_server('http://wcsn262:5001').
+% reference_server('http:context_demoswcsn262:5001').
 % reference_dir('../../../library/reference/').
 
+%%   reference_name(+Key, -Doc)
+%
+%    Demo on keyed ref doc
 reference_name('TOC', 'TheOilConundrum.pdf').
 reference_name('META', 'META_Phase_1b_Final_Report_with_Dist_A.pdf').
 reference_name('PPthesis', 'pukite_thesis.pdf').
 
 
+%%   reference_link(+Name, -Dest, -Link)
+%
+%    Demo on providing reference links
 reference_link(Name, Dest, Link) :-
    % reference_server(Server),
    % reference_dir(Dir),
@@ -431,6 +485,9 @@ reference_link(Name, Dest, Link) :-
 % %%%%%% Domain rules with respect to the data store %%%%%%%
 % %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 
+%%   find_maximum_density(+Mat, -Density)
+%
+%    Used by *max_density_example*
 find_maximum_density('material', 1).
 
 
@@ -438,6 +495,9 @@ find_maximum_density('material', 1).
 % %%%%%% Example Max Density Query       %%%%%%%
 % %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 
+%%   max_density_example(+Request)
+%
+%    Trivial demo
 max_density_example(_) :-
    find_maximum_density(Subj, Density),
    reply_html_page(% cliopatria(default),
@@ -452,6 +512,9 @@ max_density_example(_) :-
 % %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 
 
+%%   find_wind_ref_example(+Request)
+%
+%    Demo of finding a reference
 find_wind_ref_example(_) :-
    rdf(phenAtmoWind:'Wind', rdf:type, owl:'Class'),
    reference_link('TOC', 'M33.9.wind.speed', NamedDest),
@@ -461,6 +524,9 @@ find_wind_ref_example(_) :-
                      h2(a(href(NamedDest), 'TOC ref')) ]).
 
 
+%%   find_requirement_example(+Request)
+%
+%    Demo of finding a requirement
 find_requirement_example(_) :-
    rdf(humanResearch:'Evidence', rdf:type, owl:'Class'),
    reference_link('META', 'MobilityReq', NamedDest),
@@ -469,6 +535,9 @@ find_requirement_example(_) :-
                    [ h1('Requirements'),
                      h2(a(href(NamedDest), 'Mobility Req')) ]).
 
+%%   sample_alg_example(+Request)
+%
+%    Sampling algorithm demo
 sample_alg_example(_) :-
    rdf(reprSciModel:'Model', rdf:type, owl:'Class'),
    reference_link('PPthesis', 'DiffractionFromSteps', NamedDest),
@@ -492,11 +561,17 @@ frequencies(S, log, L, Result) :-
     frequencies(S1, log, [LogS|L], Result).
 
 
+%%   delayed_exponent(+L, +Alpha, +S, -R)
+%
+%    Demo delayed exponent for semi-markov model
 delayed_exponent(L, Alpha, S, R) :-
     Theta is -L*S,
     Num isx 1.0*exp(i*Theta),
     R isx Num / (Alpha & S).
 
+%%   two_level_model(+L1, +Alpha1, +L2, +Alpha2, +S, -R)
+%
+%    Semi-markov demo
 two_level_model(L1, Alpha1, L2, Alpha2, S, R) :-
     delayed_exponent(L1, Alpha1, S, P),
     delayed_exponent(L2, Alpha2, S, Q),
@@ -513,6 +588,9 @@ two_level_spectrum(L1, Alpha1, L2, Alpha2, S, L, Result) :-
     LogR is R,
     two_level_spectrum(L1, Alpha1, L2, Alpha2, S1, [LogR|L], Result).
 
+%%   builtin_complex(+Length, +Scale, +F, -Result)
+%
+%    used  by *complex_psd*
 builtin_complex(Length, Scale, F, Result) :-
     S is 100.0,
     Alpha1 is 1.0,
@@ -528,6 +606,9 @@ construct_psd([F|FR], [R|RR], In, Out) :-
     atomic_list_concat([In, '+ "', F, ',', R, '\\n"'], Next),
     construct_psd(FR, RR, Next, Out).
 
+%%   complex_psd(+Request)
+%
+%    Demo of a PSD generated from a Markov model
 complex_psd(Request) :-
     http_parameters(Request, [length(Value, [float])]),
     builtin_complex(Value, log, F, Result),
@@ -546,6 +627,9 @@ complex_psd(Request) :-
                                                       Out ))
                    ]).
 
+%%   complex_psd_semi_markov(+Request)
+%
+%    Demo of a PSD generated from a semi-Markov model
 complex_psd_semi_markov(Request) :-
     http_parameters(Request, [course(Course, [])]),
     F range [0.002, 2.0]/0.002,
@@ -567,6 +651,9 @@ complex_psd_semi_markov(Request) :-
 
 % ---------------
 
+%%   semi(+Request)
+%
+%    semi markov demo
 semi(_) :-
     X range [1,32768]/1,
     Z0 mapdot 0.0 .* X,
@@ -590,6 +677,9 @@ semi(_) :-
                                             Data ))
                     ]).
 
+%%   semi_fft(+Request)
+%
+%    semi-makov FFT demo
 semi_fft(_) :-
     % X range [1,16384]/1,
     X range [1,32768]/1,
@@ -615,6 +705,9 @@ semi_fft(_) :-
 
 % --------------------------------------
 
+%%   demo(+Request)
+%
+%    random walk demo
 demo(_) :-
     X range [1,2000]/1,
     context_random_walk:random_walker(X, 0.0, [], Z),
@@ -630,6 +723,9 @@ demo(_) :-
                                             [X,Z] ))
                     ]).
 
+%%   demo_ou(+Request)
+%
+%    Ornstein-Uhlenbeck random-walk demo
 demo_ou(_) :-
     X range [1,2000]/1,
     context_random_walk:ou_random_walker(0.028, 1.0, 0.05, X, Z),
@@ -650,6 +746,9 @@ demo_ou(_) :-
 
 
 
+%%   model_index(+Request) 
+%
+%    Demo of a guided model characteristic
 model_index(_) :-
    reply_html_page(
      cliopatria(default),
@@ -675,6 +774,9 @@ model_index(_) :-
      ).
 
 
+%%   model_format(+Request)
+%
+%    Demo of a guided model characteristic
 model_format(Request) :-
    http_parameters(Request, [domain(Domain),
                              query_type(Query)
@@ -737,6 +839,9 @@ model_format(Request) :-
      ).
 
 
+%%   model_characteristic(+Request)
+%
+%    Demo of a guided model characteristic
 model_characteristic(Request) :-
    http_parameters(Request, [domain(Domain),
                              query_type(Query),
@@ -817,6 +922,9 @@ model_characteristic(Request) :-
 
 % --------------------------
 
+%%   generate_random_walk_1(+X, -Z)
+%
+%    Demo of random walk
 generate_random_walk_1(X, Z) :-
    % Real space
    linear_range(0, 999, Dx),
@@ -831,6 +939,9 @@ generate_random_walk_1(X, Z) :-
    Amp mapdot sqrt ~> PSD * Sx,
    context_sos:sos(X, Sx, Phi, Amp, [], Z).
 
+%%   generate_random_walk_2(+Period, +X, -Z)
+%
+%    Demo of random walk
 generate_random_walk_2(Period, X, Z) :-
    % Real space
    linear_range(0, 999, Dx),
@@ -844,6 +955,9 @@ generate_random_walk_2(Period, X, Z) :-
 
 % param(length, [float]).
 
+%%   sos(+Request)
+%
+%    Demo of a fine-terrain generated from superposition of sines vis PSD
 sos(Request) :-
    http_parameters(Request, []),
    generate_random_walk_1(X, Z),
@@ -862,6 +976,9 @@ sos(Request) :-
                                                      Out ))
                    ]).
 
+%%   sos_config(+Request)
+%
+%    Demo of a fine-terrain generated from superposition of sines vis PSD
 sos_config(Request) :-
    http_parameters(Request, [length(Length, [float])]),
    generate_random_walk_2(Length, X, Z),

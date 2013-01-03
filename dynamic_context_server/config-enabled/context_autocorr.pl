@@ -20,14 +20,23 @@
 
 % Marginal Probability Distribution for elevation distances
 %
+%%   rdf_data(-Name)
+%
+%    Local RDF data
 rdf_data(Name) :-
     rdfS(ID, ent:section_designator, _S),
     rdfS(ID, ent:name, Name).
 
+%%   get_all_sections(-List)
+%
+%    Getting DEM sections as list
 get_all_sections(List) :-
     findall(option([value(Name)],[Name]), rdf_data(Name), RawList),
     sort(RawList, List).
 
+%%   navigate(+Request)
+%
+%    Dynamic page to gross terrain correlation models
 navigate(Request) :-
    get_all_sections(List),
    reply_html_page(
@@ -82,6 +91,9 @@ navigate(Request) :-
     diffElev/4,
     diffModel/4.
 
+%%   list_min(+List, -Min)
+%
+%    Minimimum value in a list
 list_min([[L|_]|Ls], Min) :- list_min(Ls, L, Min).
 
 list_min([], Min, Min).
@@ -89,23 +101,44 @@ list_min([[L|_]|Ls], Min0, Min) :-
     Min1 is min(L, Min0),
     list_min(Ls, Min1, Min).
 /*
+%%   flat(Fraction, +X, +Y, -Partial)
+%
+%    How flat a surface is
 flat(Fraction, X, Y, Partial) :-
     D is 1.0/40.0/Fraction^2,
     F is D/Fraction*(1-exp(-2*X*Fraction))/2,
     Partial is exp(-Y/sqrt(F)). % /sqrt(F).
 
+%%   ou_model(+N,+D,+L,+X,+Y, +Fraction, -Result)
+%
+%    Ornstein uhlenbeck model
+%%   ou_model0(+N,+D,+L,+X,+Y, +Fraction, -Result)
+%
+%    Ornstein uhlenbeck model
 ou_model0(N,D,L,X,Y, Fraction, Result) :-
     P is 1-Fraction,
     F is D/L*(1-exp(-2*X*L))/2,
     Result is (P*N/sqrt(2*F)*exp(-Y*Y/2/F) + N/F*exp(-Y/F/Fraction)).
               % Fraction*N/sqrt(2*F/10000)*exp(-Y*Y*10000/2/F) ).
 
+%%   ou_maxent_model(+N,+D,+L,+X,+Y, -Result)
+%
+%    Ornstein-Uhlenbeck MaxEnt model
+%%   ou_maxent_model(+N,+D,+L,+X,+Y, +Fraction, -Result)
+%
+%    Ornstein uhlenbeck model Maxent version
+%%   ou_maxent_model0(+N,+D,+L,+X,+Y, +Fraction, -Result)
+%
+%    Ornstein uhlenbeck model   MaxEnt version
 ou_maxent_model0(N,D,L,X,Y, Fraction, Result) :-
     P is 1-Fraction,
     F is sqrt(D/L*(1-exp(-2*X*L))/2),
     Result is (P*N/F*exp(-abs(Y)/F) + N/F*exp(-Y/F/Fraction)).
               % Fraction*N*100/F*exp(-100*abs(Y)/F)).
 
+%%   ou_gamma_model0(+N,+D,+L,+X,+Y, +Fraction, -Result)
+%
+%    Ornstein uhlenbeck model  Gamma version
 ou_gamma_model0(N,D,L,X,Y, Fraction, Result) :-
     P is 1-Fraction,
     % flat(Fraction, X, Y, Partial),
@@ -124,6 +157,9 @@ ou_maxent_model(N,D,L,X,Y, Fraction, Result) :-
     F is sqrt(D/L*(1-exp(-2*X*L))/2), % /8
     Result is Fraction*N/F*exp(-abs(Y)/F).
 
+%%   ou_mixent_model(+N,+D,+L,+X,+Y, +Fraction, -Result)
+%
+%    Ornstein uhlenbeck model Mixent version
 ou_mixent_model(N,D,L,X,Y, Fraction, Result) :-
     F is sqrt(D/L*(1-exp(-2*X*L))/2), % /8
     Result is Fraction*N/4*(F+Y)/F^2*exp(-abs(Y)/F).
@@ -136,6 +172,9 @@ ou_mixent_model(N,D,L,X,Y, Fraction, Result) :-
     Result is (Result1 + Result2)/1.0.
 */
 
+%%   instance_ou(+Model,+Name, +N,+D,+L, +Fraction, -Q)
+%
+%    Instance of Ornstein uhlenbeck model
 instance_ou(Model,Name, N,D,L, Fraction, Q) :-
     diffElev(Name, X,Y,Z),
     X > 0,
@@ -167,6 +206,9 @@ instance_ou(Model,Name, N,D,L, Fraction, Q) :-
 %    Q is abs(Z - Result)/(Result+0.001).
 
 
+%%   model_fit(+Model, +Name, +N0,+D0,+L0, +F0, +D, +L, +F, -Quality)
+%
+%    Model fit procedure
 model_fit(Model, Name, N0,D0,L0, F0, D, L, F, Quality) :-
     member(D, D0),
     member(L, L0),
@@ -179,6 +221,9 @@ model_fit(Model, Name, N0,D0,L0, F0, D, L, F, Quality) :-
 %    Quality is QQ.
 
 /*
+%%   find_best_model(+Name, +Quality, +Df, +Lf, +Nf, +F)
+%
+%    Finds the best model parameters
 find_best_model(Name, Quality, Df, Lf, N) :-
     N is 1201*1201,
     Df = 32.0,
@@ -262,6 +307,9 @@ find_best_model(Model, Name, Quality, Df, Lf, Nf, F) :-
     member([Min,Lf,Df,F],Results),
     Quality is integer(Min).
 
+%%   generate_model
+%
+%    Gnenerate model
 generate_model(_Model, _,   _,  _,  [],  [], _Fraction, F, R) :- reverse(F,R).
 generate_model(Model, N, Df, Lf, [X|DX], [Y|DY], Fraction, In, Out) :-
     (   X > 0 ->
@@ -278,6 +326,9 @@ generate_model(Model, N, Df, Lf, [X|DX], [Y|DY], Fraction, In, Out) :-
     ), !,
     generate_model(Model, N, Df, Lf, DX, DY, Fraction, [Result|In], Out).
 
+%%   generate_model_stats
+%
+%    Generate model stats
 generate_model_stats(_Model, _URI, _,   _,  _,  [],  [], _Fraction, F, R) :-
     R is sqrt(F/40/20)*100.
 generate_model_stats(Model, URI, N, Df, Lf, [X|DX], [Y|DY], Fraction, Input, Out) :-
@@ -302,6 +353,9 @@ generate_model_stats(Model, URI, N, Df, Lf, [X|DX], [Y|DY], Fraction, Input, Out
     generate_model_stats(Model, URI, N, Df, Lf, DX, DY, Fraction, Sum, Out).
 
 
+%%   random_walker(+Request) 
+%
+%    Generate a random walk profile
 random_walker(Request) :-
    http_parameters(Request, [d(D, [float]),
                              l(L, [float]),
@@ -326,6 +380,9 @@ random_walker(Request) :-
                     ]
                   ).
 
+%%   google_profile(+Request)
+%
+%    Create a Google map elevation profile
 google_profile(Request) :-
   http_parameters(Request, [z(Zone, [float]),
                             e(East, [float]),
@@ -359,6 +416,9 @@ google_profile(Request) :-
                     ]
                   ).
 
+%%   load_dem(+URI)
+%
+%    Load a DEM corresponding to URI
 load_dem(URI) :-
     atomic_list_concat(['instances/geo/',URI,'.ac.pl'], Path),
     retractall(diffElev(URI,_,_,_)),
@@ -369,6 +429,9 @@ load_dem(URI) :-
     print(user_error, [URI, 'not found']),
     fail.
 
+%%   exp_regression(+URI, +X, -Lbar)
+%
+%    Regresses for fit
 exp_regression(URI, X, Lbar) :-
    findall(Result, (diffElev(URI, X, Y, Result),Y>0,Result>0), YR),
    Y range [1,20]/1,
@@ -380,18 +443,30 @@ exp_regression(URI, X, Lbar) :-
    Lbar is 1/Slope.
 
 
+%%   find_theta(+URI, +X1, +X2, +Theta, -D)
+%
+%    Find a drag value
 find_theta(URI, X1, X2, Theta, D) :-
    exp_regression(URI, X1, L1),
    exp_regression(URI, X2, L2),
    Theta is abs(2*(L1*sqrt(X2)-L2*sqrt(X1))/(X2*sqrt(X2)*L1-X1*sqrt(X1)*L2)),
    D is L1^2/X1/(1-Theta*X1/4)^2.
 
+%%   find_avg(+URI, +Theta,-D)
+%
+%    Find average
 find_avg(URI, Theta,D) :-
    X1 in 1..5,
    label([X1]),
    X2 is X1 + 35,
    find_theta(URI, X1, X2, Theta,D).
 
+%%   pair_sum(+List, -Sum)
+%
+%    Sum pairs in list
+%%   pair_summer(+List, +Initial, -Total)
+%
+%    See *pair_sum*
 pair_summer([], Total, Total).
 pair_summer([[F1,F2]|R], [Total1,Total2], Final) :-
     Sum1 is Total1 + F1,
@@ -401,6 +476,9 @@ pair_summer([[F1,F2]|R], [Total1,Total2], Final) :-
 pair_sum(List, Sum) :-
     pair_summer(List, [0,0], Sum).
 
+%%   calc_avg(+URI, +Theta, -Diffusion)
+%
+%    Calculate average
 calc_avg(URI, Theta, Diffusion) :-
    r_open([]),
    findall([T,D], find_avg(URI,T,D), Pairs),
@@ -416,6 +494,9 @@ negate(false,contour).
 maintain(true,contour).
 maintain(false,color).
 
+%%   model_options(+L, +URI, +Opt, +Contour)//
+%
+%    Inline options
 model_options([], _URI, _Opt, _Contour) --> !.
 model_options([F|R], URI, Opt, Contour) -->
    {
@@ -442,6 +523,9 @@ model_options([F|R], URI, Opt, Contour)  -->
        ),
    model_options(R, URI, Opt, Contour).
 
+%%   rcontour(+Image, +X,+Y,+Z, +Contour)//
+%
+%    Display a contour or color image from R
 rcontour(Image, X,Y,Z, Contour) -->
      {
      Vector range [3.0,6.0]/0.1,
@@ -464,6 +548,12 @@ rcontour(Image, X,Y,Z, Contour) -->
      html(img(src(Image))).
 
 
+%%   contour(+Request)
+%
+%    Contour dynamic page
+%%   contour_display(+Opt, +URI, +Contour, +Lat, +Lon, +Info)
+%
+%    Display a contour or color image
 contour_display(Opt, URI, Contour, Lat, Lon, Info) :-
     load_dem(URI),
     findall([X,Y,Z],
@@ -639,6 +729,9 @@ contour_display(Opt, URI, Contour, Lat, Lon, Info) :-
 	      ).
 
 
+%%   variance(+Request)
+%
+%    Do the variance of pair-correlation
 variance(Request) :-
     http_parameters(Request, [uri(URI, [string]),
                               df(Df, [float]),
@@ -664,6 +757,9 @@ variance(Request) :-
 	    ]
 			   ).
 
+%%   mean(+Request)
+%
+%    Do the mean of pair correlation
 mean(Request) :-
     http_parameters(Request, [uri(URI, [string]),
                               df(Df, [float]),
@@ -736,14 +832,23 @@ contour(Request) :-
     ).
 
 
+%%   data_row(+URI,-ZList)
+%
+%    Get data row of section
 data_row(URI,ZList) :-
     Y in 0..40,
     label([Y]),
     findall(td(Z), diffElev(URI,_X,Y,Z), ZList).
 
+%%   data_table(+URI,-Table)
+%
+%    Get used table
 data_table(URI, table(ZTable)) :-
     findall(tr(Row), data_row(URI,Row), ZTable).
 
+%%   data_service(+Request) 
+%
+%    Access the data service
 data_service(Request) :-
     http_parameters(Request, [lat(Lat, [float]),
                               lon(Lon, [float])]),
@@ -758,6 +863,9 @@ data_service(Request) :-
 
 % FIX FIX
 %
+%%   collect_info(+Lat, +Lon, -Info)
+%
+%    Info at lat and lon
 collect_info(Lat, Lon, ['U'=URI, 'D'=Df, 'theta'=Lf, 'Q'=Q, 'E'=Err,
                         'F'=Fraction, 'S'=Flatness]) :-
     context_geo:find_dem_section(Lat, Lon, URI),
@@ -801,6 +909,9 @@ collect_info(URI, ['D'=Df, 'theta'=Lf, 'Q'=Quality]) :-
 %    find_best_model(ou_maxent, URI, Quality, Df, Lf, N, Fraction).
 */
 
+%%   run_sections 
+%
+%    Process DEMs
 run_sections :-
    Lat in 33..41,
    Lon in -119 .. -80,
@@ -810,21 +921,33 @@ run_sections :-
                  'D'=Df, 'theta'=Lf, 'Q'=Q, 'E'=Err, 'F'=Fraction, 'S'=Flatness]),
    writeln([Name, Lat, Lon, Df, Lf, Fraction, Flatness,  Q, Err]).
 
+%%   run_all_sections 
+%
+%    Process all DEMS
 run_all_sections :-
    findall(Name, rdf_data(Name), Raw),
    maplist(collect_info, Raw).
 
 
+%%   aggregate_info(+URI)
+%
+%    Assert info on a section
 aggregate_info(URI) :-
     atomic_list_concat(['instances/geo/',URI,'.ac.pl'], Path),
     read_file_to_terms(Path, Terms, []),
     maplist(assert, Terms).
 
+%%   aggregate_all_sections 
+%
+%    Do *aggregate_info* on all sections
 aggregate_all_sections :-
    retractall(diffElev(_,_,_,_)),
    findall(Name, rdf_data(Name), Raw),
    maplist(aggregate_info, Raw).
 
+%%   find_all_elevs(+X,+Z, -Total)
+%
+%    Find all elevs and sum to total
 find_all_elevs(X,Z, Total) :-
    X in 0 .. 40,
    Z in 0 .. 20 ,
@@ -835,6 +958,9 @@ find_all_elevs(X,Z, Total) :-
    Total is Num/L.
 
 
+%%   sum_all_sections 
+%
+%    Sum all sections
 sum_all_sections :-
    findall(diffElev('aaa_16_16_test',X,Z,Count), find_all_elevs(X,Z,Count), List),
    tell('instances/geo/aaa_16_16_test.ac.pl'),

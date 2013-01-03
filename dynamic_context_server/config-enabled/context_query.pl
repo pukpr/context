@@ -20,12 +20,18 @@
 % :- context:register(context_query:ent_result).
 
 
+%%   model_elements(-Option)
+%
+%    Search elements for returning selection options
 model_elements(option([value(Short)],[Name])) :-
     rdf(ID, rdfs:'subClassOf', _),
     rdf_global_id(ent:Name, ID),
     atomic_list_concat(['ent:', Name], Short).
     % context:concise_term(ID, Short).
 
+%%   owl(+Query, -Resource, -Title)
+%
+%    OWL lookahead query
 owl(Query, Resource, Title) :-
     rdf(Resource, rdf:type, owl:'Class'),
     upcase_atom(Resource, R),
@@ -34,6 +40,9 @@ owl(Query, Resource, Title) :-
     context:concise_term(Resource, Title).
     % Title=Resource.
 /*
+%%   ent_result(+Request)
+%
+%    Return matches from the ent namespace
 ent_result(Request) :-
    http_parameters(Request, [result(Result, [])]),
    % rdf_global_id(Result, Graph),
@@ -52,6 +61,9 @@ ent_result(Request) :-
 		   ]
 		  ).
 */
+%%   owl_result(+Request)
+%
+%    Return matches from the owl subclass scheme
 owl_result(Request) :-
    http_parameters(Request, [result(Result, [])]),
    context:create_global_term(Result, Graph),
@@ -69,6 +81,9 @@ owl_result(Request) :-
 		   ]
 		  ).
 
+%%   triple(S,P,O) 
+%
+%    SubjectPredicateObject triple query
 triple(S,P,O) :-
     (	callable(P) ->
         rdf_global_term(P, P1)
@@ -89,6 +104,9 @@ triple(S,P,O) :-
     !.
 
 
+%%   pquery(+Request)
+%
+%    Generates a Prolog query and view the result
 pquery(Request) :-
     http_parameters(Request, [input(Input, [])]),
     atom_to_term(Input, Terms, Var),
@@ -103,6 +121,9 @@ pquery(Request) :-
                    ).
 
 
+%%   navigate(+Request)
+%
+%    Dynamic page to general queries to the knowledge-base
 navigate(Request) :-
     findall(Ent, model_elements(Ent), Ents),
     sort(Ents, Elements),

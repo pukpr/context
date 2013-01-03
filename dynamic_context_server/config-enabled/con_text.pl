@@ -13,6 +13,9 @@
 
 % :- dynamic acronym_definition/2.
 
+%%   acronym(+Def)//
+%
+%    Acronym list
 acronym(Def) -->
     {
        acronym_definition(Def, Text),
@@ -20,20 +23,27 @@ acronym(Def) -->
     },
     html(abbr([title=S], Def)).
 
-% Similar to reply HTML page, but for frames
+%%   reply_frameset_page(+Body)
+%
+%    Similar to reply HTML page, but for frames
 reply_frameset_page(Body) :-
 	html_current_option(content_type(Type)),
 	phrase(page(Body), HTML),
 	format('Content-type: ~w~n~n', [Type]),
 	print_html(HTML).
 
-% blank page waiting for results
+%%   results_page(+Text)
+%
+%    blank page waiting for results
 results_page(Text) :-
    reply_html_page(
      title(Text),
      [p(b(u(Text))) ]
      ).
 
+%%   info(+Request)
+%
+%    info box
 info(Request) :-
     http_parameters(Request, [info(Info, [])]),
     reply_html_page(
@@ -42,49 +52,80 @@ info(Request) :-
      ).
 
 
+%%   back_up(+N)//
+%
+%    Backup page
 back_up(1) -->
     html(
         [p(a(href('javascript:history.back(1);'), '< [back]'))]
         ).
 
+%%   style//
+%
+%    style sheet
 style -->
     html(
         link([ type('text/css'), rel('stylesheet'), href('/html/css/context.css') ])
         ).
 
+%%   style_cliopatria//
+%
+%    style sheet like cliopatria
 style_cliopatria -->
     html(
         link([ type('text/css'), rel('stylesheet'), href('/css/cliopatria.css') ])
         ).
 
+%%   style_submit//
+%
+%    interactive submit javascript
 style_submit -->
     html(
 	script([type('text/javascript'),src('/html/js/submit.js')], [])
 	).
 
+%%   target_iframe//
+%
+%    submit form to target iframe
 target_iframe -->
     html(
         'subm(this.form,"target_iframe");'
 	).
+
+%%   target_render//
+%
+%    submit form to render iframe
 target_render -->
     html(
         'subm(this.form,"render");'
 	).
 
+%%   space_list(+L)//
+%
+%    spaced list of items
 space_list([]) --> !.
 space_list([F|R]) -->
     html([b(' + '),i(F)]),
     space_list(R).
 
+%%   dlist(+D,+L)//
+%
+%    paired list of item
 dlist(_, []) --> !.
 dlist(D, [F|R]) -->
     html([D, F]),
     dlist(D, R).
 
+%%   flist(+F)//
+%
+%
 flist(F) -->
     {with_output_to(atom(A), write(F))},
     html(i(A)).
 
+%%   alert(+Link_Text, +Alert)//
+%
+%    alert box
 alert(Link_Text, Alert) -->
     html(a([href='#',
             onclick='alert("' + Alert +'");'
@@ -97,13 +138,18 @@ alert(Link_Text, Alert, Text) :-
     Text = a([href='#', onclick=Click],
               Alert).
 
+%%   info(+Link_Text, +Output)//
+%
+%    info box
 info(Link_Text, Output) :-
     with_output_to(atom(Info), print(Link_Text)),
     atomic_list_concat(['javascript:alert("', Info, '");'], Output).
 
 
 
-% Simple Form
+%%   input(+Pair)//
+%
+%    Simple Form
 input([]) --> !.
 input([[Name,Default]|Rest]) -->
     html(
@@ -121,6 +167,9 @@ input([[Name,Default,Size]|Rest]) -->
         ),
     input(Rest).
 
+%%   form(+Action, +List)//
+%
+%    Interactive form
 form(Action, List) -->
     html(form([class('query'), action(Action)],
               [ \input(List),
@@ -131,10 +180,16 @@ form(Action, Target, List) -->
               [ \input(List),
                input([type('submit')])])).
 
+%%   reload//
+%
+%    reload page
 reload -->
   html(a([href('javascript:location.reload(true);')], ' refresh')).
 
 
+%%   form_ac(+Action, +Target, +Subject_Filter, +ID)//
+%
+%    Form autocomplete
 form_ac(Action, Target, Subject_Filter, ID) -->
     html([ \(reload),
            form([action(Action), target(Target)],
@@ -145,6 +200,9 @@ form_ac(Action, Target, Subject_Filter, ID) -->
         ).
 
 
+%%   autoc(+Callback, +ID)//
+%
+%    Autocomplete functor
 autoc(Callback, ID) -->
     {
      with_output_to(atom(CB),format('~w=""', Callback))
@@ -158,6 +216,9 @@ autoc(Callback, ID) -->
                                                          value(CB)
                                                      ])))).
 
+%%   ac(+Resource, +ID)//
+%
+%    Autocomplete functor
 ac(Resource, ID) -->
     html( div(\(autocomplete_predicates:autocomplete(Resource, [   query_delay(0.3),
                                                                    auto_highlight(false),
@@ -167,16 +228,25 @@ ac(Resource, ID) -->
                                                                    value('')
                                                                  ])))).
 
+%%   first_n(+Max, +Completions1, +Completions2)
+%
+%
 first_n(0, _, []) :- !.
 first_n(_, [], []) :- !.
 first_n(N, [H|T0], [H|T]) :-
 	N2 is N - 1,
 	first_n(N2, T0, T).
 
+%%   area(+Str, +City, +Name)
+%
+%    Example autocomplete
 area(_Str, 'Baltimore', 'temperature record').
 area(_Str, 'Wilmington', 'temperature record').
 area(_Str, 'conus', 'slope record').
 
+%%   autocompletions(+Query, +Max, +Count, -Completions)
+%
+%    Autocompletions function
 autocompletions(Query, Max, Count, Completions) :-
     print(user_error,['Q', Query]),
     findall([Obj,Type], area(Query, Obj, Type), Completions0),
@@ -185,11 +255,17 @@ autocompletions(Query, Max, Count, Completions) :-
     first_n(Max, Completions1, Completions2),
     maplist(obj_result, Completions2, Completions).
 
+%%   obj_result(+Pair, -JSON)
+%
+%    Used by autocompletion
 obj_result([Obj,Type], json([ label=Obj,
                               type=Type,
                               href='javascript:location.reload(false);'
                             ])).
 
+%%   resources(+Request)
+%
+%    Used by autocompletion
 resources(Request) :-
 	http_parameters(Request,
 			[ query(Query, [description('Typed string')]),
@@ -202,7 +278,9 @@ resources(Request) :-
 
 :- http_handler('/con_text/resources', resources, []).
 
-% Table-wrapped Form
+%%   table_header(+List)//
+%
+%    Table-wrapped Form
 table_header([]) --> !.
 table_header([[Name,_]|Rest]) -->
     html(th([width('100%')],
@@ -212,6 +290,9 @@ table_header([[Name,_]|Rest]) -->
     table_header(Rest).
 
 
+%%   table_input(+List)//
+%
+%    Table input with autocomplete
 table_input([]) --> !.
 table_input([[Name,Default]|Rest]) -->
     html(td([valign=top],
@@ -230,6 +311,9 @@ table_input([[Name,Default]|Rest]) -->
             )),
     table_input(Rest).
 
+%%   table_input_pair(+Pairs)//
+%
+%    Table inputs
 table_input_pair([]) --> !.
 table_input_pair([[Name,Default]|Rest]) -->
     html(tr([
@@ -249,6 +333,9 @@ table_input_pair([[Name,Default]|Rest]) -->
     table_input_pair(Rest).
 
 
+%%   table_form(+Title, +Action, +List)//
+%
+%    Table form
 table_form(Title, Action, List) -->
     {length(List, L)},
     html(form([action(Action)],
@@ -266,6 +353,9 @@ table_form(Title, Action, List) -->
                 % , input([type('submit')])
               ])).
 
+%%   table_form_target(+Title, +Action, +Target, +List)//
+%
+%    Table from with target
 table_form_target(Title, Action, Target, List) -->
 /*    {
      length(List, L)
@@ -289,6 +379,9 @@ table_form_target(Title, Action, Target, List) -->
 
 
 
+%%   radio_box_input_two(+Name, +Pair1, +Pair2)//
+%
+%    Radio box, limit two items
 radio_box_input_two( Name, [Name1, Value1], [Name2, Value2]) -->
     html([
         input([type('radio'),name(Name),value(Value1)]),b(Name1),
@@ -298,6 +391,9 @@ radio_box_input_two( Name, [Name1, Value1], [Name2, Value2]) -->
          ]
         ).
 
+%%   radio_box_two(+Title, +Action, +Target, +Name, +Pair1, +Pair2)//
+%
+%    Radio box with target, limit two items
 radio_box_two(Title, Action, Target, Name, [Name1, Value1], [Name2, Value2]) -->
    html(form([action(Action),
               target(Target)],
@@ -322,6 +418,9 @@ radio_box_two(Title, Action, Target, Name, [Name1, Value1], [Name2, Value2]) -->
             )
          ])])).
 
+%%   radio_toggles(+Name,+List)//
+%
+%    Radio toggles
 radio_toggles(_Name, []) --> !.
 radio_toggles(Name, [[NameN, ValueN]|Rest]) -->
     html([
@@ -334,6 +433,9 @@ radio_toggles(Name, [[NameN, ValueN]|Rest]) -->
         ),
     radio_toggles(Name, Rest).
 
+%%   number_radio_toggles(+Name, +List)
+%
+%    Numbered radio toggles
 number_radio_toggles(_Name, []) --> !.
 number_radio_toggles(Name, [Num|Rest]) -->
     html([
@@ -356,6 +458,9 @@ radio_box_input_two( Name, [Name1, Value1], [Name2, Value2]) -->
         ).
 */
 
+%%   radio_boxes(+Title, +Action, +Target, +Name, +List)//
+%
+%    Radio boxes inside table
 radio_boxes(Title, Action, Target, Name, List) -->
    html(form([action(Action),
               target(Target)],
@@ -374,6 +479,9 @@ radio_boxes(Title, Action, Target, Name, List) -->
             )
          ])])).
 
+%%   button_contents(+List)//
+%
+%    Button contents, hidden to store info
 button_contents([]) --> !.
 button_contents([[Content,Value]|Rest]) -->
     html(
@@ -383,6 +491,9 @@ button_contents([[Content,Value]|Rest]) -->
 
 
 
+%%   button_link(+Name, +Action, +Target)//
+%
+%    Button link to target
 button_link(Name, Action, Target) -->
     html(form([action(Action),
               target(Target)],
@@ -412,6 +523,9 @@ button_link(Name, Action, Target, Contents) -->
 
 
 
+%%   table_with_iframe_target(+Request, +Left_Content)//
+%
+%    Create a table with a left side cell content and iframe on right
 table_with_iframe_target(Request, Left_Content) -->
     {
       IName = target_iframe,
@@ -458,6 +572,9 @@ table_with_iframe_target(Request, Left_Content) -->
         ).
 
 
+%%   table_with_iframe_lower_target(+Request, +Upper_Content)//
+%
+%    Create a table with a upper cell content and iframe below
 table_with_iframe_lower_target(Request, Upper_Content) -->
     {
       IName = target_iframe,
@@ -488,6 +605,9 @@ table_with_iframe_lower_target(Request, Upper_Content) -->
          )
         ).
 
+%%   render_iframe(+Request, +Height)//
+%
+%    Create a render iframe
 render_iframe(Request, Height) -->
     {
       (  atom(Request) ->
@@ -525,11 +645,17 @@ render_iframe(Request) -->
 	       [])).
 
 
+%%   inline_button(+Content)//
+%
+%    Inline button
 inline_button(Content) -->
     html(div([style='display: inline-block; clear: both; height: 1px;'],
              [Content])).
 
 
+%%   uri_index_link(+URI)//
+%
+%    URI index link
 uri_index_link(URI) -->
    {
     uri_encoded(path, URI, U)
@@ -537,6 +663,9 @@ uri_index_link(URI) -->
    html(a(href('/browse/list_resource?r='+U), '[link]')).
 
 
+%%   two_columns(+Content1, +Content2)//
+%
+%    Two columns
 two_columns(Content1, Content2) -->
    html(table([border(0), width('100%')],
 	      [tr([td([width('50%'),valign(top)],[Content1]),
@@ -549,6 +678,9 @@ each_column([F|R]) -->
    html(td([], F)),
    each_column(R).
 
+%%   multi_columns(+Content)//
+%
+%    Multi columns from list
 multi_columns(Content) -->
    html(table([border(0), width('100%')],
 	      [tr([
@@ -559,9 +691,15 @@ multi_columns(Content) -->
 	     )
        ).
 
+%%   def_list(+Pair)//
+%
+%    Definition list
 def_list(A=B) -->
     html(dl([dt(A),dd(B)])).
 
+%%   paragpaphs(+List)//
+%
+%    List of paragraphs
 paragraphs([]) --> !.
 paragraphs([F|R]) -->
    {with_output_to(atom(Text), write(F))},
@@ -585,6 +723,9 @@ each_entry([[Name,Value]|R]) -->
        ),
    each_entry(R).
 
+%%   table_entries(+Attribute, +Value, +Content)//
+%
+%    Table of attibute-value entries
 table_entries(Attribute, Value, Content) -->
    html(table([border(0),
 	       style('margin-left:40pt;font-family: Arial, Verdana, sans-serif;')
@@ -617,6 +758,9 @@ each_row(Cell, [F|R]) -->
        ),
    each_row(Cell, R).
 
+%%   table_multiple_entries(+Header, +Content)//
+%
+%    table of multiple entries
 table_multiple_entries(Header, Content) -->
    html(table([border(1)],
 	      [\(each_row(th, Header)),
@@ -626,6 +770,9 @@ table_multiple_entries(Header, Content) -->
        ).
 
 
+%%   gif(+Name)//
+%
+%    Image item
 gif(Name) -->
    {
      rdf_(Name, ent:description, Title) ->
@@ -637,6 +784,9 @@ gif(Name) -->
              title(Title)])).
 
 
+%%   collect_options(+Functor, +List)
+%
+%    Used to generate a list of options
 collect_options(Functor, List) :-
     findall(option([value(Value)],[Name]),
             call(Functor, Name, Value),

@@ -5,6 +5,9 @@
     *
 */
 
+%%   xml(+Prolog)
+%
+%    Generate an XML data structure based on Prolog structure
 xml(Prolog) :-
     % html_set_options([dialect(xhtml)]),
     html(Prolog, A, []),

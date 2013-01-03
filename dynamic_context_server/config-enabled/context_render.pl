@@ -9,6 +9,9 @@
 
 :- use_module(context_math).
 
+%%   process_two_track(+MX, +MY, +X,+Y,+Z, +Input, -Final)
+%
+%    Process a two-track geometry
 process_two_track(_, _, [_],[_],[_], Final, Final).
 process_two_track(MX, MY, [X1,X2|XR],[Y1,Y2|YR],[Z1,Z2|ZR], Input, Final) :-
     % print(user_error, X1),
@@ -46,6 +49,9 @@ process_xyz(MX, MY, [X1|XR],[Y1|YR],[Z1|ZR], Input, Final) :-
 	 | Input],
         Final).
 
+%%   create(+Request)
+%
+%    Create a 3D representation according to a specific deterministic profile geometry
 create(Request) :-
     http_parameters(Request, [uri(URI, [string])]),
     read_rdf(URI, _X_Units, _Z_Units, [DX,DY,DZ], _Header),
@@ -58,6 +64,9 @@ create(Request) :-
     render(URI, Contents).
 
 
+%%   surface(+Request)
+%
+%    Create a surface representation
 surface(Request) :-
     http_parameters(Request, [uri(URI, [string])]),
     findall([X,Y,Z],
@@ -76,6 +85,9 @@ surface(Request) :-
     render(URI, Contents).
 
 
+%%   render(+URI, -Contents)
+%
+%    Render the URI object
 render(URI, Contents) :-
     File = 'html/test.svg',
     %Contents = [line([x1=3.1, y1=4.8, x2=112.4, y2=115.2], []),

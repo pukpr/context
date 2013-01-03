@@ -13,6 +13,9 @@
 
 :- use_module(components(messages)).
 
+%%   navigate(+Request)
+%
+%    Dynamic page to lake models
 navigate(Request) :-
     reply_html_page(
         cliopatria(default),
@@ -40,6 +43,9 @@ navigate(Request) :-
         ]
                    ).
 
+%%   plot_chart(+Request)
+%
+%    Plot ice-out data over a historical range of interest
 plot_chart(Request) :-
     http_parameters(Request, [latitude(Lat, [integer, default(46)])]),
     FN = '/html/images/xy.bmp',
@@ -50,6 +56,9 @@ plot_chart(Request) :-
                      img(src(FN))
                    ]).
 
+%%   set_yearly_range(+Request)
+%
+%    Set yearly range for collecting data
 set_yearly_range(Request) :-
     http_parameters(Request, [from(From, [integer, default(1843)]),
                               to(To, [integer, default(2012)])]),
@@ -69,11 +78,17 @@ set_yearly_range(Request) :-
 
 
 
+%%   minnesota_dnr_ice_out(-URL)
+%
+%    Location of ice-out data
 minnesota_dnr_ice_out('http://www.dnr.state.mn.us/services/climatology/ice_out_by_year.html?year=').
 
 :- dynamic
     temperature/6.
 
+%%   assert_temperature(+Name, +Lat, +Year, +Month, +Date, +Days)
+%
+%    Not really a temperature but asserting the date of ice-out
 assert_temperature(Name, Lat, Year, Month, Date, Days) :-
     not(temperature(Name, Lat, Year, Month, Date, Days)),
     print_message(informational, format('Lake ~w @ ~w N (~w/~w/~w [day ~w]))',
@@ -82,6 +97,9 @@ assert_temperature(Name, Lat, Year, Month, Date, Days) :-
     !.
 assert_temperature(_,_,_,_,_,_).
 
+%%   store_record(+Term)
+%
+%    Store record
 store_record(Term) :-
     Term=json(
              [ice_out_first_year=_IceOutFirstYear,
@@ -106,6 +124,9 @@ store_record(Term) :-
     assert_temperature(Name, Lat, Year, Month, Date, Days).
 
 
+%%   get_ice_out(-Year)
+%
+%    Retrieve data from remote server for given year and save
 get_ice_out(Year) :-
     minnesota_dnr_ice_out(URL),
     atom_concat(URL, Year, U),
@@ -114,9 +135,15 @@ get_ice_out(Year) :-
     J=json([status='OK', results=L, message='']),
     maplist(store_record,L).
 
+%%   remove_temperatures
+%
+%    Clear out ice-out data
 remove_temperatures :-
     retractall(temperature(_,_,_,_,_,_)).
 
+%%   temperature_lat(+Lat_Range,-Year,-Time)
+%
+%    Query to data at a given latitude
 temperature_lat(Lat_Range,Year,Time) :-
     temperature(_Name,Lat,Y,_Month,_Day,Time),
     atom_number(Lat, Lat_N),
@@ -124,6 +151,9 @@ temperature_lat(Lat_Range,Year,Time) :-
     Lat_Range = L,
     atom_number(Y, Year).
 
+%%   lat_list(+FN, +Lat, -Years, -Times, -N, -Slope)
+%
+%    Plot all records at a given latitude
 lat_list(FN, Lat, Years, Times, N, Slope) :-
     findall(Y, temperature_lat(Lat,Y,T), Years),
     findall(T, temperature_lat(Lat,Y,T), Times),
@@ -131,12 +161,18 @@ lat_list(FN, Lat, Years, Times, N, Slope) :-
     context_r:rplot_with_regression(FN, Years, Times, Title, '"year"', '"iceOutDay"', Slope),
     length(Years,N).
 
+%%   get_all_records(+Year)
+%
+%    get all records up to year
 get_all_records(1843).
 get_all_records(To_Year) :-
     get_ice_out(To_Year),
     Next is To_Year - 1,
     get_all_records(Next).
 
+%%   get_all_records(+From, +To)
+%
+%    get all records up to year
 get_all_records(From, To) :-
     remove_temperatures, !,
     findall(Year, between(From, To, Year), List),

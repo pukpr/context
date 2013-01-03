@@ -10,6 +10,9 @@
 
 :- use_module(context_math).
 
+%%   list_solar_models(+Target)//
+%
+%    Inline generation of solar model list targeting a named window or frame
 list_solar_models(Target) -->
 	{
    collect_unit_options(length, Lunits) % elevation
@@ -44,6 +47,9 @@ list_solar_models(Target) -->
         ).
 
 
+%%   navigate(+Request)
+%
+%    Dynamic page to solar insolation models
 navigate(Request) :-
    reply_html_page(cliopatria(default),
                    [title('Solar Insolation')],
@@ -65,6 +71,9 @@ navigate(Request) :-
 		  ).
 
 
+%%   plot(+Request)
+%
+%    Graph the solar insolation model
 plot(Request) :-
     http_parameters(Request, [kind(_Kind, []),
                               temperature(Temperature, [number]),

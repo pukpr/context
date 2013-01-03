@@ -11,6 +11,9 @@
 /*
 % :- multifile(rdf_/3).
 
+%%   rdf_local(+A,+B,+C)
+%
+%    Temporary local RDF
 rdf_local(ent:soil, ent:category, ent:coarse_grained_soil).
 rdf_local(ent:soil, ent:category, ent:fine_grained_soil).
 rdf_local(ent:soil, ent:category, ent:highly_organic_soil).
@@ -77,6 +80,9 @@ rdf_local(ent:low_plasticity, ent:symbol, 'L').
 rdf_local(ent:low_plasticity, ent:description, 'low plasticity').
 */
 
+%%   soil_combination(-Tuple)
+%
+%    Used to generate all soil combinations
 soil_combination([C, Desc, TG, [Desc, ' containing ', Graininess]]) :-
    C = 'coarse grained',
    % Prefix
@@ -144,6 +150,9 @@ soil_combination([C, Desc, TG, [Desc, ' with ', Plasticity]]) :-
    atom_concat(Texture, Grain, TG).
 
 
+%%   soil_table(+Request)
+%
+%    Make soil table
 soil_table(_Request) :-
     findall(Row,soil_combination(Row), Rows),
     reply_html_page([title('Unified Soil Classification Table'),
@@ -160,6 +169,9 @@ soil_table(_Request) :-
 
 % This creates a decorated list
 
+%%   soil_range(+Element, -Li)
+%
+%    Create a list item, from a soil range
 soil_range(Element, li([i(Item), ' : '  | Description])) :-
     atom_to_term(Element, E, [Item=E]),
     atom(Item),
@@ -175,12 +187,18 @@ soil_range(Element, li([b([i(Item1),' : ' | Description1]), &(rarr), br([]),
 
 
 
+%%   process_soil_types(+List, +Input, -Output)
+%
+%    Recurse through soils, created a list
 process_soil_types([], Input, Output) :- reverse(Input, Output).
 process_soil_types([F|R], Input, Output) :-
     soil_range(F, Value),
     process_soil_types(R, [Value|Input], Output).
 
 
+%%   parse_request(Soils, List)
+%
+%    Take soil data and create a list
 parse_request(Soils, List) :-
     atom_to_term(Soils, Items, []),
     process_soil_types(Items, [], List), !.
@@ -189,6 +207,9 @@ parse_request(_Soils, '').
 
 % This creates an undecorated list
 
+%%   soil_collect(Element, Item)
+%
+%    Undecorated list of soil types
 soil_collect(Element, Item) :-
     atom_to_term(Element, E, [Item=E]),
     atom(Item),
@@ -202,6 +223,12 @@ soil_collect(Element, [Item1, Item2] ) :-
 
 
 
+%%   collect(+Soils, -List)
+%
+%    Feeds into *collect_soil_types*
+%%   collect_soil_types(+List, +Input, -Output)
+%
+%    Collect soil types
 collect_soil_types([], Input, Output) :- reverse(Input, Output).
 collect_soil_types([F|R], Input, Output) :-
     soil_collect(F, Value),
@@ -214,6 +241,9 @@ collect(Soils, List) :-
 collect(_Soils, '').
 
 
+%%   search(+Name, -List)
+%
+%    Create soil classification types
 search(Name, List) :-
     rdfS(URI, ent:soil_classification, Types),
     rdfS(URI, ent:name, Name),

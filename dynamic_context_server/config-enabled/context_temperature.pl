@@ -18,6 +18,9 @@
 % T(t) = T0+Ty*sin(2*pi/365*t+a)+(dT*sin(2*pi/365*t+b)+(Td-dT))*sin(2*pi*t+c)
 
 
+%%   calculate_symbolic_temperature(+Site, -T, -S)
+%
+%    Generate a symbolic algebraic expression
 calculate_symbolic_temperature(Site, T, S) :-
     rdfS(U, ent:name, Site),
     rdfR(U, ent:t0, T0),
@@ -30,14 +33,23 @@ calculate_symbolic_temperature(Site, T, S) :-
     PI is pi,
     S = T0+Ty*sin(2*PI/365*T+A)+(DT*sin(2*PI/365*T+B)+(Td-DT))*sin(2*PI*T+C).
 
+%%   calculate_numeric_temperature(+Site, +T, -Temperature)
+%
+%    Generate a numeric from symbolic
 calculate_numeric_temperature(Site, T, Temperature) :-
     calculate_symbolic_temperature(Site, T, Symbolic_Temperature),
     Temperature is Symbolic_Temperature.
 
+%%   generate_yearly_temperature_profile(+Site, +Timespan, -Profile)
+%
+%    Generate Yearly Temperature Profile
 generate_yearly_temperature_profile(Site, Timespan, Profile) :-
    Timespan range [0,365]/0.1,
    Profile mapdot calculate_numeric_temperature(Site) ~> Timespan.
 
+%%   begin_c_skeleton(-Code)
+%
+%    Skeleton generator Begin section
 begin_c_skeleton('
 #include <math.h>
 
@@ -45,16 +57,25 @@ float Get_Temperature (float time) {
    return ('
 ).
 
+%%   end_c_skeleton(-Code)
+%
+%    Skeleton generator End section
 end_c_skeleton(');
 }'
 ).
 
+%%   generate_c_code(+Site, -Code)
+%
+%    Generate C code to describe expected seasonal temperature data
 generate_c_code(Site, Code) :-
    calculate_symbolic_temperature(Site,time,ST),
    begin_c_skeleton(Inner),
    end_c_skeleton(Outer),
    context_codegen:generate_from_symbolic_skeleton(Inner, ST, Outer, Code).
 
+%%   temperature(+Request)
+%
+%    Plot temperature page
 temperature(Request) :-
    http_parameters(Request, [site(Site, [string])]),
    ( generate_yearly_temperature_profile(Site, TS, Profile)
@@ -133,6 +154,9 @@ temperature(Request) :-
                    ])
    ).
 
+%%   example//
+%
+%    Inline temperature example
 example -->
    html(
 
@@ -169,6 +193,9 @@ prolog:doc_search_field(Options) -->
 
 % -----
 
+%%   navigate//
+%
+%    Dynamic page to temperature models
 navigate -->
     {
      get_all_temperature_sets(List)
@@ -182,10 +209,16 @@ navigate -->
             ])
         ).
 
+%%   get_all_temperature_sets(-List)
+%
+%    Get all locales that have temperature
 get_all_temperature_sets(List) :-
     findall(option([value(ID)],[Name]), available_location(ID, Name), L),
     sort(L, List).
 
+%%   available_location(+Locale, -Title)
+%
+%    Temperature info for locale available
 available_location(Locale, Title) :-
      rdfS(Locale, ent:title, Title),
      rdf(URI, ent:locale, Locale),
@@ -196,32 +229,56 @@ available_location(Locale, Title) :-
 
 % ------------- dbpedia interface
 
+%%   months(-Month_Acronyms)
+%
+%    List of month acronyms
 months(     [jan,feb,mar,apr,may,jun,jul,aug,sep,oct,nov,dec]).
+%%   middle_days(-Middle_days)
+%
+%    List of middle days of month
 middle_days([ 15, 45, 75,105,135,165,195,225,255,285,315,350]).
+%%   month_number(-Ordinal)
+%
+%    Month ordinals
 month_number([ 1,  2,  3,  4,  5,  6,  7,  8,  9, 10, 11, 12]).
 
 
+%%   get_month(+Day, -Month)
+%
+%    Get month for day
 get_month(Day, Month) :-
      middle_days(Days),
      months(Months),
      nth0(MonthNum, Days, Day),
      nth0(MonthNum, Months, Month).
 
+%%   temperature_spread(+Month, -Q)
+%
+%    Format temperature measure query
 temperature_spread(Month, Q) :-
    format(atom(Q),
           'dbpprop:~wHighF ?~wHighF; dbpprop:~wLowF ?~wLowF; ',
           [Month, Month, Month, Month]).
 
+%%   format_temperature_query(+Text)
+%
+%    Format temperature query
 format_temperature_query(Text) :-
     months(Months),
     findall(Each, (member(Month,Months),
                    temperature_spread(Month,Each)), Text).
 
+%%   strip_numbers(+List, +Input, -Final)
+%
+%    Strip numbers from RDF list
 strip_numbers([], Input, Final) :- reverse(Input, Final).
 strip_numbers([literal(type(_, Str))| Rest], Input, Final) :-
     atom_number(Str, Num),
     strip_numbers(Rest, [Num|Input], Final).
 
+%%   get_lat_lon(+Location, -Lat, -Lon)
+%
+%    Get LatLon from location
 get_lat_lon(Location, Lat, Lon) :-
     (
        rdf_global_id(dbpedia:_, Location) ->
@@ -240,6 +297,9 @@ get_lat_lon(Location, Lat, Lon) :-
 get_lat_lon(_Location, '?', '?').
 
 
+%%   get_depiction(+Location, -Image)
+%
+%    Location has a image associated
 get_depiction(Location, Image) :-
     (
        rdf_global_id(dbpedia:_, Location) ->
@@ -253,6 +313,9 @@ get_depiction(Location, Image) :-
 get_depiction(_, '#').
 
 
+%%   get_page(+Location, -Page)
+%
+%    Get page for location
 get_page(Location, Page) :-
     (
        rdf_global_id(dbpedia:Local, Location) ->
@@ -262,6 +325,9 @@ get_page(Location, Page) :-
     ),
     atom_concat('http://dbpedia.org/page/', Local, Page).
 
+%%   get_temperature_spread(+Location, -Lows, -Highs, -Name)
+%
+%    Get the temperature spread for a location
 get_temperature_spread(Location, Lows, Highs, Name) :-
     (
        rdf_global_id(dbpedia:_, Location) ->
@@ -296,6 +362,9 @@ find_min([Num | Rest],
     ;
         find_min(Rest, Rest_of_Days, Lowest, Final, Index, Final_Day)
     ).
+%%   find_min_index(+List, +Highs, -Min, -Day, -Max)
+%
+%    Find minimum day index
 find_min_index(List, Highs, Min, Day, Max) :-
     middle_days(Days),
     find_min(List, Days, 1000, Min, 0, Day),
@@ -312,12 +381,18 @@ find_max([Num | Rest],
     ;
         find_max(Rest, Rest_of_Days, Highest, Final, Index, Final_Day)
     ).
+%%   find_max_index(+List, +Lows, -Max, -Day, -Min)
+%
+%    Find maximum day index
 find_max_index(List, Lows, Max, Day, Min) :-
     middle_days(Days),
     find_max(List, Days, -1000, Max, 0, Day),
     nth0(N,Days,Day),
     nth0(N,Lows, Min), !.
 
+%%   process_location(Location, Data)
+%
+%    Process temperature data for a location
 process_location(Location,
                  cold(MinCold, MaxCold, DayCold),
                  hot(MinHot, MaxHot, DayHot),

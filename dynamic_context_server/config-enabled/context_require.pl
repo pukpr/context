@@ -7,10 +7,16 @@
 
 :- context:register(context_require:navigate).
 
+%%   find_requirement_topics(-Option)
+%
+%    Search elements for returning selection options
 find_requirement_topics(option([value(Name)],[Local])) :-
    rdf(Name, rdf:type, req:'Requirement'),
    rdf_split_url(_, Local, Name).
 
+%%   navigate(+Request)
+%
+%    Dynamic page to requirements lookup
 navigate(Request) :-
    findall(Name, find_requirement_topics(Name), Nlist),
    sort(Nlist, Names),

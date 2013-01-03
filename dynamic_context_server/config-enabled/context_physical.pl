@@ -19,6 +19,9 @@
 % rdf_units(Subj, Pred, Obj) :-
 %    rdfS(Subj, Pred, Obj).
 */
+%%   rdf_units(+Sub, +Pred, +Obj)
+%
+%    Units as triples
 rdf_units(Sub, Pred, Obj) :-
     rdf_global_term(ent:Sub, Subject),
     rdf_global_term(ent:Pred, Predicate),
@@ -33,6 +36,9 @@ rdf_units(Sub, Pred, Obj) :-
     atom_to_term(T, Obj, []).
 
 
+%%   find_entries(+Name, -List)
+%
+%    Find entries from physical constant list
 find_entries(Name, List) :-
    findall([Text,Val], (rdfS(Class, ent:name, Name),
 			rdfS(Class, Attr, Val),
@@ -40,6 +46,9 @@ find_entries(Name, List) :-
 			Val \= ''),
 			List).
 
+%%   find_units(-List)
+%
+%    Find relevant Units list
 find_units(List) :-
    findall([Text,Val], (rdf(Attr, ent:units, UID),
 			rdfS(UID, ent:unit, Val),
@@ -48,6 +57,9 @@ find_units(List) :-
 		       ),
 			List).
 
+%%   navigate(+Request)
+%
+%    Dynamic page to physical parameters and constants
 navigate(Request) :-
    find_entries(standardAtmosphere, Atm),
    find_entries(water, Water),
@@ -313,6 +325,9 @@ rdf_old_units(ent:density, ent:units, ent:kg_liter).
 rdf_old_units(ent:kg_liter, ent:unit, 'kg/dm^3').
 rdf_old_units(ent:kg_liter, ent:description, 'kilos/liter').
 
+%%   store_as_triples 
+%
+%    Create as triples
 store_as_triples :-
     context:make_name('physical_units_and_constants', Ent, E),
     print(user_error, Ent),

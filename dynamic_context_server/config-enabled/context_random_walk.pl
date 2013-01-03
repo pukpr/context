@@ -13,16 +13,25 @@
 
 % semi-Markov random walk
 
+%%   semi_run(+L, +A, +Value)
+%
+%    A semiMarkov run length
 semi_run(L, A, Value) :-
     random(R),
     Value is L - A * log(R).
 
+%%   flip_step(+L_in, +A, +R_in, +R, +Semi_in, +Semi, +Z_in, +Z, +L, -Flip)
+%
+%    Whether to flip a step
 flip_step(L, A, R, R, Semi, Semi, Z, Z, L, A) :-
     R < Semi, !.
 flip_step([L1,L2], [A1,A2], _R, 0.0, _Semi, S, Z, Z1, [L2,L1], [A2,A1]) :-
     Z1 is -Z,
     semi_run(L1, A1, S).
 
+%%   semi_random_walker(+X, +Weight, +L, +A, +In, -Out)
+%
+%    Semi-Markov random walker
 semi_random_walker([], _Delta, _L, _A, _Z, _Semi, _Run, Out, Out).
 semi_random_walker([_|Rest], Delta, [L1,L2], [A1,A2], Z, Semi, Run, In, Out) :-
     R is Run + Delta,
@@ -39,6 +48,9 @@ semi_random_walker(X, Weight, [L1,L2], [A1,A2], Z0, Z1) :-
     Z1 mapdot Z0 + ZW.
 
 
+%%   two_level_random_walk(+Course_Name, +X, +Z, -Result)
+%
+%    Semi-Markov random walker
 two_level_random_walk(Course_Name, X, Z, Result) :-  % rename this
     rdfS(Course, ent:name, Course_Name),
     rdfR(Course, ent:alpha1, Alpha1),
@@ -58,6 +70,9 @@ two_level_random_walk(Course_Name, X, _Z, Result) :-  % this does not accumulate
 
 % Conventional random walk
 %
+%%   random_walker(+X, +Value, +In, -Out)
+%
+%    Classical random walk
 random_walker([], _, Out, Out).
 random_walker([_|Rest], Value, In, Out) :-
     random(R),
@@ -67,6 +82,9 @@ random_walker([_|Rest], Value, In, Out) :-
 
 % Ornstein-Uhlenbeck model
 %
+%%   ou_random_walker(+X1, +X2, +Drag, +Y, +Value, +N, -Out)
+%
+%    Ornstein-Uhlenbeck random walk
 ou_random_walker(_X1, _X2, _Drag, [], _, O, Out) :- reverse(O, Out).
 ou_random_walker(X1, X2, Drag, [_|Rest], Value, In, Out) :-
     random(R),

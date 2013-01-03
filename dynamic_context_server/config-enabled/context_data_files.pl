@@ -6,11 +6,17 @@
     * Converted into RDF and stored in triples knowledgebase
 */
 
+%%   directory_location(+Type, -Dir)
+%
+%    Get directory location
 directory_location(obstacles,
                    '../../../../Models/Land/obstacles/gap_crossing/data/').
 directory_location(terrain,
                    '../../../../Models/Land/terrains/grades_slopes/data/WaveNumberSpectra/LogSpaced/').
 
+%%   file_json(+Type, -Name)
+%
+%    Name infor for JSON file
 file_json(obstacles, 'ATC-MTA-3InchSpacedBump.JSON').
 file_json(obstacles, 'ATC_10percentSoilSlope.JSON').
 file_json(obstacles, 'ATC_15percentSoilSlope.JSON').
@@ -106,6 +112,9 @@ file_json(terrain, 'YTC_Patton_Level_Gravel_logspaced.JSON').
 file_json(terrain, 'YTC_Patton_Level_Trails_logspaced.JSON').
 
 
+%%   storeRDF(+A, +E, +B, +C)
+%
+%    Permanent RDF store
 storeRDF(A, E, B, C) :-
     is_list(C),
     with_output_to(atom(S), write(C)),
@@ -122,13 +131,22 @@ storeRDF(A, _E, B, C) :-
 storeRDF(A, _E, B, C) :-
     print(user_error, [skipped, A,B,C, '\n']).
 
+%%   prefix(-Ent)
+%
+%    Get RDF prefix used
 prefix('ent').
 
+%%   make_name(+Name, +Ent, -E)
+%
+%    Make global name from prefix
 make_name(Name, Ent, E) :-
     prefix(Ent),
     rdf_global_term(Ent:Name, E0),
     uri_normalized(E0, E).
 
+%%   read_json(+FN)
+%
+%    Read FileName
 read_json(FN) :-
    open(FN, read, F),
    json_read(F, json([File=json([name=Name,
@@ -210,6 +228,9 @@ read_json(FN) :-
     storeRDF(E, Ent, data_y, Y).
 
 
+%%   populate_rdf_with_file_data(Class) 
+%
+%    Generate RDF info
 populate_rdf_with_file_data(Class) :-
     directory_location(Class, Dir),
     file_json(Class,File),

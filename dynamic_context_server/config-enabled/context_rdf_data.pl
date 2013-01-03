@@ -8,6 +8,12 @@
 :- multifile(ref_/3).
 
 
+%%   ref_(+URL, +Type, -Feature)
+%
+%    Internal triple mechanism to map feature
+%%   ref_m(+N, +Type, -Path)
+%
+%    Internal triple mechanism to map feature path
 ref_m('fine terrain features',     model, '/context_select/navigate?category=fine_terrain').
 ref_m('fine terrain features',     target_iframe, '/html/static_pages/gems/fine_terrain.html').
 ref_m('fine terrain features',     category, 'propMass:Roughness').

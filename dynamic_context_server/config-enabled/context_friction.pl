@@ -11,10 +11,16 @@
 %  standard(a(href('http://www.atlantaeng.com/aes_calculator_vehicle_speed_combined.html'),web)).
 %
 %
+%%   standard(-Names)
+%
+%    Returns a list of (ISO) standards for friction coefficients
 standard(Names) :-
     findall(p(Name), (rdf(UID, ent:standard, ent:friction),
                    rdfS(UID, ent:name, Name)), Names).
 
+%%   coeff(-Friction_Info)
+%
+%     Return a tuple of cofficients of friction
 coeff([Value, Desc, DSF, DFF, WSF, WFF, Constraint, Note]) :-
     rdfS(UID, ent:material, Value),
     rdfS(UID, ent:description, Desc),
@@ -26,6 +32,9 @@ coeff([Value, Desc, DSF, DFF, WSF, WFF, Constraint, Note]) :-
     rdfS(UID, ent:note, Note).
 
 
+%%   coefficient_friction_table(+Request)
+%
+%    Render HTML Table of coefficients of friction
 coefficient_friction_table(_Request) :-
     findall(Row,coeff(Row), Rows),
     standard(Name),

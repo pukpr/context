@@ -18,6 +18,9 @@
 :- context:register(context_corrosion:corrosion_components).
 
 
+%%   collect_component_materials(+Metal, -List)
+%
+%    Collect component materials
 collect_component_materials(Metal, List) :-
     findall([Name],
             (   rdfS(Metal_Resource, rdfs:label, Metal),
@@ -37,10 +40,16 @@ collect_component_materials(Metal, List) :-
 	    */
 	    List).
 
+%%   materials(+Query, -Resource, -Title)
+%
+%    Lookahead on materials
 materials(Query, Resource, Title) :-
     rdf(Resource, rdfs:label,  literal(substring(Query),Title)),
     rdf(Resource, rdfs:subClassOf, _Component).
 
+%%   corrosion_components(+Request)
+%
+%    Corrosion components
 corrosion_components(Request) :-
     http_parameters(Request, [mat(Material, [])]),
     upcase_atom(Material, Mat),
@@ -53,6 +62,9 @@ corrosion_components(Request) :-
 
 
 
+%%   navigate(+Request)
+%
+%    Dynamic page to corrosion models
 navigate(Request) :-
    collect_unit_options(length, Lunits),
    collect_unit_options(time, Tunits),
@@ -101,11 +113,17 @@ navigate(Request) :-
      ]
 		  ).
 
+%%   check_margin(+Z, +Limit, -Failed)
+%
+%    Check if within margin
 check_margin(Z, Limit, 'Margin failed') :-
     last(Z, Last),
     Last < Limit,
 check_margin(_Z, _Limit, 'Margin OK').
 
+%%   get_location(+Characteristic, +Lat, +Lon, +Location_Name, +Class, +EC, -Examples)
+%
+%    Get location of the empirical data set
 get_location(Characteristic, Lat, Lon, Location_Name, Class, EC, Examples) :-
     rdfS(U, ent:corrosive_atmosphere, Characteristic),
     rdf(U, ent:locale, Loc),
@@ -117,6 +135,9 @@ get_location(Characteristic, Lat, Lon, Location_Name, Class, EC, Examples) :-
     rdfR(Loc, ent:lon, Lon),
     rdfS(Loc, ent:title, Location_Name).
 
+%%   corrosionModel(+Diff, +Drag, +X0, +ThicknessUnits, +Time, -Z)
+%
+%    Corrosion growth model
 corrosionModel(Diff, Drag, X0, T*Time, Z*Thickness) :-
    context_units:convert(T*Time, T1*yr, T1),
    Tau is (1 - exp(-T1*Drag))/Drag,
@@ -129,6 +150,9 @@ corrosionModel(Diff, Drag, X0, Thickness, T*Time, Z) :-
 % Tau = (1-EXP(-f*t))/f
 % k*SQRT(D*Tau)*SQRT(Tau/X)/(1+SQRT(Tau/X))
 
+%%   plot(+Request)
+%
+%    Plot corrosion curvepage
 plot(Request) :-
     http_parameters(Request, [kind(Kind, []),
 			      limit(Limit, [number]),
@@ -208,10 +232,16 @@ plot(Request) :-
 		  ).
 
 
+%%   standard(-Names)
+%
+%    Name of ISO standard corrosion docs
 standard(Names) :-
     findall(p(Name), (rdf(UID, ent:standard, ent:corrosion),
                    rdfS(UID, ent:name, Name)), Names).
 
+%%   scale(-Tuple)
+%
+%    Scale info as tuple set
 scale([Value, Env, Ext, Int, Steel, Zinc, Units]) :-
     rdfS(UID, ent:corrosion_scale, Value),
     rdfS(UID, ent:environmental_conditions, Env),
@@ -222,6 +252,9 @@ scale([Value, Env, Ext, Int, Steel, Zinc, Units]) :-
     rdfS(UID, ent:unit, Units).
 
 
+%%   corrosion_scale_table(+Request)
+%
+%    Corrosion scale table page
 corrosion_scale_table(_Request) :-
     findall(Row,scale(Row), Rows),
     standard(Name),

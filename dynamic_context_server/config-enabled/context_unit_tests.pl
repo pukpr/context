@@ -12,9 +12,18 @@
 :- begin_tests(lists).
 :- use_module(library(lists)).
 
+%%   within(+Low, +Value, +High)
+%
+%    Fails unless Value is between Low and High
 within(Low, Value, High) :- Low =< Value, Value =< High, !.
+%%   near(+Value,+Actual)
+%
+%    Fails unless Value is near Actual floating point value
 near(Value,Actual) :- Actual*0.99 =< Value, Value =< Actual*1.01, !.
 
+%%   test(+Name)
+%
+%    Named unit tests, fails if doesnt pass the test
 test(integrate_and_derivative) :-
     [1.0, 3.0, _, 10.0] integrate [10, 20, 30, 40] * [0.1, 0.2, 0.3, 0.4],
     [100.0, 100.0, _, _] derivative [10, 20, 30, 40] / [0.1, 0.2, 0.3, 0.4].  % assume first starts from zero

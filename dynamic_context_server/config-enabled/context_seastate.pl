@@ -13,6 +13,9 @@
 :- context:register(context_seastate:plot).
 :- context:register(context_seastate:seastate_table).
 
+%%   navigate(+Request)
+%
+%    Dynamic page to seatstate model
 navigate(Request) :-
    collect_unit_options(length, Lunits),
    SS = a([href(seastate_table), target(render)], 'sea-state'),
@@ -57,11 +60,17 @@ navigate(Request) :-
      ]
 		  ).
 
+%%   check_margin(+Z, +Limit, -PassFailWarning)
+%
+%    Check margin of seastate value
 check_margin(Z, Limit, 'Margin failed') :-
     last(Z, Last),
     Last =< Limit,
 check_margin(_Z, _Limit, 'Margin OK').
 
+%%   find_cumulative_point(+Value, +X, +Y, -Range)
+%
+%    Find cumulative point
 find_cumulative_point(0.0, _, _, [0,1]).
 
 find_cumulative_point(Variant, [F*_|_], Input, Output) :-
@@ -75,6 +84,9 @@ find_cumulative_point(_, _, Input, Output) :-
 
 % member(P, List), P<Probability.
 
+%%   plot(+Request)
+%
+%    Graph the seastate model against the appropriate wave-height model
 plot(Request) :-
     http_parameters(Request, [kind(Kind, []),
 			      limit(Limit, [atom]),
@@ -152,6 +164,9 @@ plot(Request) :-
 		  ).
 
 
+%%   waveHeight(+Type, +Mean, +Depth,  -Height, -Cdf)
+%
+%    Unit sensitive lookup of PDF value of waveheight for a model with mean and depth
 waveHeight(Mean, Depth,  H*Height, P*cdf) :-
    context_units:convert(H*Height, H1*m, H1), % Fix this for actual wave height
    P is exp(-H1/Mean*Depth/Depth),
@@ -160,23 +175,35 @@ waveHeight(cdf, Mean, Depth,  H*Height, P) :-
    waveHeight(Mean, Depth,  H*Height, P*cdf).
 
 
+%%   sea_states(-Info_Tuple)
+%
+%    Seastate information lookup returned as tuple
 sea_states([Value, Low, High, Units, Description]) :-
     rdfS(UID, ent:sea_state, Value),
     rdfL(UID, ent:wave_height, [Low,High]),
     rdfS(UID, ent:description, Description),
     rdfS(UID, ent:unit, Units).
 
+%%   sea_state_low(+Value, -Low)
+%
+%    Unit-adjusted seastate lookup, lower boundary
 sea_state_low(Value, Low*Units) :-
     rdfS(UID, ent:sea_state, Value),
     rdfL(UID, ent:wave_height, [Low,_]),
     % Low is L + 0.0001,
     rdfS(UID, ent:unit, Units).
+%%   sea_state_high(+Value, -High)
+%
+%    Unit-adjusted seastate lookup, upper boundary
 sea_state_high(Value, High*Units) :-
     rdfS(UID, ent:sea_state, Value),
     rdfL(UID, ent:wave_height, [_,High]),
     rdfS(UID, ent:unit, Units).
 
 
+%%   seastate_table(+Request)
+%
+%    Generate sea-state table
 seastate_table(_Request) :-
     findall(Row,sea_states(Row), Rows),
     reply_html_page([title('Sea State Table'),

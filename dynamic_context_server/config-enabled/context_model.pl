@@ -16,6 +16,9 @@
 :- context:register(context_model:code_generator).
 :- context:register(context_model:data_service).
 
+%%   css(URL)//
+%
+%    Cascading style sheet
 css(URL) -->
         html_post(css,
                   link([ type('text/css'),
@@ -54,6 +57,9 @@ row(Characteristic,
     rdfS(U, ent:x_axis, Xaxis).
 
 
+%%   navigate(+Request)
+%
+%    Dynamic page to indexed PDF models
 navigate(Request) :-
     http_parameters(Request, [characteristics(Ch,[default(all)])]),
     findall(Row, row(Ch,Row), Rs),
@@ -74,9 +80,15 @@ navigate(Request) :-
                  ]
                    ).
 
+%%   distribution(+Pdf, -Name)
+%
+%    Name of distro
 distribution(pdf, 'Probability Density').
 distribution(cdf, 'Cumulative Probability').
 
+%%   present_and_next_state(+Present, +Units, +Dist, +DistUnits, -Next)
+%
+%    Change info depending on present data
 present_and_next_state(Present, Units, Dist, DistUnits, Next) :-
     distribution(Present, Dist),
     (   Present = pdf ->
@@ -88,9 +100,15 @@ present_and_next_state(Present, Units, Dist, DistUnits, Next) :-
     distribution(_, Next),
     Dist \= Next.
 
+%%   flip_log(+From, +To, -Scale)
+%
+%    Flip the log scale state
 flip_log(true, false, 'Semi-Log Scale').
 flip_log(false, true, 'Log-Log Scale').
 
+%%   display(+Model, +Render, +Dist, +Scale, +LogLog)
+%
+%    Display the model
 display(Model, Render, Dist, Scale*Xaxis, LogLog) :-
 	print(user_error, [LogLog]),
     rdfS(U, ent:model, Model),
@@ -212,6 +230,9 @@ find_random_slot(List, Value) :-
     iterate_through_slots(
 */
 
+%%   get_sample(+Dist, -Sample)
+%
+%    Get sample from distro
 get_sample(_*Dist, Sample) :-
     call(Dist, _, Sample), !.
 get_sample(Dist, Sample) :-
@@ -248,6 +269,9 @@ get_sample(Dist, Sample) :-
     call(D, _, Sample).
 */
 
+%%   data_generator(+Request)
+%
+%    Generates monte-carlo data from PDF models
 data_generator(Request) :-
     http_parameters(Request, [model(Model,[])
 			     ]
@@ -260,6 +284,9 @@ data_generator(Request) :-
     reply_html_page([title(sample), \(con_text:style)],
                     [p(Sample)]).
 
+%%   code_generator(+Request)
+%
+%    Generates code for drawing from monte-carlo model
 code_generator(Request) :-
     http_parameters(Request, [model(Model,[])
 			     ]
@@ -269,6 +296,9 @@ code_generator(Request) :-
     reply_html_page([title(code), \(con_text:style)],
                     [p(['TBD from ',Distribution_Function] )]).
 
+%%   data_service(+Request)
+%
+%    Link to web service for accessing monte-carlo data
 data_service(Request) :-
     http_parameters(Request, [url(URL,[])
 			     ]
@@ -278,6 +308,9 @@ data_service(Request) :-
 		     p(b(URL))]).
 
 
+%%   apply(+Request)
+%
+%    Generate PDF
 apply(Request) :-
     http_parameters(Request, [model(Model,[]),
                               render(Render,[default(render)]),
@@ -305,6 +338,9 @@ apply(Request) :-
     r_close.
 
 
+%%   find_optional_units(+Named_Unit,+NList,-DList)
+%
+%    Find units appropriate for PDF
 find_optional_units(Named_Unit,NList,DList) :-
    atom_to_term(Named_Unit, NUnit/DUnit, []),
    rdfS(UN, ent:unit, NUnit),

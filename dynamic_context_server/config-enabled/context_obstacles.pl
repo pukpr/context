@@ -11,13 +11,22 @@
 
 :- use_module(context_math).
 
+%%   rdf_data(+ID, +Name)
+%
+%    Local RDF data
 rdf_data(ID, Name) :-
     rdf(ID, ent:type, literal(obstacle_profile)),
     rdf(ID, ent:name, literal(Name)).
 
+%%   get_all_obstacle_sets(-List)
+%
+%    Get obstacle sets
 get_all_obstacle_sets(List) :-
     findall(option([value(ID)],[Name]), rdf_data(ID, Name), List).
 
+%%   navigate(+Request)
+%
+%    Dynamic page to obstacle models
 navigate(Request) :-
    get_all_obstacle_sets(List),
    reply_html_page(
@@ -51,6 +60,9 @@ navigate(Request) :-
 	       ).
 
 
+%%   read_rdf(+URI, -UX, -UY, -Data, -Header)
+%
+%    Read RDF
 read_rdf(URI, UX, UY, [DataX, DataY, DataZ], 'X,Z1,Z2') :-
     rdfS(URI, ent:units_x, UX),
     rdfS(URI, ent:units_y, UY),
@@ -144,6 +156,9 @@ read_rdf_data(Request) :-
                   ).
 
 
+%%   download(+Request)
+%
+%    Download obstacle profile as a text file
 download(Request) :-
     http_parameters(Request, [uri(URI, [string]),
                               dl(DL, [boolean])]),
@@ -167,6 +182,9 @@ download(Request) :-
  %        div([style='display:inline-block; clear:both; height:1px;'],
 
 
+%%   plot_fft(+Request)
+%
+%    Plot FFT of obstacle profile
 plot_fft(Request) :-
    http_parameters(Request, [uri(URI, [string]),
                               ll(LL, [string])]),
