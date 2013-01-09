@@ -54,7 +54,7 @@ model_elements(option([value(Short)],[Name])) :-
     context:concise_term(ID, Short).
 */
 
-%%   my_search_filter(+Request) 
+%%   my_search_filter(+Request)
 %
 %    Search filter
 my_search_filter(Request) :-
@@ -268,7 +268,7 @@ list_cats(Request) :-
 			width('100%'),
 			height('400'),
 			frameborder(0),
-			src(['/context_ref_search/graph?name=',Cat])
+			src('/context_ref_search/graph?name='+Cat)
 			   ],
 			   [])
 		   ]
