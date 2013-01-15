@@ -164,7 +164,7 @@ search_sweet(Request) :-
    reply_html_page(%cliopatria(default),
                    [title('Citations & List of Terms'),
                    \(con_text:style_cliopatria)],
-           [ h1([Name, ' : ', a([href(['graph?name=',Name]),
+           [ h1([Name, ' : ', a([href('graph?name='+Name),
                                  target(render)],
                                 'Semantic Graph'
                                )
@@ -193,6 +193,7 @@ graph(Request) :-
        [
            h2('context graph'),
            \(context_graph(Term, []))
+           % \(context_graph(Name, []))
        ]
                   ).
 
@@ -301,7 +302,7 @@ find_context_requirement(Term, tr([td(Comment), td(Doc), td(Link),
    rdf(Req, dcterms:hasPart, literal(Part)).
 
 
-%%   list_requirements(+Request) 
+%%   list_requirements(+Request)
 %
 %    Display a list of applicable requirements to the search request
 list_requirements(Request) :-
