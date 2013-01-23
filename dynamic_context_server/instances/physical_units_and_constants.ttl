@@ -1,4 +1,5 @@
 @base        <http://entroplet.com/terms#physical_units_and_constants> .
+@prefix rdfs: <http://www.w3.org/2000/01/rdf-schema#> .
 @prefix ent: <terms#> .
 
 # Named toplevel resources (56)
@@ -53,9 +54,47 @@ ent:solar
 ent:water
         ent:name "water" ;
 	ent:comment "fresh water properties" ;
+	ent:specificHeat "4.187*kj/kg/k" ;
+	ent:thermalConductivity "0.609*w/m/k" ;
 	ent:deltaHvap "9717.1*cal" ;
 	ent:deltaSvap "26.04*cal/k" ;
 	ent:molecular_weight "18.015268*au" .
+
+ent:water_viscosity_table 
+     rdfs:comment "viscosity table for water from 0,10,..,100 degrees C" ;
+	ent:temperature "0.0*c" ;
+	ent:kinematic_viscosity "1.787e-6*m^2/s" ;
+	ent:dynamic_viscosity "1.787e-3*pa*s" ;
+	ent:temperature "10.0*c" ;
+	ent:kinematic_viscosity "1.307e-6*m^2/s" ;
+	ent:dynamic_viscosity "1.307e-3*pa*s" ;
+	ent:temperature "20.0*c" ;
+	ent:kinematic_viscosity "1.004e-6*m^2/s" ;
+	ent:dynamic_viscosity "1.002e-3*pa*s" ;
+	ent:temperature "30.0*c" ;
+	ent:kinematic_viscosity "0.801e-6*m^2/s" ;
+	ent:dynamic_viscosity "0.798e-3*pa*s" ;
+	ent:temperature "40.0*c" ;
+	ent:kinematic_viscosity "0.658e-6*m^2/s" ;
+	ent:dynamic_viscosity "0.653e-3*pa*s" ;
+	ent:temperature "50.0*c" ;
+	ent:kinematic_viscosity "0.553e-6*m^2/s" ;
+	ent:dynamic_viscosity "0.547e-3*pa*s" ;
+	ent:temperature "60.0*c" ;
+	ent:kinematic_viscosity "0.475e-6*m^2/s" ;
+	ent:dynamic_viscosity "0.467e-3*pa*s" ;
+	ent:temperature "70.0*c" ;
+	ent:kinematic_viscosity "0.413e-6*m^2/s" ;
+	ent:dynamic_viscosity "0.404e-3*pa*s" ;
+	ent:temperature "80.0*c" ;
+	ent:kinematic_viscosity "0.365e-6*m^2/s" ;
+	ent:dynamic_viscosity "0.355e-3*pa*s" ;
+	ent:temperature "90.0*c" ;
+	ent:kinematic_viscosity "0.326e-6*m^2/s" ;
+	ent:dynamic_viscosity "0.315e-3*pa*s" ;
+	ent:temperature "100.0*c" ;
+	ent:kinematic_viscosity "0.29e-6*m^2/s" ;
+	ent:dynamic_viscosity "0.282e-3*pa*s" .
 
 
 ent:area

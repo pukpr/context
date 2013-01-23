@@ -166,16 +166,26 @@ dispatch(wave) -->
 	      \g(resources,
 		 a([href='/context_seastate/seastate_table',
 		    target=target_iframe],'Sea-state ranges')),
-	      \g(resources,
-		 a([href='/context_water/chart',
-		    target=target_iframe],'Water properties')),
 	      \g(example,
 		 a([href='/context_water/navigate'],'Water buoyancy')),
 	      \(ref_search('phenWave:GravityWave', 'Wave references')),
               \g(browse,
 		  a([href('/context_browse/navigate?term=aquatic')],
                   'Browse aquatic characteristics')
-	       )
+	       ),
+	      \g(resources,
+		 span([i('Fresh water '),
+		    a([href='/context_water/chart',
+		    target=target_iframe],'density'),
+		 \(con_text:radio_box_two('viscosity table',
+				       '/context_water/viscosity',
+				       'target_iframe',
+				       'kind',
+				       ['dynamic', 'dynamic'],
+				       ['kinematic', 'kinematic']))
+		   ])
+		)
+
 	     ]
 	    ).
 

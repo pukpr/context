@@ -20,6 +20,7 @@
 :- context:register(context_water:plot).
 :- context:register(context_water:densities).
 :- context:register(context_water:liquid_densities).
+:- context:register(context_water:viscosity).
 
 
 %%   freshwater_density
@@ -260,4 +261,26 @@ plot(Request) :-
 						       [X,XUnits], ['density',YUnits],
 						       'DEnsity', Data))
                     ]
+		  ).
+
+
+%%   viscosity(+Request)
+%
+%    Table of water viscosity
+viscosity(Request) :-
+    http_parameters(Request, [kind(Kind, [default(kinematic)])]),
+    rdf_global_term(ent:water_viscosity_table,Water),
+    findall(Val, rdfS(Water, ent:temperature, Val), Temperatures),
+    (	Kind = 'kinematic' ->
+        rdf_global_term(ent:kinematic_viscosity,Type)
+    ;
+        rdf_global_term(ent:dynamic_viscosity,Type)
+    ),
+    findall(Visc,  rdfS(Water, Type, Visc), Viscosities),
+    Table tuple Temperatures + Viscosities,
+    reply_html_page([title('Water Viscosity'),
+                     \(con_text:style)],
+                    [
+		     h3([Kind, ' viscosity of water']),
+		     \(con_text:table_entries('Temperature', 'Viscosity', Table))		                         ]
 		  ).
