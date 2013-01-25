@@ -216,12 +216,12 @@ navigate(Request) :-
 %%   salt_density(+Parameter,+X,-Y)
 %
 %    Salt-water density
-salt_density(Parameter,X*_Units,Y) :-
+salt_density(Parameter,X*_U,Y) :-
    alg_density(X, Parameter, Y).
 %%   fresh_density(+X,+Y)
 %
 %    Fresh-water density
-fresh_density(X*_Units,Y) :-
+fresh_density(X*_U,Y) :-
    table_density(X, Y).
 
 
@@ -234,17 +234,24 @@ plot(Request) :-
 			      volume(Volume, [number]),
                               m_units(MUnits, []),
                               v_units(VUnits, []),
-                              v_units(TUnits, []),
+                              t_units(TUnits, []),
                               evaluate(Characteristic, [default(salt)])]),
 
     Density is Mass/Volume,
+    atom_to_term(VUnits, VU, _),
+    context_units:convert(1*kg/m^3, Scale*MUnits/VU, Scale),
+    % context_units:convert(0*c, T0*TUnits, T0),
+    % context_units:convert(100*c, T1*TUnits, T1),
     H range [0.0, 100.0]/1.0*TUnits,
+    % T_Scale is (T1-T0)/100.0,
+    % HT mapdot T_Scale .* H,
     (
        Characteristic = salt ->
-	 Z mapdot salt_density(0.0) ~> H
+	 Z mapdot Scale * salt_density(1000.0) ~> H
      ;
        Characteristic = fresh ->
-	 Z mapdot fresh_density ~> H
+         S is Scale * 1000,
+	 Z mapdot S * fresh_density ~> H
 
     ),
     DC mapdot Density ~> H,
@@ -259,7 +266,7 @@ plot(Request) :-
                     [
 		     \(context_graphing:dygraph_native(Kind, [X, Y1, Y2],
 						       [X,XUnits], ['density',YUnits],
-						       'DEnsity', Data))
+						       'Density', Data))
                     ]
 		  ).
 
