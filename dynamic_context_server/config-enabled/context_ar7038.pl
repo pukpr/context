@@ -115,7 +115,7 @@ plot(Request) :-
                      \(con_text:style)],
                     [
                      \(context_graphing:dygraph_native(lin, [time,Unit], 'hour', [Characteristic,Unit],
-                                                       [Characteristic, Climate_Name],
+                                                       [Characteristic, ' : ', Climate_Name],
                                                        Data)),
                      \(con_text:inline_button(
 		       \(con_text:button_link(
