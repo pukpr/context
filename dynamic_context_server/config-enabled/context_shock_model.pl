@@ -53,7 +53,29 @@ navigate(Request) :-
      ]
 		  ).
 
+%%   extract(+Cumulative, +Avail, +Extract, +Prod, -Production)
+%
+%    Extraction routine
+extraction(_, [],[], P, Production) :- reverse(P,Production).
+extraction(Cumulative, [A|Avail], [R|Extract], Prod, Production):-
+   C is Cumulative + A - R*Cumulative,
+   P is R*C,
+   extraction(C, Avail, Extract, [P|Prod], Production).
+% C := C + Discovery_Window (Time, Start) * DT - C * Rate * DT;
+% P := Rate * C;
 
+search_interpolate(N, [[N1,V1],[N2,V2]], Val) :-
+    Val is V1 + (N-N1)*(V2-V1)/(N2-N1).
+search_interpolate(N, [[N1,V1],[N2,V2]|_], Val) :-
+    N >= N1, N < N2,
+    Val is V1 + (N-N1)*(V2-V1)/(N2-N1).
+search_interpolate(N, [[_,_],[N2,V2]|Table], Val) :-
+    search_interpolate(N, [[N2,V2]|Table], Val).
+
+interpolate([], _, Vals, Values) :- reverse(Vals, Values), !.
+interpolate([N|Nums], Table, Vals, Values):-
+    search_interpolate(N, Table, Val),
+    !, interpolate(Nums, Table, [Val|Vals], Values).
 
 %%   plot(+Request)
 %
@@ -79,6 +101,8 @@ plot(Request) :-
 		     )
                    ]).
 
+
+
 plot(Request) :-
     http_parameters(Request, [kind(plot, []),
 			      limit(Limit, [number]),
@@ -97,15 +121,18 @@ plot(Request) :-
       18.0, 17.5, 13.0, 9.0,   9.0], % 2004
     Lag mapdot exp(8) ~> Time,
     Rate mapdot exp(20) ~> Time,
+    Shocks mapdot 0.05 ~> Time,
     Fallow convolve Discoveries*Lag,
     Build convolve Fallow*Lag,
     Mature convolve Build*Lag,
-    Extract convolve Mature*Rate,
     (
        Characteristic  = production ->
+         M shrink Mature/Time,
+	 extraction(0.0, M, Shocks, [], Extract),
          true          % Title = ['Lightning Profile : ', Characteristic]
     ;
        Characteristic = cumulative  ->
+         Extract convolve Mature*Rate,
          true         % Title = ['Not Available : ', Characteristic]
     ;
          true
