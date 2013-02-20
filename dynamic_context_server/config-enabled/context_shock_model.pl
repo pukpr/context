@@ -85,31 +85,38 @@ plot(Request) :-
                               t_units(TUnits, []),
                               evaluate(Characteristic, [default(production)])]),
 
-    Time range [0, 250]/1,
-    Discoveries = [1,0],
-    Decline mapdot exp(26) ~> Time,
-    Fallow convolve Discoveries*Decline,
-    Build convolve Decline*Fallow,
-    Mature convolve Decline*Build,
-    Extract convolve Mature*Decline,
-
+    Time range [0, 150]/1,
+    Discoveries =
+     [             9.0,  4.0,  4.5,  3.0,  5.0,  5.5, 42.0, 42.5, % 1930's
+      52.0, 18.0, 16.0,  5.0,  3.0,  7.4,  7.6,  7.0, 49.0, 53.0, % 1940's
+      54.0, 19.5, 16.0, 26.0, 20.0, 28.0, 24.0, 35.0, 40.0, 40.5, % 1950's
+      42.0, 44.0, 50.0, 41.0, 50.0, 48.5, 47.5, 32.0, 30.5, 30.4, % 1960's
+      29.5, 40.5, 37.0, 38.5, 24.0, 26.5, 31.0, 37.0, 38.0, 36.0, % 1970's
+      26.0, 24.0, 20.0, 20.0, 22.0, 21.0, 20.5, 18.0, 16.2, 17.5, % 1980's
+      16.5, 20.0, 17.0, 16.0,  9.0,  8.5,  9.0,  9.0,  9.5, 14.0, % 1990's
+      18.0, 17.5, 13.0, 9.0,   9.0], % 2004
+    Lag mapdot exp(8) ~> Time,
+    Rate mapdot exp(20) ~> Time,
+    Fallow convolve Discoveries*Lag,
+    Build convolve Fallow*Lag,
+    Mature convolve Build*Lag,
+    Extract convolve Mature*Rate,
     (
        Characteristic  = production ->
-         true
-         % Title = ['Lightning Profile : ', Characteristic]
+         true          % Title = ['Lightning Profile : ', Characteristic]
     ;
        Characteristic = cumulative  ->
-         true
-         % Title = ['Not Available : ', Characteristic]
+         true         % Title = ['Not Available : ', Characteristic]
     ;
          true
     ),
     Margin mapdot Limit ~> Time,
     P shrink Extract/Time,
-    Data tuple Time + Margin + P,
-    X = 'time',
-    Y = 'current',
-    XUnits = 'years',
+    Date mapdot 1932 .+ Time,
+    Data tuple Date + Margin + P,
+    X = 'date',
+    Y = 'production',
+    XUnits = 'year',
     YUnits = 'barrels',
     reply_html_page([title('Shock Profile'),
                      \(con_text:style)],
