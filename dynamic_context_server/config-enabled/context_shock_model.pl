@@ -119,22 +119,51 @@ plot(Request) :-
       26.0, 24.0, 20.0, 20.0, 22.0, 21.0, 20.5, 18.0, 16.2, 17.5, % 1980's
       16.5, 20.0, 17.0, 16.0,  9.0,  8.5,  9.0,  9.0,  9.5, 14.0, % 1990's
       18.0, 17.5, 13.0, 9.0,   9.0], % 2004
+/*
+    Shocks =
+    [[1932.0, 0.070], % Start of data
+     [1974.0, 0.070], % Start of oil embargo
+     [1974.5, 0.065], % End of oil embargo
+     [1980.0, 0.065], % Start of Iran hostage crisis
+     [1983.5, 0.044], % End of recession
+     [1990.0, 0.044], % Start of Gulf War
+     [1992.0, 0.042], % End of recesssion
+     [2001.0, 0.042], % Last good year!
+     [2003.0, 0.046], % Running Out??? Why is extraction going up?
+     [2300.0, 0.046]],
+*/
+    Shocks =
+    [[0, 0.070], % Start of data
+     [42, 0.070], % Start of oil embargo
+     [43, 0.065], % End of oil embargo
+     [48, 0.065], % Start of Iran hostage crisis
+     [49, 0.044], % End of recession
+     [58, 0.044], % Start of Gulf War
+     [60, 0.042], % End of recesssion
+     [69, 0.042], % Last good year!
+     [71, 0.046], % Running Out??? Why is extraction going up?
+     [300, 0.046]],
+
     Lag mapdot exp(8) ~> Time,
-    Rate mapdot exp(20) ~> Time,
-    Shocks mapdot 0.05 ~> Time,
     Fallow convolve Discoveries*Lag,
     Build convolve Fallow*Lag,
     Mature convolve Build*Lag,
     (
        Characteristic  = production ->
          M shrink Mature/Time,
-	 extraction(0.0, M, Shocks, [], Extract),
+         % Sh mapdot (-1932) .+
+         interpolate(Time, Shocks, [], Sh),
+	 extraction(0.0, M, Sh, [], Extract),
          true          % Title = ['Lightning Profile : ', Characteristic]
     ;
        Characteristic = cumulative  ->
+         Rate mapdot exp(20) ~> Time, % Conventional
          Extract convolve Mature*Rate,
          true         % Title = ['Not Available : ', Characteristic]
     ;
+         Flat mapdot 0.05 ~> Time,
+         M shrink Mature/Time,
+	 extraction(0.0, M, Flat, [], Extract),
          true
     ),
     Margin mapdot Limit ~> Time,
