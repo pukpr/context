@@ -22,6 +22,7 @@
                        op(700, xfx, pdf), % array evaluation
                        op(700, xfx, ordinal), % array evaluation
                        op(700, xfx, split), % array evaluation
+                       op(700, xfx, deplete), % array evaluation
                        dot/2,
                        mapdot/2,
                        convolve/2,
@@ -55,7 +56,9 @@
                        spatial/3,
                        index/3,
                        ordinal/2,
-                       split/2
+                       split/2,
+                       deplete/2,
+                       interpolate/3
                       ]).
 
 /** <module>  Math operations for array manipulations
@@ -866,7 +869,50 @@ spatial(List, Pos, Value) :-
    nth0(Index, List, Value).
 
 
+% Flow math
 
+%%   extract(+Cumulative, +Avail, +Extract, +Prod, -Production)
+%
+%    Extraction routine
+extraction(_, [],[], P, Production) :- reverse(P,Production).
+extraction(Cumulative, [A|Avail], [R|Extract], Prod, Production):-
+   C is Cumulative + A - R*Cumulative,
+   P is R*C,
+   extraction(C, Avail, Extract, [P|Prod], Production).
+
+%%   deplete(+X,-Y)
+%
+%    deplete a list according to a rate.
+[] deplete [].
+[W|X] deplete [Y|Z] :-  % Simplifier
+   W = Y,
+   X deplete Z.
+
+X deplete Y/Z :-
+   Y1 deplete Y,
+   Z1 deplete Z,
+   extraction(0, Y1, Z1, [], X), !.
+
+
+%%   interpolate(+Line,+Table,-Result)
+%
+%    interpolate along a number line according to a sparse table.
+
+search_interpolate(N, [[N1,V1],[N2,V2]], Val) :-
+    Val is V1 + (N-N1)*(V2-V1)/(N2-N1).
+search_interpolate(N, [[N1,V1],[N2,V2]|_], Val) :-
+    N >= N1, N < N2,
+    Val is V1 + (N-N1)*(V2-V1)/(N2-N1).
+search_interpolate(N, [[_,_],[N2,V2]|Table], Val) :-
+    search_interpolate(N, [[N2,V2]|Table], Val).
+
+interpolate([], _, Vals, Values) :- reverse(Vals, Values), !.
+interpolate([N|Nums], Table, Vals, Values):-
+    search_interpolate(N, Table, Val),
+    !, interpolate(Nums, Table, [Val|Vals], Values).
+
+interpolate(N, Table, Values):-
+    interpolate(N, Table, [], Values).
 
 
 

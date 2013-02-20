@@ -134,6 +134,7 @@ handleDygraphList = function(logselector, Xlabel, Ylabel, Title, Labels, data_ar
                       showRoller: true,
                       title: Title,
                       logscale: logselector,
+		      digitsAfterDecimal: 4,
 		      ylabel: Ylabel,
 		      xlabel: Xlabel,
 		      yAxisLabelWidth: 70,
