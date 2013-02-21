@@ -268,7 +268,9 @@ dispatch(rainfall) -->
 dispatch(reservoir) -->
 	html([h1('Fossil fuel resource models'),
 	      \g(workflow,
-                  a([href('/context_shock_model/navigate')], 'Oil Shock model'))
+                  a([href('/context_shock_model/navigate')], 'Oil Shock model')),
+	      \g(workflow,
+                  a([href('/context_oil_fields/navigate')], 'Reservoirs of the world'))
 	     ]
 	    ).
 
