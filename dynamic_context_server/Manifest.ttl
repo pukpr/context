@@ -39,6 +39,7 @@
                      <instances/physical_units_and_constants.ttl>,
                      <instances/soil_classification.ttl>,
                      <instances/ar-70-38_specifications.ttl>,
+                     <instances/category_oil_fields_by_country.ttl>,
                      <terms/context-terms.owl.ttl>,
                      <terms/defs.ttl>,
                      <terms/swore.rdf>,
@@ -186,6 +187,11 @@
          a lib:Schema ;
          a lib:CloudNode ;
 	 dc:title "Physical units symbology and constants.".
+
+<instances/category_oil_fields_by_country.ttl>
+         a lib:Schema ;
+         a lib:CloudNode ;
+	 dc:title "Countries with oil fields from dbpedia".
 
 <terms/defs.ttl>
          a lib:Schema ;

@@ -324,6 +324,8 @@ rdf_(rainfall, ent:image, 'rain_statistics_icon.png').
 rdf_(rainfall, ent:description, 'Rainfall, cloud models').
 rdf_(corrosion, ent:image, 'corrosion_oxidation_icon.jpg').
 rdf_(corrosion, ent:description, 'Corrosion, oxidation models').
+rdf_(reservoir, ent:image, 'reservoir_icon.png').
+rdf_(reservoir, ent:description, 'Oil reserve models').
 
 rdf_(require, ent:description, 'User specified context requirements.').
 rdf_(require, ent:narrative, 'Project-specific requirements provide a means to connect practical applications to information available from an environmental context library. For example, a project requirement that states that a vehicle should be able to operate on terrain of a specific roughness, suggests a link to certain context models available from the server.  The links between the requirements and models are accomplished via semantic and ontological organization of the knowledge. In this case, certain keywords and phrases in a requirements document are tagged and allocated to specific environmental categories. This is aided by the application of ontologies such as SWEET (Semantic Web for Earth and Environmental Terminology from http://sweet.jpl.nasa.gov).').

@@ -131,10 +131,10 @@ plot(Request) :-
     % Production shrink Extract/Time,
     Date mapdot 1932 .+ Time,
     Data tuple Date + Margin + Production,
-    X = 'date',
-    Y = 'production',
+    X = 'Date',
+    Y = 'Production',
     XUnits = ' year',
-    YUnits = ' barrels',
+    YUnits = ' billion barrels/year',
     reply_html_page([title('Shock Profile'),
                      \(con_text:style)],
                     [
