@@ -25,7 +25,7 @@ purposes:
 :- rdf_register_ns('xlink','http://www.w3.org/1999/xlink#').
 :- rdf_register_ns('rsslink','http://purl.org/rss/1.0/modules/link/').
 :- rdf_register_ns('dbpedia','http://dbpedia.org/resource/').
-:- rdf_register_ns('dbpedia','http://dbpedia.org/resource/').
+:- rdf_register_ns('category','http://dbpedia.org/resource/Category:').
 :- rdf_register_ns('pt', 'http://www.daml.org/2003/01/periodictable/PeriodicTable#').
 :- rdf_register_ns('cntxt', 'http://on.cs.unibas.ch/owl/1.0/Context.owl#').
 
