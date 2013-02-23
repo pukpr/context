@@ -32,21 +32,26 @@ shocks(
 
 shocks(
     [[0,   0.0], % Start of data
-     [1,   0.025],
-     [108, 0.025], % Vietnam war 1966
-     [116, 0.034], % Start of oil embargo 1974
-     [117, 0.031], % End of oil embargo 1975
-     [121, 0.032], % Start of Iran hostage crisis 1979
-     [124, 0.025], % End of recession 1982
-     [131, 0.024], % Start of Gulf War 1989
-     [134, 0.024], % End of recesssion 1992
-     [144, 0.025], % Last good year! 2002
-     [146, 0.0265], % Running Out??? Why is extraction going up?
+     [1,   0.045],
+     [79,  0.045],  % Start of depression 1929
+     [82,  0.03],  % Full crash  1932
+     [90,  0.023], % WWII start
+     [92,  0.022], % WWII 1942
+     [103,  0.02],  % Post-war recession 1953
+     [116, 0.025], % Vietnam war 1966
+     [124, 0.033], % Start of oil embargo 1974
+     [125, 0.031], % End of oil embargo 1975
+     [129, 0.033], % Start of Iran hostage crisis 1979
+     [132, 0.025], % End of recession 1982
+     [140, 0.024], % Start of Gulf War 1990
+     [143, 0.023], % End of recesssion 1993
+     [152, 0.025], % Last good year! 2002
+     [154, 0.026], % Running Out??? 2004 Why is extraction going up?
      [300, 0.045]]
       ).
 
 discoveries(
-     [   0,     0,
+     [   0,     0,     0,     0,     0,	    0,     0,     0,	 0,	0,
          0,     0,     0,     0,     0,	    0,     0,     0,	 0,	0,
          0,     0,     0,     0,     0,	    0,     0,     0,	 0,	0,
          0,     0,     0,     0,     0,	    0,     0,     0,	 0,	0,
@@ -62,6 +67,12 @@ discoveries(
       26.0, 24.0, 20.0, 20.0, 22.0, 21.0, 20.5, 18.0, 16.2, 17.5, % 1980's
       16.5, 20.0, 17.0, 16.0,  9.0,  8.5,  9.0,  9.0,  9.5, 14.0, % 1990's
       18.0, 17.5, 13.0, 9.0,   9.0,  0,	    0,     0,     0,	 0,	0,
+         0,     0,     0,     0,     0,	    0,     0,     0,	 0,	0,
+         0,     0,     0,     0,     0,	    0,     0,     0,	 0,	0,
+         0,     0,     0,     0,     0,	    0,     0,     0,	 0,	0,
+         0,     0,     0,     0,     0,	    0,     0,     0,	 0,	0,
+         0,     0,     0,     0,     0,	    0,     0,     0,	 0,	0,
+         0,     0,     0,     0,     0,	    0,     0,     0,	 0,	0,
          0,     0,     0,     0,     0,	    0,     0,     0,	 0,	0,
          0,     0,     0,     0,     0,	    0,     0,     0,	 0,	0,
          0,     0,     0,     0,     0,	    0,     0,     0,	 0,	0,
@@ -94,11 +105,17 @@ production(
          0,     0,     0,     0,     0,	    0,     0,     0,	 0,	0,
          0,     0,     0,     0,     0,	    0,     0,     0,	 0,	0,
          0,     0,     0,     0,     0,	    0,     0,     0,	 0,	0,
+         0,     0,     0,     0,     0,	    0,     0,     0,	 0,	0,
+         0,     0,     0,     0,     0,	    0,     0,     0,	 0,	0,
+         0,     0,     0,     0,     0,	    0,     0,     0,	 0,	0,
+         0,     0,     0,     0,     0,	    0,     0,     0,	 0,	0,
+         0,     0,     0,     0,     0,	    0,     0,     0,	 0,	0,
+         0,     0,     0,     0,     0,	    0,     0,     0,	 0,	0,
          0,     0,     0,     0,     0,	    0,     0,     0,	 0,	0]).
 */
 
 production(
-     [								 0,	0,
+     [	 0,     0,     0,     0,     0,     0,	 0,	0, 0,	0,
          0,     0,     0,     0,     0,	    0,     0,     0,	 0,	0,
          0,     0,     0,     0,     0,	    0,     0,     0,	 0,	0,
          0,     0,     0,     0,     0,	    0,     0,     0,	 0,	0,
@@ -234,6 +251,12 @@ production(
          0,     0,     0,     0,     0,	    0,     0,     0,	 0,	0,
          0,     0,     0,     0,     0,	    0,     0,     0,	 0,	0,
          0,     0,     0,     0,     0,	    0,     0,     0,	 0,	0,
+         0,     0,     0,     0,     0,	    0,     0,     0,	 0,	0,
+         0,     0,     0,     0,     0,	    0,     0,     0,	 0,	0,
+         0,     0,     0,     0,     0,	    0,     0,     0,	 0,	0,
+         0,     0,     0,     0,     0,	    0,     0,     0,	 0,	0,
+         0,     0,     0,     0,     0,	    0,     0,     0,	 0,	0,
+         0,     0,     0,     0,     0,	    0,     0,     0,	 0,	0,
          0,     0,     0,     0,     0,	    0,     0,     0,	 0,	0]).
 
 %%   navigate(+Request)
@@ -261,7 +284,8 @@ navigate(Request) :-
 			  \(con_text:radio_toggles(
 					 'evaluate',
 					 [['Shocked', 'shocked'],
-                                          ['Average', 'average']
+                                          ['Average', 'average'],
+					  ['Discovery', 'discovery']
                                          ])),
                           br([]),
 			  input([type('submit'), name(kind), value('plot'),
@@ -288,17 +312,17 @@ plot(Request) :-
 			      limit(_Limit, [number]),
                               t_units(_TUnits, []),
                               evaluate(_Table, [])]),
-    Time range [0, 250]/1,
+    Time range [0, 200]/1,
     shocks(Shocks),
     interpolate(Time, Shocks, Sh),
-    Date mapdot 1858 .+ Time,
+    Date mapdot 1850 .+ Time,
     Data tuple Date + Sh,
 
     reply_html_page([title('Shock Extraction'),
                      \(con_text:style)],
                     [
 		     \(context_graphing:dygraph_native(lin, [date, rate],
-						       [date,year], [rate, fraction],
+						       ['Date', year], ['Rate', fraction],
 						       'extraction rate', Data))
                     ]
 		  ).
@@ -311,40 +335,47 @@ plot(Request) :-
                               t_units(_TUnits, []),
                               evaluate(Characteristic, [default(shocked)])]),
 
-    Time range [0, 250]/1,
+    Time range [0, 300]/1,
+    Date mapdot 1850 .+ Time,
     % Margin mapdot Limit ~> Time,
     production(Profile),
     Production shrink Profile/Time,
-    discoveries(D),
-    Disc shrink D/Time,
-    DD mapdot dd(7, 2200, 103) ~> Time,
+    % DD mapdot dd(7, 2260, 112) ~> Time,
+    DD mapdot dd(7.2, 2260, 114) ~> Time,
     Discoveries derivative DD/Time,
-    shocks(Shocks),
-    (
-       Characteristic  = shocked ->
-         interpolate(Time, Shocks, Rate)
-    ;
-       Characteristic = average  ->
-         Rate mapdot 0.025 ~> Time
-    ),
-    Lag mapdot exp(8) ~> Time,
+    Lag mapdot exp(7.5) ~> Time,
     Fallow convolve Discoveries*Lag,
     Build convolve Fallow*Lag,
     Mature convolve Build*Lag,
     Reserve shrink Mature/Time,
-    Model deplete Reserve/Rate,
-    % Production shrink Extract/Time,
-    Date mapdot 1858 .+ Time,
-    Data tuple Date + Production + Model + Discoveries + Disc,
+    shocks(Shocks),
+    (
+       Characteristic  = shocked ->
+         interpolate(Time, Shocks, Rate),
+         Model deplete Reserve/Rate,
+	 Data tuple Date + Production + Model,
+         Heading = [X, 'Data', 'Model']
+    ;
+       Characteristic = average  ->
+         Rate mapdot 0.025 ~> Time,
+         Model deplete Reserve/Rate,
+	 Data tuple Date + Production + Model,
+         Heading = [X, 'Data', 'Model']
+    ;
+       Characteristic = discovery  ->
+         discoveries(D),
+	 Disc shrink D/Time,
+         Data tuple Date + Discoveries + Disc,
+         Heading = [X, 'Dispersive', 'Discoveries']
+    ),
     X = 'Date',
-    % Y = 'Model',
     XUnits = ' year',
     YUnits = ' billion barrels/year',
     reply_html_page([title('Shock Profile'),
                      \(con_text:style)],
                     [
 		     \(context_graphing:dygraph_native(lin,
-						       [X, 'Data', 'Model', 'Dispersive', 'Discoveries'],
+						       Heading,
 						       [X,XUnits], ['Production', YUnits],
 						       Characteristic, Data))
                     ]
