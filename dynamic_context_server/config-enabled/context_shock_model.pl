@@ -1,5 +1,6 @@
 :- module(context_shock_model, [
-				dd/5
+				dd/5,
+				exp_lag/3
 			    ]).
 
 /** <module> Shock model
@@ -11,6 +12,15 @@
 
 :- context:register(context_shock_model:navigate).
 :- context:register(context_shock_model:plot).
+
+
+exp_lag(Mean, X, Y) :-
+    (	X = 0 ->
+        Y = 1.0/Mean * (exp(-X/Mean)+exp(-(X+1.0)/Mean))/2
+    ;
+        Y = 1.0/Mean * (exp(-X/Mean)+exp(-(X+1.0)/Mean))/2
+
+    ).
 
 
 dd(Exp, C, T, Year, Result) :-
@@ -29,7 +39,7 @@ shocks(
      [300, 0.046]]
       ).
 */
-
+/*
 shocks(
     [[0,   0.0], % Start of data
      [1,   0.045],
@@ -48,6 +58,27 @@ shocks(
      [152, 0.025], % Last good year! 2002
      [154, 0.026], % Running Out??? 2004 Why is extraction going up?
      [300, 0.045]]
+      ).
+*/
+shocks(
+    [[0,   0.0], % Start of data
+     [1,   0.045],
+     [79,  0.045],  % Start of depression 1929
+%     [82,  0.03],  % Full crash  1932
+%     [90,  0.023], % WWII start
+%     [92,  0.022], % WWII 1942
+     [105,  0.025],  % Post-war recession 1955
+     [114, 0.026], % Vietnam war 1964
+     [123, 0.038], % Start of oil embargo 1973
+     [124, 0.037], % Start of oil embargo 1974
+     [125, 0.035], % End of oil embargo 1975
+     [129, 0.037], % Start of Iran hostage crisis 1979
+     [132, 0.028], % End of recession 1982
+     [140, 0.027], % Start of Gulf War 1990
+     [143, 0.026], % End of recesssion 1993
+     [152, 0.0285], % Last good year! 2002
+     [154, 0.030], % Running Out??? 2004 Why is extraction going up?
+     [300, 0.10]]
       ).
 
 discoveries(
@@ -314,7 +345,8 @@ plot(Request) :-
                               evaluate(_Table, [])]),
     Time range [0, 200]/1,
     shocks(Shocks),
-    interpolate(Time, Shocks, Sh),
+    interpolate(Time, Shocks, USh),
+    Sh mapdot 1.25 .* USh,
     Date mapdot 1850 .+ Time,
     Data tuple Date + Sh,
 
@@ -341,32 +373,39 @@ plot(Request) :-
     production(Profile),
     Production shrink Profile/Time,
     % DD mapdot dd(7, 2260, 112) ~> Time,
-    DD mapdot dd(7.2, 2260, 114) ~> Time,
+    DD mapdot dd(8, 2200, 114) ~> Time,
     Discoveries derivative DD/Time,
-    Lag mapdot exp(7.5) ~> Time,
+    Lag mapdot exp_lag(7.2) ~> Time,
     Fallow convolve Discoveries*Lag,
     Build convolve Fallow*Lag,
     Mature convolve Build*Lag,
     Reserve shrink Mature/Time,
+    F shrink Fallow/Time,
+    B shrink Build/Time,
+    % shocks(Shocks),
     shocks(Shocks),
     (
        Characteristic  = shocked ->
-         interpolate(Time, Shocks, Rate),
+         interpolate(Time, Shocks, R),
+         Rate mapdot 1.25 .* R,
          Model deplete Reserve/Rate,
-	 Data tuple Date + Production + Model,
-         Heading = [X, 'Data', 'Model']
+	 Data tuple Date + F +      B +     Reserve + Production + Model,
+         Heading = [X,    'Fallow','Built','Reserve', 'Data', 'Model'],
+         sum_list(Model, Cumulative_Model)
     ;
        Characteristic = average  ->
-         Rate mapdot 0.025 ~> Time,
+         Rate mapdot 0.035 ~> Time,
          Model deplete Reserve/Rate,
 	 Data tuple Date + Production + Model,
-         Heading = [X, 'Data', 'Model']
+         Heading = [X, 'Data', 'Model'],
+         sum_list(Model, Cumulative_Model)
     ;
        Characteristic = discovery  ->
          discoveries(D),
 	 Disc shrink D/Time,
          Data tuple Date + Discoveries + Disc,
-         Heading = [X, 'Dispersive', 'Discoveries']
+         Heading = [X, 'Dispersive', 'Discoveries'],
+         sum_list(Discoveries, Cumulative_Model)
     ),
     X = 'Date',
     XUnits = ' year',
@@ -374,6 +413,7 @@ plot(Request) :-
     reply_html_page([title('Shock Profile'),
                      \(con_text:style)],
                     [
+		     p(Cumulative_Model),
 		     \(context_graphing:dygraph_native(lin,
 						       Heading,
 						       [X,XUnits], ['Production', YUnits],
