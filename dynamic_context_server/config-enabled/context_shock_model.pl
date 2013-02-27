@@ -62,23 +62,42 @@ shocks(
 */
 shocks(
     [[0,   0.0], % Start of data
-     [1,   0.045],
-     [79,  0.045],  % Start of depression 1929
+     [1,   0.056],
+     [79,  0.056],  % Start of depression 1929
 %     [82,  0.03],  % Full crash  1932
 %     [90,  0.023], % WWII start
 %     [92,  0.022], % WWII 1942
-     [105,  0.025],  % Post-war recession 1955
-     [114, 0.026], % Vietnam war 1964
-     [123, 0.038], % Start of oil embargo 1973
-     [124, 0.037], % Start of oil embargo 1974
-     [125, 0.035], % End of oil embargo 1975
-     [129, 0.037], % Start of Iran hostage crisis 1979
-     [132, 0.028], % End of recession 1982
-     [140, 0.027], % Start of Gulf War 1990
-     [143, 0.026], % End of recesssion 1993
-     [152, 0.0285], % Last good year! 2002
-     [154, 0.030], % Running Out??? 2004 Why is extraction going up?
-     [300, 0.10]]
+     [105, 0.031],  % Post-war recession 1955
+     [114, 0.033], % Vietnam war 1964
+     [123, 0.048], % Start of oil embargo 1973
+     [124, 0.046], % Start of oil embargo 1974
+     [125, 0.044], % End of oil embargo 1975
+     [129, 0.046], % Start of Iran hostage crisis 1979
+     [132, 0.035], % End of recession 1982
+     [140, 0.034], % Start of Gulf War 1990
+     [143, 0.0325], % End of recesssion 1993
+     [152, 0.036], % Last good year! 2002
+     [154, 0.038], % Running Out??? 2004 Why is extraction going up?
+     [300, 0.125]]
+      ).
+
+
+shocks_plateau(
+    [[0,   0.0], % Start of data
+     [1,   0.056],
+     [79,  0.056],  % Start of depression 1929
+     [105, 0.031],  % Post-war recession 1955
+     [114, 0.033], % Vietnam war 1964
+     [123, 0.048], % Start of oil embargo 1973
+     [124, 0.046], % Start of oil embargo 1974
+     [125, 0.045], % End of oil embargo 1975
+     [129, 0.047], % Start of Iran hostage crisis 1979
+     [132, 0.044], % End of recession 1982
+     [140, 0.041], % Start of Gulf War 1990
+     [143, 0.040], % End of recesssion 1993
+     [152, 0.040], % Last good year! 2002
+     [154, 0.040], % Running Out??? 2004 Why is extraction going up?
+     [300, 0.125]]
       ).
 
 discoveries(
@@ -345,8 +364,7 @@ plot(Request) :-
                               evaluate(_Table, [])]),
     Time range [0, 200]/1,
     shocks(Shocks),
-    interpolate(Time, Shocks, USh),
-    Sh mapdot 1.25 .* USh,
+    interpolate(Time, Shocks, Sh),
     Date mapdot 1850 .+ Time,
     Data tuple Date + Sh,
 
@@ -371,41 +389,33 @@ plot(Request) :-
     Date mapdot 1850 .+ Time,
     % Margin mapdot Limit ~> Time,
     production(Profile),
-    Production shrink Profile/Time,
-    % DD mapdot dd(7, 2260, 112) ~> Time,
     DD mapdot dd(8, 2200, 114) ~> Time,
     Discoveries derivative DD/Time,
     Lag mapdot exp_lag(7.2) ~> Time,
     Fallow convolve Discoveries*Lag,
     Build convolve Fallow*Lag,
     Mature convolve Build*Lag,
-    Reserve shrink Mature/Time,
-    F shrink Fallow/Time,
-    B shrink Build/Time,
-    % shocks(Shocks),
     shocks(Shocks),
     (
        Characteristic  = shocked ->
-         interpolate(Time, Shocks, R),
-         Rate mapdot 1.25 .* R,
-         Model deplete Reserve/Rate,
-	 Data tuple Date + F +      B +     Reserve + Production + Model,
+         interpolate(Time, Shocks, Rate),
+         Model deplete Mature/Rate,
+	 Data tuple Date + Fallow + Build + Mature + Profile + Model,
          Heading = [X,    'Fallow','Built','Reserve', 'Data', 'Model'],
-         sum_list(Model, Cumulative_Model)
+         sumlist(Model, Cumulative_Model)
     ;
        Characteristic = average  ->
          Rate mapdot 0.035 ~> Time,
-         Model deplete Reserve/Rate,
-	 Data tuple Date + Production + Model,
+         Model deplete Mature/Rate,
+	 Data tuple Date + Profile + Model,
          Heading = [X, 'Data', 'Model'],
-         sum_list(Model, Cumulative_Model)
+         sumlist(Model, Cumulative_Model)
     ;
        Characteristic = discovery  ->
          discoveries(D),
-	 Disc shrink D/Time,
-         Data tuple Date + Discoveries + Disc,
+         Data tuple Date + Discoveries + D,
          Heading = [X, 'Dispersive', 'Discoveries'],
-         sum_list(Discoveries, Cumulative_Model)
+         sumlist(Discoveries, Cumulative_Model)
     ),
     X = 'Date',
     XUnits = ' year',
@@ -413,7 +423,7 @@ plot(Request) :-
     reply_html_page([title('Shock Profile'),
                      \(con_text:style)],
                     [
-		     p(Cumulative_Model),
+		     i('cumulative='), b(Cumulative_Model),
 		     \(context_graphing:dygraph_native(lin,
 						       Heading,
 						       [X,XUnits], ['Production', YUnits],
