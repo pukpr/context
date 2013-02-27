@@ -564,7 +564,8 @@ X difference Y-Z :-
 %%   tuple_merge(+X,+Y,+Initial,-Final)
 %
 %    Tuple merge into a single list
-tuple_merge([],[],Initial,Final) :- reverse(Initial, Final).
+tuple_merge([],_,Initial,Final) :- reverse(Initial, Final), !.
+tuple_merge(_,[],Initial,Final) :- reverse(Initial, Final).
 tuple_merge([Y|YR],[Z|ZR],Initial,Final) :-
    flatten([Y,Z], Tuple),
    tuple_merge(YR,ZR,[Tuple|Initial],Final).
@@ -874,7 +875,8 @@ spatial(List, Pos, Value) :-
 %%   extract(+Cumulative, +Avail, +Extract, +Prod, -Production)
 %
 %    Extraction routine
-extraction(_, [],[], P, Production) :- reverse(P,Production).
+extraction(_, [],_, P, Production) :- reverse(P,Production), !.
+extraction(_, _,[], P, Production) :- reverse(P,Production).
 extraction(Cumulative, [A|Avail], [R|Extract], Prod, Production):-
    C is Cumulative + A - R*Cumulative,
    P is R*C,

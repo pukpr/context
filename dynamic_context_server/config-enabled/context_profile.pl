@@ -31,7 +31,7 @@ navigate(Request) :-
    sort(L,List),
    reply_html_page(
        cliopatria(default),
-       [title('Course daya sets')],
+       [title('Course data sets')],
        [
 	\(con_text:table_with_iframe_target(
 		       Request,
