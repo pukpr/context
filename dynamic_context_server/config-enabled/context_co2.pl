@@ -1,7 +1,8 @@
 :- module(context_co2, [
 				hyperbolic/3,
 				exp_lag/3,
-			        diffusive/3
+			        diffusive/3,
+			        diffu/3
 			    ]).
 
 /** <module> CO2 adjustment model
@@ -29,7 +30,7 @@ evaluate_diffusive(Median, X, Y) :-
 
 diffusive(Median, X, Y) :-
     (	X = 0 ->
-        Y is 1/(1-sqrt(Median/1))/2
+        Y is 1/(1+sqrt(Median/1))
     ;
         X1 is X + 1,
         evaluate_diffusive(Median, X, Y0),
@@ -37,7 +38,8 @@ diffusive(Median, X, Y) :-
 	Y is (Y0+Y1)/2
     ).
 
-
+diffu(Median, X, Y) :-
+    Y is (1/(1+sqrt(X/Median))+1/(1+sqrt((X+1)/Median)))/2.
 
 %%   navigate(+Request)
 %
@@ -81,10 +83,10 @@ navigate(Request) :-
      ]
 		  ).
 
-
+/*
 production([1,2,3]).
 shocks([1,2,3]).
-
+*/
 
 
 %%   plot(+Request)
@@ -120,14 +122,30 @@ plot(Request) :-
 
     carbon_emissions(Raw),
     [Year, Carbon, _,_,_,_,_,_]  split Raw,
+
+    co2_atm(Mauna_Loa),
+    [_Year_Short, CO2_ML] split Mauna_Loa,
+    CO2_Empty range [1751, 1957]/1,
+    Zeros mapdot 0.0 ~> CO2_Empty,
+    CO2_Mauna_Loa cat [Zeros, CO2_ML],
+    CO2_Data shrink CO2_Mauna_Loa/Year,
+
+
     Timeline range [0,1000]/1,
     Time shrink Timeline/Year,
-    H mapdot diffusive(20) ~> Time,
+    % H mapdot diffusive(13) ~> Time,
+    H mapdot diffu(36) ~> Time,
     (
        Characteristic  = co2 ->
-         CO2 convolve Carbon*H,
-	 Data tuple Year + CO2,
-         Heading = ['Year', 'CO2'],
+         Scale is 1.0/2120,  % PPM / million tons
+         CO2_Equivalent mapdot Scale .* Carbon,
+         CO2 convolve CO2_Equivalent*H,
+         %  Int mapdot 1.0 ~> CO2,
+         % CO2_Int accumulate CO2,
+         % CO2_Total mapdot 294 .+ CO2_Int,
+         CO2_Total mapdot 294 .+ CO2,
+	 Data tuple Year + CO2_Total + CO2_Data,
+         Heading = ['Year', 'CO2', 'Data'],
          YUnits = ' PPM'
     ;
        Characteristic = carbon  ->
@@ -152,7 +170,7 @@ plot(Request) :-
 		  ).
 
 
-
+% http://cdiac.ornl.gov/ftp/ndp030/global.1751_2009.ems
 
 carbon_emissions([
 [1751,    3,      0,      0,      3,      0,      0, _   ],
@@ -417,3 +435,61 @@ carbon_emissions([
     ]
     ).
 
+
+co2_atm(
+[
+[1958.21,  315.368],
+[1959.21,  316.091],
+[1960.21,  317.01],
+[1961.21,  317.793],
+[1962.21,  318.561],
+[1963.21,  319.146],
+[1964.21,  319.637],
+[1965.21,  320.238],
+[1966.21,  321.58],
+[1967.21,  322.253],
+[1968.21,  323.27],
+[1969.21,  324.841],
+[1970.21,  325.832],
+[1971.21,  326.449],
+[1972.21,  327.762],
+[1973.21,  329.84],
+[1974.21,  330.346],
+[1975.21,  331.278],
+[1976.21,  332.179],
+[1977.21,  334.152],
+[1978.21,  335.617],
+[1979.21,  337.05],
+[1980.21,  338.995],
+[1981.21,  340.328],
+[1982.21,  341.595],
+[1983.21,  343.384],
+[1984.21,  344.787],
+[1985.21,  346.238],
+[1986.21,  347.668],
+[1987.21,  349.576],
+[1988.21,  351.902],
+[1989.21,  353.279],
+[1990.21,  354.504],
+[1991.21,  355.779],
+[1992.21,  356.468],
+[1993.21,  357.323],
+[1994.21,  359.111],
+[1995.21,  361.175],
+[1996.21,  362.748],
+[1997.21,  364.041],
+[1998.21,  367.148],
+[1999.21,  368.463],
+[2000.21,  369.797],
+[2001.21,  371.428],
+[2002.21,  373.623],
+[2003.21,  376.139],
+[2004.21,  377.771],
+[2005.21,  380.24 ],
+[2006.21,  382.173],
+[2007.21,  384.133],
+[2008.21,  385.851],
+[2009.21,  387.707],
+[2010.21,  390.231],
+[2011.21,  391.926]
+]).
