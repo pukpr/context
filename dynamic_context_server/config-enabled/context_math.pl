@@ -23,6 +23,7 @@
                        op(700, xfx, ordinal), % array evaluation
                        op(700, xfx, split), % array evaluation
                        op(700, xfx, deplete), % array evaluation
+                       op(700, xfx, accumulate), % array evaluation
                        dot/2,
                        mapdot/2,
                        convolve/2,
@@ -58,8 +59,9 @@
                        ordinal/2,
                        split/2,
                        deplete/2,
-                       interpolate/3
-                      ]).
+                       interpolate/3,
+		       accumulate/2
+                     ]).
 
 /** <module>  Math operations for array manipulations
   such as dot product, convolution and functional mapping
@@ -505,6 +507,20 @@ X integrate Y*Z :-
    Y1 integrate Y,
    Z1 integrate Z,
    integral(Y1,Z1,[],X).
+
+%%   accum(+X,+Y)
+%
+%    Take the cumulative.
+
+sum_list([], List, List) :- !.
+sum_list([F|Rest], List, Out) :-
+   sumlist(Rest, Acc),
+   Sum is Acc + F,
+   sum_list(Rest, [Sum|List], Out).
+
+X accumulate Y :-
+   reverse(Y, Z),
+   sum_list(Z, [], X).
 
 
 % W dot Y*Z :-    % Scalar*Array

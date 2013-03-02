@@ -270,7 +270,9 @@ dispatch(reservoir) -->
 	      \g(workflow,
                   a([href('/context_shock_model/navigate')], 'Oil Shock model')),
 	      \g(workflow,
-                  a([href('/context_oil_fields/navigate')], 'Reservoirs of the world'))
+                  a([href('/context_oil_fields/navigate')], 'Reservoirs of the world')),
+	      \g(workflow,
+                  a([href('/context_co2/navigate')], 'Carbon Emissions and Climate Sensitivity'))
 	     ]
 	    ).
 
