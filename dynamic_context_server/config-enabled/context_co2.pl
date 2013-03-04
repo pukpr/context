@@ -3,7 +3,8 @@
 				exp_lag/3,
 			        log_scale/4,
 			        diffusive/3,
-			        diffu/3
+			        diffu/3,
+			        sine_wave/5
 			    ]).
 
 /** <module> CO2 adjustment model
@@ -33,7 +34,8 @@ rms(A,B,Result) :-
    Result is sqrt(Sq/N), !.
 
 exp_lag(Mean, X, Y) :-
-    Y = 1.0/Mean * (exp(-X/Mean)+exp(-(X+1.0)/Mean))/2.
+    Y = (exp(-X/Mean)+exp(-(X+1.0)/Mean))/2.
+    % Y = 1.0/Mean * (exp(-X/Mean)+exp(-(X+1.0)/Mean))/2.
 
 log_scale(T0, Sens, X, Y) :-
     Y is Sens*log(X/T0).
@@ -45,6 +47,8 @@ evaluate_diffusive(Median, X, Y) :-
     A is sqrt(Median/X),
     Y is A/2/X/(A+1)^2.
 
+sine_wave(Theta, F, Amp, X, Y) :-
+    Y is Amp*sin(X*F+Theta).
 
 diffusive(Median, X, Y) :-
     (	X = 0 ->
@@ -57,7 +61,8 @@ diffusive(Median, X, Y) :-
     ).
 
 diffu(Median, X, Y) :-
-    Y is (1/(1+sqrt(X/Median))+1/(1+sqrt((X+1)/Median)))/2.
+   Y is (1/(1+sqrt(X/Median))+1/(1+sqrt((X+1)/Median)))/2.
+
 
 %%   navigate(+Request)
 %
@@ -110,7 +115,7 @@ production([1,2,3]).
 shocks([1,2,3]).
 */
 
-
+/*
 %%   plot(+Request)
 %
 %    Plot the shock model profile
@@ -134,10 +139,10 @@ plot(Request) :-
                     ]
 		  ).
 
-
+*/
 
 plot(Request) :-
-    http_parameters(Request, [kind(plot, []),
+    http_parameters(Request, [kind(Kind, []),
 			      sensitivity(Sensitivity, [number]),
                               t0(T0, [number]),
                               evaluate(Characteristic, [default(shocked)])]),
@@ -163,7 +168,9 @@ plot(Request) :-
     Timeline range [0,1000]/1,
     Time shrink Timeline/Year,
     % H mapdot diffusive(13) ~> Time,
-    H mapdot diffu(36) ~> Time,
+   %  H mapdot diffu(36.8) ~> Time,
+    H mapdot diffu(17) ~> Time,
+    % H mapdot exp_lag(45.3) ~> Time,
     (
        Characteristic  = co2 ->
          Scale is 1.0/2120,  % PPM / million tons
@@ -172,7 +179,7 @@ plot(Request) :-
          %  Int mapdot 1.0 ~> CO2,
          % CO2_Int accumulate CO2,
          % CO2_Total mapdot 294 .+ CO2_Int,
-         CO2_Total mapdot 294 .+ CO2,
+         CO2_Total mapdot 294.0 .+ CO2,
 	 Data tuple Year + CO2_Total + CO2_Data,
          rms(CO2_Total, CO2_Data, RMS),
          Heading = ['Year', 'CO2', 'Data'],
@@ -182,7 +189,7 @@ plot(Request) :-
 	 Data tuple Year + Carbon,
          Heading = ['Year', 'Carbon'],
          YUnits = ' million metric tons',
-         RMS = 'N/A'
+         RMS = -999.99
     ;
        Characteristic = temperature  ->
          Scale is 1.0/2120,  % PPM / million tons
@@ -190,6 +197,9 @@ plot(Request) :-
          CO2 convolve CO2_Equivalent*H,
          CO2_Total mapdot 294 .+ CO2,
          Temperature mapdot log_scale(294,Sens) ~> CO2_Total,
+         % T_Slice shrink Temperature/Year,
+         % Noise mapdot sine_wave(2.2,0.1,0.25) ~> Year,
+         % T mapdot Noise + T_Slice,
          T_Data mapdot T0 .+ Temperature_Data,
 	 Data tuple Year + Temperature + T_Data,
          rms(CO2_Total, CO2_Data, RMS),
@@ -199,16 +209,31 @@ plot(Request) :-
     ),
     X = 'Date',
     XUnits = ' year',
+    (	Kind = plot ->
     reply_html_page([title('CO2 rise'),
                      \(con_text:style)],
                     [
-		     i('RMS error = '), b(RMS),
 		     \(context_graphing:dygraph_native(lin,
 						       Heading,
 						       [X,XUnits], ['Amount', YUnits],
-						       Characteristic, Data))
+						       Characteristic, Data)),
+		     i('RMS error = '), b('~3f ' - RMS), i('PPM')
                     ]
-		  ).
+		  )
+    ;
+    reply_html_page([title('CO2 rise'),
+                     \(con_text:style)],
+                    [
+		     \(con_text:table_multiple_entries(
+				    [['Year', 'CO2', 'Data']],
+				     Data
+
+				    ))
+                    ]
+		  )
+
+
+    ).
 
 
 % http://cdiac.ornl.gov/ftp/ndp030/global.1751_2009.ems
@@ -476,7 +501,8 @@ carbon_emissions([
     ]
     ).
 
-
+% http://www.woodfortrees.org/data/esrl-co2/compress:12
+%
 co2_atm(
 [
 [1958.21,  315.368],
