@@ -168,8 +168,8 @@ plot(Request) :-
     Timeline range [0,1000]/1,
     Time shrink Timeline/Year,
     % H mapdot diffusive(13) ~> Time,
-   %  H mapdot diffu(36.8) ~> Time,
-    H mapdot diffu(17) ~> Time,
+    H mapdot diffu(36.8) ~> Time,
+    % H mapdot diffu(17) ~> Time,
     % H mapdot exp_lag(45.3) ~> Time,
     (
        Characteristic  = co2 ->
@@ -210,7 +210,7 @@ plot(Request) :-
     X = 'Date',
     XUnits = ' year',
     (	Kind = plot ->
-    reply_html_page([title('CO2 rise'),
+    reply_html_page([title(Characteristic),
                      \(con_text:style)],
                     [
 		     \(context_graphing:dygraph_native(lin,
@@ -221,17 +221,15 @@ plot(Request) :-
                     ]
 		  )
     ;
-    reply_html_page([title('CO2 rise'),
-                     \(con_text:style)],
-                    [
-		     \(con_text:table_multiple_entries(
-				    [['Year', 'CO2', 'Data']],
-				     Data
-
-				    ))
-                    ]
-		  )
-
+      reply_html_page([title(Characteristic),
+                       \(con_text:style)],
+                      [
+                       \(con_text:table_multiple_entries(
+                                      [['Year', Characteristic, 'Data']],
+                                      Data
+                                                        ))
+                      ]
+                     )
 
     ).
 
