@@ -272,7 +272,9 @@ dispatch(reservoir) -->
 	      \g(workflow,
                   a([href('/context_oil_fields/navigate')], 'Reservoirs of the world')),
 	      \g(workflow,
-                  a([href('/context_co2/navigate')], 'Carbon Emissions and Climate Sensitivity'))
+                  a([href('/context_co2/navigate')], 'Carbon Emissions and Climate Sensitivity')),
+	      \g(workflow,
+                  a([href('/context_diffusive_decline/navigate')], 'Diffusive Decline'))
 	     ]
 	    ).
 
