@@ -1,6 +1,6 @@
 :- module(context_diffusive_decline, [
 				% dd/5,
-				diffusive_cumulative/3
+				diffusive_cumulative/4
 			    ]).
 
 /** <module> Diffusive Decline model
@@ -14,8 +14,8 @@
 :- context:register(context_diffusive_decline:plot).
 
 
-diffusive_cumulative(Median, X, Y) :-
-    Y is 1.0/(1+sqrt(Median/(X+0.0000001))).
+diffusive_cumulative(Median, Max, X, Y) :-
+    Y is Max/(1+sqrt(Median/(X+0.0000001))).
 
 %%   navigate(+Request)
 %
@@ -94,13 +94,15 @@ plot(Request) :-
                               t_units(_TUnits, []),
                               evaluate(Characteristic, [default(cumulative)])]),
 
-    Time range [0, 60]/1,
-    % production(Profile),
-    Prod mapdot diffusive_cumulative(Median) ~> Time,
+    Time range [0, 46]/1,
+    production(Profile),
+    sumlist(Profile, Max),
+    Prod mapdot diffusive_cumulative(Median, Max) ~> Time,
     (
        Characteristic  = cumulative ->
-	 Data tuple Time + Prod,
-         Heading = ['Time', 'Model']
+         Cumulative accumulate Profile,
+	 Data tuple Time + Cumulative + Prod,
+         Heading = ['Time', 'Data', 'Model']
     ;
        Characteristic = ou  ->
 	 Data tuple Time + Prod,
@@ -120,11 +122,17 @@ plot(Request) :-
     reply_html_page([title('Shock Profile'),
                      \(con_text:style)],
                     [
+                     b('Max='),i(Max),
 		     \(context_graphing:dygraph_native(lin,
 						       Heading,
 						       [X,XUnits], ['Production', YUnits],
 						       Characteristic, Data))
                     ]
 		  ).
+
+
+
+% From EmmonsCoFB10152.pdf,  year 0 is actually year 1
+production([0, 904,427,149,105,82,65,55,50,45,43,41,39,37,35,33,31,30,28,27,26,24,23,22,21,20,19,18,17,16,15,15,14,13,12,12,11,11,10,10,9,9,8,8,7,7,7]).
 
 
