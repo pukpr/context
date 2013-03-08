@@ -1,6 +1,6 @@
 :- module(context_co2, [
 				hyperbolic/3,
-				exp_lag/3,
+				% exp_lag/3,
 			        log_scale/4,
 			        diffusive/3,
 			        diffu/3,
@@ -32,11 +32,11 @@ rms([A|AA],[B|BB],N, L, Val,Result) :-
 rms(A,B,Result) :-
    rms(A,B,0,N,0,Sq),
    Result is sqrt(Sq/N), !.
-
+/*
 exp_lag(Mean, X, Y) :-
     Y = (exp(-X/Mean)+exp(-(X+1.0)/Mean))/2.
     % Y = 1.0/Mean * (exp(-X/Mean)+exp(-(X+1.0)/Mean))/2.
-
+*/
 log_scale(T0, Sens, X, Y) :-
     Y is Sens*log(X/T0).
 
