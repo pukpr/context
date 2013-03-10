@@ -257,16 +257,21 @@ dygraph_native(LogScale, Headings, Xaxis, Yaxis, Title, Data) -->
 %%   dygraph_error_bars(+LogScale, +Headings, +Xaxis, +Yaxis, +Title, +Data)//
 %
 %    Dygraph error bar prototype, still under development
-dygraph_error_bars(LogScale, Headings, Xaxis, Yaxis, Title, Data) -->
+dygraph_error_bars(LogScale, Headings, Xaxis, Yaxis, Title, Data, Bars) -->
    {
-    is_log(LogScale,Log)
-   },
+    is_log(LogScale,Log),
+    is_log(Bars,CustomBars),
+    (	is_list(Title) ->
+	atomic_list_concat(Title, Text)
+    ;
+       Text = Title
+    )   },
    html([
          \pre_dygraph_script_load,
          div([id('graphdiv'), style('display:block')], []),
          script([type('text/javascript')],
          [
-          \js_call('handleDygraphListErrorBars'(Log,Xaxis,Yaxis,Title,Headings,Data))
+          \js_call('handleDygraphListErrorBars'(Log,Xaxis,Yaxis,Text,Headings,Data,CustomBars))
          ])
         ]).
 

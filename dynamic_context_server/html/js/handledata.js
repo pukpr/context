@@ -144,18 +144,11 @@ handleDygraphList = function(logselector, Xlabel, Ylabel, Title, Labels, data_ar
                       labelsDivStyles: {'textAlign': 'right'}
                    }
                  );
-
-// List
-//    [
-//     [x,y,z],
-//     [x,y,z]
-//    ]
-//  );
-
+// List    [[x,y,z],[x,y,z]]
 };
 
 
-handleDygraphListErrorBars = function(logselector, Xlabel, Ylabel, Title, Labels, data_array){  // data_array is a list of tuples
+handleDygraphListErrorBars = function(logselector, Xlabel, Ylabel, Title, Labels, data_array, bars){  // data_array is a list of tuples
  g = new Dygraph(  // containing div
                    document.getElementById("graphdiv"),
                    data_array,
@@ -163,8 +156,10 @@ handleDygraphListErrorBars = function(logselector, Xlabel, Ylabel, Title, Labels
                       rollPeriod: 1,
                       showRoller: true,
                       title: Title,
-                      errorBars: true,
+                      customBars: bars,
                       logscale: logselector,
+		      digitsAfterDecimal: 4,
+		      labelsDiv: "legend",
 		      ylabel: Ylabel,
 		      xlabel: Xlabel,
 		      yAxisLabelWidth: 70,
@@ -174,13 +169,6 @@ handleDygraphListErrorBars = function(logselector, Xlabel, Ylabel, Title, Labels
                       labelsDivStyles: {'textAlign': 'right'}
                    }
                  );
-
-// List
-//    [
-//     [x,y,z],
-//     [x,y,z]
-//    ]
-//  );
 
 };
 

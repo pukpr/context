@@ -353,7 +353,7 @@ generate_model_stats(Model, URI, N, Df, Lf, [X|DX], [Y|DY], Fraction, Input, Out
     generate_model_stats(Model, URI, N, Df, Lf, DX, DY, Fraction, Sum, Out).
 
 
-%%   random_walker(+Request) 
+%%   random_walker(+Request)
 %
 %    Generate a random walk profile
 random_walker(Request) :-
@@ -846,7 +846,7 @@ data_row(URI,ZList) :-
 data_table(URI, table(ZTable)) :-
     findall(tr(Row), data_row(URI,Row), ZTable).
 
-%%   data_service(+Request) 
+%%   data_service(+Request)
 %
 %    Access the data service
 data_service(Request) :-
@@ -909,7 +909,7 @@ collect_info(URI, ['D'=Df, 'theta'=Lf, 'Q'=Quality]) :-
 %    find_best_model(ou_maxent, URI, Quality, Df, Lf, N, Fraction).
 */
 
-%%   run_sections 
+%%   run_sections
 %
 %    Process DEMs
 run_sections :-
@@ -921,7 +921,7 @@ run_sections :-
                  'D'=Df, 'theta'=Lf, 'Q'=Q, 'E'=Err, 'F'=Fraction, 'S'=Flatness]),
    writeln([Name, Lat, Lon, Df, Lf, Fraction, Flatness,  Q, Err]).
 
-%%   run_all_sections 
+%%   run_all_sections
 %
 %    Process all DEMS
 run_all_sections :-
@@ -937,7 +937,7 @@ aggregate_info(URI) :-
     read_file_to_terms(Path, Terms, []),
     maplist(assert, Terms).
 
-%%   aggregate_all_sections 
+%%   aggregate_all_sections
 %
 %    Do *aggregate_info* on all sections
 aggregate_all_sections :-
@@ -958,7 +958,7 @@ find_all_elevs(X,Z, Total) :-
    Total is Num/L.
 
 
-%%   sum_all_sections 
+%%   sum_all_sections
 %
 %    Sum all sections
 sum_all_sections :-

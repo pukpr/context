@@ -12,6 +12,7 @@
                        op(700, xfx, zshift), % array evaluation
                        op(700, xfx, range), % array evaluation
                        op(700, xfx, tuple), % array evaluation
+                       op(700, xfx, tuple_list), % array evaluation
                        op(700, xfx, window), % array evaluation
                        op(700, xfx, expand), % array evaluation
                        op(700, xfx, shrink), % array evaluation
@@ -47,7 +48,7 @@
                        linear_fractional_range/4,
                        log_range/4,
                        range/2,
-                       tuple/2,
+                       tuple_list/2,
                        cumulative_histogram/3,
                        histogram/3,
                        % number_line/3,  % same as numlist
@@ -617,6 +618,41 @@ X tuple Y+Z :-
    strip(Z, [], Z1),
    tuple_merge(Y1,Z1,[],X).
 
+
+
+%%   list_merge(+X,+Y,+Initial,-Final)
+%
+%    Tuple merge into a single list
+list_merge([],_,Final,Final) :- !.
+list_merge(_,[],Final,Final) :- !.
+list_merge([Y|YR],[Z|ZR],Initial,Final) :-
+   append(Y,Z,X),
+   append(Initial, X, Next),
+   list_merge(YR,ZR,Next,Final), !.
+list_merge([Y|YR],[Z|ZR],Initial,Final) :-
+   append(Initial, [[Y,Z]], Next),
+   list_merge(YR,ZR,Next,Final).
+
+
+%%   tuple_list(+X,+Y)
+%
+%    Create a tuple list from two lists.
+
+[] tuple_list [].
+
+[Y|X] tuple_list [Y|Z] :-  % Simplifier
+   % is_list(Y),
+   X tuple_list Z.
+
+X tuple_list Y+Z :-
+   Y1 tuple_list Y,
+   Z1 tuple_list Z,
+   list_merge(Y1,Z1,[],X), !.
+/*
+X tuple_list Y+Z :-
+   list_merge(Y,Z,[],X).
+
+*/
 
 %%   histogram(+List, -Variates, -Probs)
 %
