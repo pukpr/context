@@ -619,6 +619,11 @@ X tuple Y+Z :-
    tuple_merge(Y1,Z1,[],X).
 
 
+%%   convert_to_list(+X,-Y)
+%
+%    Convert to list
+convert_to_list(X,X) :-	is_list(X), !.
+convert_to_list(X,[X]).
 
 %%   list_merge(+X,+Y,+Initial,-Final)
 %
@@ -626,11 +631,10 @@ X tuple Y+Z :-
 list_merge([],_,Final,Final) :- !.
 list_merge(_,[],Final,Final) :- !.
 list_merge([Y|YR],[Z|ZR],Initial,Final) :-
-   append(Y,Z,X),
-   append(Initial, X, Next),
-   list_merge(YR,ZR,Next,Final), !.
-list_merge([Y|YR],[Z|ZR],Initial,Final) :-
-   append(Initial, [[Y,Z]], Next),
+   convert_to_list(Y,Y1),
+   convert_to_list(Z,Z1),
+   append(Y1,[Z1],X),
+   append(Initial, [X], Next),
    list_merge(YR,ZR,Next,Final).
 
 
@@ -648,6 +652,7 @@ X tuple_list Y+Z :-
    Y1 tuple_list Y,
    Z1 tuple_list Z,
    list_merge(Y1,Z1,[],X), !.
+
 /*
 X tuple_list Y+Z :-
    list_merge(Y,Z,[],X).

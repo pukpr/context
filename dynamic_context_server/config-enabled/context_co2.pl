@@ -97,9 +97,9 @@ navigate(Request) :-
 			  br([]),
 			  \(con_text:radio_toggles(
 					 'evaluate',
-					 [['CO2', 'co2'],
-                                          ['Carbon', 'carbon'],
-					  ['Temperature', 'temperature']
+					 [['Carbon', 'carbon'],
+					  ['CO2', 'co2'],
+                                          ['Temperature', 'temperature']
                                          ])),
                           br([]),
 			  input([type('submit'), name(kind), value('plot'),
@@ -188,14 +188,21 @@ plot(Request) :-
     H mapdot diffu(24) ~> Time, % 24
     % H mapdot exp_lag(45.3) ~> Time,
     (
+       Characteristic = carbon  ->
+	 % C_Low mapdot 100 .+ Carbon,
+         % C_High mapdot 1000 .+ Carbon,
+         % C_Error tuple C_Low + Carbon + C_High,
+	 % Data tuple_list Year + C_Error,
+         Data tuple Year + Carbon,
+         Heading = ['Year', 'Carbon'],
+         YUnits = ' million metric tons',
+         RMS = -999.99,
+         Bars =  false
+    ;
        Characteristic  = co2 ->
          Scale is 1.0/2120,  % PPM / million tons
          CO2_Equivalent mapdot Scale .* Carbon,
          CO2 convolve CO2_Equivalent*H,
-         %  Int mapdot 1.0 ~> CO2,
-         % CO2_Int accumulate CO2,
-         % CO2_Total mapdot 294 .+ CO2_Int,
-         % CO2_Total mapdot 294.0 .+ CO2,
          CO2_Fit shrink CO2/Year,
 
          CO2_Low mapdot Low_Co2 + CO2_Fit,
@@ -210,37 +217,34 @@ plot(Request) :-
          rms(Year, CO2_Total, CO2_Data, RMS),
          Heading = ['Year', 'Carbon model', 'CO2 data'],
          YUnits = ' PPM',
-         Bars =  false
-    ;
-       Characteristic = carbon  ->
-	 C_Low mapdot 100 .+ Carbon,
-         C_High mapdot 1000 .+ Carbon,
-         C_Error tuple C_Low + Carbon + C_High,
-	 Data tuple_list Year + C_Error,
-         Heading = ['Year', 'Carbon'],
-         YUnits = ' million metric tons',
-         RMS = -999.99,
          Bars =  true
     ;
        Characteristic = temperature  ->
          Scale is 1.0/2120,  % PPM / million tons
          CO2_Equivalent mapdot Scale .* Carbon,
          CO2 convolve CO2_Equivalent*H,
-
          CO2_Fit shrink CO2/Year,
-         CO2_Total mapdot Base_Co2 + CO2_Fit,
 
-         % CO2_Total mapdot 294 .+ CO2,
+         CO2_Low mapdot Low_Co2 + CO2_Fit,
+         CO2_Total mapdot Base_Co2 + CO2_Fit,
+         CO2_High mapdot High_Co2 + CO2_Fit,
+
+         Temperature_Minus mapdot log_scale(294,Sens) ~> CO2_Low,
          Temperature mapdot log_scale(294,Sens) ~> CO2_Total,
-         % T_Slice shrink Temperature/Year,
-         % Noise mapdot sine_wave(2.2,0.1,0.25) ~> Year,
-         % T mapdot Noise + T_Slice,
+         Temperature_Plus mapdot log_scale(294,Sens) ~> CO2_High,
+
+         T_Data_Low mapdot T0 .+ Temperature_LOW,
          T_Data mapdot T0 .+ Temperature_Data,
-	 Data tuple Year + Temperature + T_Data,
+         T_Data_High mapdot T0 .+ Temperature_HIGH,
+
+         Temperature_Margin tuple Temperature_Minus + Temperature + Temperature_Plus,
+         T_Margin tuple T_Data_Low + T_Data + T_Data_High,
+
+	 Data tuple_list Year + Temperature_Margin + T_Margin,
          rms(Year, CO2_Total, CO2_Data, RMS),
          Heading = ['Year', 'T from CO2', 'BEST'],
          YUnits = ' C',
-         Bars =  false
+         Bars =  true
 
     ),
     X = 'Date',
