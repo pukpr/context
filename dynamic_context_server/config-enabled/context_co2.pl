@@ -1,6 +1,6 @@
 :- module(context_co2, [
                         hyperbolic/3,
-                        % exp_lag/3,
+                        exponential_decay/3,
                         log_scale/4,
                         diffusive/3,
                         diffu/3,
@@ -33,11 +33,11 @@ rms([Y|Year],[A|AA],[B|BB],N, L, Val,Result) :-
 rms(Year,A,B,Result) :-
    rms(Year,A,B,0,N,0,Sq),
    Result is sqrt(Sq/N), !.
-/*
-exp_lag(Mean, X, Y) :-
+
+exponential_decay(Mean, X, Y) :-
     Y = (exp(-X/Mean)+exp(-(X+1.0)/Mean))/2.
     % Y = 1.0/Mean * (exp(-X/Mean)+exp(-(X+1.0)/Mean))/2.
-*/
+
 log_scale(T0, Sens, X, Y) :-
     Y is Sens*log(X/T0).
 
@@ -185,49 +185,42 @@ plot(Request) :-
     Time shrink Timeline/Year,
     % H mapdot diffusive(13) ~> Time,
     % H mapdot diffu(36.8) ~> Time,
-    H mapdot diffu(24) ~> Time, % 24
-    % H mapdot exp_lag(45.3) ~> Time,
+    % H mapdot diffu(24) ~> Time, % 24
+    H mapdot exponential_decay(36) ~> Time,
     (
        Characteristic = carbon  ->
 	 % C_Low mapdot 100 .+ Carbon,
          % C_High mapdot 1000 .+ Carbon,
          % C_Error tuple C_Low + Carbon + C_High,
-	 % Data tuple_list Year + C_Error,
+	 % Data group Year + C_Error,
          Data tuple Year + Carbon,
          Heading = ['Year', 'Carbon'],
          YUnits = ' million metric tons',
          RMS = -999.99,
          Bars =  false
     ;
-       Characteristic  = co2 ->
-         Scale is 1.0/2120,  % PPM / million tons
-         CO2_Equivalent mapdot Scale .* Carbon,
-         CO2 convolve CO2_Equivalent*H,
-         CO2_Fit shrink CO2/Year,
+       Scale is 1.0/2120,  % PPM / million tons
+       CO2_Equivalent mapdot Scale .* Carbon,
+       CO2 convolve CO2_Equivalent*H,
+       CO2_Fit shrink CO2/Year,
 
-         CO2_Low mapdot Low_Co2 + CO2_Fit,
-         CO2_Total mapdot Base_Co2 + CO2_Fit,
-         CO2_High mapdot High_Co2 + CO2_Fit,
+       CO2_Low mapdot Low_Co2 + CO2_Fit,
+       CO2_Total mapdot Base_Co2 + CO2_Fit,
+       CO2_High mapdot High_Co2 + CO2_Fit,
+       (
+       Characteristic  = co2 ->
 
 	 CO2_Margin tuple CO2_Low + CO2_Total + CO2_High,
          CO2_Data_Margin tuple CO2_Data + CO2_Data + CO2_Data,
 
-	 Data tuple_list Year + CO2_Margin + CO2_Data_Margin,
+	 Data group Year + CO2_Margin + CO2_Data_Margin,
 	 % Data tuple Year + CO2_High + CO2_Data,
          rms(Year, CO2_Total, CO2_Data, RMS),
          Heading = ['Year', 'Carbon model', 'CO2 data'],
          YUnits = ' PPM',
          Bars =  true
-    ;
+       ;
        Characteristic = temperature  ->
-         Scale is 1.0/2120,  % PPM / million tons
-         CO2_Equivalent mapdot Scale .* Carbon,
-         CO2 convolve CO2_Equivalent*H,
-         CO2_Fit shrink CO2/Year,
-
-         CO2_Low mapdot Low_Co2 + CO2_Fit,
-         CO2_Total mapdot Base_Co2 + CO2_Fit,
-         CO2_High mapdot High_Co2 + CO2_Fit,
 
          Temperature_Minus mapdot log_scale(294,Sens) ~> CO2_Low,
          Temperature mapdot log_scale(294,Sens) ~> CO2_Total,
@@ -240,11 +233,12 @@ plot(Request) :-
          Temperature_Margin tuple Temperature_Minus + Temperature + Temperature_Plus,
          T_Margin tuple T_Data_Low + T_Data + T_Data_High,
 
-	 Data tuple_list Year + Temperature_Margin + T_Margin,
-         rms(Year, CO2_Total, CO2_Data, RMS),
+	 Data group Year + Temperature_Margin + T_Margin,
+         rms(Year, T_Data, Temperature, RMS),
          Heading = ['Year', 'T from CO2', 'BEST'],
          YUnits = ' C',
          Bars =  true
+       )
 
     ),
     X = 'Date',
@@ -258,7 +252,8 @@ plot(Request) :-
 						       Heading,
 						       [X,XUnits], ['Amount', YUnits],
 						       Characteristic, Data, Bars)),
-		     i('RMS error = '), b('~3f ' - RMS), i('PPM')
+		     br([]),
+		     i('RMS error = '), b('~3f ' - RMS), i(' after 1900') % , i('PPM')
                     ]
 		  )
     ;

@@ -12,7 +12,7 @@
                        op(700, xfx, zshift), % array evaluation
                        op(700, xfx, range), % array evaluation
                        op(700, xfx, tuple), % array evaluation
-                       op(700, xfx, tuple_list), % array evaluation
+                       op(700, xfx, group), % array evaluation
                        op(700, xfx, window), % array evaluation
                        op(700, xfx, expand), % array evaluation
                        op(700, xfx, shrink), % array evaluation
@@ -48,7 +48,8 @@
                        linear_fractional_range/4,
                        log_range/4,
                        range/2,
-                       tuple_list/2,
+                       tuple/2,
+                       group/2,
                        cumulative_histogram/3,
                        histogram/3,
                        % number_line/3,  % same as numlist
@@ -638,23 +639,23 @@ list_merge([Y|YR],[Z|ZR],Initial,Final) :-
    list_merge(YR,ZR,Next,Final).
 
 
-%%   tuple_list(+X,+Y)
+%%   group(+X,+Y)
 %
 %    Create a tuple list from two lists.
 
-[] tuple_list [].
+[] group [].
 
-[Y|X] tuple_list [Y|Z] :-  % Simplifier
+[Y|X] group [Y|Z] :-  % Simplifier
    % is_list(Y),
-   X tuple_list Z.
+   X group Z.
 
-X tuple_list Y+Z :-
-   Y1 tuple_list Y,
-   Z1 tuple_list Z,
+X group Y+Z :-
+   Y1 group Y,
+   Z1 group Z,
    list_merge(Y1,Z1,[],X), !.
 
 /*
-X tuple_list Y+Z :-
+X group Y+Z :-
    list_merge(Y,Z,[],X).
 
 */

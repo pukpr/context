@@ -151,9 +151,9 @@ plot(Request) :-
     reply_html_page([title('Shock Profile'),
                      \(con_text:style)],
                     [
-                     b('EUR='),i(EUR),
-                     b('  Median='), i(Tau),
-                     b('  R2='), i(R2),
+                     b('EUR='),i('~0f ' - EUR),
+                     b(' |  Median='), i('~1f ' - Tau),
+                     b(' |  R2='), i('~3f ' - R2),
 		     \(context_graphing:dygraph_native(lin,
 						       Heading,
 						       [X,XUnits], ['Production', YUnits],
