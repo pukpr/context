@@ -185,8 +185,8 @@ plot(Request) :-
     Time shrink Timeline/Year,
     % H mapdot diffusive(13) ~> Time,
     % H mapdot diffu(36.8) ~> Time,
-    % H mapdot diffu(24) ~> Time, % 24
-    H mapdot exponential_decay(36) ~> Time,
+    H mapdot diffu(24) ~> Time, % 24
+    % H mapdot exponential_decay(36) ~> Time,
     (
        Characteristic = carbon  ->
 	 % C_Low mapdot 100 .+ Carbon,
@@ -213,6 +213,7 @@ plot(Request) :-
 	 CO2_Margin tuple CO2_Low + CO2_Total + CO2_High,
          CO2_Data_Margin tuple CO2_Data + CO2_Data + CO2_Data,
 
+         Table tuple Year+CO2_Total+CO2_Data,
 	 Data group Year + CO2_Margin + CO2_Data_Margin,
 	 % Data tuple Year + CO2_High + CO2_Data,
          rms(Year, CO2_Total, CO2_Data, RMS),
@@ -232,7 +233,7 @@ plot(Request) :-
 
          Temperature_Margin tuple Temperature_Minus + Temperature + Temperature_Plus,
          T_Margin tuple T_Data_Low + T_Data + T_Data_High,
-
+         Table tuple Year+Temperature+T_Data,
 	 Data group Year + Temperature_Margin + T_Margin,
          rms(Year, T_Data, Temperature, RMS),
          Heading = ['Year', 'T from CO2', 'BEST'],
@@ -262,7 +263,7 @@ plot(Request) :-
                       [
                        \(con_text:table_multiple_entries(
                                       [['Year', Characteristic, 'Data']],
-                                      Data
+                                      Table
                                                         ))
                       ]
                      )

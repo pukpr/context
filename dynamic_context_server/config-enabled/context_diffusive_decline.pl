@@ -17,7 +17,7 @@
 
 
 diffusive_cumulative(Median, Max, X, Y) :-
-    Y is Max/(1+sqrt(Median/(X+0.0000001))).
+    Y is Max/(1+sqrt(Median/(X+1e-15))).
 
 reciprocal_power(Power, X, Y) :-
     Y is 1.0/X^Power.
@@ -92,19 +92,36 @@ plot(Request) :-
 			      median(_Limit, [number]),
                               t_units(_TUnits, []),
                               evaluate(_Table, [])]),
+
+    Time range [0, 46]/1,
+    production(Profile),
+    Prof mapdot 365 .* Profile,
+    Cumulative accumulate Prof,
+    calculate_fit(Time, Cumulative, Slope, Intercept, _R2),
+    EUR is 1.0/Intercept,
+    Tau is (EUR*Slope)^2,
+    Prod mapdot diffusive_cumulative(Tau, EUR) ~> Time,
+    Data tuple Time + Cumulative + Prod,
+
+    /*
     Time range [0, 200]/1,
     % shocks(Shocks),
     % interpolate(Time, Shocks, Sh),
-    Data tuple Time +
-
-    Time,
+    Data tuple Time +    Time,
+    */
 
     reply_html_page([title('Shock Extraction'),
                      \(con_text:style)],
                     [
+                      \(con_text:table_multiple_entries(
+                                      [['Year', 'Data', 'Model']],
+                                      Data
+                                                        ))
+                     /*
 		     \(context_graphing:dygraph_native(lin, [date, rate],
 						       ['Date', year], ['Rate', fraction],
 						       'extraction rate', Data))
+                     */
                     ]
 		  ).
 
