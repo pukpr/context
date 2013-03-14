@@ -557,7 +557,7 @@ frequencies(S, linear, L, Result) :-
     frequencies(S1, linear, [S|L], Result).
 frequencies(S, log, L, Result) :-
     S1 is 0.95*S,
-    LogS is log(S1),
+    LogS is log(S1)/log(10),
     frequencies(S1, log, [LogS|L], Result).
 
 
@@ -592,7 +592,7 @@ two_level_spectrum(L1, Alpha1, L2, Alpha2, S, L, Result) :-
 %
 %    used  by *complex_psd*
 builtin_complex(Length, Scale, F, Result) :-
-    S is 100.0,
+    S is 10000.0,
     Alpha1 is 1.0,
     L1 = Length,
     Alpha2 is 1.0,
@@ -746,7 +746,7 @@ demo_ou(_) :-
 
 
 
-%%   model_index(+Request) 
+%%   model_index(+Request)
 %
 %    Demo of a guided model characteristic
 model_index(_) :-
