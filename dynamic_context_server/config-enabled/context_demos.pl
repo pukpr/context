@@ -730,14 +730,15 @@ demo(_) :-
 %    Ornstein-Uhlenbeck random-walk climate
 climate_ou(_) :-
     X range [1,150]/1,
-    S mapdot 0.0067 .* X,
+    % S mapdot 0.0067 .* X,
     % X range [1,1500]/1,
-    % S mapdot 0.00000000000000000067 .* X,
+    S mapdot 0.00000000000000000067 .* X,
     S1 mapdot S*S,
     Slope mapdot S1*S1,
-    context_random_walk:ou_random_walker(0.01, 1.0, 0.15, X, Z1),
-    % context_random_walk:ou_random_walker(0.01, 1.0, 0.15, X, Z1),
-    Z mapdot Slope + Z1,
+    context_random_walk:ou_random_walker(0.015, 1.0, 0.15, X, Z1),
+    % context_random_walk:ou_random_walker(0.01, 1.0, 0.15, X, Z),
+    ZS mapdot Slope + Z1,
+    % context_stats:msv(ZS, Z),
     reply_html_page(% cliopatria(default),
                     [title('OU chart'),\(con_text:style_cliopatria)],
                     [
@@ -747,7 +748,7 @@ climate_ou(_) :-
                                             'year',
                                             'temperature anomaly',
                                             'Ornstein-Uhlenbeck random walk profile',
-                                            [X,Z] ))
+                                            [X,ZS] ))
                     ]).
 
 
