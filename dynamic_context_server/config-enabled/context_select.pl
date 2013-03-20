@@ -274,6 +274,8 @@ dispatch(reservoir) -->
 	      \g(workflow,
                   a([href('/context_co2/navigate')], 'Carbon Emissions and Climate Sensitivity')),
 	      \g(workflow,
+                  a([href('/context_demos/climate_ou')], 'Climate O-U Random Walk')),
+	      \g(workflow,
                   a([href('/context_diffusive_decline/navigate')], 'Diffusive Decline'))
 	     ]
 	    ).

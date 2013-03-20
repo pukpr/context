@@ -106,6 +106,7 @@ navigate(Request) :-
                                  onclick('subm(this.form,"target_iframe");')]),
 			  input([type('submit'), name(kind), value('table'),
                                  onclick('subm(this.form,"render");')])
+
 			 ]
                           ),
 
@@ -248,13 +249,18 @@ plot(Request) :-
     reply_html_page([title(Characteristic),
                      \(con_text:style)],
                     [
-		      div([id('legend')],[]),
+                     table([
+                     tr([height='50'],[td(div([id('legend')],[]))]),
+                     tr([td(
 		     \(context_graphing:dygraph_error_bars(lin,
 						       Heading,
 						       [X,XUnits], ['Amount', YUnits],
-						       Characteristic, Data, Bars)),
+						       Characteristic, Data, Bars))
+                           )])]
+                          ),
 		     br([]),
-		     i('RMS error = '), b('~3f ' - RMS), i(' after 1900') % , i('PPM')
+		     i('RMS error = '), b('~3f ' - RMS), i(' after 1900'), % , i('PPM')
+                     br([])
                     ]
 		  )
     ;

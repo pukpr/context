@@ -23,6 +23,7 @@
 :- context:register(context_demos:model_index).
 :- context:register(context_demos:sos).
 :- context:register(context_demos:sos_config).
+:- context:register(context_demos:climate_ou).
 
 
 
@@ -722,6 +723,33 @@ demo(_) :-
                                             'random walk profile',
                                             [X,Z] ))
                     ]).
+
+
+%%   climate_ou(+Request)
+%
+%    Ornstein-Uhlenbeck random-walk climate
+climate_ou(_) :-
+    X range [1,150]/1,
+    S mapdot 0.0067 .* X,
+    % X range [1,1500]/1,
+    % S mapdot 0.00000000000000000067 .* X,
+    S1 mapdot S*S,
+    Slope mapdot S1*S1,
+    context_random_walk:ou_random_walker(0.01, 1.0, 0.15, X, Z1),
+    % context_random_walk:ou_random_walker(0.01, 1.0, 0.15, X, Z1),
+    Z mapdot Slope + Z1,
+    reply_html_page(% cliopatria(default),
+                    [title('OU chart'),\(con_text:style_cliopatria)],
+                    [
+                     \(context_graphing:dygraph_plot(
+                                            false,
+                                            'X,Z',
+                                            'year',
+                                            'temperature anomaly',
+                                            'Ornstein-Uhlenbeck random walk profile',
+                                            [X,Z] ))
+                    ]).
+
 
 %%   demo_ou(+Request)
 %
