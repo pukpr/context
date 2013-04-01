@@ -133,7 +133,8 @@ ent:length
 
 ent:mass
         ent:name  "mass" ;
-	ent:units ent:kilogram ,
+	ent:units ent:gram ,
+	          ent:kilogram ,
 		  ent:pound .
 
 ent:pressure
@@ -215,6 +216,11 @@ ent:ft
 ent:ft_2
 	ent:description "square foot" ;
 	ent:unit "ft^2" .
+
+
+ent:gram
+	ent:description "grams" ;
+	ent:unit "g" .
 
 ent:g_cm3
 	ent:description "grams/cc" ;

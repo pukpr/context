@@ -40,6 +40,7 @@
                      <instances/soil_classification.ttl>,
                      <instances/ar-70-38_specifications.ttl>,
                      <instances/category_oil_fields_by_country.ttl>,
+                     <instances/uk_north_sea_oil_fields.ttl>,
                      <terms/context-terms.owl.ttl>,
                      <terms/defs.ttl>,
                      <terms/swore.rdf>,
@@ -192,6 +193,11 @@
          a lib:Schema ;
          a lib:CloudNode ;
 	 dc:title "Countries with oil fields from dbpedia".
+
+<instances/uk_north_sea_oil_fields.ttl>
+         a lib:Schema ;
+         a lib:CloudNode ;
+	 dc:title "Production from UK North Sea oil fields".
 
 <terms/defs.ttl>
          a lib:Schema ;

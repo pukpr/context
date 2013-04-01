@@ -272,11 +272,15 @@ dispatch(reservoir) -->
 	      \g(workflow,
                   a([href('/context_uk_oil/navigate')], 'Oil Shock model - UK North Sea')),
 	      \g(workflow,
+                  a([href('/context_oil_fields_production/navigate')], 'Oil Fields Production Levels')),
+	      \g(workflow,
                   a([href('/context_oil_fields/navigate')], 'Reservoirs of the world')),
 	      \g(workflow,
                   a([href('/context_co2/navigate')], 'Carbon Emissions and Climate Sensitivity')),
 	      \g(workflow,
                   a([href('/context_demos/climate_ou')], 'Climate O-U Random Walk')),
+	      \g(workflow,
+                  a([href('/context_ohc/navigate')], 'Ocean Heat Content')),
 	      \g(workflow,
                   a([href('/context_diffusive_decline/navigate')], 'Diffusive Decline'))
 	     ]
