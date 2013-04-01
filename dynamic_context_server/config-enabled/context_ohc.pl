@@ -16,7 +16,7 @@
 
 dd_ohc(Scale, L, D, Year, Result) :-
     R is sqrt(D*Year)/L,
-    Result is Scale*(R+2)/(R+1)^2.
+    Result is Scale*(R+2)/(R+1)^2/2.
 
 dd_uniform_ohc(Scale, L, D, Year, Result) :-
     (	 Year > 0 ->
@@ -40,7 +40,7 @@ navigate(Request) :-
                                     Request,
 		     [
                       h1('OHC model'),
-                      p('Select characteristic'),
+                      p('Select a forcing input to model response'),
                       form([action(plot), target(target_iframe)],
 			 [
 			  select([name('t_units')], Tunits),
@@ -50,9 +50,8 @@ navigate(Request) :-
 			  br([]),
 			  \(con_text:radio_toggles(
 					 'evaluate',
-					 [['Response', 'response'],
-                                          % ['Average', 'average'],
-					  ['Forcing', 'forcing']
+					 [['Effective', 'response'],
+					  ['Linear', 'forcing']
                                          ])),
                           br([]),
 			  input([type('submit'), name(kind), value('plot'),
@@ -109,16 +108,19 @@ plot(Request) :-
                               t_units(_TUnits, []),
                               evaluate(Characteristic, [default(shocked)])]),
 
-    Time range [0, 50]/1,
-    Scale is  0.52/1.1,
-    D = 0.09,
+    TS = 50,
+    W2J = 1.126,
+    Time range [0, TS]/1,
+    D = 0.008,
+    Loss = 0.45,
     % Offset = 0.0,
-    DD3 mapdot dd_ohc(Scale, 0.3, D) ~> Time,
-    DD7 mapdot dd_ohc(Scale, 0.7, D) ~> Time,
-    DD100 mapdot dd_ohc(Scale, 2.0, D) ~> Time,
-    forcing(Forcing),
-    % Forcing mapdot Offset .+ F,
-    Linear_Scale is 1.55*1.0/50/1.1,
+    DD3 mapdot dd_ohc(1.0, 0.3, D) ~> Time,
+    DD7 mapdot dd_ohc(1.0, 0.7, D) ~> Time,
+    DD100 mapdot dd_ohc(1.0, 100.0, D) ~> Time,
+    Scale is  Loss*W2J,
+    forcing(F),
+    Forcing mapdot Scale .* F,
+    Linear_Scale is Loss*W2J*1.55/TS,
     Linear_Forcing mapdot Linear_Scale .* Time,
     (
        Characteristic  = response ->
@@ -127,14 +129,14 @@ plot(Request) :-
          OHC100 convolve DD100*Forcing,
          % interpolate(Time, Shocks, Rate),
 	 Data tuple Time + OHC3 + OHC7 + OHC100,
-         Heading = [X,    '0.3km','0.7km', '10km']
+         Heading = [X,    '0.3km','0.7km', 'All']
     ;
        Characteristic = forcing  ->
          OHC3 convolve DD3*Linear_Forcing,
          OHC7 convolve DD7*Linear_Forcing,
          OHC100 convolve DD100*Linear_Forcing,
 	 Data tuple Time + OHC3 + OHC7 + OHC100,
-         Heading = [X,    '0.3km','0.7km', '10km']
+         Heading = [X,    '0.3km','0.7km', 'All']
     ),
     X = 'Time',
     XUnits = ' year',

@@ -69,8 +69,9 @@ plot(Request) :-
 			      data_set(Field, []),
                               evaluate(_Characteristic, [default(id1)])]),
 
-    % oil_field(ID, Field),
     context:rdfL(Field, ent:data, Prods),
+    oil_field(Field, Name),
+    context:rdfS(Field, ent:total, Cumulative),
     Years ordinal Prods,
     Calendar mapdot 1975 .+ Years,
     % H range [0.1, 10.0]^0.9*LUnits,
@@ -84,7 +85,11 @@ plot(Request) :-
                     [
 		     \(context_graphing:dygraph_native(Kind, [X, Y],
 						       [X,XUnits], [Y, YUnits],
-						       'Production Level', Data))
+						       ['Production Level : ', Name],
+                                                       Data)),
+                     br([]),
+                     i('cumulative='),
+                     b(Cumulative)
                     ]
 		  ).
 
