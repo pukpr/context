@@ -72,7 +72,7 @@ test(mapdot_associate) :-
     Z mapdot X-(((X+X)-X)+X - 2 .* X),
     Z = X.
 
-test(stats) :-
+test(prob_stats) :-
     X range [0,100]/0.1,
     Y mapdot exp(10) ~> X, % generate a cumulative distribution
     Z pdf Y,
@@ -301,6 +301,16 @@ test(dbpedia) :-
     MaxHot = 91,
     DayHot = 195,
     Name = 'Baltimore'.
+
+
+test(stats) :-
+    corrcoeff([1,2.92,3,4],[1,2,3.93,4],R),
+    near(R, 0.860269215732717),
+    median([6,9,8,4,5,1,7,3,2],5),
+    expsm([1,0,0,0],
+           0.5,
+          [0.5, 0.25, 0.125, 0.0625]).
+
 
 :- end_tests(lists).
 

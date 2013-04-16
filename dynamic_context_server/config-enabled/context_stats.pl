@@ -21,25 +21,27 @@
 %
 msv(List, Var) :-
     length(List, N),
-    Scale is 1/(N-1),
-    msv(List, N, [], X),
-    Z ordinal X,
-    Y mapdot 1.0 .+ Z,
-    Vars mapdot Y * X,
-    Vars2 mapdot Y * Vars,
-    Var mapdot Scale .* Vars2.
+    % Scale is 1/(N-1),
+    msv(List, N, N, [], Var).
+    % Z ordinal X,
+    % Y mapdot 1.0 .+ Z,
+    % Var mapdot Scale .* X.
+    %Vars mapdot Y * X,
+    %Vars2 mapdot Y * Vars,
+    %Var mapdot Scale .* Vars2.
 
-msv(_, 0, X, X) :- !.
-msv(List, N, X, Y) :-
+msv(_, 0, _Max, X, X) :- !.
+msv(List, N, Max, X, Y) :-
     findall( Diff,
              (nth1(S,List,S1),
               nth1(T,List,T1),
               N is S-T,
               Diff is (S1-T1)*(S1-T1)),
              Group),
-    sumlist(Group, Sum),
+    sumlist(Group, S),
+    Sum is S/(Max-N+1),
     M is N - 1, !,
-    msv(List, M, [Sum|X], Y).
+    msv(List, M, Max, [Sum|X], Y).
 
 
 %%   expsm(+X, +A, -Y)
@@ -130,7 +132,7 @@ rms(X, Y) :-
     dist(X, M, Y0),
     Y is sqrt(Y0/N).
 
-%%   corrcoef(+X, +Y, R)
+%%   corrcoef(+X, +Y, -R)
 %
 %    Correlation Coefficient of two arrays
 %

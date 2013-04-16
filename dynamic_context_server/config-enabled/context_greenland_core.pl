@@ -11,6 +11,7 @@
 
 :- use_module(context_math).
 :- use_module(context_complex).
+:- use_module(context_stats).
 
 :- context:register(context_greenland_core:navigate).
 :- context:register(context_greenland_core:plot).
@@ -45,8 +46,8 @@ navigate(Request) :-
 			  br([]),
 			  \(con_text:radio_toggles(
 					 'evaluate',
-					 [['DYE3', 'dye3'],
-					  ['other', 'other']
+					 [['DYE3 data', 'dye3_data'],
+					  ['DYE3 MSV', 'dye3_msv']
                                          ])),
                           br([]),
 			  input([type('submit'), name(kind), value('plot'),
@@ -121,17 +122,22 @@ plot(Request) :-
     http_parameters(Request, [kind(plot, []),
 			      limit(_Limit, [number]),
                               t_units(_TUnits, []),
-                              evaluate(Characteristic, [default(dye3)])]),
+                              evaluate(Characteristic, [default(dye3_data)])]),
 
     (
-       Characteristic  = dye3 ->
+       Characteristic  = dye3_data ->
          dye3_data(D0),
          D unbias D0,
          Span ordinal D,
          Data tuple Span + D
     ;
-       Characteristic = others  ->
-         true
+       Characteristic = dye3_msv  ->
+         dye3_data(D0),
+         DU unbias D0,
+         D1 offset DU - 3000,
+         msv(D1, D),
+         Span ordinal D,
+         Data tuple Span + D
     ),
     X = 'Age',
     XUnits = ' year',
