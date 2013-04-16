@@ -99,6 +99,7 @@ navigate(Request) :-
 					 'evaluate',
 					 [['Carbon', 'carbon'],
 					  ['CO2', 'co2'],
+					  ['Airborne Fraction', 'fraction'],
                                           ['Temperature', 'temperature']
                                          ])),
                           br([]),
@@ -221,6 +222,35 @@ plot(Request) :-
          Heading = ['Year', 'Carbon model', 'CO2 data'],
          YUnits = ' PPM',
          Bars =  true
+       ;
+       Characteristic  = fraction ->
+	 %W = [1,1],
+	 %Window normalize W,
+	 % CO2_T window CO2_Total / Window,
+	 % CO2_DT zshift CO2_Total-CO2_Total,
+	 CO2_DT zshift CO2_Fit-CO2_Fit,
+	 CO2_DD zshift CO2_Data-CO2_Data,
+	 CO2_DT1 mapdot 2120 .* CO2_DT,
+	 CO2_DD1 mapdot 2120 .* CO2_DD,
+	 % context_stats:expsm(CO2_DT1, 0.9, CO2_DT2),
+	 % context_stats:expsm(CO2_DD1, 0.86, CO2_DD2),
+
+	 %W = [1,1,1,1,1,1,1],
+	 % Window normalize W,
+	 %CO2_DT2 window CO2_DT1 / Window,
+	 %CO2_DD2 window CO2_DD1 / Window,
+	 CO2_Fraction mapdot CO2_DT1 / Carbon,
+         CO2_Data_Fraction mapdot CO2_DD1 / Carbon,
+
+	 %CO2_Fraction1 offset CO2_Fraction - 100,
+	 %CO2_Data_Fraction1 offset CO2_Data_Fraction - 100,
+	 %Year1 offset Year - 100,
+         Table tuple Year+CO2_Total+CO2_Data,
+	 Data tuple Year + CO2_Fraction + CO2_Data_Fraction,
+         rms(Year, CO2_Total, CO2_Data, RMS),
+         Heading = ['Year', 'Diffusion model', 'CO2 data'],
+         YUnits = ' fraction airborne',
+         Bars =  false
        ;
        Characteristic = temperature  ->
 
