@@ -6,7 +6,8 @@
                        mean/2,
                        moment/3,
                        median/2,
-                       rms/2
+                       rms/2,
+                       corrcoeff/3
                      ]).
 
 /** <module>  Statistics operations on arrays
@@ -128,3 +129,19 @@ rms(X, Y) :-
     length(X, N),
     dist(X, M, Y0),
     Y is sqrt(Y0/N).
+
+%%   corrcoef(+X, +Y, R)
+%
+%    Correlation Coefficient of two arrays
+%
+corrcoeff(X, Y, R) :-
+    mean(X, XM), XOff is -XM,
+    mean(Y, YM), YOff is -YM,
+    DXM mapdot XOff .+ X,
+    DYM mapdot YOff .+ Y,
+    Num dot DXM*DYM,
+    XDen dot DXM*DXM,
+    YDen dot DYM*DYM,
+    Den is sqrt(XDen*YDen),
+    R is Num/Den.
+
