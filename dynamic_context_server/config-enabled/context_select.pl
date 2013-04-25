@@ -282,6 +282,8 @@ dispatch(reservoir) -->
 	      \g(workflow,
                   a([href('/context_ohc/navigate')], 'Ocean Heat Content')),
 	      \g(workflow,
+                  a([href('/context_sea_level/navigate')], 'Sea Level Rise')),
+	      \g(workflow,
                   a([href('/context_diffusive_decline/navigate')], 'Diffusive Decline'))
 	     ]
 	    ).
