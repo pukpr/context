@@ -51,7 +51,8 @@ navigate(Request) :-
 			  \(con_text:radio_toggles(
 					 'evaluate',
 					 [['Effective', 'response'],
-					  ['Linear', 'forcing']
+					  ['Linear', 'forcing'],
+					  ['Differences Effective', 'diffs']
                                          ])),
                           br([]),
 			  input([type('submit'), name(kind), value('plot'),
@@ -117,6 +118,7 @@ plot(Request) :-
     DD3 mapdot dd_ohc(1.0, 0.3, D) ~> Time,
     DD7 mapdot dd_ohc(1.0, 0.7, D) ~> Time,
     DD100 mapdot dd_ohc(1.0, 100.0, D) ~> Time,
+    DD20 mapdot dd_ohc(1.0, 2.0, D) ~> Time,
     Scale is  Loss*W2J,
     forcing(F),
     Forcing mapdot Scale .* F,
@@ -130,6 +132,15 @@ plot(Request) :-
          % interpolate(Time, Shocks, Rate),
 	 Data tuple Time + OHC3 + OHC7 + OHC100,
          Heading = [X,    '0.3km','0.7km', 'All']
+    ;
+       Characteristic  = diffs ->
+         OHC3 convolve DD3*Forcing,
+         OHC7 convolve DD7*Forcing,
+         OHC20 convolve DD20*Forcing,
+         OHC20_diff mapdot OHC20 - OHC7,
+         OHC7_diff mapdot OHC7 - OHC3,
+	 Data tuple Time + OHC3 + OHC7_diff + OHC20_diff,
+         Heading = [X,    '0 .. 0.3km','0.3 .. 0.7km', '0.7 .. 2km']
     ;
        Characteristic = forcing  ->
          OHC3 convolve DD3*Linear_Forcing,

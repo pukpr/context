@@ -1,6 +1,8 @@
 :- module(context_math, [
                        op(400, yfx, .*), % real times array
                        op(500, yfx, .+), % constant add to an array
+                       op(500, yfx, .-), % constant subtract to an array
+                       op(500, yfx, ./), % constant divide to an array
                        op(500, yfx, ~>), % map apply
                        op(700, xfx, dot), % array evaluation
                        op(700, xfx, mapdot), % array evaluation
@@ -345,12 +347,34 @@ X mapdot Y/Z :-    % Array mapdot product
    dotexpanddiv(Y1, Z1, [], X),!.
 
 X mapdot Y.*Z :-    % Array scalar dot product
-   Y1 is Y,
-   Z1 mapdot Z,
+   (
+      number(Y),
+      Y1 is Y,
+      Z1 mapdot Z
+    ;
+      Y1 is Z,
+      Z1 mapdot Y
+   ),
    dotscale(Y1, Z1, [], X),!.
 
 X mapdot Y.+Z :-    % Array scalar sum adder
-   Y1 is Y,
+   (
+      number(Y),
+      Y1 is Y,
+      Z1 mapdot Z
+    ;
+      Y1 is Z,
+      Z1 mapdot Y
+   ),
+   dotadd(Y1, Z1, [], X),!.
+
+X mapdot Z./Y :-    % Array scalar divide product
+   Y1 is 1.0/Y,
+   Z1 mapdot Z,
+   dotscale(Y1, Z1, [], X),!.
+
+X mapdot Z.-Y :-    % Array scalar sum adder
+   Y1 is -Y,
    Z1 mapdot Z,
    dotadd(Y1, Z1, [], X),!.
 
