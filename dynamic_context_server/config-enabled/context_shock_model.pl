@@ -328,6 +328,7 @@ plot(Request) :-
     Date mapdot 1850 .+ Time,
     % Margin mapdot Limit ~> Time,
     production(Profile),
+    sumlist(Profile,Production),
     DD mapdot dd(8, 2200, 114) ~> Time,
     Discoveries derivative DD/Time,
     %discoveries_lahererre(DD),
@@ -364,7 +365,8 @@ plot(Request) :-
     reply_html_page([title('Shock Profile'),
                      \(con_text:style)],
                     [
-		     i('cumulative='), b(Cumulative_Model),
+		     i('cumulative='), b(Cumulative_Model), i('/'),
+		     b(Production),
 		     \(context_graphing:dygraph_native(lin,
 						       Heading,
 						       [X,XUnits], ['Production', YUnits],

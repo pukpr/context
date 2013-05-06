@@ -280,6 +280,8 @@ dispatch(reservoir) -->
 	      \g(workflow,
                   a([href('/context_demos/climate_ou')], 'Climate O-U Random Walk')),
 	      \g(workflow,
+                  a([href('/context_greenland_core/navigate')], 'Greenland Ice Core Data')),
+	      \g(workflow,
                   a([href('/context_ohc/navigate')], 'Ocean Heat Content')),
 	      \g(workflow,
                   a([href('/context_sea_level/navigate')], 'Sea Level Rise')),
