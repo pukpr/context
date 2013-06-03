@@ -85,7 +85,7 @@ plot(Request) :-
          forcing(Forcing)
     ;
        Characteristic = forcing  ->
-         Scale is 1.55*1.0/50,
+         Scale is 1.55*1.0/50, % rise over 50 years
          Forcing mapdot Scale .* Time
     ),
 

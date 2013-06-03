@@ -199,7 +199,8 @@ plot(Request) :-
          Heading = ['Year', 'Carbon'],
          YUnits = ' million metric tons',
          RMS = -999.99,
-         Bars =  false
+         Bars =  false,
+         Table tuple Year + Carbon
     ;
        Scale is 1.0/2120,  % PPM / million tons
        CO2_Equivalent mapdot Scale .* Carbon,
