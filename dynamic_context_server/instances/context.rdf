@@ -14388,10 +14388,12 @@ a salient property of the cascade multiplicative multifractal model, which is am
         <link:type>text/html</link:type>
         <link:charset>25</link:charset>
     </z:Attachment>
-    <bib:Article rdf:about="/ref/foundation/stochastic_analysis.docx">
+    <bib:Article rdf:about="/ref/foundation/A-stochastic_analysis.pdf">
         <z:itemType>journalArticle</z:itemType>
         <dcterms:isPartOf>
-           <bib:Journal></bib:Journal>
+            <bib:Journal>
+               <dc:title>Context/Earth</dc:title><prism:volume>1</prism:volume>
+            </bib:Journal>
         </dcterms:isPartOf>
         <bib:authors>
             <rdf:Seq>
@@ -14436,10 +14438,11 @@ a salient property of the cascade multiplicative multifractal model, which is am
         <dc:subject>reprMathFunction:ProbabilityDensityFunction</dc:subject>
         <dc:subject>reprMathStatistics:Statistics</dc:subject>
         <dc:subject>stateThermodynamic:MaximumEntropy</dc:subject>
-        <dc:title>stochastic_analysis.docx</dc:title>
+        <dc:title>Stochastic Analysis for Context Modeling</dc:title>
+        <bib:pages>36</bib:pages>
         <dc:identifier>
             <dcterms:URI>
-               <rdf:value>/ref/foundation/stochastic_analysis.docx</rdf:value>
+               <rdf:value>/ref/foundation/A-stochastic_analysis.pdf</rdf:value>
             </dcterms:URI>
         </dc:identifier>
         <dcterms:dateSubmitted>2012-11-04 21:28:38</dcterms:dateSubmitted>
@@ -14455,10 +14458,12 @@ a salient property of the cascade multiplicative multifractal model, which is am
         </dc:identifier>
         <link:type>application/unknown</link:type>
     </z:Attachment>
-    <bib:Article rdf:about="/ref/foundation/diffusive_growth.docx">
+    <bib:Article rdf:about="/ref/foundation/C-diffusive_growth.pdf">
         <z:itemType>journalArticle</z:itemType>
         <dcterms:isPartOf>
-           <bib:Journal></bib:Journal>
+            <bib:Journal>
+               <dc:title>Context/Earth</dc:title><prism:volume>3</prism:volume>
+            </bib:Journal>
         </dcterms:isPartOf>
         <bib:authors>
             <rdf:Seq>
@@ -14489,10 +14494,11 @@ a salient property of the cascade multiplicative multifractal model, which is am
         <dc:subject>propDiffusivity:ThermalDiffusivity</dc:subject>
         <dc:subject>propTemperature:Temperature</dc:subject>
         <dc:subject>realm:Atmosphere</dc:subject>
-        <dc:title>diffusive_growth.docx</dc:title>
+        <dc:title>Characterizing Diffusive Growth by Uncertainty Quantification</dc:title>
+        <bib:pages>37</bib:pages>
         <dc:identifier>
             <dcterms:URI>
-               <rdf:value>/ref/foundation/diffusive_growth.docx</rdf:value>
+               <rdf:value>/ref/foundation/C-diffusive_growth.pdf</rdf:value>
             </dcterms:URI>
         </dc:identifier>
         <dcterms:dateSubmitted>2012-11-04 21:20:01</dcterms:dateSubmitted>
@@ -14545,10 +14551,12 @@ a salient property of the cascade multiplicative multifractal model, which is am
         <link:type>text/html</link:type>
         <link:charset>1</link:charset>
     </z:Attachment>
-    <bib:Article rdf:about="/ref/foundation/knowledge_based_enviromental_modeling.docx">
+    <bib:Article rdf:about="/ref/foundation/D-knowledge_based_enviromental_modeling.pdf">
         <z:itemType>journalArticle</z:itemType>
         <dcterms:isPartOf>
-           <bib:Journal></bib:Journal>
+            <bib:Journal>
+               <dc:title>Context/Earth</dc:title><prism:volume>4</prism:volume>
+            </bib:Journal>
         </dcterms:isPartOf>
         <bib:authors>
             <rdf:Seq>
@@ -14570,6 +14578,12 @@ a salient property of the cascade multiplicative multifractal model, which is am
                         <foaf:givenname>D.</foaf:givenname>
                     </foaf:Person>
                 </rdf:li>
+                <rdf:li>
+                    <foaf:Person>
+                        <foaf:surname>Huang</foaf:surname>
+                        <foaf:givenname>T.</foaf:givenname>
+                    </foaf:Person>
+                </rdf:li>
             </rdf:Seq>
         </bib:authors>
         <link:link rdf:resource="#item_1033"/>
@@ -14580,10 +14594,12 @@ a salient property of the cascade multiplicative multifractal model, which is am
         <dc:subject>realm:Land</dc:subject>
         <dc:subject>realm:Ocean</dc:subject>
         <dc:subject>realmLandform:Land</dc:subject>
-        <dc:title>knowledge_based_enviromental_modeling.docx</dc:title>
+        <dc:title>Knowledge-Based Environmental Context Modeling</dc:title>
+        <bib:pages>65</bib:pages>
+        <dc:date>2013</dc:date>
         <dc:identifier>
             <dcterms:URI>
-                <rdf:value>/ref/foundation/knowledge_based_enviromental_modeling.docx</rdf:value>
+                <rdf:value>/ref/foundation/D-knowledge_based_enviromental_modeling.pdf</rdf:value>
             </dcterms:URI>
         </dc:identifier>
         <dcterms:dateSubmitted>2012-11-04 21:18:12</dcterms:dateSubmitted>
@@ -14599,10 +14615,12 @@ a salient property of the cascade multiplicative multifractal model, which is am
         </dc:identifier>
         <link:type>application/unknown</link:type>
     </z:Attachment>
-    <bib:Article rdf:about="/ref/foundation/terrain_characterization.docx">
+    <bib:Article rdf:about="/ref/foundation/B-terrain_characterization.pdf">
         <z:itemType>journalArticle</z:itemType>
         <dcterms:isPartOf>
-           <bib:Journal></bib:Journal>
+            <bib:Journal>
+               <dc:title>Context/Earth</dc:title><prism:volume>2</prism:volume>
+            </bib:Journal>
         </dcterms:isPartOf>
         <bib:authors>
             <rdf:Seq>
@@ -14622,6 +14640,18 @@ a salient property of the cascade multiplicative multifractal model, which is am
                     <foaf:Person>
                         <foaf:surname>Challou</foaf:surname>
                         <foaf:givenname>D.</foaf:givenname>
+                    </foaf:Person>
+                </rdf:li>
+                <rdf:li>
+                    <foaf:Person>
+                        <foaf:surname>Bradford</foaf:surname>
+                        <foaf:givenname>R.</foaf:givenname>
+                    </foaf:Person>
+                </rdf:li>
+                <rdf:li>
+                    <foaf:Person>
+                        <foaf:surname>Becker</foaf:surname>
+                        <foaf:givenname>C.</foaf:givenname>
                     </foaf:Person>
                 </rdf:li>
             </rdf:Seq>
@@ -14638,10 +14668,11 @@ a salient property of the cascade multiplicative multifractal model, which is am
         <dc:subject>reprDataServiceAnalysis:FourierTransform</dc:subject>
         <dc:subject>reprDataServiceAnalysis:SpectralAnalysis</dc:subject>
         <dc:subject>reprSpaceGeometry:Surface</dc:subject>
-        <dc:title>terrain_characterization.docx</dc:title>
+        <dc:title>Unified Characterization of Surface Topography for Vehicle Dynamics Applications</dc:title>
+        <bib:pages>43</bib:pages>
         <dc:identifier>
             <dcterms:URI>
-                <rdf:value>/ref/foundation/terrain_characterization.docx</rdf:value>
+                <rdf:value>/ref/foundation/B-terrain_characterization.pdf</rdf:value>
             </dcterms:URI>
         </dc:identifier>
         <dcterms:dateSubmitted>2012-11-04 21:33:09</dcterms:dateSubmitted>
@@ -18391,5 +18422,101 @@ of the main tables of atmospheric properties, including values of physical const
         </dc:identifier>
         <link:type>application/pdf</link:type>
         <link:charset>25</link:charset>
+    </z:Attachment>
+    <bib:Article rdf:about="#item_2152">
+        <z:itemType>journalArticle</z:itemType>
+        <dcterms:isPartOf rdf:resource="urn:issn:0009-2509"/>
+        <bib:authors>
+            <rdf:Seq>
+                <rdf:li>
+                    <foaf:Person>
+                        <foaf:surname>Epstein</foaf:surname>
+                        <foaf:givenname>Norman</foaf:givenname>
+                    </foaf:Person>
+                </rdf:li>
+            </rdf:Seq>
+        </bib:authors>
+        <dcterms:isReferencedBy rdf:resource="#item_2153"/>
+        <dc:title>On tortuosity and the tortuosity factor in flow and diffusion through porous media</dc:title>
+        <bib:pages>777-779</bib:pages>
+        <dc:date>1989</dc:date>
+    </bib:Article>
+    <bib:Journal rdf:about="urn:issn:0009-2509">
+        <dc:title>Chemical engineering science</dc:title>
+        <prism:volume>44</prism:volume>
+        <prism:number>3</prism:number>
+        <dcterms:alternative>Chemical engineering science</dcterms:alternative>
+        <dc:identifier>ISSN 0009-2509</dc:identifier>
+    </bib:Journal>
+    <bib:Memo rdf:about="#item_2153">
+        <rdf:value>The following values have no corresponding Zotero field:&lt;br/>PB  - Elsevier&lt;br/></rdf:value>
+        <dc:subject>_RIS import</dc:subject>
+    </bib:Memo>
+    <bib:Article rdf:about="#item_2154">
+        <z:itemType>journalArticle</z:itemType>
+        <dcterms:isPartOf rdf:resource="urn:issn:1944-8007"/>
+        <bib:authors>
+            <rdf:Seq>
+                <rdf:li>
+                    <foaf:Person>
+                        <foaf:surname>Kaempfer</foaf:surname>
+                        <foaf:givenname>Th U</foaf:givenname>
+                    </foaf:Person>
+                </rdf:li>
+                <rdf:li>
+                    <foaf:Person>
+                        <foaf:surname>Schneebeli</foaf:surname>
+                        <foaf:givenname>M</foaf:givenname>
+                    </foaf:Person>
+                </rdf:li>
+                <rdf:li>
+                    <foaf:Person>
+                        <foaf:surname>Sokratov</foaf:surname>
+                        <foaf:givenname>SA</foaf:givenname>
+                    </foaf:Person>
+                </rdf:li>
+            </rdf:Seq>
+        </bib:authors>
+        <dcterms:isReferencedBy rdf:resource="#item_2155"/>
+        <dc:title>A microstructural approach to model heat transfer in snow</dc:title>
+        <dc:date>2005</dc:date>
+    </bib:Article>
+    <bib:Journal rdf:about="urn:issn:1944-8007">
+        <dc:title>Geophysical research letters</dc:title>
+        <prism:volume>32</prism:volume>
+        <prism:number>21</prism:number>
+        <dcterms:alternative>Geophysical research letters</dcterms:alternative>
+        <dc:identifier>ISSN 1944-8007</dc:identifier>
+    </bib:Journal>
+    <bib:Memo rdf:about="#item_2155">
+        <rdf:value>The following values have no corresponding Zotero field:&lt;br/>PB  - Wiley Online Library&lt;br/></rdf:value>
+        <dc:subject>_RIS import</dc:subject>
+    </bib:Memo>
+    <bib:Document rdf:about="http://en.wikipedia.org/wiki/Tortuosity">
+        <z:itemType>webpage</z:itemType>
+        <dcterms:isPartOf>
+           <z:Website></z:Website>
+        </dcterms:isPartOf>
+        <link:link rdf:resource="#item_2157"/>
+        <dc:subject>propDiffusivity:ThermalDiffusivity</dc:subject>
+        <dc:title>Tortuosity - Wikipedia, the free encyclopedia</dc:title>
+        <dc:identifier>
+            <dcterms:URI>
+               <rdf:value>http://en.wikipedia.org/wiki/Tortuosity</rdf:value>
+            </dcterms:URI>
+        </dc:identifier>
+        <dcterms:dateSubmitted>2013-06-05 15:33:34</dcterms:dateSubmitted>
+    </bib:Document>
+    <z:Attachment rdf:about="#item_2157">
+        <z:itemType>attachment</z:itemType>
+        <dc:title>Tortuosity - Wikipedia, the free encyclopedia</dc:title>
+        <dcterms:dateSubmitted>2013-06-05 15:33:35</dcterms:dateSubmitted>
+        <dc:identifier>
+            <dcterms:URI>
+               <rdf:value>http://en.wikipedia.org/wiki/Tortuosity</rdf:value>
+            </dcterms:URI>
+        </dc:identifier>
+        <link:type>text/html</link:type>
+        <link:charset>1</link:charset>
     </z:Attachment>
 </rdf:RDF>
