@@ -348,7 +348,7 @@ X mapdot Y/Z :-    % Array mapdot product
 
 X mapdot Y.*Z :-    % Array scalar dot product
    (
-      number(Y),
+      % number(Y),
       Y1 is Y,
       Z1 mapdot Z
     ;
@@ -359,7 +359,7 @@ X mapdot Y.*Z :-    % Array scalar dot product
 
 X mapdot Y.+Z :-    % Array scalar sum adder
    (
-      number(Y),
+      % number(Y),
       Y1 is Y,
       Z1 mapdot Z
     ;
