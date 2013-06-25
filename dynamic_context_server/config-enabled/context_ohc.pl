@@ -113,7 +113,7 @@ plot(Request) :-
     W2J = 1.126,
     Time range [0, TS]/1,
     D = 0.008,
-    Loss = 0.45,
+    Loss = 0.450, % 0.45,
     % Offset = 0.0,
     DD3 mapdot dd_ohc(1.0, 0.3, D) ~> Time,
     DD7 mapdot dd_ohc(1.0, 0.7, D) ~> Time,
