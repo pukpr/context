@@ -402,7 +402,8 @@ rdf_('induced EM', child, 'radiated susceptibility, EMP').
 
 rdf_(context, comment, 'This hierachy describes the categorization of models considered for the context library.').
 
-rdf_(context, link, '/context_browse/browse').
+rdf_(context, comment, 'This page').
+rdf_(context, link, '/context_browse/navigate').
 
 % Linked data
 %
