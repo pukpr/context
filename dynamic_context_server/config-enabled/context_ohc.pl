@@ -112,8 +112,8 @@ plot(Request) :-
     TS = 50,
     W2J = 1.126,
     Time range [0, TS]/1,
-    D = 0.008,
-    Loss = 0.450, % 0.45,
+    D = 0.008,  % 0.008
+    Loss = 0.45, % 0.45,
     % Offset = 0.0,
     DD3 mapdot dd_ohc(1.0, 0.3, D) ~> Time,
     DD7 mapdot dd_ohc(1.0, 0.7, D) ~> Time,
@@ -128,10 +128,13 @@ plot(Request) :-
        Characteristic  = response ->
          OHC3 convolve DD3*Forcing,
          OHC7 convolve DD7*Forcing,
-         OHC100 convolve DD100*Forcing,
+         % OHC100 convolve DD100*Forcing,
+         OHC20 convolve DD20*Forcing,
+         ohc_data_2000(OD2000),
+         ohc_data_700(OD700),
          % interpolate(Time, Shocks, Rate),
-	 Data tuple Time + OHC3 + OHC7 + OHC100,
-         Heading = [X,    '0.3km','0.7km', 'All']
+	 Data tuple Time + OHC3 + OHC7 + OHC20 + OD700 + OD2000,
+         Heading = [X,    '0.3km','0.7km', '2km', 'Data700', 'Data2000']
     ;
        Characteristic  = diffs ->
          OHC3 convolve DD3*Forcing,
@@ -146,8 +149,10 @@ plot(Request) :-
          OHC3 convolve DD3*Linear_Forcing,
          OHC7 convolve DD7*Linear_Forcing,
          OHC100 convolve DD100*Linear_Forcing,
-	 Data tuple Time + OHC3 + OHC7 + OHC100,
-         Heading = [X,    '0.3km','0.7km', 'All']
+         ohc_data_2000(OD2000),
+         ohc_data_700(OD700),
+	 Data tuple Time + OHC3 + OHC7 + OHC100 + OD700 + OD2000,
+         Heading = [X,    '0.3km','0.7km', 'All', 'Data700', 'Data2000']
     ),
     X = 'Time',
     XUnits = ' year',
@@ -270,17 +275,119 @@ forcing([
 1.6,
 1.635]).
 
+% http://www.skepticalscience.com/graphics.php?g=65
+%
+ohc_data_2000(
+[0,
+0.64,
+-0.94,
+-1.76,
+-2.46,
+-4.36,
+-4.3,
+-4.23,
+-2.86,
+-2.08,
+-0.87,
+-0.01,
+0.68,
+1.41,
+3.36,
+3.32,
+3.62,
+4.82,
+4.83,
+3.59,
+3.38,
+3.69,
+3.79,
+4.55,
+5.24,
+5.48,
+5.79,
+5.61,
+5.17,
+5.28,
+7.8,
+8.66,
+8.6,
+8.17,
+9.31,
+9.8,
+9.76,
+11,
+11,
+12.05,
+13.05,
+14.24,
+14.94,
+16.57,
+16.76,
+17.19,
+17.43,
+18.86,
+19.35,
+19.99,
+20.76,
+21.48]
+).
 
 
 
-
-
-
-
-
-
-
-
+ohc_data_700(
+[0.00,
+-0.04,
+-1.36,
+-2.03,
+-2.58,
+-4.47,
+-4.58,
+-4.28,
+-2.62,
+-1.86,
+-1.03,
+-0.52,
+-0.38,
+0.47,
+1.28,
+1.80,
+2.34,
+3.67,
+4.25,
+3.73,
+3.20,
+3.20,
+2.91,
+3.15,
+3.41,
+3.66,
+3.59,
+3.46,
+3.32,
+4.39,
+5.48,
+6.29,
+6.31,
+5.91,
+6.33,
+6.80,
+7.06,
+7.28,
+7.28,
+8.48,
+9.11,
+9.84,
+10.70,
+11.72,
+11.93,
+12.02,
+12.20,
+12.70,
+13.30,
+13.90,
+14.40,
+14.88]
+).
 
 
 

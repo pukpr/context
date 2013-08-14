@@ -21,7 +21,7 @@
 rms(_,[],_,N,N, Result,Result).
 rms(_,_,[],N,N, Result,Result).
 rms([Y|Year],[A|AA],[B|BB],N, L, Val,Result) :-
-   (   Y > 1900 ->
+   (   Y > 1979 ->
       Sum is Val + (A-B)^2,
       Length is N + 1
    ;
@@ -178,7 +178,7 @@ plot(Request) :-
     Temperature_Data cat [Zeros_BEST, BEST_NOM],
     Temperature_HIGH cat [Zeros_BEST, BEST_HIGH],
     % Temperature_Data shrink Temperature_BEST/Year,
-    Low_Co2 mapdot activation(2511, 295.4, 288) ~> Temperature_LOW,
+    Low_Co2 mapdot activation(2511, 295.4, 288) ~> Temperature_LOW, % 2511
     Base_Co2 mapdot activation(2511, 295.4, 288) ~> Temperature_Data,
     High_Co2 mapdot activation(2511, 295.4, 288) ~> Temperature_HIGH,
     % Takahashi Ea=3500, C0=296, tau=sqrt(20)
@@ -187,7 +187,7 @@ plot(Request) :-
     Time shrink Timeline/Year,
     % H mapdot diffusive(13) ~> Time,
     % H mapdot diffu(36.8) ~> Time,
-    H mapdot diffu(24) ~> Time, % 24
+    H mapdot diffu(24) ~> Time, % 24  32.5 - no T dependence
     % H mapdot exponential_decay(36) ~> Time,
     (
        Characteristic = carbon  ->

@@ -286,7 +286,9 @@ dispatch(reservoir) -->
 	      \g(workflow,
                   a([href('/context_sea_level/navigate')], 'Sea Level Rise')),
 	      \g(workflow,
-                  a([href('/context_diffusive_decline/navigate')], 'Diffusive Decline'))
+                  a([href('/context_diffusive_decline/navigate')], 'Diffusive Decline')),
+	      \g(workflow,
+                  a([href('/context_red_queen_oil/navigate')], 'Red Queen tight oil model'))
 	     ]
 	    ).
 

@@ -7,7 +7,8 @@
                        moment/3,
                        median/2,
                        rms/2,
-                       corrcoeff/3
+                       corrcoeff/3,
+		       sum_of_squares/3
                      ]).
 
 /** <module>  Statistics operations on arrays
@@ -147,3 +148,11 @@ corrcoeff(X, Y, R) :-
     Den is sqrt(XDen*YDen),
     R is Num/Den.
 
+%%   sum_of_squares(+X, +Y, -R)
+%
+%    Sum of squares of differences between two arrays
+%
+sum_of_squares(X, Y, R) :-
+    Diffs difference X - Y,
+    SS mapdot Diffs * Diffs,
+    sumlist(SS, R).
