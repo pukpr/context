@@ -365,8 +365,8 @@ plot(Request) :-
     reply_html_page([title('Shock Profile'),
                      \(con_text:style)],
                     [
-		     i('cumulative='), b(Cumulative_Model), i('/'),
-		     b(Production),
+		     i('cumulative='), b('~1f ' - Production), i('/'),
+		     b('~1f ' - Cumulative_Model),
 		     \(context_graphing:dygraph_native(lin,
 						       Heading,
 						       [X,XUnits], ['Production', YUnits],

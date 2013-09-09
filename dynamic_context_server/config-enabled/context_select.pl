@@ -288,7 +288,9 @@ dispatch(reservoir) -->
 	      \g(workflow,
                   a([href('/context_diffusive_decline/navigate')], 'Diffusive Decline')),
 	      \g(workflow,
-                  a([href('/context_red_queen_oil/navigate')], 'Red Queen tight oil model'))
+                  a([href('/context_red_queen_oil/navigate')], 'Red Queen tight oil model')),
+	      \g(workflow,
+                  a([href('/context_bakken/navigate')], 'Red Queen tight oil model 2'))
 	     ]
 	    ).
 
