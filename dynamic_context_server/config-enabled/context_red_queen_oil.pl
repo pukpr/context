@@ -1,5 +1,5 @@
 :- module(context_red_queen_oil, [
-				cumulative_diffusional_dispersion/5
+				% cumulative_diffusional_dispersion/5
 				% exp_lag/3
 			    ]).
 
@@ -14,10 +14,11 @@
 :- context:register(context_red_queen_oil:plot).
 
 
+/*
 cumulative_diffusional_dispersion(Amp, D, Theta, Year, Result) :-
     Tau is (1-exp(-Theta*Year))/Theta,
     Result is Amp/(1+sqrt(D/(Tau+0.0001))).
-
+*/
 
 
 %%   navigate(+Request)
@@ -100,7 +101,7 @@ plot(Request) :-
     length(Number_Wells, L),
     Time range [1, L]/1,
 
-    Single_Well mapdot cumulative_diffusional_dispersion(6.97, 75000, 0.001) ~> Time,
+    Single_Well mapdot context_bakken:cumulative_diffusional_dispersion(6.97, 75000, 0.001) ~> Time,
     Monthly_Wells derivative Number_Wells/Time,
     Total convolve Single_Well*Monthly_Wells,
     (

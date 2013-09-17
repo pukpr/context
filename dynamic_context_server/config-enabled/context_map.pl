@@ -292,31 +292,37 @@ max_lon(-52.5).
 min_lon(-125.5).
 */
 
-max_lat(49.0).
-min_lat(20.0).
-max_lon(-65.0).
-min_lon(-129.0).
+max_lat(usa,49.0).
+max_lat(mn,49.0).
+min_lat(usa,20.0).
+min_lat(mn,42.0).
+max_lon(usa,-65.0).
+max_lon(mn,-89.0).
+min_lon(usa,-129.0).
+min_lon(mn,-96.0).
 
 
 %%   image_width(-W)
 %
 %    Fixed Width
-image_width(350).   %250
+image_width(usa,350).   %250
+image_width(mn,210).
 %%   image_height(-H)
 %
 %    Fixed Height
-image_height(210).  %150
+image_height(usa,210).  %150
+image_height(mn,210).
 
 %%   get_ll_extent(+Lat, +Lon, +X, +Y, +W, +H)
 %
-%    Get LatLon extents as rectiliear coordinates for mapping
-get_ll_extent(Lat, Lon, X, Y, W, H) :-
-    max_lat(MaxLat),
-    min_lat(MinLat),
-    max_lon(MaxLon),
-    min_lon(MinLon),
-    image_width(IW),
-    image_height(IH),
+%    Get LatLon extents as rectilinear coordinates for mapping
+get_ll_extent(Lat, Lon, X, Y, W, H,G) :-
+    max_lat(G,MaxLat),
+    min_lat(G,MinLat),
+    max_lon(G,MaxLon),
+    min_lon(G,MinLon),
+    image_width(G,IW),
+    image_height(G,IH),
     DiffLon is integer(MaxLon-MinLon),
     DiffLat is integer(MaxLat-MinLat),
     Y is IH-integer(IH*(Lat-MinLat)/DiffLat),
@@ -326,7 +332,7 @@ get_ll_extent(Lat, Lon, X, Y, W, H) :-
 
 %%   section_name(+Lat, +Lon, -Title)
 %
-%    Section name for LatLon 
+%    Section name for LatLon
 section_name(Lat, Lon, Title) :-
     rdfR(Ent, ent:lat_min, Lat),
     rdfR(Ent, ent:lon_min, Lon),
@@ -337,16 +343,16 @@ section_name(_Lat, _Lon, 'missing').
 %%   lon_regions(+URI, +Target, +Lat, +Lon)//
 %
 %    Inline Longitudinal regions
-lon_regions(_URI, _Target, _Lat, Lon) -->
+lon_regions(_URI, _Target, _Lat, Lon, MinLon, _MinLat,_G) -->
     {
-     min_lon(MinLon),
+     % min_lon(MinLon),
      Lon < MinLon
     }.
-lon_regions(URI,Target,Lat, Lon) -->
+lon_regions(URI,Target,Lat, Lon, MinLon, MinLat,G) -->
     {
      format(atom(Href), URI, % 'contour?lat=~w&lon=~w'
             [Lat, Lon]),
-     get_ll_extent(Lat, Lon, X, Y, W, H),
+     get_ll_extent(Lat, Lon, X, Y, W, H,G),
      format(atom(Coords), '~d,~d,~d,~d', [X,Y,W,H]),
      section_name(Lat, Lon, Title),
      NewLon is Lon - 1.0
@@ -357,22 +363,22 @@ lon_regions(URI,Target,Lat, Lon) -->
                href=Href,
                target=Target % 'results'
               ])),
-    lon_regions(URI, Target, Lat, NewLon).
+    lon_regions(URI, Target, Lat, NewLon, MinLon, MinLat,G).
 
 %%   lat_regions(+URI, +Target, +Lat, +Lon)//
 %
 %    Inline Latitudinal regions
-lat_regions(_URI, _Target, Lat, _Lon) -->
+lat_regions(_URI, _Target, Lat, _Lon, _MinLon, MinLat,_G) -->
     {
-     min_lat(MinLat),
+     % min_lat(MinLat),
      Lat < MinLat
     }.
-lat_regions(URI, Target, Lat, Lon) -->
+lat_regions(URI, Target, Lat, Lon, MinLon, MinLat,G) -->
     {
        NewLat is Lat - 1.0
     },
-    lon_regions(URI, Target, Lat, Lon),
-    lat_regions(URI, Target, NewLat, Lon).
+    lon_regions(URI, Target, Lat, Lon, MinLon, MinLat,G),
+    lat_regions(URI, Target, NewLat, Lon, MinLon, MinLat,G).
 
 %%   usa_map(+URI,+Target)//
 %
@@ -381,6 +387,8 @@ usa_map(URI,Target) -->
     {
      max_lat(MaxLat),
      max_lon(MaxLon),
+     min_lon(MinLon),
+     min_lat(MinLat),
      image_width(ImageWidth),
      image_height(ImageHeight)
     },
@@ -388,7 +396,26 @@ usa_map(URI,Target) -->
         img([width=ImageWidth, height=ImageHeight, name=usa0,
              usemap='#usa', src('/html/images/usa.gif')]),
         map([name=usa],[
-                        \(lat_regions(URI, Target, MaxLat, MaxLon))
+                        \(lat_regions(URI, Target, MaxLat, MaxLon, MinLon, MinLat,usa))
                        ])
          ]).
 
+
+
+
+minnesota_map(URI,Target) -->
+    {
+     max_lat(mn,MaxLat),
+     max_lon(mn,MaxLon),
+     min_lon(mn,MinLon),
+     min_lat(mn,MinLat),
+     image_width(mn,ImageWidth),
+     image_height(mn,ImageHeight)
+    },
+    html([
+        img([width=ImageWidth, height=ImageHeight, name=mn0,
+             usemap='#minnesota', src('/html/images/minnesota.gif')]),
+        map([name=minnesota],[
+                        \(lat_regions(URI, Target, MaxLat, MaxLon, MinLon, MinLat,mn))
+                       ])
+         ]).

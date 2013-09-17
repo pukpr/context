@@ -33,10 +33,14 @@ navigate(Request) :-
                                          'What latitude to plot? >> ',
                                          'plot_chart',
                                          target_iframe,
-                                         [['latitude', '47']]
+                                         [['latitude', '47.0']]
                                                       )
-                 )
-
+		 ),
+		i([ br([]),
+		    'or click\n on map ',
+		    \(context_map:minnesota_map('plot_chart?latitude=~w&longitude=~w',target_iframe))
+		  ]
+		 )
                ]
                                    )
           )
@@ -47,7 +51,8 @@ navigate(Request) :-
 %
 %    Plot ice-out data over a historical range of interest
 plot_chart(Request) :-
-    http_parameters(Request, [latitude(Lat, [integer, default(46)])]),
+    http_parameters(Request, [latitude(Latitude, [float, default(46.0)])]),
+    Lat is integer(Latitude),
     FN = '/html/images/xy.bmp',
     lat_list(FN, Lat, _Years, _Times, N, Slope),
     reply_html_page(title('Ice-Out Chart'),

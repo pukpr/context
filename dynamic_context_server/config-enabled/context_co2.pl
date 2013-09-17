@@ -155,7 +155,7 @@ plot(Request) :-
                               t0(T0, [number]),
                               evaluate(Characteristic, [default(shocked)])]),
 
-    bc(BC),
+    % bc(BC),
     carbon_emissions(Raw),
     [Year, Carbon, _,_,_,_,_,_]  split Raw,
     Sens is Sensitivity/log(2),
@@ -207,14 +207,14 @@ plot(Request) :-
        CO2_Equivalent mapdot Scale .* Carbon,
        CO2 convolve CO2_Equivalent*H,
        CO2_Fit shrink CO2/Year,
-
+/*
        BC_Scale is 1.0*0.002,  %
        BC_S mapdot BC_Scale .* BC,
        BC_R convolve BC_S*BCH,
        BC_Fit shrink BC_R/Year,
-
+*/
        CO2_Low mapdot Low_Co2 + CO2_Fit,
-       CO2_Total mapdot Base_Co2 + CO2_Fit + BC_Fit,
+       CO2_Total mapdot Base_Co2 + CO2_Fit, % + BC_Fit,
        CO2_High mapdot High_Co2 + CO2_Fit,
        (
        Characteristic  = co2 ->
