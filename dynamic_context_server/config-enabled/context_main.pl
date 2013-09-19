@@ -167,41 +167,44 @@ acronym_list(_Request) :-
 
 /*
 
-jc([element(rss, Y, [A,element(channel,[],[H,I| [J|K]])|C])]), K=[AA|BB], BB=[CC|DD], DD=[EE|FF], length(FF,N), FF=[GG,HH,II,JJ,KK,LL,MM,NN,OO,PP,QQ,RR,SS|TT].
-
-
-jc([element(rss, Version, [_,element(channel,[],[_,Title| [_|Feed]])|_])]), Feed=[A,_,C,_,E,_,G,_,I,_,K,_,M,_,O,_,Q,_,S|T].
+Blog comments RSS Feed
 
 */
 
+:- dynamic blog_content/1.
+
+blog_content('').
 
 blog_comments :-
-	http_open([host('judithcurry.com'),
-		   path('/comments/feed')], S, [user_agent('Firefox/25.0')]),
+	http_open([host('ContextEarth.com'),
+		   path('/comments/feed')], S, []),
 	load_xml_file(S,T),
-	assert(jc(T)).
+	retract(blog_content(_)),
+	assert(blog_content(T)).
+blog_comments.
 
 print_comments([]) --> !.
-print_comments([element(item, _,
-			[_,element(title,_,Head),_,_,_,_,_,
-			   element(pubDate,_,Date),_,_,_,
-			   element(description,_,Contents),_,
-			   element('content:encoded',_,_Contents),_
-			]
-		       )|R]) -->
-	html([h2(Head),	h3(Date),html_quoted_attribute(Contents)]),
+print_comments([element(item, _, List)|R]) -->
+	{
+	 member(element(title,_,Head), List),
+	 member(element(pubDate,_,Date), List),
+	 member(element(description,_,Contents), List)
+	},
+	html([h3([Head, ' ', i(Date)]),p(Contents)]),
 	print_comments(R).
 print_comments([_A|R]) -->
 	print_comments(R).
 
-test_blog -->
+get_blog_comments -->
 	    {
-	     jc([element(rss,
-			_Version,
-			[_,element(channel,[],[_,Title| [_|Feed]])|_])]),
+	     blog_content([element(rss,
+				   _Version,
+				   [_,element(channel,[],
+					      [_,element(title,_,Title)|
+					       [_|Feed]])|_])]),
 	     Feed=[_,_,_,_,_,_,_,_,_,_,_,_,_,_|T]
 	    },
-	    html(pre(Title)),
+	    html(h1(Title)),
 	    print_comments(T).
 
 
@@ -209,12 +212,12 @@ test_blog -->
 %
 %    Generate a blog feed
 blog_feed(_Request) :-
+    blog_comments,
     reply_html_page(
         cliopatria(default),
         [title('Feed')],
         [
-         % h1('Feed'),
-         \(test_blog)
+         \(get_blog_comments)
         ]
                    ).
 
