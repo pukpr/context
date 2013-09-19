@@ -58,9 +58,9 @@ cliopatria:menu_item(help/'/html/basic_terms.html', 'Vocabularies').
 cliopatria:menu_item(help/'http://sweet.jpl.nasa.gov/', 'SWEET').
 cliopatria:menu_item(help/'/context_demos/navigate', 'Eval Demos').
 cliopatria:menu_item(help/'/context_main/acronym_list', 'Acronyms').
-cliopatria:menu_item(places/'https://babelfish.arc.nasa.gov/confluence/display/AVMPROJ/BAE', 'Wiki').
-cliopatria:menu_item(places/'https://babelfish.arc.nasa.gov/trac/avm_performers/browser/context', 'Source').
-cliopatria:menu_item(places/'https://babelfish.arc.nasa.gov/jira/browse/AVM', 'Tracking').
+cliopatria:menu_item(places/'http://ContextEarth.com', 'Blog').
+cliopatria:menu_item(places/'http://github.com/pukpr/context.git', 'Source').
+cliopatria:menu_item(places/'/context_main/blog_feed', 'Comments').
 cliopatria:menu_item(places/'/html/oscar.html', 'OSCAR').
 cliopatria:menu_item(admin/'/context_main/run_unit_tests', 'Tests').
 cliopatria:menu_item(query/'/terms#', 'Terms').
@@ -71,6 +71,7 @@ cliopatria:menu_item(query/'/context_query/navigate', 'Generic').
 
 :- context:register(context_main:run_unit_tests).
 :- context:register(context_main:acronym_list).
+:- context:register(context_main:blog_feed).
 
 %%   nav_aids(Key, Path, Title)//
 %
@@ -162,6 +163,60 @@ acronym_list(_Request) :-
         ]
                    ).
 
+
+
+/*
+
+jc([element(rss, Y, [A,element(channel,[],[H,I| [J|K]])|C])]), K=[AA|BB], BB=[CC|DD], DD=[EE|FF], length(FF,N), FF=[GG,HH,II,JJ,KK,LL,MM,NN,OO,PP,QQ,RR,SS|TT].
+
+
+jc([element(rss, Version, [_,element(channel,[],[_,Title| [_|Feed]])|_])]), Feed=[A,_,C,_,E,_,G,_,I,_,K,_,M,_,O,_,Q,_,S|T].
+
+*/
+
+
+blog_comments :-
+	http_open([host('judithcurry.com'),
+		   path('/comments/feed')], S, [user_agent('Firefox/25.0')]),
+	load_xml_file(S,T),
+	assert(jc(T)).
+
+print_comments([]) --> !.
+print_comments([element(item, _,
+			[_,element(title,_,Head),_,_,_,_,_,
+			   element(pubDate,_,Date),_,_,_,
+			   element(description,_,Contents),_,
+			   element('content:encoded',_,_Contents),_
+			]
+		       )|R]) -->
+	html([h2(Head),	h3(Date),html_quoted_attribute(Contents)]),
+	print_comments(R).
+print_comments([_A|R]) -->
+	print_comments(R).
+
+test_blog -->
+	    {
+	     jc([element(rss,
+			_Version,
+			[_,element(channel,[],[_,Title| [_|Feed]])|_])]),
+	     Feed=[_,_,_,_,_,_,_,_,_,_,_,_,_,_|T]
+	    },
+	    html(pre(Title)),
+	    print_comments(T).
+
+
+%%   blog_feed(+Request)
+%
+%    Generate a blog feed
+blog_feed(_Request) :-
+    reply_html_page(
+        cliopatria(default),
+        [title('Feed')],
+        [
+         % h1('Feed'),
+         \(test_blog)
+        ]
+                   ).
 
 % %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 

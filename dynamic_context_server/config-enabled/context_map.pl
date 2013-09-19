@@ -385,12 +385,12 @@ lat_regions(URI, Target, Lat, Lon, MinLon, MinLat,G) -->
 %    Inline Map of USA to use as selection
 usa_map(URI,Target) -->
     {
-     max_lat(MaxLat),
-     max_lon(MaxLon),
-     min_lon(MinLon),
-     min_lat(MinLat),
-     image_width(ImageWidth),
-     image_height(ImageHeight)
+     max_lat(usa,MaxLat),
+     max_lon(usa,MaxLon),
+     min_lon(usa,MinLon),
+     min_lat(usa,MinLat),
+     image_width(usa,ImageWidth),
+     image_height(usa,ImageHeight)
     },
     html([
         img([width=ImageWidth, height=ImageHeight, name=usa0,
