@@ -414,7 +414,7 @@ minnesota_map(URI,Target) -->
     },
     html([
         img([width=ImageWidth, height=ImageHeight, name=mn0,
-             usemap='#minnesota', src('/html/images/minnesota.gif')]),
+             usemap='#minnesota', src('/html/images/minnesota.GIF')]),
         map([name=minnesota],[
                         \(lat_regions(URI, Target, MaxLat, MaxLon, MinLon, MinLat,mn))
                        ])
