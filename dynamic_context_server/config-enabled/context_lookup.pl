@@ -1,4 +1,7 @@
-:- module(context_lookup, [lookup_table/5]).
+:- module(context_lookup, [
+			   lookup_table/5,
+			   sparse_list/3
+			  ]).
 
 /** <module> Lookup algorithms
     * Table interpolation
@@ -46,3 +49,16 @@ lookup_list(xlist=Xlist,
             y=Y) :-
    index(Xlist, X, Index),
    spatial(Ylist, Index, Y).
+
+%%   sparse_list(+Zeros,+Sub,-List)
+%
+%    Create a sparse positional list of values
+
+sparse_list_iter(Final, [], Final) :- !.
+sparse_list_iter(List, [[N,V]|Rest], Final) :-
+    nth1(N, New, V, List),
+    sparse_list_iter(New, Rest, Final).
+
+sparse_list(List, Set, Final) :-
+    sparse_list_iter(List, Set, Extra),
+    Final shrink Extra/List.
