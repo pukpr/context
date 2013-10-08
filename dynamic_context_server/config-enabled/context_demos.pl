@@ -776,17 +776,18 @@ climate_ou(Request) :-
 %    Ornstein-Uhlenbeck random-walk demo
 demo_ou(_) :-
     X range [1,2000]/1,
-    context_random_walk:ou_random_walker(0.028, 1.0, 0.05, X, Z),
+    context_random_walk:ou_random_walker(0.028, 1.0, 0.55, X, Z),
+    expsm(Z, 0.95, S),
     reply_html_page(% cliopatria(default),
                     [title('OU chart'),\(con_text:style_cliopatria)],
                     [
                      \(context_graphing:dygraph_plot(
                                             false,
-                                            'X,Z',
+                                            'X,Z,Smooth',
                                             'surface distance (m)',
                                             'elevation change (m)',
                                             'Ornstein-Uhlenbeck random walk profile',
-                                            [X,Z] ))
+                                            [X,Z,S] ))
                     ]).
 
 
