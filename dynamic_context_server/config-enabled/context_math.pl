@@ -500,6 +500,11 @@ derive(X,Y,Initial,Derivatives) :-
    W is Y,
    X derivative Z.
 
+X derivative Y/1 :-
+   Y1 derivative Y,
+   Z1 ordinal Y,
+   derive(Y1,Z1,[],X), !.
+
 X derivative Y/Z :-
    Y1 derivative Y,
    Z1 derivative Z,

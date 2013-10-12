@@ -35,7 +35,16 @@ navigate(Request) :-
                                           ['SOI only', 'soi'],
                                           ['SOI FFT', 'fft'],
 					  ['dump data', all],
-					  ['Volcanos', volcano]
+					  ['OU model FFT', rw_fft],
+					  ['OU model RW', rw],
+					  ['OU model AC', rw_ac],
+					  ['SOI cross-spectrum', ac_fft],
+					  ['SOI cross-correlate', ac],
+					  ['SOI auto-correlate', ac_soi],
+					  ['SOI PSD', ac_soi_fft],
+					  ['Volcanos', volcano],
+					  ['components', comp],
+					  ['co2', co2]
                                          ])),
                           br([]),
 			  input([type('submit'), name(kind), value('graph')]),
@@ -76,40 +85,66 @@ volcanos([
 */
 
 volcanos([
-          [48, 4],    % 1883    22 36
-          [72, 1],    % 1886
-          [180,1],    % 1895
-          [276,15],    % 1903   264
-          [396,11],   % 1913   384
-	  %[552,11], % 1925   540
+          [36, 22],    % 1883    4  36
+          [72, 2],    % 1886
+          %[180,1],    % 1895
+          [264,3.8],    % 1902   264
+          [396,11],   % 1912   384
+	  [552,11], % 1925   540
           [1006,21],  % 1963   996
           [1080,2],   % 1970
-          [1164,5],   % 1977   1152
-          [1236,14],  % 1983   1224
-          [1344,30]   % 1992 1332
+          [1152,5],   % 1976   1152
+          [1224,14],  % 1982   1224
+          [1340,30]   % 1991 1332
 	 ]).
 
 
+scale(ac_soi_fft, log).
+scale(ac_fft, log).
+scale(rw_fft, log).
 scale(fft, log).
 scale(_, lin).
 
+lod_get(Years, LOD_F) :-
+    lod(LOD),
+    interpolate(Years, LOD, LOD_I),
+    LOD_U unbias LOD_I,
+    % expsm(LOD_U, 0.8, LOD_S),
+    LOD_Scale is -0.05*0.708,
+    %
+    % LOD_Scale is -0.05 * 0.22,
+    % LOD_S mapdot LOD_U * LOD_U * LOD_U,
+    %
+    LOD_F mapdot LOD_Scale .* LOD_U.
 
 plot(Request) :-
     http_parameters(Request, [kind(Kind, []),
 			      limit(_Limit, [number]),
-                              t_units(TUnits, []),
+                              t_units(_TUnits, []),
                               evaluate(Characteristic, [])]),
 
     SS = 1.0,
-    SOI_S is 0.0637*SS,
-    AMO_S is 0.26*SS,
-    Trend is 7.3e-10*SS,
-    V_S is 0.466*SS,
+    % SOI_S is 0.0637*SS,
+    SOI_S is 0.0731*SS,
+    AMO_S is 0.000026*SS,
+    Trend is 2.26e-10*SS,
+    V_S is 0.42*SS,
+    V_lag = 0.98, % 0.978
+    TSI_Scale is 0.0541,     % 0.3
 
     tsi(TSI),
     % best(T),
     temperature(T),
     soi(SOI),
+    %
+    /*
+    tahiti(Tahiti),
+    SOI1 shrink Tahiti/SOI_s,
+    darwin(Darwin),
+    SOI2 shrink Darwin/SOI_s,
+    SOI mapdot SOI2 - SOI1,
+    */
+    %
     amo(AMO),
     volcanos(V),
     volcano_number(W),
@@ -119,11 +154,11 @@ plot(Request) :-
     A0 unbias AMO,
     A1 mapdot AMO_S .* A0,
     expsm(A1, 0.86, A2),
-    Offset = 0.214,  % 0.214 0.2053,
+    Offset = 0.21,  % 0.214 0.2053,
     S mapdot Offset .+ S2,
     length(T, L),
     H range [1, L]/1,
-    BL mapdot emulated_gt(Trend,2.84) ~> H, % 235
+    BL mapdot emulated_gt(Trend,3) ~> H, % 235
     % BL mapdot emulated_gt(362e-12,2.942) ~> H, % 235
     %BL mapdot emulated_gt(3.9e-7,2) ~> H, % 235
     % BL mapdot emulated_gt(95e-10) ~> H,
@@ -132,7 +167,7 @@ plot(Request) :-
     sparse_list(Zeros, V, Vol),
     V0 mapdot V_S .* Vol,  % 0.7205
     W0 mapdot 0.0 .* W,  % 0.15
-    expsm(V0, 0.978, V1),   % 0.98
+    expsm(V0, V_lag, V1),   % 0.98
     expsm(W0, 0.978, W1),
     % W2 shrink W1/V1,
     %length(V1, LV),
@@ -143,31 +178,145 @@ plot(Request) :-
     X = 'Time',
     Y1 = 'Temperature',
     Y2 = 'SOI',
-    XUnits = TUnits,
+    XUnits = 'year',
     YUnits = 'C',
     Y mapdot H ./ 12,
     Year mapdot 1880 .+ Y,
     Year1 mapdot 1880.5 .+ Y,
-
+    % Year2 mapdot 1878.5 .+ Y,
     interpolate(Year1, TSI, TSI_I),
     TSI_U unbias TSI_I,
     % expsm(TSI_U, 0.5, TSI_L),
-    TSI_Scale is 0.0541,     % 0.3
     TSI_F mapdot TSI_Scale .* TSI_U,
     ModS mapdot Mod1 + TSI_F,
-    Mod mapdot ModS + A2,
+    ModA mapdot ModS + A2,
+
+    lod_get(Year, LOD_F),
+    Mod mapdot ModA + LOD_F,
 
     corrcoeff(T, Mod, RMS),
     scale(Characteristic, Log),
     (
+       Characteristic = ac ->
+         tahiti(Tahiti),
+         darwin(Darwin),
+         AC correlate Tahiti * Darwin,
+         ACL ordinal AC,
+         ACL0 mapdot 1 .+ ACL,
+         ACN mapdot AC / ACL0,
+         Data tuple ACL  + ACN,
+         Header = [months, autocorrelate]
+     ;
+       Characteristic = ac_soi ->
+         AC correlate SOI * SOI,
+         ACL ordinal AC,
+         ACL0 mapdot 1 .+ ACL,
+         ACN mapdot AC / ACL0,
+         Data tuple ACL  + ACN,
+         Header = [months, autocorrelate]
+     ;
+       Characteristic = ac_fft ->
+         tahiti(Tahiti),
+         darwin(Darwin),
+         AC correlate Tahiti * Darwin,
+         ACL ordinal AC,
+         ACL0 mapdot 1 .+ ACL,
+         ACN mapdot AC / ACL0,
+         FFT fft ACN,
+         Range ordinal FFT,
+         Data tuple Range + FFT,
+         Header = [months, autocorrelate]
+     ;
+       Characteristic = ac_soi_fft ->
+         AC correlate SOI * SOI,
+         ACL ordinal AC,
+         ACL0 mapdot 1 .+ ACL,
+         ACN mapdot AC / ACL0,
+         ACH shrink ACN/SOI,
+         FFT fft ACH,
+         Range ordinal FFT,
+         Data tuple Range + FFT,
+         Header = [months, autocorrelate]
+     ;
+       Characteristic = rw ->
+	 uniform(18, Win),
+         Zrw0 mapdot 0.0 .* H,
+         % semi_random_walker(H, 1.2, [6.0,12.0], [6.0,12.0], Zrw0, ZRW),
+         context_random_walk:ou_random_walker(0.01, 1.0, 0.25, H, ZRW),
+         ZRWD window ZRW/Win,
+         % context_random_walk:ou_random_walker(0.0000001, 1.0, 0.35, H, ZRW2),
+         % expsm(ZRW, 0.95, ZRWS),
+         % ZRWD derivative ZRWS/1,
+         Range ordinal ZRWD,
+         Data tuple Range + ZRWD,
+         Header = [X, rw, model]
+     ;
+       Characteristic = rw_ac ->
+	 uniform(18, Win),
+         Zrw0 mapdot 0.0 .* H,
+         % semi_random_walker(H, 1.2, [6.0,12.0], [6.0,12.0], Zrw0, ZRW),
+         context_random_walk:ou_random_walker(0.01, 1.0, 0.25, H, ZRW),
+         ZRWD window ZRW/Win,
+         % expsm(ZRW, 0.95, ZRWS),
+         % ZRWD derivative ZRWS/1,
+
+         AC correlate ZRWD * ZRWD,
+         ACL ordinal AC,
+         ACL0 mapdot 1 .+ ACL,
+         ACN mapdot AC / ACL0,
+
+         Range ordinal ACN,
+         Data tuple Range + ACN,
+         Header = [X, rw, model]
+    ;
+       Characteristic = rw_fft ->
+	 uniform(18, Win),
+         % context_random_walk:ou_random_walker(0.00000001, 1.0, 0.035, H, ZRW),
+         Zrw0 mapdot 0.0 .* H,
+         % semi_random_walker(H, 1.2, [6.0,12.0], [6.0,12.0], Zrw0, ZRW),
+         context_random_walk:ou_random_walker(0.01, 1.0, 0.25, H, ZRW),
+         ZRWD window ZRW/Win,
+         % ZRW mapdot ZRW1 - ZRW2,
+         % context_random_walk:ou_random_walker(0.0000001, 1.0, 0.025, H, ZRW),
+         % expsm(ZRW, 0.95, ZRWS),
+         % ZRWD derivative ZRWS/1,
+         % Range ordinal ZRWD,
+         FFT fft ZRWD,
+         Range ordinal FFT,
+	 EModel mapdot delayed_exp_model(0.1,0.0,24,35) ~> Range,
+         Data tuple Range + FFT + EModel,
+         Header = [X, rw_fft, model]
+    ;
+         % expsm(Z, 0.95, S),
        Characteristic = all ->
          T_T mapdot T - TSI_F,
-         Data tuple H + T_T + S2 + V1 + A2,
-         Header = [months, t, soi, v1, amo]
+         Data tuple H + T_T + S2 + V1 + LOD_F,
+         Header = [months, t, soi, v1, lod]
+    ;
+       Characteristic = comp ->
+         Data tuple Year + BL + TSI_F + S2 + V1 + LOD_F,
+         Header = [year, trend, tsi, soi, volc, lod]
     ;
        Characteristic = power ->
-         Data tuple Year + T + Mod + BL + TSI_F,
-         Header = [X, Y1, Y2, trend, tsi]
+         Trend_BL mapdot  BL .- Offset,
+         Data tuple Year + T + Mod + Trend_BL,
+         Header = [X, Y1, Y2, trend]
+     ;
+       Characteristic = co2 ->
+         context_co2:co2_knmi(CO2),
+         interpolate(Year, CO2, CO2_I),
+         % temperature = lod + 3.108*co2 - 17.9 - soi - 1.244*v
+         LogCO2 mapdot 3.11 * ln ~> CO2_I,
+
+         LOD_CO2 mapdot 1.0 .* LOD_F,
+         SOI_CO2 mapdot 1.0 .* S2,
+         V_CO2 mapdot 1.24 .* V1,
+         T_CO2 mapdot LogCO2 + LOD_CO2 - V_CO2 - SOI_CO2 + TSI_F ,
+         T_CO2_O mapdot T_CO2 .- 17.9,
+     %%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+	 % corrcoeff(T, T_CO2_O, RMS),
+         Data tuple Year + T + T_CO2_O,
+         Header = [X, Y1, Y2]
      ;
        Characteristic = residual ->
          R mapdot T - Mod,
@@ -181,7 +330,7 @@ plot(Request) :-
 	 expsm(T, Smooth, T1),
 	 % uniform(3,Window),
 	 % T1 window T*Window,
-         R mapdot  S - A2 + VV - TSI_F,
+         R mapdot  S - A2 + VV - TSI_F - LOD_F,
 	 expsm(R, Smooth, R1),
 	 Residual mapdot R1 + T1,
          Data tuple Year + Residual + BL,
@@ -214,7 +363,7 @@ plot(Request) :-
 		     i('Corr Coeff = '), b('~4f ' - RMS),
 		     \(context_graphing:dygraph_native(Log, Header,
 						       [X,XUnits], [Y1, YUnits],
-						       'GISS - (trend, SOI, volcanic, TSI, AMO)', Data))
+						       'GISS - (trend, SOI, volcanic, TSI, LOD)', Data))
                     ]
 		  )
    ;
@@ -950,7 +1099,7 @@ temperature([
 -0.02,
 -0.01,
 0.05,
-0.41,
+0.41,   % 1940 lobe
 -0.12,
 0.09,
 0.1,
@@ -975,7 +1124,7 @@ temperature([
 0.17,
 0.06,
 0.08,
-0.27,
+0.27,   % 1942 Center of main anomaly
 0.03,
 0.07,
 0.09,
@@ -999,7 +1148,7 @@ temperature([
 0.22,
 0.15,
 0.19,
-0.31,
+0.31, % 1944 lobe
 0.19,
 0.19,
 0.11,
@@ -10601,3 +10750,150 @@ best([
 0.9,
 0.9
      ]).
+
+lod(
+[
+[ 1872.5,    -2.55],
+[ 1873.5,    -2.10],
+[ 1874.5,    -2.03],
+[ 1875.5,    -1.77],
+[ 1876.5,   -1.37],
+[ 1877.5,    -1.24],
+[ 1878.5,    -0.90],
+[1879.5,-0.49],
+[1880.5,-0.23],
+[1881.5,-0.06],
+[1882.5,-0.15],
+[1883.5,-0.33],
+[1884.5,-0.24],
+[1885.5,-0.15],
+[1886.5,-0.05],
+[1887.5,-0.04],
+[1888.5,-0.18],
+[1889.5,-0.25],
+[1890.5,-0.48],
+[1891.5,-0.58],
+[1892.5,-0.42],
+[1893.5,-0.13],
+[1894.5,0.33],
+[1895.5,0.86],
+[1896.5,1.53],
+[1897.5,2.16],
+[1898.5,2.64],
+[1899.5,3],
+[1900.5,3.31],
+[1901.5,3.6],
+[1902.5,3.7],
+[1903.5,3.69],
+[1904.5,3.55],
+[1905.5,3.4],
+[1906.5,3.48],
+[1907.5,3.57],
+[1908.5,3.65],
+[1909.5,3.71],
+[1910.5,3.77],
+[1911.5,3.86],
+[1912.5,3.89],
+[1913.5,3.62],
+[1914.5,3.18],
+[1915.5,2.92],
+[1916.5,2.74],
+[1917.5,2.35],
+[1918.5,2.05],
+[1919.5,1.76],
+[1920.5,1.48],
+[1921.5,1.51],
+[1922.5,1.28],
+[1923.5,0.98],
+[1924.5,0.93],
+[1925.5,0.81],
+[1926.5,0.56],
+[1927.5,0.18],
+[1928.5,-0.22],
+[1929.5,-0.35],
+[1930.5,-0.19],
+[1931.5,-0.1],
+[1932.5,-0.07],
+[1933.5,-0.06],
+[1934.5,-0.08],
+[1935.5,0],
+[1936.5,0.08],
+[1937.5,0.22],
+[1938.5,0.47],
+[1939.5,0.78],
+[1940.5,1.09],
+[1941.5,1.25],
+[1942.5,1.31],
+[1943.5,1.35],
+[1944.5,1.41],
+[1945.5,1.41],
+[1946.5,1.35],
+[1947.5,1.3],
+[1948.5,1.25],
+[1949.5,1.2],
+[1950.5,1.15],
+[1951.5,1.1],
+[1952.5,1.05],
+[1953.5,0.99],
+[1954.5,0.92],
+[1955.5,0.86],
+[1956.5,0.89],
+[1957.5,1.34],
+[1958.5,1.37],
+[1959.5,1.31],
+[1960.5,1.19],
+[1961.5,1.09],
+[1962.5,1.3],
+[1963.5,1.54],
+[1964.5,1.92],
+[1965.5,2.21],
+[1966.5,2.41],
+[1967.5,2.37],
+[1968.5,2.48],
+[1969.5,2.67],
+[1970.5,2.71],
+[1971.5,2.9],
+[1972.5,3.13],
+[1973.5,3.05],
+[1974.5,2.72],
+[1975.5,2.69],
+[1976.5,2.91],
+[1977.5,2.77],
+[1978.5,2.88],
+[1979.5,2.61],
+[1980.5,2.3],
+[1981.5,2.16],
+[1982.5,2.16],
+[1983.5,2.28],
+[1984.5,1.52],
+[1985.5,1.45],
+[1986.5,1.23],
+[1987.5,1.36],
+[1988.5,1.32],
+[1989.5,1.53],
+[1990.5,1.94],
+[1991.5,2.04],
+[1992.5,2.22],
+[1993.5,2.37],
+[1994.5,2.17],
+[1995.5,2.31],
+[1996.5,1.83],
+[1997.5,1.84],
+[1998.5,1.37],
+[1999.5,0.99],
+[2000.5,0.72],
+[2001.5,0.57],
+[2002.5,0.47],
+[2003.5,0.27],
+[2004.5,0.32],
+[2005.5,0.43],
+
+[2006.5,0.53],
+[2007.5,0.63],
+[2008.5,0.73],
+[2009.5,0.83],
+[2010.5,0.93],
+[2011.5,0.93],
+[2012.5,0.93]
+]).
+
