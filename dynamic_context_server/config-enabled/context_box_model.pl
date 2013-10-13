@@ -105,6 +105,29 @@ scale(rw_fft, log).
 scale(fft, log).
 scale(_, lin).
 
+get_fit(Temperature, CO2, SOI, TSI, Volc, LOD,
+                     C,   S,   T,   V,    L, Int, R2) :-
+   r_open_session,
+   y <- Temperature,
+   c <- CO2,
+   s <- SOI,
+   t <- TSI,
+   v <- Volc,
+   l <- LOD,
+   fitxy <- lm('y~c+s+t+v+l'),
+   r_print(fitxy),
+   Int <- 'as.double(fitxy$coefficients[1])',
+   C <- 'as.double(fitxy$coefficients[2])',
+   S <- 'as.double(fitxy$coefficients[3])',
+   T <- 'as.double(fitxy$coefficients[4])',
+   V <- 'as.double(fitxy$coefficients[5])',
+   L <- 'as.double(fitxy$coefficients[6])',
+   summary <- summary(fitxy),
+   r_print(summary),
+   R2 <- 'as.double(summary$r.squared)',
+   r_close.
+
+
 lod_get(Years, LOD_F) :-
     lod(LOD),
     interpolate(Years, LOD, LOD_I),
@@ -309,14 +332,20 @@ plot(Request) :-
          LogCO2 mapdot 3.11 * ln ~> CO2_I,
 
          LOD_CO2 mapdot 1.0 .* LOD_F,
-         SOI_CO2 mapdot 1.0 .* S2,
-         V_CO2 mapdot 1.24 .* V1,
-         T_CO2 mapdot LogCO2 + LOD_CO2 - V_CO2 - SOI_CO2 + TSI_F ,
+         SOI_CO2 mapdot -1.0 .* S2,
+         V_CO2 mapdot -1.24 .* V1,
+         T_CO2 mapdot LogCO2 + LOD_CO2 + V_CO2 + SOI_CO2 + TSI_F ,
          T_CO2_O mapdot T_CO2 .- 17.9,
      %%%%%%%%%%%%%%%%%%%%%%%%%%%%%
-	 % corrcoeff(T, T_CO2_O, RMS),
-         Data tuple Year + T + T_CO2_O,
-         Header = [X, Y1, Y2]
+         get_fit(T, LogCO2, SOI_CO2, TSI_F, V_CO2, LOD_CO2,
+		    C,      SO,	     TS,    VC,    LO, Int, R2C),
+         T_CO2_R mapdot C .* LogCO2 + SO .* SOI_CO2 + TS .* TSI_F + VC .* V_CO2 + LO .* LOD_CO2,
+	 corrcoeff(T, T_CO2_R, R2C2),
+         T_R mapdot Int .+ T_CO2_R,
+         % Data tuple Year + T + T_CO2_O + LOD_CO2 + V_CO2 + SOI_CO2 + TSI_F,
+         Data tuple Year + T + T_R,
+         % Header = [X, temperature, model, lod, volc, soi, tsi]
+         Header = [X, temperature, model]
      ;
        Characteristic = residual ->
          R mapdot T - Mod,
@@ -360,7 +389,8 @@ plot(Request) :-
     reply_html_page([title('GISS and SOI'),
                      \(con_text:style)],
                     [
-		     i('Corr Coeff = '), b('~4f ' - RMS),
+		     i('Corr Coeff time = '), b('~4f ' - RMS),
+		     i('Corr Coeff CO2 = '), b('~4f ' - R2C2),
 		     \(context_graphing:dygraph_native(Log, Header,
 						       [X,XUnits], [Y1, YUnits],
 						       'GISS - (trend, SOI, volcanic, TSI, LOD)', Data))
