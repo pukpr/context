@@ -155,6 +155,15 @@ dotadd(A,[ZF|ZR],Initial,Final) :-
    Value is A+ZF,
    dotadd(A,ZR,[Value|Initial],Final).
 
+%%   dotpower(+Scale,+List,+Initial_Value,-Value)
+%
+%    Power unit list dot product
+dotpower(_,[],Initial,Final) :-
+   reverse(Initial, Final).
+dotpower(N,[ZF|ZR],Initial,Final) :-
+   Value is ZF^N,
+   dotpower(N,ZR,[Value|Initial],Final).
+
 
 %%   ones_list(+X, +Scalar, +Initial, -Final)
 %
@@ -319,6 +328,11 @@ X dot Y/Z :-    % Array dot division
 [W|X] mapdot [Y|Z] :-  % Simplifier
    W is Y,  % ----------------------------------------  watch this point
    X mapdot Z.
+
+X mapdot Y^N :-    % Array mapdot product
+   Y1 mapdot Y,
+   integer(N),
+   dotpower(N, Y1, [], X),!.
 
 X mapdot Y*Z :-    % Array mapdot product
    Y1 mapdot Y,

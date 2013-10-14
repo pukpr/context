@@ -87,15 +87,17 @@ volcanos([
 volcanos([
           [36, 22],    % 1883    4  36
           [72, 2],    % 1886
-          %[180,1],    % 1895
+          [144,4],    % 1893
           [264,3.8],    % 1902   264
           [396,11],   % 1912   384
 	  [552,11], % 1925   540
+	  % [760, -20],  % WWII
           [1006,21],  % 1963   996
           [1080,2],   % 1970
           [1152,5],   % 1976   1152
+          [1180,2],   % 1980   1152
           [1224,14],  % 1982   1224
-          [1340,30]   % 1991 1332
+          [1344,30]   % 1991 1332
 	 ]).
 
 
@@ -132,13 +134,13 @@ lod_get(Years, LOD_F) :-
     lod(LOD),
     interpolate(Years, LOD, LOD_I),
     LOD_U unbias LOD_I,
-    % expsm(LOD_U, 0.8, LOD_S),
+    expsm(LOD_U, 0.985, LOD_S),
     LOD_Scale is -0.05*0.708,
     %
     % LOD_Scale is -0.05 * 0.22,
     % LOD_S mapdot LOD_U * LOD_U * LOD_U,
     %
-    LOD_F mapdot LOD_Scale .* LOD_U.
+    LOD_F mapdot LOD_Scale .* LOD_S.
 
 plot(Request) :-
     http_parameters(Request, [kind(Kind, []),
@@ -151,8 +153,8 @@ plot(Request) :-
     SOI_S is 0.0731*SS,
     AMO_S is 0.000026*SS,
     Trend is 2.26e-10*SS,
-    V_S is 0.42*SS,
-    V_lag = 0.98, % 0.978
+    V_S is 0.42*SS,  % 0.42
+    V_lag = 0.97, % 0.98
     TSI_Scale is 0.0541,     % 0.3
 
     tsi(TSI),
@@ -173,7 +175,8 @@ plot(Request) :-
     volcano_number(W),
     S0 unbias SOI,
     S1 mapdot SOI_S .* S0,  % scale SOI
-    expsm(S1, 0.86, S2),    % smooth SOI
+    % S1 mapdot S0^2,  % scale SOI
+    expsm(S1, 0.84, S2),    % smooth SOI
     A0 unbias AMO,
     A1 mapdot AMO_S .* A0,
     expsm(A1, 0.86, A2),
@@ -209,7 +212,7 @@ plot(Request) :-
     % Year2 mapdot 1878.5 .+ Y,
     interpolate(Year1, TSI, TSI_I),
     TSI_U unbias TSI_I,
-    % expsm(TSI_U, 0.5, TSI_L),
+    % expsm(TSI_U, 0.99, TSI_L),
     TSI_F mapdot TSI_Scale .* TSI_U,
     ModS mapdot Mod1 + TSI_F,
     ModA mapdot ModS + A2,
@@ -334,18 +337,22 @@ plot(Request) :-
          LOD_CO2 mapdot 1.0 .* LOD_F,
          SOI_CO2 mapdot -1.0 .* S2,
          V_CO2 mapdot -1.24 .* V1,
-         T_CO2 mapdot LogCO2 + LOD_CO2 + V_CO2 + SOI_CO2 + TSI_F ,
-         T_CO2_O mapdot T_CO2 .- 17.9,
+         % T_CO2 mapdot LogCO2 + LOD_CO2 + V_CO2 + SOI_CO2 + TSI_F ,
+         % T_CO2_O mapdot T_CO2 .- 17.9,
      %%%%%%%%%%%%%%%%%%%%%%%%%%%%%
          get_fit(T, LogCO2, SOI_CO2, TSI_F, V_CO2, LOD_CO2,
-		    C,      SO,	     TS,    VC,    LO, Int, R2C),
+		    C,      SO,	     TS,    VC,    LO, Int, _R2C),
          T_CO2_R mapdot C .* LogCO2 + SO .* SOI_CO2 + TS .* TSI_F + VC .* V_CO2 + LO .* LOD_CO2,
-	 corrcoeff(T, T_CO2_R, R2C2),
          T_R mapdot Int .+ T_CO2_R,
+	 corrcoeff(T, T_R, R2C2),
          % Data tuple Year + T + T_CO2_O + LOD_CO2 + V_CO2 + SOI_CO2 + TSI_F,
-         Data tuple Year + T + T_R,
+	 T_Diff mapdot T - T_R,
+	 _ModelCo2 mapdot Int .+  C .* LogCO2 + T_Diff,
+	 Data tuple Year + T + T_R,
+         %%% Data tuple Year + ModelCo2,
+         % Data tuple Year + T_Diff + V_CO2,
          % Header = [X, temperature, model, lod, volc, soi, tsi]
-         Header = [X, temperature, model]
+         Header = [X, temperature, model, corrected]
      ;
        Characteristic = residual ->
          R mapdot T - Mod,
@@ -385,15 +392,16 @@ plot(Request) :-
          Data tuple Range + FFT + EModel,
          Header = [X, fft, model]
     ),
+   (not(number(R2C2)) -> R2C2 = 0.0; true),
    (	Kind = graph ->
     reply_html_page([title('GISS and SOI'),
                      \(con_text:style)],
                     [
-		     i('Corr Coeff time = '), b('~4f ' - RMS),
-		     i('Corr Coeff CO2 = '), b('~4f ' - R2C2),
+		     i('Corr Coeff time = '), b('~5f ' - RMS),
+		     i('Corr Coeff CO2 = '),  b('~5f ' - R2C2),
 		     \(context_graphing:dygraph_native(Log, Header,
 						       [X,XUnits], [Y1, YUnits],
-						       'GISS - (trend, SOI, volcanic, TSI, LOD)', Data))
+						       'GISS - (lnCO2, SOI, volcanic, TSI, LOD)', Data))
                     ]
 		  )
    ;
@@ -10917,13 +10925,15 @@ lod(
 [2003.5,0.27],
 [2004.5,0.32],
 [2005.5,0.43],
-
-[2006.5,0.53],
-[2007.5,0.63],
-[2008.5,0.73],
-[2009.5,0.83],
-[2010.5,0.93],
-[2011.5,0.93],
-[2012.5,0.93]
+%0.82
+%0.85
+%0.87
+[2006.5,0.82],
+[2007.5,0.85],
+[2008.5,0.87],
+[2009.5,0.87],
+[2010.5,0.87],
+[2011.5,0.87],
+[2012.5,0.87]
 ]).
 
