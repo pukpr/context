@@ -285,6 +285,11 @@ ref_m('materials',     target_iframe, '/html/materials.html').
 ref_m('materials',     category, 'procChemical:Corrosion').
 ref_m('materials',     category, 'realmSoil:SoilLayer').
 
+ref_m('climate',     model, '/context_salt_model/navigate').
+ref_m('climate',     target_iframe, '/html/salt_model.html').
+ref_m('climate',     category, 'phenPlanetClimate:Climate').
+
+
 ref_(URL, feature, Feature) :-
     ref_m(ID, model, URL),
     ref_m(ID, feature, Feature), !.
