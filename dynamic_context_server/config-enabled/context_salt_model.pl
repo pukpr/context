@@ -162,8 +162,8 @@ plot(Request) :-
          VCV1 mapdot VC .* V1,
 	 LOLOD_F mapdot LO .* LOD_F,
 	 % Lin mapdot Linear .* Other,
-         Data tuple Year + S0S2 + TSTSI_F + VCV1 + LOLOD_F; % + Lin,
-	 Header = [XLabel, soi, tsi, volc, lod] % , linear]
+         Data tuple Year + S0S2 + TSTSI_F + VCV1 + LOLOD_F,   % + Lin,
+	 Header = [XLabel, soi, tsi, volc, lod]  % , linear]
     ),
     temp_data(NameData, TUnits),
     (	Kind = graph ->
