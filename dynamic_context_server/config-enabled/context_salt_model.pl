@@ -140,6 +140,7 @@ plot(Request) :-
     T_CO2_R mapdot C .* LogCO2 + Fluct,
     T_R mapdot Int .+ T_CO2_R,
     T_Diff mapdot T - T_R,
+    !,
     corrcoeff(T, T_R, R2C2),
     (
        Characteristic = model ->
