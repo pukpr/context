@@ -81,7 +81,7 @@ rplot_with_regression(Image, X, Y, Title, X_Axis, Y_Axis, Slope) :-
      r_print( 'dev.off()' ),
      r_close.
 
-pipe_interruupt(_Sig) :-
+pipe_interrupt(_Sig) :-
      r_close.
 
 :- on_signal(13, _Current, context_r:pipe_interrupt).
