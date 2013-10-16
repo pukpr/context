@@ -140,6 +140,7 @@ plot(Request) :-
     T_CO2_R mapdot C .* LogCO2 + Fluct,
     T_R mapdot Int .+ T_CO2_R,
     T_Diff mapdot T - T_R,
+    !,
     corrcoeff(T, T_R, R2C2),
     (
        Characteristic = model ->
@@ -161,9 +162,9 @@ plot(Request) :-
          TSTSI_F mapdot TS .* TSI_F,
          VCV1 mapdot VC .* V1,
 	 LOLOD_F mapdot LO .* LOD_F,
-	 Lin mapdot Linear .* Other,
-         Data tuple Year + S0S2 + TSTSI_F + VCV1 + LOLOD_F + Lin,
-	 Header = [XLabel, soi, tsi, volc, lod, linear]
+	 % Lin mapdot Linear .* Other,
+         Data tuple Year + S0S2 + TSTSI_F + VCV1 + LOLOD_F,   % + Lin,
+	 Header = [XLabel, soi, tsi, volc, lod]  % , linear]
     ),
     temp_data(NameData, TUnits),
     (	Kind = graph ->
