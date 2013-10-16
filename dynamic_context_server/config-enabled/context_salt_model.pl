@@ -30,9 +30,9 @@ navigate(Request) :-
                       form([action(plot), target(target_iframe)],
 			 [
 			  select([name('t_units')], Tunits),
-			  input([type('text'),
-				 name('phase'),
-				 value('3')]), i(' <= month phase'),
+			  % input([type('text'),
+			%	 name('phase'),
+			%	 value('3')]), i(' <= month phase'),
 			  br([]),
 			  \(con_text:radio_toggles(
 					 'evaluate',
@@ -57,17 +57,17 @@ navigate(Request) :-
 
 
 
-get_fit(Time, Temperature, CO2, SOI, TSI, Volc, LOD,
-	X, C,   S,   T,   V,    L, Int, R2) :-
+get_fit(_Time, Temperature, CO2, SOI, TSI, Volc, LOD,
+	_X, C,   S,   T,   V,    L, Int, R2) :-
    r_open_session,
-   x <- Time,
+   % x <- Time,
    y <- Temperature,
    c <- CO2,
    s <- SOI,
    t <- TSI,
    v <- Volc,
    l <- LOD,
-   fitxy <- lm('y~c+s+t+v+l+x'),
+   fitxy <- lm('y~c+s+t+v+l'),
    r_print(fitxy),
    Int <- 'as.double(fitxy$coefficients[1])',
    C <- 'as.double(fitxy$coefficients[2])',
@@ -75,11 +75,11 @@ get_fit(Time, Temperature, CO2, SOI, TSI, Volc, LOD,
    T <- 'as.double(fitxy$coefficients[4])',
    V <- 'as.double(fitxy$coefficients[5])',
    L <- 'as.double(fitxy$coefficients[6])',
-   X <- 'as.double(fitxy$coefficients[7])',
+   % X <- 'as.double(fitxy$coefficients[7])',
    summary <- summary(fitxy),
    r_print(summary),
    R2 <- 'as.double(summary$r.squared)',
-   r_close.
+   r_close, !.
 
 
 dataset(giss, L) :- context_box_model:temperature(L).
@@ -93,7 +93,7 @@ dataset(combo, L) :-
 
 plot(Request) :-
     http_parameters(Request, [kind(Kind, []),
-			      phase(Phase, [number]),
+			      % phase(Phase, [number]),
                               t_units(TUnits, []),
                               evaluate(Characteristic, [default(model)])]),
 
@@ -132,11 +132,11 @@ plot(Request) :-
     LogCO2 mapdot ln ~> CO2_I,
 
     % Other mapdot yearly_period(2, 8) ~> Y,
-    Other mapdot yearly_period(1, Phase) ~> Y,
-    get_fit(Other, T, LogCO2, S2, TSI_F, V1, LOD_F,
-	    Linear, C, SO, TS, VC,   LO, Int, _R2C),
+    % Other mapdot yearly_period(1, Phase) ~> Y,
+    get_fit(_Other, T, LogCO2, S2, TSI_F, V1, LOD_F,
+	    _Linear, C, SO, TS, VC,   LO, Int, _R2C),
 
-    Fluct mapdot SO .* S2 + TS .* TSI_F + VC .* V1 + LO .* LOD_F + Linear .* Other,
+    Fluct mapdot SO .* S2 + TS .* TSI_F + VC .* V1 + LO .* LOD_F, % + Linear .* Other,
     T_CO2_R mapdot C .* LogCO2 + Fluct,
     T_R mapdot Int .+ T_CO2_R,
     T_Diff mapdot T - T_R,
@@ -171,8 +171,8 @@ plot(Request) :-
     reply_html_page([title('GISS and SOI'),
                      \(con_text:style)],
                     [
-		     table([tr([th(corrcoeff), th('ln(co2)'),th(soi),th('a(volc)'),th(lod),th(tsi), th(cyclic)]),
-			    tr([td(b('~5f'-R2C2)),td('~3f'-C),td('~3f'-SO),td('~3f'-VC),td('~3f'-LO),td('~3f'-TS),td('~5f'-Linear)])]),
+		     table([tr([th(corrcoeff), th('ln(co2)'),th(soi),th('a(volc)'),th(lod),th(tsi)]),  % , th(cyclic)
+			    tr([td(b('~5f'-R2C2)),td('~3f'-C),td('~3f'-SO),td('~3f'-VC),td('~3f'-LO),td('~3f'-TS)])]), % ,td('~5f'-Linear)
 		     br([]),
 		     \(context_graphing:dygraph_native(lin, Header,
 						       [XLabel,XUnits], [YLabel, YUnits],
