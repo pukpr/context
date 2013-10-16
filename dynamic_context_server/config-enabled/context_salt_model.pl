@@ -192,6 +192,14 @@ plot(Request) :-
 
     ).
 
+plot(_Request) :-
+      reply_html_page([title(oops),
+                       \(con_text:style)],
+                      [
+                       p('try again')
+                      ]
+                     ).
+
 
 hadcrut(
 [
