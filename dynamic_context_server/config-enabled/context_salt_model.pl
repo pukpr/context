@@ -92,6 +92,7 @@ dataset(combo, L) :-
 
 
 plot(Request) :-
+    garbage_collect,
     http_parameters(Request, [kind(Kind, []),
 			      % phase(Phase, [number]),
                               t_units(TUnits, []),
