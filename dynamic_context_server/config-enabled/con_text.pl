@@ -521,6 +521,13 @@ button_link(Name, Action, Target, Contents) -->
              )
         ).
 
+%%   check_box(+Name, +Action, +Target)//
+%
+%   Check box to target
+check_box(Name, Value, Description) -->
+    html(
+	input([type('checkbox'), name(Name), value(Value)], Description)
+        ).
 
 
 %%   table_with_iframe_target(+Request, +Left_Content)//

@@ -34,6 +34,8 @@ navigate(Request) :-
 			%	 name('phase'),
 			%	 value('3')]), i(' <= month phase'),
 			  br([]),
+			  \(con_text:check_box(anthro, 'true', 'anthro aerosols')),
+			  br([]),
 			  \(con_text:radio_toggles(
 					 'evaluate',
 					 [
@@ -44,30 +46,34 @@ navigate(Request) :-
                                          ])),
                           br([]),
 			  input([type('submit'), name(kind), value('graph')]),
-			  input([type('submit'), name(kind), value('table')])
+			  input([type('submit'), name(kind), value('table')]),
+			  h2(i('lag values (months)')),
+			  table(
+			  \(table_input_pair([[soi_lag,6], [volcano_lag,40], [anthro_lag,10], [lod_lag,64]]))
+			       )
 			 ]
                           ),
 
                       br([]),
 		      \(con_text:render_iframe(render))
-                     ]
+		     ]
 						       ))
-     ]
+		   ]
 		  ).
 
 
 
-get_fit(_Time, Temperature, CO2, SOI, TSI, Volc, LOD,
-	_X, C,   S,   T,   V,    L, Int, R2) :-
+get_fit(Time, Temperature, CO2, SOI, TSI, Volc, LOD,
+	X, C,   S,   T,   V,    L, Int, R2) :-
    r_open_session,
-   % x <- Time,
+   x <- Time,
    y <- Temperature,
    c <- CO2,
    s <- SOI,
    t <- TSI,
    v <- Volc,
    l <- LOD,
-   fitxy <- lm('y~c+s+t+v+l'),
+   fitxy <- lm('y~c+s+t+v+l+x'),
    r_print(fitxy),
    Int <- 'as.double(fitxy$coefficients[1])',
    C <- 'as.double(fitxy$coefficients[2])',
@@ -75,7 +81,7 @@ get_fit(_Time, Temperature, CO2, SOI, TSI, Volc, LOD,
    T <- 'as.double(fitxy$coefficients[4])',
    V <- 'as.double(fitxy$coefficients[5])',
    L <- 'as.double(fitxy$coefficients[6])',
-   % X <- 'as.double(fitxy$coefficients[7])',
+   X <- 'as.double(fitxy$coefficients[7])',
    summary <- summary(fitxy),
    r_print(summary),
    R2 <- 'as.double(summary$r.squared)',
@@ -90,11 +96,32 @@ dataset(combo, L) :-
 	dataset(hadcrut,L2),
 	L mapdot 0.5 .* L1 + 0.5 .* L2.
 
+wars([
+          [766,1]   % 1991 1332
+	 ]).
+
+nowars([
+     [3,1], [5,-1], [7,1], [9,-1], [11,1], [13,-1], [15,1], [17,-1], [19,1]
+       ]).
+
+get_anthro(true, Lag, Zeros, W) :-
+	wars(War),
+	sparse_list(Zeros, War, Wars),
+        expsm(Wars, Lag, W).
+
+get_anthro(false, _, Zeros, W) :-
+	nowars(War),
+	sparse_list(Zeros, War, W).
+
 
 plot(Request) :-
     garbage_collect,
     http_parameters(Request, [kind(Kind, []),
-			      % phase(Phase, [number]),
+			      anthro(Anthro, [boolean, default(false)]),
+			      soi_lag(SL, [float]),
+			      volcano_lag(VL, [float]),
+			      anthro_lag(AL, [float]),
+			      lod_lag(LL, [float]),
                               t_units(TUnits, []),
                               evaluate(Characteristic, [default(model)])]),
 
@@ -116,28 +143,34 @@ plot(Request) :-
     Year mapdot 1880 .+ Y,
     Zeros mapdot 0 .* H,
 
+    SOI_lag is exp(-1/SL),
     S0 unbias SOI,
-    expsm(S0, 0.84, S2),    % smooth SOI
+    expsm(S0, SOI_lag, S2),    % smooth SOI
 
     sparse_list(Zeros, V, Vol),
-    expsm(Vol, 0.975, V1),
+    Volc_lag is exp(-1/VL),
+    expsm(Vol, Volc_lag, V1),
+    Anthro_lag is exp(-1/AL),
+    get_anthro(Anthro, Anthro_lag, Zeros, W1),
 
     interpolate(Year, TSI, TSI_I),
     TSI_F unbias TSI_I,        % expsm(TSI_U, 0.99, TSI_L),
 
     interpolate(Year, LOD, LOD_I),
+    LOD_lag is exp(-1/LL),
     LOD_U unbias LOD_I,
-    expsm(LOD_U, 0.985, LOD_F),
+    expsm(LOD_U, LOD_lag, LOD_F),
 
     interpolate(Year, CO2, CO2_I),
     LogCO2 mapdot ln ~> CO2_I,
 
     % Other mapdot yearly_period(2, 8) ~> Y,
     % Other mapdot yearly_period(1, Phase) ~> Y,
-    get_fit(_Other, T, LogCO2, S2, TSI_F, V1, LOD_F,
-	    _Linear, C, SO, TS, VC,   LO, Int, _R2C),
+    Other = W1,
+    get_fit(Other, T, LogCO2, S2, TSI_F, V1, LOD_F,
+	    Linear, C, SO, TS, VC,   LO, Int, _R2C),
 
-    Fluct mapdot SO .* S2 + TS .* TSI_F + VC .* V1 + LO .* LOD_F, % + Linear .* Other,
+    Fluct mapdot SO .* S2 + TS .* TSI_F + VC .* V1 + LO .* LOD_F + Linear .* Other,
     T_CO2_R mapdot C .* LogCO2 + Fluct,
     T_R mapdot Int .+ T_CO2_R,
     T_Diff mapdot T - T_R,
@@ -163,21 +196,25 @@ plot(Request) :-
          TSTSI_F mapdot TS .* TSI_F,
          VCV1 mapdot VC .* V1,
 	 LOLOD_F mapdot LO .* LOD_F,
-	 % Lin mapdot Linear .* Other,
-         Data tuple Year + S0S2 + TSTSI_F + VCV1 + LOLOD_F,   % + Lin,
-	 Header = [XLabel, soi, tsi, volc, lod]  % , linear]
+	 Lin mapdot Linear .* Other,
+         Data tuple Year + S0S2 + TSTSI_F + VCV1 + LOLOD_F + Lin,
+	 Header = [XLabel, soi, tsi, volc, lod, linear]
     ),
     temp_data(NameData, TUnits),
     (	Kind = graph ->
     reply_html_page([title('GISS and SOI'),
                      \(con_text:style)],
                     [
-		     table([tr([th(corrcoeff), th('ln(co2)'),th(soi),th('a(volc)'),th(lod),th(tsi)]),  % , th(cyclic)
-			    tr([td(b('~5f'-R2C2)),td('~3f'-C),td('~3f'-SO),td('~3f'-VC),td('~3f'-LO),td('~3f'-TS)])]), % ,td('~5f'-Linear)
+		     table([tr([th(corrcoeff), th('ln(co2)'),th(soi),th('a(volc)'),th(lod),th(tsi), th('a(war)')]),  %
+			    tr([td(b('~5f'-R2C2)),td('~3f'-C),td('~3f'-SO),td('~3f'-VC),td('~3f'-LO),td('~3f'-TS),td('~5f'-Linear)])]), %
 		     br([]),
+		     % p([b(Anthro)]),
+		     % <div style="left: 0px; border: 0px none; height: 370px; position: fixed; width: 270px; overflow: hidden; bottom: -67px;">
+    % <div style="overflow: hidden;">
+		     div([id('legend')],[]),
 		     \(context_graphing:dygraph_native(lin, Header,
 						       [XLabel,XUnits], [YLabel, YUnits],
-						       [NameData, '(lnCO2, SALT)'], Data))
+						       [NameData, '-(lnCO2, SALT)-', Characteristic], Data))
                     ]
 		  )
    ;
