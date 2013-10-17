@@ -52,7 +52,8 @@ navigate(Request) :-
 					 'evaluate',
 					 [['Effective', 'response'],
 					  ['Linear', 'forcing'],
-					  ['Differences Effective', 'diffs']
+					  ['Differences Effective', 'diffs'],
+                                          ['Top Layer', 'top']
                                          ])),
                           br([]),
 			  input([type('submit'), name(kind), value('plot'),
@@ -115,6 +116,7 @@ plot(Request) :-
     D = 0.008,  % 0.008
     Loss = 0.45, % 0.45,
     % Offset = 0.0,
+    DDtop mapdot dd_ohc(1.0, 0.002, D) ~> Time,
     DD3 mapdot dd_ohc(1.0, 0.3, D) ~> Time,
     DD7 mapdot dd_ohc(1.0, 0.7, D) ~> Time,
     DD100 mapdot dd_ohc(1.0, 100.0, D) ~> Time,
@@ -125,6 +127,11 @@ plot(Request) :-
     Linear_Scale is Loss*W2J*1.55/TS,
     Linear_Forcing mapdot Linear_Scale .* Time,
     (
+       Characteristic  = top ->
+         OHCtop convolve DDtop*Linear_Forcing,
+	 Data tuple Time + OHCtop,
+         Heading = [X,    'top']
+    ;
        Characteristic  = response ->
          OHC3 convolve DD3*Forcing,
          OHC7 convolve DD7*Forcing,
