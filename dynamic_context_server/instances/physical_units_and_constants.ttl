@@ -60,7 +60,7 @@ ent:water
 	ent:deltaSvap "26.04*cal/k" ;
 	ent:molecular_weight "18.015268*au" .
 
-ent:water_viscosity_table 
+ent:water_viscosity_table
      rdfs:comment "viscosity table for water from 0,10,..,100 degrees C" ;
 	ent:temperature "0.0*c" ;
 	ent:kinematic_viscosity "1.787e-6*m^2/s" ;
@@ -131,6 +131,7 @@ ent:length
 		  ent:nm ,
 		  ent:yards .
 
+
 ent:mass
         ent:name  "mass" ;
 	ent:units ent:gram ,
@@ -164,6 +165,13 @@ ent:time
 		  ent:min ,
 		  ent:sec ,
 		  ent:year .
+
+ent:calendar
+        ent:name  "calendar" ;
+	ent:units ent:month ,
+		  ent:year ,
+		  ent:day ,
+		  ent:decade .
 
 ent:volume
         ent:name  "volume" ;
@@ -200,6 +208,10 @@ ent:cm_3
 ent:day
 	ent:description "days" ;
 	ent:unit "day" .
+
+ent:month
+	ent:description "months" ;
+	ent:unit "month" .
 
 ent:decade
 	ent:description "decades" ;

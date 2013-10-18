@@ -42,8 +42,8 @@ dataset(composed, L) :-
 	L mapdot 0.3 .* L1  +  1.4 .* L2.
 
 navigate(Request) :-
-   % collect_unit_options(time, Tunits),
-   con_text:collect_options(context_salt_model:temp_data, Tunits),
+   collect_unit_options(calendar, Calendar),
+   con_text:collect_options(context_salt_model:temp_data, DataSet),
 
    reply_html_page(cliopatria(default),
                    [title('SALT model response')],
@@ -54,10 +54,7 @@ navigate(Request) :-
                       p('Select a data set and a view of the defluctuated profile'),
                       form([action(plot), target(target_iframe)],
 			 [
-			  select([name('t_units')], Tunits),
-			  % input([type('text'),
-			%	 name('phase'),
-			%	 value('3')]), i(' <= month phase'),
+			  select([name('dataset')], DataSet),
 			  br([]),
 			  \(con_text:check_box(anthro, 'true', 'anthro aerosols')),
 			  br([]),
@@ -72,9 +69,22 @@ navigate(Request) :-
                           br([]),
 			  input([type('submit'), name(kind), value('graph')]),
 			  input([type('submit'), name(kind), value('table')]),
+                          br([]),
+			  input([type('text'),
+				 size(2),
+				 name('lag'),
+				 value('0')]),
+			  select([name('t_units')], Calendar),
+			  i(' <= lag filter on Match'),
 			  h2(i('lag values (months)')),
-			  table(  %%%%%%%%%%%%%%%  Hard coded
-			  \(table_input_pair([[soi_lag,6], [volcano_lag,40], [anthro_lag,10], [lod_lag,64]]))
+			  table(
+			      % [width('20%')],
+			      %%%%%%%%%%%%%%%  Hard coded
+			      \(con_text:input_cells([[soi_lag,6,2],
+						      [volcano_lag,35,2],
+						      [anthro_lag,12,2],
+						      [lod_lag,64,2],
+						      [tsi_lag,2,2]]))
 			       )
 			 ]
                           ),
@@ -125,7 +135,8 @@ nowars([
 get_anthro(true, Lag, Zeros, W) :-
 	wars(War),
 	sparse_list(Zeros, War, Wars),
-        expsm(Wars, Lag, W).
+	W lag Lag*Wars.
+        % expsm(Wars, Lag, W).
 
 get_anthro(false, _, Zeros, W) :-
 	nowars(War),
@@ -136,19 +147,23 @@ plot(Request) :-
     garbage_collect,
     http_parameters(Request, [kind(Kind, []),
 			      anthro(Anthro, [boolean, default(false)]),
+			      t_units(Cal, []),
+			      lag(LagCal, [float]),
 			      soi_lag(SL, [float]),
 			      volcano_lag(VL, [float]),
 			      anthro_lag(AL, [float]),
 			      lod_lag(LL, [float]),
-                              t_units(TUnits, []),
+			      tsi_lag(TL, [float]),
+                              dataset(DataSet, []),
                               evaluate(Characteristic, [default(model)])]),
 
     XLabel = 'Time',
     YLabel = 'Temperature',
     XUnits = 'year',
     YUnits = 'C',
-
-    dataset(TUnits, T),
+    scaling(Cal, month, Scale),
+    Lag is Scale*LagCal,
+    dataset(DataSet, T),
     context_box_model:tsi(TSI),
     context_box_model:soi(SOI),
     context_box_model:volcanos(V),
@@ -161,23 +176,29 @@ plot(Request) :-
     Year mapdot 1880 .+ Y,
     Zeros mapdot 0 .* H,
 
-    SOI_lag is exp(-1/SL),
+    % SOI_lag is exp(-1/(SL+0.01)),
     S0 unbias SOI,
-    expsm(S0, SOI_lag, S2),    % smooth SOI
+    %expsm(S0, SOI_lag, S2),    % smooth SOI
+    S2 lag SL*S0,
 
     sparse_list(Zeros, V, Vol),
-    Volc_lag is exp(-1/VL),
-    expsm(Vol, Volc_lag, V1),
-    Anthro_lag is exp(-1/AL),
-    get_anthro(Anthro, Anthro_lag, Zeros, W1),
+    % Volc_lag is exp(-1/(VL+0.01)),
+    % expsm(Vol, Volc_lag, V1),
+    V1 lag VL * Vol,
+    % Anthro_lag is exp(-1/(AL+0.01)),
+    get_anthro(Anthro, AL, Zeros, W1),
 
     interpolate(Year, TSI, TSI_I),
-    TSI_F unbias TSI_I,        % expsm(TSI_U, 0.99, TSI_L),
+    TSI_U unbias TSI_I,        % expsm(TSI_U, 0.99, TSI_L),
+    TSI_F lag TL * TSI_U,
+    % TL_lag is exp(-1/(TL+0.01)),
+    % expsm(TSI_U, TL_lag, TSI_F),
 
     interpolate(Year, LOD, LOD_I),
-    LOD_lag is exp(-1/LL),
+    % LOD_lag is exp(-1/(LL+0.01)),
     LOD_U unbias LOD_I,
-    expsm(LOD_U, LOD_lag, LOD_F),
+    %expsm(LOD_U, LOD_lag, LOD_F),
+    LOD_F lag LL * LOD_U,
 
     interpolate(Year, CO2, CO2_I),
     LogCO2 mapdot ln ~> CO2_I,
@@ -193,10 +214,12 @@ plot(Request) :-
     T_R mapdot Int .+ T_CO2_R,
     T_Diff mapdot T - T_R,
     !,
-    corrcoeff(T, T_R, R2C2),
+    T_lag lag Lag*T,
+    T_R_lag lag Lag*T_R,
+    corrcoeff(T_lag, T_R_lag, R2C2),
     (
        Characteristic = model ->
-	 Data tuple Year + T + T_R,
+	 Data tuple Year + T_lag + T_R_lag,
          Header = [XLabel, temperature, model]
      ;
        Characteristic = residual ->
@@ -218,7 +241,7 @@ plot(Request) :-
          Data tuple Year + S0S2 + TSTSI_F + VCV1 + LOLOD_F + Lin,
 	 Header = [XLabel, soi, tsi, volc, lod, linear]
     ),
-    temp_data(NameData, TUnits),
+    temp_data(NameData, DataSet),
     (	Kind = graph ->
     reply_html_page([title('GISS and SOI'),
                      \(con_text:style)],

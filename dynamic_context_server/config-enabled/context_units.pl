@@ -58,6 +58,7 @@ relation(ms/s, 1000.0).
 relation(s/min, 60.0).
 relation(min/hr, 60.0).
 relation(hr/day, 24.0).
+relation(month/yr, 12.0).
 relation(day/yr, 365.0).
 relation(yr/decade, 10.0).
 relation(decade/century, 10.0).
@@ -313,7 +314,7 @@ lower_list([F|R], In, Out) :-
 
 :- dynamic relations/1.
 
-%%   init_relations 
+%%   init_relations
 %
 %    Initialize dimensional unit relations
 init_relations :-

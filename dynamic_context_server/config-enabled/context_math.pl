@@ -27,6 +27,7 @@
                        op(700, xfx, split), % array evaluation
                        op(700, xfx, deplete), % array evaluation
                        op(700, xfx, accumulate), % array evaluation
+                       op(700, xfx, lag), % array evaluation
                        dot/2,
                        mapdot/2,
                        convolve/2,
@@ -64,7 +65,8 @@
                        split/2,
                        deplete/2,
                        interpolate/3,
-		       accumulate/2
+		       accumulate/2,
+		       lag/2
                      ]).
 
 /** <module>  Math operations for array manipulations
@@ -1018,4 +1020,31 @@ interpolate(N, Table, Values):-
     interpolate(N, Table, [], Values).
 
 
+%%   lag(+X, +A, -Y)
+%
+%    lag exponential smoother
+%
+lag([], _, _, Y_In, Y_Out) :- reverse(Y_In, Y_Out).
+lag([X|X_In], A, Sum, Y_In, Y_Out) :-
+    Y is (1-A)*X + A*Sum,
+    lag(X_In, A, Y, [Y|Y_In], Y_Out).
 
+lag(X, A, Y) :-
+    [First|_] = X,
+    X0 mapdot X .- First,
+    lag(X0, A, 0.0, [], Y0),
+    Y mapdot First .+ Y0.
+
+
+[] lag [].
+[W|X] lag [Y|Z] :-  % Simplifier
+   W is Y,
+   X mapdot Z.
+X lag Y*Z :-
+   number(Y),
+   ( Y > 0 ->
+     Factor is exp(-1/Y),
+     lag(Z, Factor, X)
+   ;
+     X = Z
+   ), !.

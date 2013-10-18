@@ -141,6 +141,7 @@ handleDygraphList = function(logselector, Xlabel, Ylabel, Title, Labels, data_ar
 		      labels: Labels,
                       labelsSeparateLines: true,
                       labelsDivWidth: 150,
+		      // labelsDiv: "legend",
                       labelsDivStyles: {'textAlign': 'right'}
                    }
                  );

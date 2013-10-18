@@ -167,6 +167,37 @@ input([[Name,Default,Size]|Rest]) -->
         ),
     input(Rest).
 
+
+%%   input_cells(+Pair)//
+%
+%    Simple Table Form
+input_cells([]) --> !.
+input_cells([[Name,Default]|Rest]) -->
+    html(
+        tr([
+	    th(Name),
+	    td(
+		input([type('text'),
+		       name(Name),
+		       value(Default)])
+	      )
+	   ])
+        ),
+    input_cells(Rest).
+input_cells([[Name,Default,Size]|Rest]) -->
+    html(
+	tr([
+	    th(Name),
+	    td(
+		input([type('text'),
+		       name(Name),
+		       value(Default),
+		       size(Size)])
+	      )
+	   ])
+	),
+    input_cells(Rest).
+
 %%   form(+Action, +List)//
 %
 %    Interactive form
