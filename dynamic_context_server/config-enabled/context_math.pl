@@ -814,6 +814,7 @@ sconvolution([_|YR],Window,Initial,Final) :-
    dotproduct(YW,Window,0.0,Value),
    sconvolution(YR,Window,[Value|Initial],Final).
 
+
 %%   window(+X,-Y)
 %
 %   Do a lag-window or centered window on a list.
@@ -829,8 +830,40 @@ X window Y/Z :-  % lag window
    Z2 normalize Z1,
    ones_list(Z, 0.0, [], Empty),
    append(Empty, Y1, Y2),
-   sconvolution(Y2, Z2, [], X).
+   sconvolution(Y2, Z2, [], X), !.
 
+X window Y*Z :-  % centered window
+   Y1 window Y,
+   Z1 window Z,
+   Z2 normalize Z1,
+   ones_list(Z, 0.0, [], Empty),
+   append(Empty, Y1, Y2),
+   sconvolution(Y2, Z2, [], X0),
+   length(Z1, N),
+   M is integer(N/2),
+   last(X0, Last),
+   Last_Vals range Last*[1,M],
+   % Last_Ones mapdot Last_Vals ./ N,
+   X1 offset X0-M,
+   MM is M + 1,
+   Ramp range [MM,N]/1,
+   R mapdot Ramp ./ N,
+   % reverse(Ramp, R),
+   length(Y1,L),
+   Length is L-M,
+   Ones range 1*[1,Length],
+   Mult = [R|Ones], M1 cat Mult,
+   X2 = [X1|Last_Vals], X3 cat X2,
+   X mapdot X3 / M1,
+
+   /*
+   X2 = [X1|Zeros],
+   X cat X2,
+   */
+
+   !.
+
+/*
 X window Y*Z :-  % centered window
    Y1 window Y,
    Z1 window Z,
@@ -840,7 +873,7 @@ X window Y*Z :-  % centered window
    M is integer((N+1)/2)-1,
    X2 offset X1 - M,
    X shrink X2/Y.
-
+*/
 
 
 %%   intersect(+X, +Y, +Initial, -Final)
@@ -1040,7 +1073,7 @@ lag(X, A, Y) :-
 [W|X] lag [Y|Z] :-  % Simplifier
    W is Y,
    X mapdot Z.
-X lag Y*Z :-
+X lag Z / Y :-
    number(Y),
    ( Y > 0 ->
      Factor is exp(-1/Y),

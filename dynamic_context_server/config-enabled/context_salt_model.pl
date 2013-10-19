@@ -55,7 +55,6 @@ navigate(Request) :-
                       form([action(plot), target(target_iframe)],
 			 [
 			  select([name('dataset')], DataSet),
-			  br([]),
 			  \(con_text:check_box(anthro, 'true', 'anthro aerosols')),
 			  br([]),
 			  \(con_text:radio_toggles(
@@ -70,6 +69,9 @@ navigate(Request) :-
 			  input([type('submit'), name(kind), value('graph')]),
 			  input([type('submit'), name(kind), value('table')]),
                           br([]),
+			  \(con_text:check_box(window, 'true', 'Apply 12 month window')),
+			  \(con_text:check_box(fft, 'true', 'FFT of residual')),
+			  br([]),
 			  input([type('text'),
 				 size(2),
 				 name('lag'),
@@ -98,10 +100,12 @@ navigate(Request) :-
 
 
 
-get_fit(Time, Temperature, CO2, SOI, TSI, Volc, LOD,
-	X, C,   S,   T,   V,    L, Int, R2) :-
+get_fit(Aero, Temperature, CO2, SOI, TSI, Volc, LOD,
+	A, C,   S,   T,   V,    L, Int, R2) :-
    r_open_session,
-   x <- Time,
+   % sin <- Sin,
+   % cos <- Cos,
+   x <- Aero,
    y <- Temperature,
    c <- CO2,
    s <- SOI,
@@ -116,7 +120,9 @@ get_fit(Time, Temperature, CO2, SOI, TSI, Volc, LOD,
    T <- 'as.double(fitxy$coefficients[4])',
    V <- 'as.double(fitxy$coefficients[5])',
    L <- 'as.double(fitxy$coefficients[6])',
-   X <- 'as.double(fitxy$coefficients[7])',
+   A <- 'as.double(fitxy$coefficients[7])',
+   % SinA <- 'as.double(fitxy$coefficients[8])',
+   % CosA <- 'as.double(fitxy$coefficients[9])',
    summary <- summary(fitxy),
    r_print(summary),
    R2 <- 'as.double(summary$r.squared)',
@@ -135,18 +141,22 @@ nowars([
 get_anthro(true, Lag, Zeros, W) :-
 	wars(War),
 	sparse_list(Zeros, War, Wars),
-	W lag Lag*Wars.
+	W lag Wars/Lag.
         % expsm(Wars, Lag, W).
 
 get_anthro(false, _, Zeros, W) :-
 	nowars(War),
 	sparse_list(Zeros, War, W).
 
+scale(true, log).
+scale(false, lin).
 
 plot(Request) :-
     garbage_collect,
     http_parameters(Request, [kind(Kind, []),
 			      anthro(Anthro, [boolean, default(false)]),
+			      fft(FFT, [boolean, default(false)]),
+			      window(Window, [boolean, default(false)]),
 			      t_units(Cal, []),
 			      lag(LagCal, [float]),
 			      soi_lag(SL, [float]),
@@ -161,9 +171,16 @@ plot(Request) :-
     YLabel = 'Temperature',
     XUnits = 'year',
     YUnits = 'C',
+    scale(FFT, LogLin),
     scaling(Cal, month, Scale),
     Lag is Scale*LagCal,
-    dataset(DataSet, T),
+    (	 Window ->
+         dataset(DataSet, T0),
+         uniform(12,Win),
+         T window T0*Win
+    ;
+         dataset(DataSet, T)
+    ),
     context_box_model:tsi(TSI),
     context_box_model:soi(SOI),
     context_box_model:volcanos(V),
@@ -179,18 +196,23 @@ plot(Request) :-
     % SOI_lag is exp(-1/(SL+0.01)),
     S0 unbias SOI,
     %expsm(S0, SOI_lag, S2),    % smooth SOI
-    S2 lag SL*S0,
+    S2 lag S0 / SL,
 
+    % Cycle is 2*pi/9,
+    %Radians mapdot Cycle .* H,
+    % Rads mapdot LagCal .+ Radians,
+    % Sin mapdot sin ~> Rads,
+    % Cos mapdot cos ~> Radians,
     sparse_list(Zeros, V, Vol),
     % Volc_lag is exp(-1/(VL+0.01)),
     % expsm(Vol, Volc_lag, V1),
-    V1 lag VL * Vol,
+    V1 lag Vol/VL,
     % Anthro_lag is exp(-1/(AL+0.01)),
     get_anthro(Anthro, AL, Zeros, W1),
 
     interpolate(Year, TSI, TSI_I),
     TSI_U unbias TSI_I,        % expsm(TSI_U, 0.99, TSI_L),
-    TSI_F lag TL * TSI_U,
+    TSI_F lag TSI_U / TL,
     % TL_lag is exp(-1/(TL+0.01)),
     % expsm(TSI_U, TL_lag, TSI_F),
 
@@ -198,7 +220,7 @@ plot(Request) :-
     % LOD_lag is exp(-1/(LL+0.01)),
     LOD_U unbias LOD_I,
     %expsm(LOD_U, LOD_lag, LOD_F),
-    LOD_F lag LL * LOD_U,
+    LOD_F lag LOD_U / LL,
 
     interpolate(Year, CO2, CO2_I),
     LogCO2 mapdot ln ~> CO2_I,
@@ -206,16 +228,19 @@ plot(Request) :-
     % Other mapdot yearly_period(2, 8) ~> Y,
     % Other mapdot yearly_period(1, Phase) ~> Y,
     Other = W1,
-    get_fit(Other, T, LogCO2, S2, TSI_F, V1, LOD_F,
+    get_fit(% Sin, Cos,
+	    Other, T, LogCO2, S2, TSI_F, V1, LOD_F,
+	    % SinA, CosA,
 	    Linear, C, SO, TS, VC,   LO, Int, _R2C),
 
     Fluct mapdot SO .* S2 + TS .* TSI_F + VC .* V1 + LO .* LOD_F + Linear .* Other,
+		 % SinA .* Sin, %  + CosA .* Cos,
     T_CO2_R mapdot C .* LogCO2 + Fluct,
     T_R mapdot Int .+ T_CO2_R,
     T_Diff mapdot T - T_R,
     !,
-    T_lag lag Lag*T,
-    T_R_lag lag Lag*T_R,
+    T_lag lag T / Lag,
+    T_R_lag lag T_R / Lag,
     corrcoeff(T_lag, T_R_lag, R2C2),
     (
        Characteristic = model ->
@@ -223,7 +248,14 @@ plot(Request) :-
          Header = [XLabel, temperature, model]
      ;
        Characteristic = residual ->
-	 Data tuple Year + T_Diff,
+         (   FFT ->
+	     R_FFT fft T_Diff,
+	     Range ordinal R_FFT,
+	     Data tuple Range + R_FFT
+	 ;
+	     Data tuple Year + T_Diff
+	 ),
+
          Header = [XLabel, residual]
      ;
        Characteristic = signal ->
@@ -246,14 +278,14 @@ plot(Request) :-
     reply_html_page([title('GISS and SOI'),
                      \(con_text:style)],
                     [
-		     table([tr([th(corrcoeff), th('ln(co2)'),th(soi),th('a(volc)'),th(lod),th(tsi), th('a(war)')]),  %
-			    tr([td(b('~5f'-R2C2)),td('~3f'-C),td('~3f'-SO),td('~3f'-VC),td('~3f'-LO),td('~3f'-TS),td('~5f'-Linear)])]), %
+		     table([tr([th(corrcoeff), th('ln(co2)'),th(soi),th('a(volc)'),th(lod),th(tsi), th('a(war)')]),
+			    tr([td(b('~5f'-R2C2)),td('~3f'-C),td('~3f'-SO),td('~3f'-VC),td('~3f'-LO),td('~3f'-TS),td('~5f'-Linear)])]),
 		     br([]),
 		     % p([b(Anthro)]),
 		     % <div style="left: 0px; border: 0px none; height: 370px; position: fixed; width: 270px; overflow: hidden; bottom: -67px;">
     % <div style="overflow: hidden;">
 		     div([id('legend')],[]),
-		     \(context_graphing:dygraph_native(lin, Header,
+		     \(context_graphing:dygraph_native(LogLin, Header,
 						       [XLabel,XUnits], [YLabel, YUnits],
 						       [NameData, '-(lnCO2, SALT)-', Characteristic], Data))
                     ]
@@ -270,7 +302,7 @@ plot(Request) :-
                      )
 
     ).
-
+/*
 plot(_Request) :-
       reply_html_page([title(oops),
                        \(con_text:style)],
@@ -278,7 +310,7 @@ plot(_Request) :-
                        p('try again')
                       ]
                      ).
-
+*/
 
 hadcrut(
 [
