@@ -1,6 +1,6 @@
 :- module(context_bakken, [
-				cumulative_diffusional_dispersion/5
-				% exp_lag/3
+				cumulative_diffusional_dispersion/5,
+                                declining_rate/6
 			    ]).
 
 /** <module> Growth of production in a tight oil model
@@ -46,12 +46,24 @@ navigate(Request) :-
 				 name('extra'),
 				 value('240')]), i(' <= number of future months'),
 			  br([]),
+			  input([type('text'),
+				 name('urr'),
+				 value('12000')]), i(' <= eventual URR'),
+			  br([]),
 			  \(con_text:radio_toggles(
 					 'evaluate',
-					 [['Cumulative', 'cumulative'],
-					  ['Daily', 'daily'],
+                                         [['Daily', 'daily'],
+					  ['Cumulative (assuming current rate)', 'cumulative'],
 					  ['Single Well', 'well']
                                          ])),
+                          br([]),
+			  \(con_text:radio_toggles(
+					 'diminish',
+					 [['Hard Ramp', 'ramp'],
+					  ['Diminishing Returns', 'damp'],
+					  ['Mix', 'mix']
+                                         ])),
+			  % \(con_text:check_box(diminish, 'true', 'diminishing returns')),
                           br([]),
 			  input([type('submit'), name(kind), value('plot'),
                                  onclick('subm(this.form,"target_iframe");')]),
@@ -75,9 +87,11 @@ navigate(Request) :-
 plot(Request) :-
     http_parameters(Request, [kind(table, []),
 			      limit(Rate, [number]),
+			      urr(URR, [number]),
+			      diminish(Dim, [default(ramp)]),
                               extra(Future_Months, [number]),
                               evaluate(_Table, [])]),
-    number_of_wells(Rate, Future_Months, Number_Wells),
+    number_of_wells(Dim, Rate, URR, Future_Months, Number_Wells),
     length(Number_Wells, L),
     Time range [0, L]/1,
     Data tuple Time + Number_Wells,
@@ -97,11 +111,13 @@ plot(Request) :-
 plot(Request) :-
     http_parameters(Request, [kind(plot, []),
 			      limit(Rate, [number]),
-                              % t_units(_TUnits, []),
+			      urr(URR, [number]),
+			      diminish(Dim, [default(ramp)]),
+                             % t_units(_TUnits, []),
                               extra(Future_Months, [number]),
                               evaluate(Characteristic, [default(cumulative)])]),
 
-    number_of_wells(Rate, Future_Months, Number_Wells),
+    number_of_wells(Dim, Rate, URR, Future_Months, Number_Wells),
     length(Number_Wells, L),
     Time range [1, L]/1,
 
@@ -154,17 +170,33 @@ plot(Request) :-
                     ]
 		  ).
 
+declining_rate(damp, Last, Rate, URR, X, Y) :-
+    % Y is Last + Rate*X/(1+Rate*X/URR).
+    Y is Last + URR*(1-exp(-(Rate*X)/URR)).
+    % Y is Last + URR*exp(-URR/(Rate*X)).
+declining_rate(ramp, Last, Rate, URR, X, Y) :-
+    Time_To_URR is URR/Rate,
+    (   X < Time_To_URR ->
+        Y is Last + Rate*X
+    ;
+        Y is Last + Rate*Time_To_URR
+    ).
+declining_rate(mix, Last, Rate, URR, X, Y) :-
+    declining_rate(damp, Last, Rate, URR, X, Y0),
+    declining_rate(ramp, Last, Rate, URR, X, Y1),
+    Y is (Y0+Y1)/2.
 
 
-number_of_wells(Rate, Months, List) :-
+number_of_wells(Dim, Rate, URR, Months, List) :-
    number_of_wells(Start),
    last(Start, Last),
    % Starting is Last + Rate,
    % Ending is Last + Rate*(Months+1),
    Continue range [1,Months]/1,
-   Growth mapdot Rate .* Continue,
-   Add mapdot Last .+ Growth,
-   List cat [Start|Add].
+   % Growth mapdot Rate .* Continue,
+   Growth mapdot declining_rate(Dim, Last, Rate, URR) ~> Continue,
+   % Add mapdot Last .+ Growth,
+   List cat [Start|Growth].
 
 number_of_wells(
 [

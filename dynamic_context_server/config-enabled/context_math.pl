@@ -28,6 +28,7 @@
                        op(700, xfx, deplete), % array evaluation
                        op(700, xfx, accumulate), % array evaluation
                        op(700, xfx, lag), % array evaluation
+                       op(700, xfx, delay), % array evaluation
                        dot/2,
                        mapdot/2,
                        convolve/2,
@@ -66,7 +67,8 @@
                        deplete/2,
                        interpolate/3,
 		       accumulate/2,
-		       lag/2
+		       lag/2,
+		       delay/2
                      ]).
 
 /** <module>  Math operations for array manipulations
@@ -289,7 +291,7 @@ X range W*[Y,Z]*Units :-    % linear range specifier
 X range W*[Y,Z] :-    % range specifier
    integer(Y),
    integer(Z),
-   Z > Y,
+   Z >= Y,
    Y1 is Z-Y+1,
    constants(Y1, W, X), !.
 
@@ -1081,3 +1083,25 @@ X lag Z / Y :-
    ;
      X = Z
    ), !.
+
+
+%%   delay(+X, +A, -Y)
+%
+%    delay function
+%
+
+[] delay [].
+[W|X] delay [Y|Z] :-  % Simplifier
+   W is Y,
+   X mapdot Z.
+X delay Z / Y :-
+   (   integer(Y) ->
+       [First|_] = Z,
+       Delay range First*[1,Y],
+       Fill cat [Delay|Z],
+       X shrink Fill/Z
+   ;
+       X lag Z / Y
+   ),
+   !.
+
