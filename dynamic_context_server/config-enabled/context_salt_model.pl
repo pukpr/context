@@ -86,7 +86,7 @@ navigate(Request) :-
 			      \(con_text:input_cells([[soi_lag,6,2],
 						      [volcano_lag,24,2],
 						      [anthro_lag,9,2],
-						      [lod_lag,90,2],
+						      [lod_lag,90.0,2],
 						      [tsi_lag,6,2]]))
 			       )
 			 ]
@@ -162,11 +162,11 @@ plot(Request) :-
 			      volc(Sato, [boolean, default(false)]),
 			      t_units(Cal, []),
 			      lag(LagCal, [float]),
-			      soi_lag(SL, [float]),
-			      volcano_lag(VL, [float]),
-			      anthro_lag(AL, [float]),
-			      lod_lag(LL, [float]),
-			      tsi_lag(TL, [float]),
+			      soi_lag(SL, [number]),
+			      volcano_lag(VL, [number]),
+			      anthro_lag(AL, [number]),
+			      lod_lag(LL, [number]),
+			      tsi_lag(TL, [number]),
                               dataset(DataSet, []),
                               evaluate(Characteristic, [default(model)])]),
 
@@ -237,7 +237,8 @@ plot(Request) :-
     % LOD_lag is exp(-1/(LL+0.01)),
     LOD_U unbias LOD_I,
     %expsm(LOD_U, LOD_lag, LOD_F),
-    LOD_F lag LOD_U / LL,
+    % LOD_F lag LOD_U / LL,
+    LOD_F delay LOD_U / LL,
 
     interpolate(Year, CO2, CO2_I),
     LogCO2 mapdot ln ~> CO2_I,
