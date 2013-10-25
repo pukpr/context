@@ -40,15 +40,15 @@ navigate(Request) :-
 			  % select([name('t_units')], Tunits),
 			  input([type('text'),
 				 name('limit'),
-				 value('150')]), i(' <= projected rate of growth per month'),
+				 value('250')]), i(' <= projected rate of growth per month'),
 			  br([]),
 			  input([type('text'),
 				 name('extra'),
-				 value('240')]), i(' <= number of future months'),
+				 value('450')]), i(' <= number of future months'),
 			  br([]),
 			  input([type('text'),
 				 name('urr'),
-				 value('12000')]), i(' <= eventual URR'),
+				 value('60000')]), i(' <= total number of wells'),
 			  br([]),
 			  \(con_text:radio_toggles(
 					 'evaluate',
@@ -61,7 +61,7 @@ navigate(Request) :-
 					 'diminish',
 					 [['Hard Ramp', 'ramp'],
 					  ['Diminishing Returns', 'damp'],
-					  ['Mix', 'mix']
+					  ['Intermediate', 'mix']
                                          ])),
 			  % \(con_text:check_box(diminish, 'true', 'diminishing returns')),
                           br([]),
@@ -93,16 +93,17 @@ plot(Request) :-
                               evaluate(_Table, [])]),
     number_of_wells(Dim, Rate, URR, Future_Months, Number_Wells),
     length(Number_Wells, L),
-    Time range [0, L]/1,
+    Time range [1, L]/1,
+
     Data tuple Time + Number_Wells,
 
-    reply_html_page([title('Shock Extraction'),
+    reply_html_page([title('Growth of Wells'),
                      \(con_text:style)],
                     [
-		     \(context_graphing:dygraph_native(lin, [date, rate],
+		     \(context_graphing:dygraph_native(lin, [date, number],
 						       ['Date', month],
-                                                       ['Barrels', cumulative],
-						       'Red Queen', Data))
+                                                       ['Number', monthly],
+						       'Cumulative Wells', Data))
                     ]
 		  ).
 
@@ -161,7 +162,7 @@ plot(Request) :-
     reply_html_page([title('Red Queen'),
                      \(con_text:style)],
                     [
-		     i('CC='), b('~8f ' - CC),
+		     % i('Cumulative='), b('~8f ' - Total),
 		     \(context_graphing:dygraph_native(lin,
 						       Heading,
 						       [X,XUnits],
@@ -174,6 +175,9 @@ declining_rate(damp, Last, Rate, URR, X, Y) :-
     % Y is Last + Rate*X/(1+Rate*X/URR).
     Y is Last + URR*(1-exp(-(Rate*X)/URR)).
     % Y is Last + URR*exp(-URR/(Rate*X)).
+declining_rate(mix, Last, Rate, URR, X, Y) :-
+    Y is Last + URR*(1-exp(-((Rate*X)/URR+1)*(Rate*X)/URR)).
+    % Y is Last + Rate*X/(1+Rate*X/URR*(1-exp(-(0.3*(Rate*X/URR))))).
 declining_rate(ramp, Last, Rate, URR, X, Y) :-
     Time_To_URR is URR/Rate,
     (   X < Time_To_URR ->
@@ -181,7 +185,7 @@ declining_rate(ramp, Last, Rate, URR, X, Y) :-
     ;
         Y is Last + Rate*Time_To_URR
     ).
-declining_rate(mix, Last, Rate, URR, X, Y) :-
+declining_rate(combo, Last, Rate, URR, X, Y) :-
     declining_rate(damp, Last, Rate, URR, X, Y0),
     declining_rate(ramp, Last, Rate, URR, X, Y1),
     Y is (Y0+Y1)/2.
@@ -190,11 +194,12 @@ declining_rate(mix, Last, Rate, URR, X, Y) :-
 number_of_wells(Dim, Rate, URR, Months, List) :-
    number_of_wells(Start),
    last(Start, Last),
+   U0 is URR - Last,
    % Starting is Last + Rate,
    % Ending is Last + Rate*(Months+1),
    Continue range [1,Months]/1,
    % Growth mapdot Rate .* Continue,
-   Growth mapdot declining_rate(Dim, Last, Rate, URR) ~> Continue,
+   Growth mapdot declining_rate(Dim, Last, Rate, U0) ~> Continue,
    % Add mapdot Last .+ Growth,
    List cat [Start|Growth].
 
