@@ -63,8 +63,8 @@ navigate(Request) :-
                       form([action(plot), target(target_iframe)],
 			 [
 			  select([name('dataset')], DataSet),
-			  \(con_text:check_box(anthro, 'true', 'anthro aerosols')),
-			  \(con_text:check_box(volc, 'true', 'GISS volc')),
+			  % \(con_text:check_box(anthro, 'true', 'anthro aerosols')),
+			  \(con_text:check_box(volc, 'true', 'GISS aerosol model')),
 			  br([]),
 			  \(con_text:radio_toggles(
 					 'evaluate',
@@ -91,9 +91,9 @@ navigate(Request) :-
 			  table(
 			      % [width('20%')],
 			      %%%%%%%%%%%%%%%  Hard coded
-			      \(con_text:input_cells([[soi_lag,6,2],
-						      [volcano_lag,24,2],
-						      [anthro_lag,9,2],
+			      \(con_text:input_cells([[co2_lag,6,2],
+						      [soi_lag,6,2],
+						      [aero_lag,24,2],
 						      [lod_lag,90.0,2],
 						      [tsi_lag,6,2]]))
 			       )
@@ -109,28 +109,28 @@ navigate(Request) :-
 
 
 
-get_fit(Noise, Aero, Temperature, CO2, SOI, TSI, Volc, LOD,
-	N,     A,                 C,   S,   T,   V,    L, Int, R2) :-
+get_fit(Noise, Temperature, CO2, SOI, TSI, Volc, LOD,
+	N,                  C,   S,   T,   A,    L, Int, R2) :-
    r_open_session,
    % cos <- Cos,
    y <- Temperature,
    c <- CO2,
    s <- SOI,
-   a <- Aero,
+   a <- Volc,
+   % a <- Aero,
    l <- LOD,
    t <- TSI,
-   v <- Volc,
    n <- Noise,
-   fitxy <- lm('y~c+s+a+l+t+v+n'),
+   fitxy <- lm('y~c+s+a+l+t+n'),
    r_print(fitxy),
    Int <- 'as.double(fitxy$coefficients[1])',
    C <- 'as.double(fitxy$coefficients[2])',
    S <- 'as.double(fitxy$coefficients[3])',
+   % A <- 'as.double(fitxy$coefficients[4])',
    A <- 'as.double(fitxy$coefficients[4])',
    L <- 'as.double(fitxy$coefficients[5])',
    T <- 'as.double(fitxy$coefficients[6])',
-   V <- 'as.double(fitxy$coefficients[7])',
-   N <- 'as.double(fitxy$coefficients[8])',
+   N <- 'as.double(fitxy$coefficients[7])',
    % CosA <- 'as.double(fitxy$coefficients[9])',
    summary <- summary(fitxy),
    r_print(summary),
@@ -164,15 +164,15 @@ scale(_, lin, _, 'Time', 'year', 'Temperature', 'C').
 plot(Request) :-
     garbage_collect,
     http_parameters(Request, [kind(Kind, []),
-			      anthro(Anthro, [boolean, default(false)]),
+			      % anthro(Anthro, [boolean, default(false)]),
 			      fft(FFT, [boolean, default(false)]),
 			      window(Window, [boolean, default(false)]),
 			      volc(Sato, [boolean, default(false)]),
 			      t_units(Cal, []),
 			      lag(LagCal, [float]),
 			      soi_lag(SL, [number]),
-			      volcano_lag(VL, [number]),
-			      anthro_lag(AL, [number]),
+			      aero_lag(VL, [number]),
+			      co2_lag(AL, [number]),
 			      lod_lag(LL, [number]),
 			      tsi_lag(TL, [number]),
                               dataset(DataSet, []),
@@ -240,7 +240,8 @@ plot(Request) :-
     % Volc_lag is exp(-1/(VL+0.01)),
     % expsm(Vol, Volc_lag, V1),
     (	Sato ->
-        sato_volc(V1)
+        sato_volc(V0),
+	V1 lag V0/6
     ;
         context_box_model:volcanos(V),
         sparse_list(Zeros, V, Vol),
@@ -248,7 +249,7 @@ plot(Request) :-
 	V1 lag V0/VL
     ),
     % Anthro_lag is exp(-1/(AL+0.01)),
-    get_anthro(Anthro, AL, Zeros, W1),
+    % get_anthro(Anthro, AL, Zeros, W1),
 
     interpolate(Year, TSI, TSI_I),
     TSI_U unbias TSI_I,        % expsm(TSI_U, 0.99, TSI_L),
@@ -259,18 +260,21 @@ plot(Request) :-
     % LOD here
 
     interpolate(Year, CO2, CO2_I),
-    LogCO2 mapdot ln ~> CO2_I,
+    CO2_Lag lag CO2_I / AL,
+    LogCO2 mapdot ln ~> CO2_Lag,
 
     % Other mapdot yearly_period(2, 8) ~> Y,
     % Other mapdot yearly_period(1, Phase) ~> Y,
-    Other = W1,
+    % Other = W1,
     get_fit(Noise2,
-	    Other, T, LogCO2, S2, TSI_F, V1, LOD_F,
+	    % Other,
+	    T, LogCO2, S2, TSI_F, V1, LOD_F,
 	    NoiseA,
-	    Linear, C, SO, TS, VC,   LO, Int, _R2C),
+	    % Linear,
+	    C, SO, TS, VC,   LO, Int, _R2C),
 
-    Fluct mapdot SO .* S2 + TS .* TSI_F + VC .* V1 + LO .* LOD_F + Linear .* Other + NoiseA .* Noise2,
-		 %  + CosA .* Cos,
+    Fluct mapdot SO .* S2 + TS .* TSI_F + VC .* V1 + LO .* LOD_F + NoiseA .* Noise2,
+		 %  + Linear .* Other + CosA .* Cos,
     T_CO2_R mapdot C .* LogCO2 + Fluct,
     T_R mapdot Int .+ T_CO2_R,
     T_Diff mapdot T - T_R,
@@ -298,25 +302,26 @@ plot(Request) :-
          CO2_Signal mapdot Int .+ C .* LogCO2,
          Signal mapdot CO2_Signal + T_Diff,
          Data tuple Year + Signal + CO2_Signal + Fluct,
-         Header = [XLabel, signal, co2, fluctuation]
+         Header = [XLabel, signal,  co2,         fluctuation]
      ;
        Characteristic = all ->
          S0S2 mapdot SO .* S2,
          TSTSI_F mapdot TS .* TSI_F,
          VCV1 mapdot VC .* V1,
 	 LOLOD_F mapdot LO .* LOD_F,
-	 Lin mapdot Linear .* Other,
+	 % Lin mapdot Linear .* Other,
          Noise_D mapdot NoiseA .* Noise2,
-         Data tuple Year + S0S2 + TSTSI_F + VCV1 + LOLOD_F + Lin + Noise_D,
-	 Header = [XLabel, soi, tsi, volc, lod, anthro, noise]
+         Data tuple Year + S0S2 + VCV1 + LOLOD_F + TSTSI_F + Noise_D,
+	 Header = [XLabel, soi,   aero,  lod,      tsi,      noise]
     ),
     temp_data(NameData, DataSet),
+    TCR is C*ln(2),
     (	Kind = graph ->
     reply_html_page([title('GISS and SOI'),
                      \(con_text:style)],
                     [
-		     table([tr([th(corrcoeff), th('ln(co2)'),th(soi),th('a(volc)'),th(lod),th(tsi), th('a(man)'), th('soi(noise)')]),
-			    tr([td(b('~5f'-R2C2)),td('~3f'-C),td('~3f'-SO),td('~3f'-VC),td('~3f'-LO),td('~3f'-TS),td('~5f'-Linear),td('~5f'-NoiseA)])
+		     table([tr([th(corrcoeff), th('ln(co2)'),th(soi),th('a(volc)'),th(lod),th(tsi), th('soi(noise)')]),
+			    tr([td(b('~5f'-R2C2)),td('~3f'-C),td('~3f'-SO),td('~3f'-VC),td('~3f'-LO),td('~3f'-TS),td('~5f'-NoiseA)])
 			   ]),
 		     br([]),
 		     % p([b(Anthro)]),
@@ -325,7 +330,10 @@ plot(Request) :-
 		     div([id('legend')],[]),
 		     \(context_graphing:dygraph_native(LogLin, Header,
 						       [XLabel,XUnits], [YLabel, YUnits],
-						       [NameData, ' - CSALT:', Characteristic], Data))
+						       [NameData, ' - CSALT:', Characteristic], Data)),
+		     br([]),
+		     br([]),
+		     p(i('TCR = ~4f C for doubling of CO2'-TCR))
                     ]
 		  )
    ;
