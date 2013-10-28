@@ -272,13 +272,16 @@ dispatch(reservoir) -->
 	      \g(workflow,
                   a([href('/context_uk_oil/navigate')], 'Oil Shock model - UK North Sea')),
 	      \g(workflow,
+                  a([href('/context_bakken/navigate')], 'North Dakota/Bakken Red Queen tight oil model')),
+	      \g(workflow,
                   a([href('/context_oil_fields_production/navigate')], 'Oil Fields Production Levels')),
 	      \g(workflow,
                   a([href('/context_oil_fields/navigate')], 'Reservoirs of the world')),
+	      h2('Climate change models'),
 	      \g(workflow,
                   a([href('/context_co2/navigate')], 'Carbon Emissions and Climate Sensitivity')),
 	      \g(workflow,
-                  a([href('/context_demos/climate_ou')], 'Climate O-U Random Walk')),
+                  a([href('/context_salt_model/navigate')], 'CSALT Model of Global Temperature')),
 	      \g(workflow,
                   a([href('/context_greenland_core/navigate')], 'Greenland Ice Core Data')),
 	      \g(workflow,
@@ -287,14 +290,14 @@ dispatch(reservoir) -->
                   a([href('/context_sea_level/navigate')], 'Sea Level Rise')),
 	      \g(workflow,
                   a([href('/context_diffusive_decline/navigate')], 'Diffusive Decline')),
+	      h2('Currently in process'),
 	      \g(workflow,
-                  a([href('/context_box_model/navigate')], 'SOI Box Model')),
+                  a([href('/context_red_queen_oil/navigate')], 'Original Red Queen tight oil model')),
 	      \g(workflow,
-                  a([href('/context_salt_model/navigate')], 'SALT Model')),
+                  a([href('/context_box_model/navigate')], 'SOI Box Model, alternate CSALT')),
 	      \g(workflow,
-                  a([href('/context_red_queen_oil/navigate')], 'Red Queen tight oil model')),
-	      \g(workflow,
-                  a([href('/context_bakken/navigate')], 'Red Queen tight oil model 2'))
+                  a([href('/context_demos/climate_ou')], 'Climate O-U Random Walk'))
+
 	     ]
 	    ).
 

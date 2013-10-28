@@ -80,6 +80,11 @@ ref_m('corrosion features',     category, 'procChemical:Oxidation').
 ref_m('corrosion features',     category, 'matrElement:Fe').
 ref_m('corrosion features',     category, 'phenSolid:Ablation').
 
+ref_m('reservoir features',     model, '/context_select/navigate?category=reservoir').
+ref_m('reservoir features',     target_iframe, '/html/reservoir.html').
+ref_m('reservoir features',     category, 'phenPlanetClimate:Climate').
+ref_m('reservoir features',     category, 'phenEnergy:EnergySource').
+
 ref_m('Dynamic Context Server',     model, '/app').
 ref_m('Dynamic Context Server',     model, '/').
 ref_m('Dynamic Context Server',     target_iframe, '/html/static_pages/gems/').
@@ -285,9 +290,20 @@ ref_m('materials',     target_iframe, '/html/materials.html').
 ref_m('materials',     category, 'procChemical:Corrosion').
 ref_m('materials',     category, 'realmSoil:SoilLayer').
 
-ref_m('climate',     model, '/context_salt_model/navigate').
-ref_m('climate',     target_iframe, '/html/salt_model.html').
-ref_m('climate',     category, 'phenPlanetClimate:Climate').
+ref_m('temperature_change',     model, '/context_salt_model/navigate').
+ref_m('temperature_change',     target_iframe, '/html/salt_model.html').
+ref_m('temperature_change',     category, 'phenPlanetClimate:Climate').
+
+ref_m('oil_shock',     model, '/context_shock_model/navigate').
+ref_m('oil_shock',     model, '/context_uk_oil/navigate').
+ref_m('oil_shock',     model, '/context_bakken/navigate').
+ref_m('oil_shock',     target_iframe, '/html/shock_model.html').
+ref_m('oil_shock',     category, 'phenEnergy:EnergySource').
+
+% ref_m('reservoir',     model, '/context_reservoir/navigate').
+% ref_m('reservoir',     target_iframe, '/html/reservoir.html').
+% ref_m('reservoir',     category, 'phenPlanetClimate:Climate').
+% ref_m('reservoir',     category, 'phenEnergy:EnergySource').
 
 
 ref_(URL, feature, Feature) :-
