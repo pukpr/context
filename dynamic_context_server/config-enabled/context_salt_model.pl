@@ -1,5 +1,5 @@
 :- module(context_salt_model, [
-			       yearly_period/4
+			       % yearly_period/4
 			      ]).
 
 :- use_module(context_math).
@@ -8,8 +8,8 @@
 :- context:register(context_salt_model:navigate).
 :- context:register(context_salt_model:plot).
 
-yearly_period(Period,Phase, X,Y) :-
-   Y is sin(2*pi*(X+Phase/12)/Period).
+%  yearly_period(Period,Phase, X,Y) :-
+%    Y is sin(2*pi*(X+Phase/12)/Period).
 
 temp_data('GISS', giss).
 temp_data('HADCRUT4', hadcrut).
@@ -54,7 +54,8 @@ navigate(Request) :-
    con_text:collect_options(context_salt_model:temp_data, DataSet),
 
    reply_html_page(cliopatria(default),
-                   [title('CSALT model response')],
+                   [title('CSALT model response'),
+		    script([type('text/javascript'),src('/html/js/submit.js')], [])],
                    [\(con_text:table_with_iframe_target(
                                     Request,
 		     [
@@ -75,9 +76,13 @@ navigate(Request) :-
 					  ['Match temperature with model', model]
                                          ])),
                           br([]),
-			  input([type('submit'), name(kind), value('graph')]),
-			  input([type('submit'), name(kind), value('table')]),
-                          br([]),
+			  input([type('submit'), name(kind), value('graph'),
+                                  onclick('subm(this.form,"target_iframe");')]),
+			  input([type('submit'), name(kind), value('table'),
+                                  onclick('subm(this.form,"target_iframe");')]),
+			  input([type('submit'), name(kind), value('volcanos'),
+                                 onclick('subm(this.form,"render");')]),
+			  br([]),
 			  \(con_text:check_box(window, 'true', 'Apply 12 month window')),
 			  \(con_text:check_box(fft, 'true', 'FFT of residual')),
 			  br([]),
@@ -87,7 +92,10 @@ navigate(Request) :-
 				 value('0')]),
 			  select([name('t_units')], Calendar),
 			  i(' <= lag filter on Match'),
-			  h2(i('lag values (months)')),
+			  h2([i('lag values (months)'),
+			      img([src('/html/images/magnify-clip.png'),
+				   title('if negative value entered, factor is zeroed')
+				  ])]),
 			  table(
 			      % [width('20%')],
 			      %%%%%%%%%%%%%%%  Hard coded
@@ -109,15 +117,13 @@ navigate(Request) :-
 
 
 
-get_fit(Noise, Temperature, CO2, SOI, TSI, Volc, LOD,
-	N,                  C,   S,   T,   A,    L, Int, R2) :-
+get_fit([Noise, Temperature, CO2, SOI, TSI, Volc, LOD],
+	[N,                  C,   S,   T,   A,    L], Int, R2) :-
    r_open_session,
-   % cos <- Cos,
    y <- Temperature,
    c <- CO2,
    s <- SOI,
    a <- Volc,
-   % a <- Aero,
    l <- LOD,
    t <- TSI,
    n <- Noise,
@@ -126,19 +132,17 @@ get_fit(Noise, Temperature, CO2, SOI, TSI, Volc, LOD,
    Int <- 'as.double(fitxy$coefficients[1])',
    C <- 'as.double(fitxy$coefficients[2])',
    S <- 'as.double(fitxy$coefficients[3])',
-   % A <- 'as.double(fitxy$coefficients[4])',
    A <- 'as.double(fitxy$coefficients[4])',
    L <- 'as.double(fitxy$coefficients[5])',
    T <- 'as.double(fitxy$coefficients[6])',
    N <- 'as.double(fitxy$coefficients[7])',
-   % CosA <- 'as.double(fitxy$coefficients[9])',
    summary <- summary(fitxy),
    r_print(summary),
    R2 <- 'as.double(summary$r.squared)',
    r_close, !.
 
 
-
+/*
 wars([
           [765,1]   % 1991 1332  766
 	 ]).
@@ -152,19 +156,113 @@ get_anthro(true, Lag, Zeros, W) :-
 	sparse_list(Zeros, War, Wars),
 	W0 lag Wars/3,
 	W lag W0/Lag.
-        % expsm(Wars, Lag, W).
 
 get_anthro(false, _, Zeros, W) :-
 	nowars(War),
 	sparse_list(Zeros, War, W).
+*/
 
 scale(true, log, residual, 'Wavenumber', '2048/Month', 'Power Spectral', 'density') :- !.
 scale(_, lin, _, 'Time', 'year', 'Temperature', 'C').
 
+temperature_series(true, DataSet, T) :-
+    dataset(DataSet, T0),
+    uniform(12,Win),
+    T window T0*Win.
+temperature_series(false, DataSet, T) :-
+    dataset(DataSet, T).
+
+get_years_from_1880(T, Years, Zeros) :-
+    length(T, L),
+    H range [1, L]/1,
+    Y mapdot H ./ 12.0,
+    Years mapdot 1880 .+ Y,
+    Zeros mapdot 0 .* H.
+
+get_lod(Years, Lag, LOD_F) :-
+    context_box_model:lod(LOD),
+    interpolate(Years, LOD, LOD_I),
+    LOD_U unbias LOD_I,
+    (	Lag > 0.0 ->
+        LOD_F delay LOD_U / Lag
+    ;
+        LOD_F mapdot 0 .* LOD_U
+    ).
+
+get_soi_noise(Lag, Noise_F) :-
+    soi_noise(Noise),
+    Noise0 unbias Noise,
+    (	Lag > 0.0 ->
+        Noise_F lag Noise0 / Lag
+    ;
+        Noise_F mapdot 0 .* Noise0
+    ).
+
+get_soi(Lag, SOI_F) :-
+    context_box_model:soi(SOI),
+    S0 unbias SOI,
+    (	Lag > 0.0 ->
+        SOI_F lag S0 / Lag
+    ;
+        SOI_F mapdot 0 .* S0
+    ).
+
+get_volcanos(true, _, Lag, Vol_F) :-
+    Lag > 0.0,
+    sato_volc(V),
+    Vol_F lag V/6.
+get_volcanos(false, Zeros, Lag, Vol_F) :-
+    Lag > 0.0,
+    context_box_model:volcanos(V),
+    sparse_list(Zeros, V, Vol),
+    V0 lag Vol/6,
+    Vol_F lag V0/Lag.
+get_volcanos(false, Zeros, _, Zeros).
+
+
+get_tsi(Years, Lag, TSI_F) :-
+    context_box_model:tsi(TSI),
+    interpolate(Years, TSI, TSI_I),
+    TSI_U unbias TSI_I,
+    (	Lag > 0.0 ->
+        TSI_F lag TSI_U / Lag
+    ;
+        TSI_F mapdot 0 .* TSI_U
+    ).
+
+get_co2(Years, Lag, LogCO2) :-
+    context_co2:co2_knmi(CO2),
+    interpolate(Years, CO2, CO2_I),
+    (	Lag > 0.0 ->
+	CO2_Lag lag CO2_I / Lag,
+        LogCO2 mapdot ln ~> CO2_Lag
+    ;
+        LogCO2 mapdot 0 .* CO2_I
+    ).
+
+check_coefficients([], List, Final ) :- reverse(List, Final), !.
+check_coefficients([F|Rest], List, Final ) :-
+    F = 'NA', !,
+    check_coefficients(Rest, [0.0|List], Final).
+check_coefficients([F|Rest], List, Final ) :-
+    check_coefficients(Rest, [F|List], Final).
+
+plot(Request) :-
+    http_parameters(Request, [kind(volcanos, [])]),
+    context_box_model:volcano_data(Data),
+    reply_html_page([title('volcano data'),
+                       \(con_text:style)],
+                      [
+                       \(con_text:table_multiple_entries(
+                                      [['eruption',year,month,'month#',intensity]],
+                                      Data
+                                                        ))
+                      ]
+                     ).
+
 plot(Request) :-
     garbage_collect,
     http_parameters(Request, [kind(Kind, []),
-			      % anthro(Anthro, [boolean, default(false)]),
 			      fft(FFT, [boolean, default(false)]),
 			      window(Window, [boolean, default(false)]),
 			      volc(Sato, [boolean, default(false)]),
@@ -181,100 +279,26 @@ plot(Request) :-
     scale(FFT, LogLin, Characteristic, XLabel, XUnits, YLabel, YUnits),
     scaling(Cal, month, Scale),
     Lag is Scale*LagCal,
-    (	 Window ->
-         dataset(DataSet, T0),
-         uniform(12,Win),
-         T window T0*Win
-    ;
-         dataset(DataSet, T)
-    ),
-    context_box_model:tsi(TSI),
-    context_box_model:soi(SOI),
-    % context_box_model:darwin(Darwin),
-    % context_box_model:tahiti(Tahiti),
-    context_box_model:lod(LOD),
-    context_co2:co2_knmi(CO2),
 
-    length(T, L),
-    H range [1, L]/1,
-    Y mapdot H ./ 12.0,
-    Year mapdot 1880 .+ Y,
-    Zeros mapdot 0 .* H,
+    % Get the temperature series
+    temperature_series(Window, DataSet, T),
 
-    interpolate(Year, LOD, LOD_I),
-    % LOD_lag is exp(-1/(LL+0.01)),
-    LOD_U unbias LOD_I,
-    %expsm(LOD_U, LOD_lag, LOD_F),
-    % LOD_F lag LOD_U / LL,
-    LOD_F delay LOD_U / LL,
+    get_years_from_1880(T, Year, Zeros),
 
-    soi_noise(Noise_Base),
-    Noise = Noise_Base,
-    %Noise derivative LOD_U/1,
-    % Noise mapdot Noise_Base^3,
-    % nao(Noise),
-    % context_box_model:tahiti(Noise),
-    % glaam(Noise),
-    /*
-    nao(NAO),
-    uniform(12,NWin),
-    Noise window NAO*NWin,
-    % interpolate(Year, NAO, Noise),
-    */
+    get_lod(Year, LL, LOD_F),
+    get_soi(SL, S2),
+    get_soi_noise(SL, Noise2),
+    get_volcanos(Sato, Zeros, VL, V1),
+    get_tsi(Year, TL, TSI_F),
+    get_co2(Year, AL, LogCO2),
 
-    % SOI_lag is exp(-1/(SL+0.01)),
-    S0 unbias SOI,
-    % S0 = SOI,
-    %expsm(S0, SOI_lag, S2),    % smooth SOI
-    S2 lag S0 / SL,
+    get_fit([Noise2, T, LogCO2, S2, TSI_F, V1, LOD_F],
+	    Coefficients, Int, _R2C),
+	    % [NoiseA, C, SO, TS, VC,   LO],
 
-    Noise0 unbias Noise,
-    % Noise0 = Noise,
-    Noise2 lag Noise0 / SL, % SL,
-
-    % Cycle is 2*pi/9,
-    %Radians mapdot Cycle .* H,
-    % Rads mapdot LagCal .+ Radians,
-    % Sin mapdot sin ~> Rads,
-    % Cos mapdot cos ~> Radians,
-    % Volc_lag is exp(-1/(VL+0.01)),
-    % expsm(Vol, Volc_lag, V1),
-    (	Sato ->
-        sato_volc(V0),
-	V1 lag V0/6
-    ;
-        context_box_model:volcanos(V),
-        sparse_list(Zeros, V, Vol),
-        V0 lag Vol/6,
-	V1 lag V0/VL
-    ),
-    % Anthro_lag is exp(-1/(AL+0.01)),
-    % get_anthro(Anthro, AL, Zeros, W1),
-
-    interpolate(Year, TSI, TSI_I),
-    TSI_U unbias TSI_I,        % expsm(TSI_U, 0.99, TSI_L),
-    TSI_F lag TSI_U / TL,
-    % TL_lag is exp(-1/(TL+0.01)),
-    % expsm(TSI_U, TL_lag, TSI_F),
-
-    % LOD here
-
-    interpolate(Year, CO2, CO2_I),
-    CO2_Lag lag CO2_I / AL,
-    LogCO2 mapdot ln ~> CO2_Lag,
-
-    % Other mapdot yearly_period(2, 8) ~> Y,
-    % Other mapdot yearly_period(1, Phase) ~> Y,
-    % Other = W1,
-    get_fit(Noise2,
-	    % Other,
-	    T, LogCO2, S2, TSI_F, V1, LOD_F,
-	    NoiseA,
-	    % Linear,
-	    C, SO, TS, VC,   LO, Int, _R2C),
+    check_coefficients(Coefficients, [], [NoiseA, C, SO, TS, VC,   LO]),
 
     Fluct mapdot SO .* S2 + TS .* TSI_F + VC .* V1 + LO .* LOD_F + NoiseA .* Noise2,
-		 %  + Linear .* Other + CosA .* Cos,
     T_CO2_R mapdot C .* LogCO2 + Fluct,
     T_R mapdot Int .+ T_CO2_R,
     T_Diff mapdot T - T_R,
@@ -309,7 +333,6 @@ plot(Request) :-
          TSTSI_F mapdot TS .* TSI_F,
          VCV1 mapdot VC .* V1,
 	 LOLOD_F mapdot LO .* LOD_F,
-	 % Lin mapdot Linear .* Other,
          Noise_D mapdot NoiseA .* Noise2,
          Data tuple Year + S0S2 + VCV1 + LOLOD_F + TSTSI_F + Noise_D,
 	 Header = [XLabel, soi,   aero,  lod,      tsi,      noise]
@@ -320,13 +343,12 @@ plot(Request) :-
     reply_html_page([title('GISS and SOI'),
                      \(con_text:style)],
                     [
-		     table([tr([th(corrcoeff), th('ln(co2)'),th(soi),th('a(volc)'),th(lod),th(tsi), th('soi(noise)')]),
-			    tr([td(b('~5f'-R2C2)),td('~3f'-C),td('~3f'-SO),td('~3f'-VC),td('~3f'-LO),td('~3f'-TS),td('~5f'-NoiseA)])
+		     table([tr([th(corrcoeff), th('ln(co2)'),th(soi),th('a(volc)'),
+				th(lod),th(tsi), th('soi(noise)')]),
+			    tr([td(b('~5f'-R2C2)),td('~3f'-C),td('~3f'-SO),td('~3f'-VC),
+				td('~3f'-LO),td('~3f'-TS),td('~5f'-NoiseA)])
 			   ]),
 		     br([]),
-		     % p([b(Anthro)]),
-		     % <div style="left: 0px; border: 0px none; height: 370px; position: fixed; width: 270px; overflow: hidden; bottom: -67px;">
-    % <div style="overflow: hidden;">
 		     div([id('legend')],[]),
 		     \(context_graphing:dygraph_native(LogLin, Header,
 						       [XLabel,XUnits], [YLabel, YUnits],
@@ -348,15 +370,7 @@ plot(Request) :-
                      )
 
     ).
-/*
-plot(_Request) :-
-      reply_html_page([title(oops),
-                       \(con_text:style)],
-                      [
-                       p('try again')
-                      ]
-                     ).
-*/
+
 
 hadcrut(
 [
