@@ -98,7 +98,8 @@ navigate(Request) :-
 			  \(con_text:radio_toggles(
 					 'evaluate',
 					 [['Carbon', 'carbon'],
-					  ['CO2', 'co2'],
+					  ['CO2 emitted', 'co2_emit'],
+					  ['CO2 airborne', 'co2'],
 					  ['Airborne Fraction', 'fraction'],
                                           ['Temperature', 'temperature']
                                          ])),
@@ -197,6 +198,16 @@ plot(Request) :-
          % C_Error tuple C_Low + Carbon + C_High,
 	 % Data group Year + C_Error,
          Data tuple Year + Carbon,
+         Heading = ['Year', 'Carbon'],
+         YUnits = ' million metric tons',
+         RMS = -999.99,
+         Bars =  false,
+         Table tuple Year + Carbon
+    ;
+       Characteristic = co2_emit  ->
+         CO2_carbon is (12+2*16)/12,
+         CO2_emit mapdot CO2_carbon .* Carbon,
+         Data tuple Year + CO2_emit,
          Heading = ['Year', 'Carbon'],
          YUnits = ' million metric tons',
          RMS = -999.99,
@@ -1334,7 +1345,10 @@ co2_knmi([
 %
  [2010,389.5588714],
  [2011,391.5044962],
- [2012,393.6452016]
+ [2012,393.6452016],
+%
+ [2013,396.0]
+
          ]).
 
 

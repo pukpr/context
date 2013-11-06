@@ -82,6 +82,7 @@ navigate(Request) :-
                                   onclick('subm(this.form,"target_iframe");')]),
 			  input([type('submit'), name(kind), value('volcanos'),
                                  onclick('subm(this.form,"render");')]),
+			  \(con_text:check_box(aam, 'true', 'AAM')),
 			  br([]),
 			  \(con_text:check_box(window, 'true', 'Apply 12 month window')),
 			  \(con_text:check_box(fft, 'true', 'FFT of residual')),
@@ -117,8 +118,8 @@ navigate(Request) :-
 
 
 
-get_fit([Noise, Temperature, CO2, SOI, TSI, Volc, LOD],
-	[N,                  C,   S,   T,   A,    L], Int, R2) :-
+get_fit([Temperature, CO2, SOI, TSI, Volc, LOD, AAM],
+	[             C,   S,   T,   A,    L,   M], Int, R2) :-
    r_open_session,
    y <- Temperature,
    c <- CO2,
@@ -126,8 +127,9 @@ get_fit([Noise, Temperature, CO2, SOI, TSI, Volc, LOD],
    a <- Volc,
    l <- LOD,
    t <- TSI,
-   n <- Noise,
-   fitxy <- lm('y~c+s+a+l+t+n'),
+   % n <- Noise,
+   m <- AAM,
+   fitxy <- lm('y~c+s+a+l+t+m'),
    r_print(fitxy),
    Int <- 'as.double(fitxy$coefficients[1])',
    C <- 'as.double(fitxy$coefficients[2])',
@@ -135,7 +137,8 @@ get_fit([Noise, Temperature, CO2, SOI, TSI, Volc, LOD],
    A <- 'as.double(fitxy$coefficients[4])',
    L <- 'as.double(fitxy$coefficients[5])',
    T <- 'as.double(fitxy$coefficients[6])',
-   N <- 'as.double(fitxy$coefficients[7])',
+   % N <- 'as.double(fitxy$coefficients[7])',
+   M <- 'as.double(fitxy$coefficients[7])',
    summary <- summary(fitxy),
    r_print(summary),
    R2 <- 'as.double(summary$r.squared)',
@@ -183,16 +186,19 @@ get_lod(Years, Lag, LOD_F) :-
     context_box_model:lod(LOD),
     interpolate(Years, LOD, LOD_I),
     LOD_U unbias LOD_I,
-    (	Lag > 0.0 ->
+    (	Lag >= 0.0 ->
         LOD_F delay LOD_U / Lag
     ;
         LOD_F mapdot 0 .* LOD_U
     ).
 
-get_soi_noise(Lag, Noise_F) :-
+get_soi_noise(_, false, Noise_F) :-
+    soi_noise(Noise),
+    Noise_F mapdot 0 .* Noise.
+get_soi_noise(Lag, true, Noise_F) :-
     soi_noise(Noise),
     Noise0 unbias Noise,
-    (	Lag > 0.0 ->
+    (   Lag >= 0.0  ->
         Noise_F lag Noise0 / Lag
     ;
         Noise_F mapdot 0 .* Noise0
@@ -201,30 +207,40 @@ get_soi_noise(Lag, Noise_F) :-
 get_soi(Lag, SOI_F) :-
     context_box_model:soi(SOI),
     S0 unbias SOI,
-    (	Lag > 0.0 ->
+    (	Lag >= 0.0 ->
         SOI_F lag S0 / Lag
     ;
         SOI_F mapdot 0 .* S0
     ).
 
 get_volcanos(true, _, Lag, Vol_F) :-
-    Lag > 0.0,
+    Lag >= 0.0,
     sato_volc(V),
     Vol_F lag V/6.
 get_volcanos(false, Zeros, Lag, Vol_F) :-
-    Lag > 0.0,
+    Lag >= 0.0,
     context_box_model:volcanos(V),
     sparse_list(Zeros, V, Vol),
     V0 lag Vol/6,
     Vol_F lag V0/Lag.
-get_volcanos(false, Zeros, _, Zeros).
+get_volcanos(_, Zeros, _, Zeros).
 
 
 get_tsi(Years, Lag, TSI_F) :-
     context_box_model:tsi(TSI),
     interpolate(Years, TSI, TSI_I),
     TSI_U unbias TSI_I,
-    (	Lag > 0.0 ->
+    (	Lag >= 0.0 ->
+        TSI_F lag TSI_U / Lag
+    ;
+        TSI_F mapdot 0 .* TSI_U
+    ).
+
+get_tsi(Years, Lag, TSI_F) :-
+    context_box_model:tsi(TSI),
+    interpolate(Years, TSI, TSI_I),
+    TSI_U unbias TSI_I,
+    (	Lag >= 0.0 ->
         TSI_F lag TSI_U / Lag
     ;
         TSI_F mapdot 0 .* TSI_U
@@ -236,8 +252,17 @@ get_co2(Years, Lag, LogCO2) :-
     (	Lag > 0.0 ->
 	CO2_Lag lag CO2_I / Lag,
         LogCO2 mapdot ln ~> CO2_Lag
-    ;
+     ;
         LogCO2 mapdot 0 .* CO2_I
+     ).
+
+get_aam(Years, Lag, AAM_F) :-
+    aam_graph(AAM),
+    interpolate(Years, AAM, AAM_I),
+    (	Lag >= 0.0 ->
+	AAM_F lag AAM_I / Lag
+    ;
+        AAM_F mapdot 0 .* AAM_I
     ).
 
 check_coefficients([], List, Final ) :- reverse(List, Final), !.
@@ -266,6 +291,7 @@ plot(Request) :-
 			      fft(FFT, [boolean, default(false)]),
 			      window(Window, [boolean, default(false)]),
 			      volc(Sato, [boolean, default(false)]),
+			      aam(AAM_ON, [boolean, default(false)]),
 			      t_units(Cal, []),
 			      lag(LagCal, [float]),
 			      soi_lag(SL, [number]),
@@ -287,18 +313,24 @@ plot(Request) :-
 
     get_lod(Year, LL, LOD_F),
     get_soi(SL, S2),
-    get_soi_noise(SL, Noise2),
+    % get_soi_noise(SL, SOI_Noise, Noise2),
+    (	AAM_ON ->
+        AAM_Lag = SL
+    ;
+        AAM_Lag = -1
+    ),
+    get_aam(Year, AAM_Lag, AAM),
     get_volcanos(Sato, Zeros, VL, V1),
     get_tsi(Year, TL, TSI_F),
     get_co2(Year, AL, LogCO2),
 
-    get_fit([Noise2, T, LogCO2, S2, TSI_F, V1, LOD_F],
+    get_fit([T, LogCO2, S2, TSI_F, V1, LOD_F, AAM],
 	    Coefficients, Int, _R2C),
 	    % [NoiseA, C, SO, TS, VC,   LO],
 
-    check_coefficients(Coefficients, [], [NoiseA, C, SO, TS, VC,   LO]),
+    check_coefficients(Coefficients, [], [C, SO, TS, VC,   LO, AA]),
 
-    Fluct mapdot SO .* S2 + TS .* TSI_F + VC .* V1 + LO .* LOD_F + NoiseA .* Noise2,
+    Fluct mapdot SO .* S2 + TS .* TSI_F + VC .* V1 + LO .* LOD_F + AA .* AAM,
     T_CO2_R mapdot C .* LogCO2 + Fluct,
     T_R mapdot Int .+ T_CO2_R,
     T_Diff mapdot T - T_R,
@@ -333,9 +365,10 @@ plot(Request) :-
          TSTSI_F mapdot TS .* TSI_F,
          VCV1 mapdot VC .* V1,
 	 LOLOD_F mapdot LO .* LOD_F,
-         Noise_D mapdot NoiseA .* Noise2,
-         Data tuple Year + S0S2 + VCV1 + LOLOD_F + TSTSI_F + Noise_D,
-	 Header = [XLabel, soi,   aero,  lod,      tsi,      noise]
+         % Noise_D mapdot NoiseA .* Noise2,
+         AAM_D mapdot AA .* AAM,
+         Data tuple Year + S0S2 + VCV1 + LOLOD_F + TSTSI_F + AAM_D,
+	 Header = [XLabel, soi,   aero,  lod,      tsi,      aam]
     ),
     temp_data(NameData, DataSet),
     TCR is C*ln(2),
@@ -344,9 +377,9 @@ plot(Request) :-
                      \(con_text:style)],
                     [
 		     table([tr([th(corrcoeff), th('ln(co2)'),th(soi),th('a(volc)'),
-				th(lod),th(tsi), th('soi(noise)')]),
+				th(lod),th(tsi), th(aam)]),
 			    tr([td(b('~5f'-R2C2)),td('~3f'-C),td('~3f'-SO),td('~3f'-VC),
-				td('~3f'-LO),td('~3f'-TS),td('~5f'-NoiseA)])
+				td('~3f'-LO),td('~3f'-TS), td('~5f'-AA)])
 			   ]),
 		     br([]),
 		     div([id('legend')],[]),
@@ -1072,6 +1105,7 @@ soi_noise(
 1.9	,1.9	,1.6	,2.2	,2.6	,2.3	,2.4	,2.1	,3.5	,0.5	,1.7	,-0.1	,
 1.4	,1.9	,-2	,1.8	,0.5	,0.5	,-0.5	,1.7	,1	,0.7	,1.5	,-0.6	,
 -1.3	,0.5	,1.4	,0.7	,0.9
+% , 0,0,0,0
 ]).
 
 
@@ -1214,6 +1248,7 @@ sato_volc(
 0.0044	,0.0041	,0.0037	,0.0035	,0.0034	,0.0034	,0.0052	,0.0068	,0.0067	,0.0064	,0.006	,0.0055	,
 0.0048	,0.004	,0.0038	,0.0038	,0.0035	,0.0034	,0.0034	,0.0034	,0.0035	,0.0035	,0.0035	,0.0035	,
 0.0035	,0.0035	,0.0035	,0.0035	,0.0035
+%, 0.0035	,0.0035	,0.0035	,0.0035
 ]).
 
 
@@ -1927,3 +1962,276 @@ noa_land([
 % 0.690776,
 	 ]
 	).
+
+aam_graph([
+[1880, -0.5],
+[1880.5, -0.16],
+[1881, 0.265],
+[1881.5, 0.435],
+[1882, 0.639],
+[1882.5, 0.435],
+[1883, 0.18],
+[1883.5, -0.619],
+[1884, -0.33],
+[1884.5, -0.16],
+[1885, 0.01],
+[1885.5, -0.5],
+[1886, -0.755],
+[1886.5, -0.67],
+[1887, -0.84],
+[1887.5, -0.84],
+[1888, -0.5],
+[1888.5, 0.35],
+[1889, 1.03],
+[1889.5, 0.35],
+[1890, 0.18],
+[1890.5, -0.5],
+[1891, -1.18],
+[1891.5, -0.16],
+[1892, -0.33],
+[1892.5, -0.67],
+[1893, -0.942],
+[1893.5, -1.095],
+[1894, -1.18],
+[1894.5, -1.18],
+[1895, -0.823],
+[1895.5, -0.245],
+[1896, 0.265],
+[1896.5, 0.52],
+[1897, 0.605],
+[1897.5, 0.52],
+[1898, -0.16],
+[1898.5, -0.67],
+[1899, -0.5],
+[1899.5, 0.35],
+[1900, 0.86],
+[1900.5, 1.37],
+[1901, 0.86],
+[1901.5, 0.35],
+[1902, 0.775],
+[1902.5, 1.54],
+[1903, 1.37],
+[1903.5, 1.2],
+[1904, 0.86],
+[1904.5, 0.435],
+[1905, 1.03],
+[1905.5, 1.88],
+[1906, 1.455],
+[1906.5, 0.35],
+[1907, -0.075],
+[1907.5, -0.245],
+[1908, -0.5],
+[1908.5, -0.67],
+[1909, -1.01],
+[1909.5, -1.18],
+[1910, -1.35],
+[1910.5, -1.35],
+[1911, -1.01],
+[1911.5, -0.5],
+[1912, 0.01],
+[1912.5, 0.35],
+[1913, 0.18],
+[1913.5, 0.01],
+[1914, 0.095],
+[1914.5, 0.18],
+[1915, 0.435],
+[1915.5, 0.69],
+[1916, 0.52],
+[1916.5, -0.5],
+[1917, -1.01],
+[1917.5, -1.01],
+[1918, -0.5],
+[1918.5, 0.01],
+[1919, 0.35],
+[1919.5, 0.69],
+[1920, 0.35],
+[1920.5, -0.33],
+[1921, -0.84],
+[1921.5, -1.265],
+[1922, -1.265],
+[1922.5, -1.18],
+[1923, -1.01],
+[1923.5, -0.84],
+[1924, -0.755],
+[1924.5, -0.755],
+[1925, -0.806],
+[1925.5, -0.874],
+[1926, -0.585],
+[1926.5, -0.33],
+[1927, -0.585],
+[1927.5, -1.01],
+[1928, -0.84],
+[1928.5, -0.67],
+[1929, -0.755],
+[1929.5, -0.755],
+[1930, -0.33],
+[1930.5, 0.52],
+[1931, 0.52],
+[1931.5, 0.52],
+[1932, 0.01],
+[1932.5, -1.01],
+[1933, -1.69],
+[1933.5, -1.86],
+[1934, -1.826],
+[1934.5, -1.69],
+[1935, -1.18],
+[1935.5, -0.5],
+[1936, -0.245],
+[1936.5, -0.075],
+[1937, -0.075],
+[1937.5, -0.16],
+[1938, -0.67],
+[1938.5, -1.18],
+[1939, -0.5],
+[1939.5, 0.01],
+[1940, 0.18],
+[1940.5, 0.69],
+[1941, 1.03],
+[1941.5, 1.455],
+[1942, 0.69],
+[1942.5, -0.33],
+[1943, -0.585],
+[1943.5, -0.5],
+[1944, 0.01],
+[1944.5, 0.605],
+[1945, 0.01],
+[1945.5, -0.5],
+[1946, -0.84],
+[1946.5, -1.01],
+[1947, -1.01],
+[1947.5, -0.67],
+[1948, -0.925],
+[1948.5, -1.265],
+[1949, -1.35],
+[1949.5, -1.384],
+[1950, -1.52],
+[1950.5, -1.69],
+[1951, -1.18],
+[1951.5, -0.075],
+[1952, -0.415],
+[1952.5, -1.18],
+[1953, -1.52],
+[1953.5, -1.962],
+[1954, -2.132],
+[1954.5, -2.336],
+[1955, -2.115],
+[1955.5, -1.86],
+[1956, -1.52],
+[1956.5, -1.18],
+[1957, 0.18],
+[1957.5, 1.2],
+[1958, 1.54],
+[1958.5, 0.86],
+[1959, 0.35],
+[1959.5, 0.095],
+[1960, 0.01],
+[1960.5, 0.044],
+[1961, -0.415],
+[1961.5, -0.84],
+[1962, -0.67],
+[1962.5, -0.33],
+[1963, -0.245],
+[1963.5, -0.092],
+[1964, -0.33],
+[1964.5, -0.67],
+[1965, -0.33],
+[1965.5, -0.092],
+[1966, -0.16],
+[1966.5, -0.262],
+[1967, -0.5],
+[1967.5, -0.585],
+[1968, -0.245],
+[1968.5, 0.35],
+[1969, 0.911],
+[1969.5, 0.775],
+[1970, 0.435],
+[1970.5, 0.01],
+[1971, -0.33],
+[1971.5, -0.517],
+[1972, -0.16],
+[1972.5, 0.69],
+[1973, 0.86],
+[1973.5, -0.33],
+[1974, -0.296],
+[1974.5, -0.33],
+[1975, -0.755],
+[1975.5, -1.095],
+[1976, -0.16],
+[1976.5, 0.265],
+[1977, 0.52],
+[1977.5, 0.435],
+[1978, 0.86],
+[1978.5, 1.2],
+[1979, 1.71],
+[1979.5, 2.05],
+[1980, 1.37],
+[1980.5, 0.809],
+[1981, 0.605],
+[1981.5, 0.69],
+[1982, 1.03],
+[1982.5, 1.54],
+[1983, 1.71],
+[1983.5, 1.795],
+[1984, 0.35],
+[1984.5, -0.5],
+[1985, -0.84],
+[1985.5, -0.5],
+[1986, 0.35],
+[1986.5, 1.115],
+[1987, 1.54],
+[1987.5, 1.965],
+[1988, 1.03],
+[1988.5, 0.18],
+[1989, -0.075],
+[1989.5, -0.092],
+[1990, 0.35],
+[1990.5, 0.86],
+[1991, 0.86],
+[1991.5, 0.894],
+[1992, 1.2],
+[1992.5, 1.421],
+[1993, 1.37],
+[1993.5, 1.285],
+[1994, 0.945],
+[1994.5, 0.435],
+[1995, 0.605],
+[1995.5, 0.605],
+[1996, 0.35],
+[1996.5, 0.18],
+[1997, 1.54],
+[1997.5, 2.22],
+[1998, 1.71],
+[1998.5, 1.03],
+[1999, 0.52],
+[1999.5, -0.5],
+[2000, -1.18],
+[2000.5, -1.18],
+[2001, -0.84],
+[2001.5, -0.5],
+[2002, 0.01],
+[2002.5, 0.69],
+[2003, 0.86],
+[2003.5, 0.605],
+[2004, 0.605],
+[2004.5, 0.605],
+[2005, 0.656],
+[2005.5, 0.69],
+[2006, 0.435],
+[2006.5, 0.095],
+[2007, -0.33],
+[2007.5, -0.5],
+[2008, -0.585],
+[2008.5, -0.84],
+[2009, -0.925],
+[2009.5, -0.925],
+[2010, -0.84],
+[2010.5, -0.67],
+[2011, -0.5],
+[2011.5, -0.33],
+[2012, -0.16],
+[2012.5, -0.16],
+[2013, -0.16],
+[2013.5, -0.16],
+[2014, -0.16]
+	  ]).
+
