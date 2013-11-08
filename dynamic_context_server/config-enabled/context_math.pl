@@ -827,12 +827,22 @@ sconvolution([_|YR],Window,Initial,Final) :-
    X window Z.
 
 X window Y/Z :-  % lag window
+   integer(Z),
+   uniform(Z,L),
+   X window Y/L, !.
+
+X window Y/Z :-  % lag window
    Y1 window Y,
    Z1 window Z,
    Z2 normalize Z1,
    ones_list(Z, 0.0, [], Empty),
    append(Empty, Y1, Y2),
    sconvolution(Y2, Z2, [], X), !.
+
+X window Y*Z :-  % centered window
+   integer(Z),
+   uniform(Z,L),
+   X window Y*L, !.
 
 X window Y*Z :-  % centered window
    Y1 window Y,
