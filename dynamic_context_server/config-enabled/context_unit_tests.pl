@@ -294,11 +294,11 @@ test(dbpedia) :-
                                          _Lows,
                                          _Highs,
                                          Name),
-    MinCold = 29,
-    MaxCold = 44,
+    MinCold = 29.2,
+    MaxCold = 42.4,
     DayCold = 15,
-    MinHot = 73,
-    MaxHot = 91,
+    MinHot = 72.5,
+    MaxHot = 89,
     DayHot = 195,
     Name = 'Baltimore'.
 
