@@ -73,7 +73,8 @@ navigate(Request) :-
                                           ['Underlying CO2 signal', signal],
 					  ['View the residual error', residual],
 					  ['View the fluctuation components', all],
-					  ['Match temperature with model', model]
+					  ['Match temperature with model', model],
+					  ['arctic', arctic]
                                          ])),
                           br([]),
 			  input([type('submit'), name(kind), value('graph'),
@@ -83,6 +84,7 @@ navigate(Request) :-
 			  input([type('submit'), name(kind), value('volcanos'),
                                  onclick('subm(this.form,"render");')]),
 			  \(con_text:check_box(aam, 'true', 'AAM')),
+			  \(con_text:check_box(arctic_noise, 'true', 'Arctic noise remove')),
 			  br([]),
 			  \(con_text:check_box(window, 'true', 'Apply 12 month window')),
 			  \(con_text:check_box(fft, 'true', 'FFT of residual')),
@@ -104,7 +106,9 @@ navigate(Request) :-
 						      [soi_lag,6,2],
 						      [aero_lag,24,2],
 						      [lod_lag,70.0,2],
-						      [tsi_lag,6,2]]))
+						      [tsi_lag,6,2],
+						      [arctic_win, 120,2]
+						     ]))
 			       )
 			 ]
                           ),
@@ -118,8 +122,8 @@ navigate(Request) :-
 
 
 
-get_fit([Temperature, CO2, SOI, TSI, Volc, LOD, AAM],
-	[             C,   S,   T,   A,    L,   M], Int, R2) :-
+get_fit([Temperature, CO2, SOI, TSI, Volc, LOD, AAM, Arctic],
+	[             C,   S,   T,   A,    L,   M, Z], Int, R2) :-
    r_open_session,
    y <- Temperature,
    c <- CO2,
@@ -129,7 +133,8 @@ get_fit([Temperature, CO2, SOI, TSI, Volc, LOD, AAM],
    t <- TSI,
    % n <- Noise,
    m <- AAM,
-   fitxy <- lm('y~c+s+a+l+t+m'),
+   z <- Arctic,
+   fitxy <- lm('y~c+s+a+l+t+m+z'),
    r_print(fitxy),
    Int <- 'as.double(fitxy$coefficients[1])',
    C <- 'as.double(fitxy$coefficients[2])',
@@ -139,6 +144,7 @@ get_fit([Temperature, CO2, SOI, TSI, Volc, LOD, AAM],
    T <- 'as.double(fitxy$coefficients[6])',
    % N <- 'as.double(fitxy$coefficients[7])',
    M <- 'as.double(fitxy$coefficients[7])',
+   Z <- 'as.double(fitxy$coefficients[8])',
    summary <- summary(fitxy),
    r_print(summary),
    R2 <- 'as.double(summary$r.squared)',
@@ -236,15 +242,20 @@ get_tsi(Years, Lag, TSI_F) :-
         TSI_F mapdot 0 .* TSI_U
     ).
 
-get_tsi(Years, Lag, TSI_F) :-
-    context_box_model:tsi(TSI),
-    interpolate(Years, TSI, TSI_I),
-    TSI_U unbias TSI_I,
-    (	Lag >= 0.0 ->
-        TSI_F lag TSI_U / Lag
+get_arctic(Years, Win, Arctic_F) :-
+    arctic(Arc),
+    interpolate(Years, Arc, Arc_I),
+    Arc_U unbias Arc_I,
+    Arc_L lag Arc_U / 6,
+    Arc_W window Arc_L,
+    (	Win > 0 ->
+        Arctic window Arc_W * Win,
+	Arctic_F mapdot Arc_W - Arctic
+
     ;
-        TSI_F mapdot 0 .* TSI_U
+        Arctic_F mapdot 0 .* Arc_U
     ).
+
 
 get_co2(Years, Lag, LogCO2) :-
     context_co2:co2_knmi(CO2),
@@ -308,6 +319,7 @@ plot(Request) :-
 			      window(Window, [boolean, default(false)]),
 			      volc(Sato, [boolean, default(false)]),
 			      aam(AAM_ON, [boolean, default(false)]),
+			      arctic_noise(ARC_N, [boolean, default(false)]),
 			      t_units(Cal, []),
 			      lag(LagCal, [float]),
 			      soi_lag(SL, [number]),
@@ -315,6 +327,7 @@ plot(Request) :-
 			      co2_lag(AL, [number]),
 			      lod_lag(LL, [number]),
 			      tsi_lag(TL, [number]),
+			      arctic_win(AW, [number]),
                               dataset(DataSet, []),
                               evaluate(Characteristic, [default(model)])]),
 
@@ -340,14 +353,15 @@ plot(Request) :-
     get_volcanos(Sato, Zeros, VL, V1),
     get_tsi(Year, TL, TSI_F),
     get_co2(Year, AL, LogCO2),
+    get_arctic(Year, AW, Arctic),
 
-    get_fit([T, LogCO2, S2, TSI_F, V1, LOD_F, AAM],
+    get_fit([T, LogCO2, S2, TSI_F, V1, LOD_F, AAM, Arctic],
 	    Coefficients, Int, _R2C),
 	    % [NoiseA, C, SO, TS, VC,   LO],
 
-    check_coefficients(Coefficients, [], [C, SO, TS, VC,   LO, AA]),
+    check_coefficients(Coefficients, [], [C, SO, TS, VC,   LO, AA, ARC]),
 
-    Fluct mapdot SO .* S2 + TS .* TSI_F + VC .* V1 + LO .* LOD_F + AA .* AAM,
+    Fluct mapdot SO .* S2 + TS .* TSI_F + VC .* V1 + LO .* LOD_F + AA .* AAM + ARC .* Arctic,
     T_CO2_R mapdot C .* LogCO2 + Fluct,
     T_R mapdot Int .+ T_CO2_R,
     T_Diff mapdot T - T_R,
@@ -356,11 +370,22 @@ plot(Request) :-
     T_R_lag lag T_R / Lag,
     corrcoeff(T_lag, T_R_lag, R2C2),
     (
+       Characteristic = arctic ->
+	 Data tuple Year + Arctic,
+         Header = [XLabel, arctic]
+     ;
        Characteristic = model ->
 	 Data tuple Year + T_lag + T_R_lag,
          Header = [XLabel, temperature, model]
      ;
        Characteristic = residual ->
+    /*
+	 (   ARC_N = true ->
+	     T_A mapdot T_Diff - Arctic
+	 ;
+	     T_A = T_Diff
+	 ),
+     */
          (   FFT ->
 	     R_FFT fft T_Diff,
 	     Range ordinal R_FFT,
@@ -2527,3 +2552,141 @@ zonal_average([
 6.3328,6.5193,6.49,6.7538,6.2435,5.14,4.32,4.5575,4.9395,5.9852,6.2301,5.6319,
 6.3328,6.5193,6.49,6.7538,6.2435
 ]).
+
+arctic(
+[
+[1880,-0.38],
+[1881,-0.29],
+[1882,-0.25],
+[1883,-0.39],
+[1884,-0.56],
+[1885,-0.53],
+[1886,-0.42],
+[1887,-0.37],
+[1888,-0.36],
+[1889,-0.19],
+[1890,-0.39],
+[1891,-0.37],
+[1892,-0.37],
+[1893,-0.4],
+[1894,-0.3],
+[1895,-0.36],
+[1896,-0.36],
+[1897,-0.29],
+[1898,-0.32],
+[1899,-0.19],
+[1900,-0.16],
+[1901,-0.12],
+[1902,-0.46],
+[1903,-0.4],
+[1904,-0.43],
+[1905,-0.35],
+[1906,-0.21],
+[1907,-0.56],
+[1908,-0.43],
+[1909,-0.44],
+[1910,-0.38],
+[1911,-0.35],
+[1912,-0.57],
+[1913,-0.42],
+[1914,-0.23],
+[1915,-0.19],
+[1916,-0.29],
+[1917,-0.44],
+[1918,-0.35],
+[1919,-0.43],
+[1920,-0.19],
+[1921,0.03],
+[1922,-0.2],
+[1923,-0.09],
+[1924,-0.07],
+[1925,0.01],
+[1926,0.05],
+[1927,-0.1],
+[1928,-0.02],
+[1929,-0.3],
+[1930,0.13],
+[1931,0.08],
+[1932,0.12],
+[1933,-0.2],
+[1934,0.21],
+[1935,0.01],
+[1936,0.01],
+[1937,0.24],
+[1938,0.43],
+[1939,0.28],
+[1940,0.11],
+[1941,-0.04],
+[1942,0.11],
+[1943,0.36],
+[1944,0.37],
+[1945,0.06],
+[1946,0.05],
+[1947,0.16],
+[1948,0.13],
+[1949,0.1],
+[1950,-0.08],
+[1951,0.09],
+[1952,0.1],
+[1953,0.35],
+[1954,0.04],
+[1955,0.04],
+[1956,-0.23],
+[1957,0.02],
+[1958,0.09],
+[1959,0.14],
+[1960,0.09],
+[1961,0.17],
+[1962,0.27],
+[1963,0.16],
+[1964,-0.25],
+[1965,-0.17],
+[1966,-0.12],
+[1967,0.12],
+[1968,-0.08],
+[1969,-0.25],
+[1970,-0.1],
+[1971,-0.04],
+[1972,-0.33],
+[1973,0.13],
+[1974,-0.17],
+[1975,0.12],
+[1976,-0.27],
+[1977,0.12],
+[1978,-0.05],
+[1979,-0.05],
+[1980,0.05],
+[1981,0.48],
+[1982,-0.08],
+[1983,0.22],
+[1984,0],
+[1985,-0.04],
+[1986,0.08],
+[1987,0.05],
+[1988,0.38],
+[1989,0.39],
+[1990,0.59],
+[1991,0.44],
+[1992,0.05],
+[1993,0.12],
+[1994,0.42],
+[1995,0.7],
+[1996,0.25],
+[1997,0.56],
+[1998,0.8],
+[1999,0.73],
+[2000,0.71],
+[2001,0.8],
+[2002,0.83],
+[2003,0.8],
+[2004,0.73],
+[2005,0.97],
+[2006,0.94],
+[2007,1.07],
+[2008,0.84],
+[2009,0.71],
+[2010,0.96],
+[2011,0.88],
+[2012,0.94]
+]
+      ).
