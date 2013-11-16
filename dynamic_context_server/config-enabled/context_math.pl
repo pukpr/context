@@ -29,6 +29,8 @@
                        op(700, xfx, accumulate), % array evaluation
                        op(700, xfx, lag), % array evaluation
                        op(700, xfx, delay), % array evaluation
+                       op(700, xfx, invert), % array evaluation
+                       op(700, xfx, reciprocal), % array evaluation
                        dot/2,
                        mapdot/2,
                        convolve/2,
@@ -68,7 +70,9 @@
                        interpolate/3,
 		       accumulate/2,
 		       lag/2,
-		       delay/2
+		       delay/2,
+		       invert/2,
+		       reciprocal/2
                      ]).
 
 /** <module>  Math operations for array manipulations
@@ -1115,3 +1119,30 @@ X delay Z / Y :-
    ),
    !.
 
+
+%%   invert(+X,+Y)
+%
+%    Invert sign of all list.
+
+inversion([], Xc, X) :- reverse(Xc, X).
+inversion([A|Rest], Ix, Xc) :-
+    X is - A,
+    inversion(Rest, [X|Ix], Xc).
+
+[] invert [].
+X invert Y :-
+   inversion(Y, [], X), !.
+
+
+%%   reciprocal(+X,+Y)
+%
+%    Reciprocal of all list.
+
+reciprocal([], Xc, X) :- reverse(Xc, X).
+reciprocal([A|Rest], Ix, Xc) :-
+    X is 1/A,
+    reciprocal(Rest, [X|Ix], Xc).
+
+[] reciprocal [].
+X reciprocal Y :-
+   reciprocal(Y, [], X), !.

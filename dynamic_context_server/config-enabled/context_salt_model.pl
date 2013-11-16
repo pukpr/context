@@ -78,7 +78,7 @@ navigate(Request) :-
 					  ['View the residual error', residual],
 					  ['View the fluctuation components', all],
 					  ['Match temperature with model', model],
-					  ['arctic', arctic]
+					  ['Show Arctic detrend (arctic_window > 0)', arctic]
                                          ])),
                           br([]),
 			  input([type('submit'), name(kind), value('graph'),
@@ -88,7 +88,7 @@ navigate(Request) :-
 			  input([type('submit'), name(kind), value('volcanos'),
                                  onclick('subm(this.form,"render");')]),
 			  \(con_text:check_box(aam, 'true', 'AAM')),
-			  \(con_text:check_box(arctic_noise, 'true', 'WWII +0.2')),
+			  \(con_text:check_box(arctic_noise, 'true', 'WWII correction')),
 			  br([]),
 			  \(con_text:check_box(window, 'true', 'Apply 12 month window')),
 			  \(con_text:check_box(fft, 'true', 'FFT of residual')),
@@ -109,9 +109,9 @@ navigate(Request) :-
 			      \(con_text:input_cells([[co2_lag,6,2],
 						      [soi_lag,6,2],
 						      [aero_lag,24,2],
-						      [lod_lag,70.0,2],
+						      [lod_lag,60.0,2],
 						      [tsi_lag,6,2],
-						      [arctic_win, 120,2]
+						      [arctic_window, -120,2]
 						     ]))
 			       )
 			 ]
@@ -126,8 +126,8 @@ navigate(Request) :-
 
 
 
-get_fit([Temperature, CO2, SOI, TSI, Volc, LOD, AAM, Arctic],
-	[             C,   S,   T,   A,    L,   M, Z], Int, R2) :-
+get_fit([Temperature, CO2, SOI, TSI, Volc, LOD, AAM, Arctic, NAO],
+	[             C,   S,   T,   A,    L,   M, Z, N], Int, R2) :-
    r_open_session,
    y <- Temperature,
    c <- CO2,
@@ -135,10 +135,10 @@ get_fit([Temperature, CO2, SOI, TSI, Volc, LOD, AAM, Arctic],
    a <- Volc,
    l <- LOD,
    t <- TSI,
-   % n <- Noise,
    m <- AAM,
    z <- Arctic,
-   fitxy <- lm('y~c+s+a+l+t+m+z'),
+   n <- NAO,
+   fitxy <- lm('y~c+s+a+l+t+m+z+n'),  %   Add the variables here !!! don't forger
    r_print(fitxy),
    Int <- 'as.double(fitxy$coefficients[1])',
    C <- 'as.double(fitxy$coefficients[2])',
@@ -146,9 +146,9 @@ get_fit([Temperature, CO2, SOI, TSI, Volc, LOD, AAM, Arctic],
    A <- 'as.double(fitxy$coefficients[4])',
    L <- 'as.double(fitxy$coefficients[5])',
    T <- 'as.double(fitxy$coefficients[6])',
-   % N <- 'as.double(fitxy$coefficients[7])',
    M <- 'as.double(fitxy$coefficients[7])',
    Z <- 'as.double(fitxy$coefficients[8])',
+   N <- 'as.double(fitxy$coefficients[9])',
    summary <- summary(fitxy),
    r_print(summary),
    R2 <- 'as.double(summary$r.squared)',
@@ -184,6 +184,23 @@ temperature_series(true, DataSet, T) :-
     T window T0*Win.
 temperature_series(false, DataSet, T) :-
     dataset(DataSet, T).
+
+temperature_series(Correction, Window, DataSet, T, Offset) :-
+   temperature_series(Window, DataSet, TT),
+   (   Correction ->
+       Front range 0*[1,696],
+       Ramp range [0,0.1]/0.0025,
+       Middle range 0.1*[1,57],
+       % Middle range 0.1*[1,90],
+       Back range 0*[1,807],
+       Clip cat [Front,Ramp,Middle,Back],
+       Offset invert Clip,
+       T mapdot TT + Offset
+   ;
+       T = TT,
+       Offset mapdot 0 .* TT
+   ).
+
 
 get_years_from_1880(T, Years, Zeros) :-
     length(T, L),
@@ -246,68 +263,51 @@ get_tsi(Years, Lag, TSI_F) :-
         TSI_F mapdot 0 .* TSI_U
     ).
 
-get_arctic(Years, Noise, Win, Arctic_F) :-
+get_arctic(Years, Win, Arctic_F) :-
     arctic(Arc),
     interpolate(Years, Arc, Arc_I),
     Arc_L unbias Arc_I,
-    % Arc_L lag Arc_U / 6,
     (	Win > 0 ->
         Arctic window Arc_L * Win,
 	Arctic_I mapdot Arc_L - Arctic,
-        (   Noise ->
-            Front range 0*[1,696],
-	    Ramp range [0,0.4]/0.01,
-            Middle range 0.4*[1,49],
-            Back range 0*[1,815],
-            Clip cat [Front,Ramp,Middle,Back],
-            Arctic_F mapdot Arctic_I + Clip
-        ;
-            Arctic_F = Arctic_I
-        )
+        Arctic_F = Arctic_I
     ;
         Arctic_F mapdot 0 .* Arc_L
     ).
 
-get_nao(Years, Noise, Win, Arctic_F) :-
+
+
+get_nao(Years, Lag, Arctic_F) :-
     nao_hurrell_year(Arc),
     interpolate(Years, Arc, Arc_I),
-    Arc_L unbias Arc_I,
-    % Arc_W window Arc_U * 12,
-    % Arc_L lag Arc_U / 6,
-    (	Win > 0 ->
-        (   Noise ->
-            Front range 0*[1,696],
-            Middle range 1*[1,90],
-            Back range 0*[1,815],
-            Clip cat [Front,Middle,Back],
-            Arctic_F mapdot Arc_L + Clip
-        ;
-            Arctic_F = Arc_L
-        )
+    Arc_U unbias Arc_I,
+    Arc_L lag Arc_U / Lag,
+    (	Lag > 0 ->
+        Arctic_F = Arc_L
     ;
         Arctic_F mapdot 0 .* Arc_L
     ).
 
-
-get_nao(Noise, Win, Arctic_F) :-
+/*
+get_nao(_Noise, Win, Arctic_F) :-
     nao_hurrell(Arc_I),
     Arc_U unbias Arc_I,
     Arc_W window Arc_U * 12,
     Arc_L lag Arc_W / 6,
     (	Win > 0 ->
-        (   Noise ->
-            Front range 0*[1,696],
-            Middle range 2*[1,90],
-            Back range 0*[1,815],
-            Clip cat [Front,Middle,Back],
-            Arctic_F mapdot Arc_L + Clip
-        ;
+        %(   Noise ->
+        %    Front range 0*[1,696],
+        %    Middle range 2*[1,90],
+        %    Back range 0*[1,815],
+        %    Clip cat [Front,Middle,Back],
+        %    Arctic_F mapdot Arc_L + Clip
+        %;
             Arctic_F = Arc_L
-        )
+        %)
     ;
         Arctic_F mapdot 0 .* Arc_L
     ).
-
+*/
 
 get_co2(Years, Lag, LogCO2) :-
     context_co2:co2_knmi(CO2),
@@ -379,7 +379,7 @@ plot(Request) :-
 			      co2_lag(AL, [number]),
 			      lod_lag(LL, [number]),
 			      tsi_lag(TL, [number]),
-			      arctic_win(AW, [number]),
+			      arctic_window(AW, [number]),
                               dataset(DataSet, []),
                               evaluate(Characteristic, [default(model)])]),
 
@@ -388,7 +388,7 @@ plot(Request) :-
     Lag is Scale*LagCal,
 
     % Get the temperature series
-    temperature_series(Window, DataSet, T),
+    temperature_series(ARC_N, Window, DataSet, T, Correction),
 
     get_years_from_1880(T, Year, Zeros),
 
@@ -405,16 +405,16 @@ plot(Request) :-
     get_volcanos(Sato, Zeros, VL, V1),
     get_tsi(Year, TL, TSI_F),
     get_co2(Year, AL, LogCO2),
-    get_arctic(Year, ARC_N, AW, Arctic),
-    % get_nao(Year, ARC_N, AW, Arctic),
+    get_arctic(Year, AW, Arctic),
+    get_nao(Year, SL, NAO),
 
-    get_fit([T, LogCO2, S2, TSI_F, V1, LOD_F, AAM, Arctic],
+    get_fit([T, LogCO2, S2, TSI_F, V1, LOD_F, AAM, Arctic, NAO],
 	    Coefficients, Int, _R2C),
 	    % [NoiseA, C, SO, TS, VC,   LO],
 
-    check_coefficients(Coefficients, [], [C, SO, TS, VC,   LO, AA, ARC]),
+    check_coefficients(Coefficients, [], [C, SO, TS, VC,   LO, AA, ARC, NI]),
 
-    Fluct mapdot SO .* S2 + TS .* TSI_F + VC .* V1 + LO .* LOD_F + AA .* AAM + ARC .* Arctic,
+    Fluct mapdot SO .* S2 + TS .* TSI_F + VC .* V1 + LO .* LOD_F + AA .* AAM + ARC .* Arctic + NI .* NAO,
     T_CO2_R mapdot C .* LogCO2 + Fluct,
     T_R mapdot Int .+ T_CO2_R,
     T_Diff mapdot T - T_R,
@@ -428,17 +428,10 @@ plot(Request) :-
          Header = [XLabel, arctic]
      ;
        Characteristic = model ->
-	 Data tuple Year + T_lag + T_R_lag,
-         Header = [XLabel, temperature, model]
+	 Data tuple Year + T_lag + T_R_lag + Correction,
+         Header = [XLabel, temperature, model, correction]
      ;
        Characteristic = residual ->
-    /*
-	 (   ARC_N = true ->
-	     T_A mapdot T_Diff - Arctic
-	 ;
-	     T_A = T_Diff
-	 ),
-     */
          (   FFT ->
 	     R_FFT fft T_Diff,
 	     Range ordinal R_FFT,
@@ -462,8 +455,10 @@ plot(Request) :-
 	 LOLOD_F mapdot LO .* LOD_F,
          % Noise_D mapdot NoiseA .* Noise2,
          AAM_D mapdot AA .* AAM,
-         Data tuple Year + S0S2 + VCV1 + LOLOD_F + TSTSI_F + AAM_D,
-	 Header = [XLabel, soi,   aero,  lod,      tsi,      aam]
+         ARCTIC_D mapdot ARC .* Arctic,
+         NAO_D mapdot NI .* NAO,
+         Data tuple Year + S0S2 + VCV1 + LOLOD_F + TSTSI_F + AAM_D + ARCTIC_D + NAO_D,
+	 Header = [XLabel, soi,   aero,  lod,      tsi,      aam,    arctic,    nao]
     ),
     temp_data(NameData, DataSet),
     TCR is C*ln(2),
@@ -472,9 +467,9 @@ plot(Request) :-
                      \(con_text:style)],
                     [
 		     table([tr([th(corrcoeff), th('ln(co2)'),th(soi),th('a(volc)'),
-				th(lod),th(tsi), th(aam)]),
+				th(lod),th(tsi), th(aam), th(nao), th(arctic)]),
 			    tr([td(b('~5f'-R2C2)),td('~3f'-C),td('~3f'-SO),td('~3f'-VC),
-				td('~3f'-LO),td('~3f'-TS), td('~5f'-AA)])
+				td('~3f'-LO),td('~3f'-TS), td('~5f'-AA), td('~5f'-NI), td('~5f'-ARC)])
 			   ]),
 		     br([]),
 		     div([id('legend')],[]),
