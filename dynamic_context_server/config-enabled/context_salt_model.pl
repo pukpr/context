@@ -78,6 +78,7 @@ navigate(Request) :-
 					  ['View the residual error', residual],
 					  ['View the fluctuation components', all],
 					  ['Match temperature with model', model],
+					  ['Correlate CO2 with model', correlate],
 					  ['Show Arctic detrend (arctic_window > 0)', arctic]
                                          ])),
                           br([]),
@@ -88,7 +89,7 @@ navigate(Request) :-
 			  input([type('submit'), name(kind), value('volcanos'),
                                  onclick('subm(this.form,"render");')]),
 			  \(con_text:check_box(aam, 'true', 'AAM')),
-			  \(con_text:check_box(arctic_noise, 'true', 'WWII correction')),
+			  \(con_text:check_box(wwii_adjust, 'true', 'WWII correction')),
 			  br([]),
 			  \(con_text:check_box(window, 'true', 'Apply 12 month window')),
 			  \(con_text:check_box(fft, 'true', 'FFT of residual')),
@@ -175,6 +176,7 @@ get_anthro(false, _, Zeros, W) :-
 	sparse_list(Zeros, War, W).
 */
 
+scale(_, lin, correlate, 'TCR*ln(CO2)/ln(2)', 'C', 'Temperature', 'C') :- !.
 scale(true, log, residual, 'Wavenumber', '2048/Month', 'Power Spectral', 'density') :- !.
 scale(_, lin, _, 'Time', 'year', 'Temperature', 'C').
 
@@ -282,7 +284,7 @@ get_nao(Years, Lag, Arctic_F) :-
     interpolate(Years, Arc, Arc_I),
     Arc_U unbias Arc_I,
     Arc_L lag Arc_U / Lag,
-    (	Lag > 0 ->
+    (	Lag >= 0 ->
         Arctic_F = Arc_L
     ;
         Arctic_F mapdot 0 .* Arc_L
@@ -312,7 +314,7 @@ get_nao(_Noise, Win, Arctic_F) :-
 get_co2(Years, Lag, LogCO2) :-
     context_co2:co2_knmi(CO2),
     interpolate(Years, CO2, CO2_I),
-    (	Lag > 0.0 ->
+    (	Lag >= 0.0 ->
 	CO2_Lag lag CO2_I / Lag,
         LogCO2 mapdot ln ~> CO2_Lag
      ;
@@ -371,7 +373,7 @@ plot(Request) :-
 			      window(Window, [boolean, default(false)]),
 			      volc(Sato, [boolean, default(false)]),
 			      aam(AAM_ON, [boolean, default(false)]),
-			      arctic_noise(ARC_N, [boolean, default(false)]),
+			      wwii_adjust(WWII_Adjust, [boolean, default(false)]),
 			      t_units(Cal, []),
 			      lag(LagCal, [float]),
 			      soi_lag(SL, [number]),
@@ -388,7 +390,7 @@ plot(Request) :-
     Lag is Scale*LagCal,
 
     % Get the temperature series
-    temperature_series(ARC_N, Window, DataSet, T, Correction),
+    temperature_series(WWII_Adjust, Window, DataSet, T, Correction),
 
     get_years_from_1880(T, Year, Zeros),
 
@@ -448,6 +450,12 @@ plot(Request) :-
          Data tuple Year + Signal + CO2_Signal + Fluct,
          Header = [XLabel, signal,  co2,         fluctuation]
      ;
+       Characteristic = correlate ->
+         CO2_Signal mapdot Int .+ C .* LogCO2,
+         Signal mapdot CO2_Signal + T_Diff,
+         Data tuple CO2_Signal + Signal + CO2_Signal,
+         Header = [co2, data, log_model]
+     ;
        Characteristic = all ->
          S0S2 mapdot SO .* S2,
          TSTSI_F mapdot TS .* TSI_F,
@@ -466,7 +474,7 @@ plot(Request) :-
     reply_html_page([title('GISS and SOI'),
                      \(con_text:style)],
                     [
-		     table([tr([th(corrcoeff), th('ln(co2)'),th(soi),th('a(volc)'),
+		     table([tr([th('R=cc'), th('ln(co2)'),th(soi),th('a(volc)'),
 				th(lod),th(tsi), th(aam), th(nao), th(arctic)]),
 			    tr([td(b('~5f'-R2C2)),td('~3f'-C),td('~3f'-SO),td('~3f'-VC),
 				td('~3f'-LO),td('~3f'-TS), td('~5f'-AA), td('~5f'-NI), td('~5f'-ARC)])
