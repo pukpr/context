@@ -856,41 +856,29 @@ X window Y*Z :-  % centered window
    append(Empty, Y1, Y2),
    sconvolution(Y2, Z2, [], X0),
    length(Z1, N),
-   M is integer(N/2),
    last(X0, Last),
-   Last_Vals range Last*[1,M],
-   % Last_Ones mapdot Last_Vals ./ N,
-   X1 offset X0-M,
-   MM is M + 1,
-   Ramp range [MM,N]/1,
+   ( 0 =:= N mod 2 ->
+     M is integer(N/2),
+     Last_Vals range Last*[1,M],
+     X1 offset X0-M,
+     MM is M + 1,
+     Ramp range [MM,N]/1
+   ;
+     M is integer(N/2) - 1,
+     Ma is M + 1,
+     Last_Vals range Last*[1,M],
+     X1 offset X0-M, % Ma
+     NN is N - 1, % + 1,
+     Ramp range [Ma,NN]/1
+   ),
    R mapdot Ramp ./ N,
-   % reverse(Ramp, R),
    length(Y1,L),
    Length is L-M,
    Ones range 1*[1,Length],
    Mult = [R|Ones], M1 cat Mult,
    X2 = [X1|Last_Vals], X3 cat X2,
    X mapdot X3 / M1,
-
-   /*
-   X2 = [X1|Zeros],
-   X cat X2,
-   */
-
    !.
-
-/*
-X window Y*Z :-  % centered window
-   Y1 window Y,
-   Z1 window Z,
-   Z2 normalize Z1,
-   X1 convolve Y1*Z2,
-   length(Z2, N),
-   M is integer((N+1)/2)-1,
-   X2 offset X1 - M,
-   X shrink X2/Y.
-*/
-
 
 %%   intersect(+X, +Y, +Initial, -Final)
 %

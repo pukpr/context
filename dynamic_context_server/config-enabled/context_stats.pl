@@ -8,7 +8,8 @@
                        median/2,
                        rms/2,
                        corrcoeff/3,
-		       sum_of_squares/3
+		       sum_of_squares/3,
+		       median_filter/2
                      ]).
 
 /** <module>  Statistics operations on arrays
@@ -156,3 +157,26 @@ sum_of_squares(X, Y, R) :-
     Diffs difference X - Y,
     SS mapdot Diffs * Diffs,
     sumlist(SS, R).
+
+
+%%   median_filter(+X,-Y)
+%
+%   Do a near-neighbor median filter on a list.
+%
+
+sorter(L, V) :- sort(L,[_,V,_]).
+sorter([F,F,_], F).
+sorter([F,_,F], F).
+sorter([_,F,F], F).
+
+median_filter([X|Rest], Y) :-
+    median_filter(X, Rest, [X], Y), !.
+
+median_filter(_,[L], In, Y) :-
+    reverse([L|In], Y), !.
+median_filter(F,[M,L], In, Y) :-
+    sorter([F,M,L],V),
+    median_filter(M, [L], [V|In], Y).
+median_filter(F, [M,L,R|Rest], In, Y) :-
+    sorter([F,M,L],V),
+    median_filter(M,[L,R|Rest], [V|In], Y).

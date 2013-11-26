@@ -1,5 +1,6 @@
 :- module(context_salt_model, [
-			       % yearly_period/4
+			       yearly_sin_period/4,
+			       yearly_cos_period/4
 			      ]).
 
 :- use_module(context_math).
@@ -8,8 +9,8 @@
 :- context:register(context_salt_model:navigate).
 :- context:register(context_salt_model:plot).
 
-%  yearly_period(Period,Phase, X,Y) :-
-%    Y is sin(2*pi*(X+Phase/12)/Period).
+yearly_sin_period(Period,L,X,Y) :- Y is L*sin(2*pi*X/Period).
+yearly_cos_period(Period,L,X,Y) :- Y is L*cos(2*pi*X/Period).
 
 temp_data('GISS', giss).
 temp_data('HADCRUT4', hadcrut).
@@ -25,8 +26,26 @@ temp_data('NOAA LAND', noaa_land).
 temp_data('NOAA OCEAN', noaa_ocean).
 temp_data('HADCRUT3', hadcrut3).
 temp_data('HADSST2', sst2).
+temp_data('NRDC', nrdc).
+temp_data('HADCRUT4_CW', hadcrut4_cw).
+
+
 
 dataset(giss, L) :- giss(L).
+dataset(hadcrut4_cw, L) :-
+        hadcrut(L0),
+        hadcrut_cw(W),
+        Front1 range 1*[1,1188],
+        Front0 range 0*[1,1188],
+        Change range 0*[1,417],
+        % Back1 range 1*[1,5],
+        % Back0 range 0*[1,5],
+        Mask cat [Front1,Change],
+        W_Offset mapdot 0.296 .+ W,
+        CW cat [Front0, W_Offset],
+        M mapdot Mask * L0,
+        L mapdot M + CW.
+
 dataset(hadcrut, L) :- hadcrut(L).
 dataset(best, L) :- best(L).
 dataset(sst, L) :- sst(L).
@@ -51,6 +70,7 @@ dataset(noaa_land, L) :- noa_land(L).
 dataset(noaa_ocean, L) :- noa_ocean(L).
 dataset(sst2, L) :- hadsst2(L).
 dataset(hadcrut3, L) :- hadcrut3(L).
+dataset(nrdc, L) :- nrdc(L).
 
 
 navigate(Request) :-
@@ -79,6 +99,8 @@ navigate(Request) :-
 					  ['View the fluctuation components', all],
 					  ['Match temperature with model', model],
 					  ['Correlate CO2 with model', correlate],
+					  ['Correlate temperature with model', map],
+					  % ['Cross-Correlate temperature with model', cross],
 					  ['Show Arctic detrend (arctic_window > 0)', arctic]
                                          ])),
                           br([]),
@@ -92,7 +114,9 @@ navigate(Request) :-
 			  \(con_text:check_box(wwii_adjust, 'true', 'WWII correction')),
 			  br([]),
 			  \(con_text:check_box(window, 'true', 'Apply 12 month window')),
+			  \(con_text:check_box(triple, 'true', 'Pratt window')),
 			  \(con_text:check_box(fft, 'true', 'FFT of residual')),
+			  \(con_text:check_box(lunar, 'true', 'lunar')),
 			  br([]),
 			  input([type('text'),
 				 size(2),
@@ -127,8 +151,8 @@ navigate(Request) :-
 
 
 
-get_fit([Temperature, CO2, SOI, TSI, Volc, LOD, AAM, Arctic, NAO],
-	[             C,   S,   T,   A,    L,   M, Z, N], Int, R2) :-
+get_fit([Temperature, CO2, SOI, TSI, Volc, LOD, AAM, Arctic, NAO, Sin, Cos, S2, C2, S3, C3, S4, C4],
+	[             C,   S,   T,   A,    L,   M, Z, N, V, W, P, Q, J, K, E, F], Int, R2) :-
    r_open_session,
    y <- Temperature,
    c <- CO2,
@@ -139,7 +163,15 @@ get_fit([Temperature, CO2, SOI, TSI, Volc, LOD, AAM, Arctic, NAO],
    m <- AAM,
    z <- Arctic,
    n <- NAO,
-   fitxy <- lm('y~c+s+a+l+t+m+z+n'),  %   Add the variables here !!! don't forger
+   v <- Sin,
+   w <- Cos,
+   p <- S2,
+   q <- C2,
+   j <- S3,
+   k <- C3,
+   e <- S4,
+   f <- C4,
+   fitxy <- lm('y~c+s+a+l+t+m+z+n+v+w+p+q+j+k+e+f'),  %   Add the variables here !!! don't forger
    r_print(fitxy),
    Int <- 'as.double(fitxy$coefficients[1])',
    C <- 'as.double(fitxy$coefficients[2])',
@@ -150,6 +182,14 @@ get_fit([Temperature, CO2, SOI, TSI, Volc, LOD, AAM, Arctic, NAO],
    M <- 'as.double(fitxy$coefficients[7])',
    Z <- 'as.double(fitxy$coefficients[8])',
    N <- 'as.double(fitxy$coefficients[9])',
+   V <- 'as.double(fitxy$coefficients[10])',
+   W <- 'as.double(fitxy$coefficients[11])',
+   P <- 'as.double(fitxy$coefficients[12])',
+   Q <- 'as.double(fitxy$coefficients[13])',
+   J <- 'as.double(fitxy$coefficients[14])',
+   K <- 'as.double(fitxy$coefficients[15])',
+   E <- 'as.double(fitxy$coefficients[16])',
+   F <- 'as.double(fitxy$coefficients[17])',
    summary <- summary(fitxy),
    r_print(summary),
    R2 <- 'as.double(summary$r.squared)',
@@ -176,25 +216,49 @@ get_anthro(false, _, Zeros, W) :-
 	sparse_list(Zeros, War, W).
 */
 
+
+scale(_, lin, cross, 'Month', '#', 'Correlation', ' ') :- !.
+scale(_, lin, map, 'Model Temperature', 'C', 'Real Temperature', 'C') :- !.
 scale(_, lin, correlate, 'TCR*ln(CO2)/ln(2)', 'C', 'Temperature', 'C') :- !.
 scale(true, log, residual, 'Wavenumber', '2048/Month', 'Power Spectral', 'density') :- !.
 scale(_, lin, _, 'Time', 'year', 'Temperature', 'C').
 
+triple_filter(In, Out) :-
+    A window In*12,
+    B window A*9,
+    Out window B*7.
+
+temperature_series(true, true, DataSet, T) :-
+    dataset(DataSet, T0),
+    triple_filter(T0, T1),
+    T window T1*12.
+temperature_series(false, true, DataSet, T) :-
+    dataset(DataSet, T0),
+    triple_filter(T0, T).
+temperature_series(true, false, DataSet, T) :-
+    dataset(DataSet, T0),
+    uniform(12,Win),
+    T window T0*Win.
+temperature_series(false, false, DataSet, T) :-
+    dataset(DataSet, T).
+
+/*
 temperature_series(true, DataSet, T) :-
     dataset(DataSet, T0),
     uniform(12,Win),
     T window T0*Win.
 temperature_series(false, DataSet, T) :-
     dataset(DataSet, T).
+*/
 
-temperature_series(Correction, Window, DataSet, T, Offset) :-
-   temperature_series(Window, DataSet, TT),
+temperature_series(Correction, Window, Triple, DataSet, T, Offset) :-
+   temperature_series(Window, Triple, DataSet, TT),
    (   Correction ->
        Front range 0*[1,696],
        Ramp range [0,0.1]/0.0025,
        Middle range 0.1*[1,57],
        % Middle range 0.1*[1,90],
-       Back range 0*[1,807],
+       Back range 0*[1,811],
        Clip cat [Front,Ramp,Middle,Back],
        Offset invert Clip,
        T mapdot TT + Offset
@@ -210,6 +274,10 @@ get_years_from_1880(T, Years, Zeros) :-
     Y mapdot H ./ 12.0,
     Years mapdot 1880 .+ Y,
     Zeros mapdot 0 .* H.
+
+get_months_from_start(T, H) :-
+    length(T, L),
+    H range [1, L]/1.
 
 get_lod(Years, Lag, LOD_F) :-
     lod(LOD),
@@ -253,6 +321,12 @@ get_volcanos(false, Zeros, Lag, Vol_F) :-
     V0 lag Vol/6,
     Vol_F lag V0/Lag.
 get_volcanos(_, Zeros, _, Zeros).
+
+get_eclipses(false, Zeros, Zeros) :- !.
+get_eclipses(_, Zeros, Ecl_F) :-
+    eclipses(E),
+    sparse_list(Zeros, E, Ecl),
+    Ecl_F lag Ecl/1.
 
 
 get_tsi(Years, Lag, TSI_F) :-
@@ -335,7 +409,7 @@ get_zonal(Lag, Zonal_F) :-
     Zonal_U unbias Zonal,
     Zonal_W window Zonal_U*12,
     Front range 1*[1,930],
-    Back range 0*[1,671],
+    Back range 0*[1,675],  % 671
     Clip cat [Front,Back],
     Zonal_Front mapdot Clip * Zonal_W,
     glaam(AAM),
@@ -371,9 +445,11 @@ plot(Request) :-
     http_parameters(Request, [kind(Kind, []),
 			      fft(FFT, [boolean, default(false)]),
 			      window(Window, [boolean, default(false)]),
+			      triple(Triple, [boolean, default(false)]),
 			      volc(Sato, [boolean, default(false)]),
 			      aam(AAM_ON, [boolean, default(false)]),
 			      wwii_adjust(WWII_Adjust, [boolean, default(false)]),
+			      lunar(Lunar, [boolean, default(false)]),
 			      t_units(Cal, []),
 			      lag(LagCal, [float]),
 			      soi_lag(SL, [number]),
@@ -390,9 +466,44 @@ plot(Request) :-
     Lag is Scale*LagCal,
 
     % Get the temperature series
-    temperature_series(WWII_Adjust, Window, DataSet, T, Correction),
+    temperature_series(WWII_Adjust, Window, Triple, DataSet, T, Correction),
 
     get_years_from_1880(T, Year, Zeros),
+
+
+    get_months_from_start(T, Months),
+    %Period = 11.83,
+       % Period is  327.85994/24/(365/12),
+       % Period = 12,
+       % Period2 = 0.9057,
+       % Period2 = 0.52267,
+    %Period2 = 6.0,
+       %Period3 is 0.5, %354.367066/24/(365/12),
+    (	Lunar ->
+    Lunar_Factor = 1
+    ;
+    Lunar_Factor = 0
+    ),
+    Period is 7.3 * 12,
+    Period2 is 20.0 * 12,
+    % Period3 is 4.2 * 12,
+    Period3 is 5.3 * 12,
+    Period4 is 12 * 12,
+    Sin mapdot yearly_sin_period(Period,Lunar_Factor) ~> Months,
+    Cos mapdot yearly_cos_period(Period,Lunar_Factor) ~> Months,
+    Sin2 mapdot yearly_sin_period(Period2,Lunar_Factor) ~> Months,
+    Cos2 mapdot yearly_cos_period(Period2,Lunar_Factor) ~> Months,
+    Sin3 mapdot yearly_sin_period(Period3,Lunar_Factor) ~> Months,
+    Cos3 mapdot yearly_cos_period(Period3,Lunar_Factor) ~> Months,
+    Sin4 mapdot yearly_sin_period(Period4,Lunar_Factor) ~> Months,
+    Cos4 mapdot yearly_cos_period(Period4,Lunar_Factor) ~> Months,
+
+    /*
+    Cos = Zeros,
+    Sin2 = Zeros,
+    Cos2 = Zeros,
+    get_eclipses(Lunar,Zeros, Sin),
+    */
 
     get_lod(Year, LL, LOD_F),
     get_soi(SL, S2),
@@ -410,13 +521,18 @@ plot(Request) :-
     get_arctic(Year, AW, Arctic),
     get_nao(Year, SL, NAO),
 
-    get_fit([T, LogCO2, S2, TSI_F, V1, LOD_F, AAM, Arctic, NAO],
+    get_fit([T, LogCO2, S2, TSI_F, V1, LOD_F, AAM, Arctic, NAO, Sin, Cos, Sin2, Cos2, Sin3, Cos3, Sin4, Cos4],
 	    Coefficients, Int, _R2C),
 	    % [NoiseA, C, SO, TS, VC,   LO],
 
-    check_coefficients(Coefficients, [], [C, SO, TS, VC,   LO, AA, ARC, NI]),
+    check_coefficients(Coefficients, [], [C, SO, TS, VC,   LO, AA, ARC, NI, SW,	 CW,  SW2, CW2,
+					                                    SW3, CW3, SW4, CW4]),
 
-    Fluct mapdot SO .* S2 + TS .* TSI_F + VC .* V1 + LO .* LOD_F + AA .* AAM + ARC .* Arctic + NI .* NAO,
+    Fluct mapdot SO .* S2 + TS .* TSI_F + VC .* V1 + LO .* LOD_F + AA .* AAM +
+                 ARC .* Arctic + NI .* NAO + SW .* Sin + CW .* Cos
+		                           + SW2 .* Sin2 + CW2 .* Cos2
+					   + SW3 .* Sin3 + CW3 .* Cos3
+					   + SW4 .* Sin4 + CW4 .* Cos4,
     T_CO2_R mapdot C .* LogCO2 + Fluct,
     T_R mapdot Int .+ T_CO2_R,
     T_Diff mapdot T - T_R,
@@ -431,7 +547,24 @@ plot(Request) :-
      ;
        Characteristic = model ->
 	 Data tuple Year + T_lag + T_R_lag + Correction,
-         Header = [XLabel, temperature, model, correction]
+         Header = [XLabel, DataSet, model, correction]
+     ;
+       Characteristic = map ->
+	 Data tuple T_R_lag + T_lag,
+         Header = [model, DataSet]
+/*     ;
+       Characteristic = cross ->
+         Cross correlate T_R_lag * T_lag,
+         get_months_from_start(T, Months),
+	 Data tuple Months + Cross,
+         Header = [month, cross]
+
+     ;
+       Characteristic = cross ->
+	 Y_Lunar mapdot SW .* Sin + CW .* Cos + SW2 .* Sin2 + CW2 .* Cos2,
+	 Data tuple Year + Y_Lunar + T_Diff,
+         Header = [XLabel, yearly, residual]
+*/
      ;
        Characteristic = residual ->
          (   FFT ->
@@ -447,6 +580,7 @@ plot(Request) :-
        Characteristic = signal ->
          CO2_Signal mapdot Int .+ C .* LogCO2,
          Signal mapdot CO2_Signal + T_Diff,
+         % median_filter(Sig, Signal),
          Data tuple Year + Signal + CO2_Signal + Fluct,
          Header = [XLabel, signal,  co2,         fluctuation]
      ;
@@ -465,8 +599,18 @@ plot(Request) :-
          AAM_D mapdot AA .* AAM,
          ARCTIC_D mapdot ARC .* Arctic,
          NAO_D mapdot NI .* NAO,
-         Data tuple Year + S0S2 + VCV1 + LOLOD_F + TSTSI_F + AAM_D + ARCTIC_D + NAO_D,
-	 Header = [XLabel, soi,   aero,  lod,      tsi,      aam,    arctic,    nao]
+	 Y_Lunar mapdot SW .* Sin + CW .* Cos + SW2 .* Sin2 + CW2 .* Cos2 +
+                                                SW3 .* Sin3 + CW3 .* Cos3 +
+                                                SW4 .* Sin4 + CW4 .* Cos4,
+
+     /*
+         Angular mapdot AAM_D + LOLOD_F + Y_Lunar,
+         Data tuple Year + S0S2 + VCV1 + TSTSI_F + ARCTIC_D + NAO_D + Angular,
+	 Header = [XLabel, soi,   aero,  tsi,      arctic,    nao,    angular]
+     */
+         Data tuple Year + S0S2 + VCV1 + LOLOD_F + TSTSI_F + AAM_D + ARCTIC_D + NAO_D + Y_Lunar,
+	 Header = [XLabel, soi,   aero,  lod,      tsi,      aam,    arctic,    nao,    yearly]
+
     ),
     temp_data(NameData, DataSet),
     TCR is C*ln(2),
@@ -475,9 +619,9 @@ plot(Request) :-
                      \(con_text:style)],
                     [
 		     table([tr([th('R=cc'), th('ln(co2)'),th(soi),th('a(volc)'),
-				th(lod),th(tsi), th(aam), th(nao), th(arctic)]),
+				th(lod),th(tsi), th(aam), th(nao), th(year), th(arctic)]),
 			    tr([td(b('~5f'-R2C2)),td('~3f'-C),td('~3f'-SO),td('~3f'-VC),
-				td('~3f'-LO),td('~3f'-TS), td('~5f'-AA), td('~5f'-NI), td('~5f'-ARC)])
+				td('~3f'-LO),td('~3f'-TS), td('~5f'-AA), td('~5f'-NI), td('~5f'-SW), td('~5f'-ARC)])
 			   ]),
 		     br([]),
 		     div([id('legend')],[]),
