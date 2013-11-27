@@ -1096,6 +1096,7 @@ X lag Z / Y :-
 [W|X] delay [Y|Z] :-  % Simplifier
    W is Y,
    X mapdot Z.
+Z delay Z / 0 :- !.
 X delay Z / Y :-
    (   integer(Y) ->
        [First|_] = Z,

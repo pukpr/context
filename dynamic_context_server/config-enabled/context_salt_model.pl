@@ -15,7 +15,7 @@ yearly_cos_period(Period,L,X,Y) :- Y is L*cos(2*pi*X/Period).
 temp_data('GISS', giss).
 temp_data('HADCRUT4', hadcrut).
 temp_data('BEST', best).
-temp_data('GISS+HADCRUT4+NOAA', global_combo).
+temp_data('GISS+HADCRUT4_CW+NOAA', global_combo).
 temp_data('HADSST3', sst).
 temp_data('CRUTEM4', land).
 temp_data('GISSLand', gistemp_dts).
@@ -53,7 +53,7 @@ dataset(land, L) :- land(L).
 dataset(gistemp_dts, L) :- gistemp_dts(L).
 dataset(global_combo, L) :-
 	dataset(giss,L1),
-	dataset(hadcrut,L2),
+	dataset(hadcrut4_cw,L2),
 	dataset(noaa_land_ocean,L3),
 	L mapdot 0.3333 .* L1 + 0.3333 .* L2 + 0.3333 .* L3.
 dataset(land_combo, L) :-
@@ -100,7 +100,7 @@ navigate(Request) :-
 					  ['Match temperature with model', model],
 					  ['Correlate CO2 with model', correlate],
 					  ['Correlate temperature with model', map],
-					  % ['Cross-Correlate temperature with model', cross],
+					  ['Cross-Correlate scmss with lunar', cross],
 					  ['Show Arctic detrend (arctic_window > 0)', arctic]
                                          ])),
                           br([]),
@@ -151,8 +151,14 @@ navigate(Request) :-
 
 
 
-get_fit([Temperature, CO2, SOI, TSI, Volc, LOD, AAM, Arctic, NAO, Sin, Cos, S2, C2, S3, C3, S4, C4],
-	[             C,   S,   T,   A,    L,   M, Z, N, V, W, P, Q, J, K, E, F], Int, R2) :-
+get_fit([Temperature, CO2, SOI, TSI, Volc, LOD, AAM, Arctic, NAO, Sin, Cos,
+	                                                          S2,  C2,
+	                                                          S3,  C3,
+	                                                          S4,  C4,
+	                                                          S5,  C5,
+	                                                          S6,  C6,
+	                                                          SC, CM],
+	[             C,   S,   T,   A,    L,   M, Z, N, V, W, P, Q, E, F, G, H, D, I, R, U, J, K], Int, R2) :-
    r_open_session,
    y <- Temperature,
    c <- CO2,
@@ -167,11 +173,17 @@ get_fit([Temperature, CO2, SOI, TSI, Volc, LOD, AAM, Arctic, NAO, Sin, Cos, S2, 
    w <- Cos,
    p <- S2,
    q <- C2,
-   j <- S3,
-   k <- C3,
-   e <- S4,
-   f <- C4,
-   fitxy <- lm('y~c+s+a+l+t+m+z+n+v+w+p+q+j+k+e+f'),  %   Add the variables here !!! don't forger
+   e <- S3,
+   f <- C3,
+   g <- S4,
+   h <- C4,
+   d <- S5,
+   i <- C5,
+   r <- S6,
+   u <-	C6,
+   j <- SC,
+   k <- CM,
+   fitxy <- lm('y~c+s+a+l+t+m+z+n+v+w+p+q+e+f+g+h+d+i+r+u+j+k'),  %   Add the variables here !!! don't forger
    r_print(fitxy),
    Int <- 'as.double(fitxy$coefficients[1])',
    C <- 'as.double(fitxy$coefficients[2])',
@@ -186,10 +198,16 @@ get_fit([Temperature, CO2, SOI, TSI, Volc, LOD, AAM, Arctic, NAO, Sin, Cos, S2, 
    W <- 'as.double(fitxy$coefficients[11])',
    P <- 'as.double(fitxy$coefficients[12])',
    Q <- 'as.double(fitxy$coefficients[13])',
-   J <- 'as.double(fitxy$coefficients[14])',
-   K <- 'as.double(fitxy$coefficients[15])',
-   E <- 'as.double(fitxy$coefficients[16])',
-   F <- 'as.double(fitxy$coefficients[17])',
+   E <- 'as.double(fitxy$coefficients[14])',
+   F <- 'as.double(fitxy$coefficients[15])',
+   G <- 'as.double(fitxy$coefficients[16])',
+   H <- 'as.double(fitxy$coefficients[17])',
+   D <- 'as.double(fitxy$coefficients[18])',
+   I <- 'as.double(fitxy$coefficients[19])',
+   R <- 'as.double(fitxy$coefficients[20])',
+   U <- 'as.double(fitxy$coefficients[21])',
+   J <- 'as.double(fitxy$coefficients[22])',
+   K <- 'as.double(fitxy$coefficients[23])',
    summary <- summary(fitxy),
    r_print(summary),
    R2 <- 'as.double(summary$r.squared)',
@@ -287,6 +305,25 @@ get_lod(Years, Lag, LOD_F) :-
         LOD_F delay LOD_U / Lag
     ;
         LOD_F mapdot 0 .* LOD_U
+    ).
+
+get_scmss(Years, Lag, S_F) :-
+    scmss(SCMSS),
+    interpolate(Years, SCMSS, S_I),
+    S_U unbias S_I,
+    (	Lag >= 0.0 ->
+        S_F delay S_U / Lag
+    ;
+        S_F mapdot 0 .* S_U
+    ).
+get_cmss(Years, Lag, C_F) :-
+    cmss(CMSS),
+    interpolate(Years, CMSS, C_I),
+    C_U unbias C_I,
+    (	Lag >= 0.0 ->
+        C_F delay C_U / Lag
+    ;
+        C_F mapdot 0 .* C_U
     ).
 
 get_soi_noise(_, false, Noise_F) :-
@@ -484,11 +521,26 @@ plot(Request) :-
     ;
     Lunar_Factor = 0
     ),
-    Period is 7.3 * 12,
-    Period2 is 20.0 * 12,
-    % Period3 is 4.2 * 12,
-    Period3 is 5.3 * 12,
-    Period4 is 12 * 12,
+    % Period2 is 22 * 12,  % 20
+    % Period3 is 5.3 * 12,
+    % Period4 is 12 * 12,
+
+    Period is 7.35 * 12,
+    Period2 is 9.15 * 12,  % 20
+    Period3 is 4.4 * 12,
+    Period4 is 5.5 * 12,
+    Period5 is 11.79 * 12,
+    Period6 is 3.35 * 12,
+
+/*
+    Period is 22 * 12,   % 22
+    Period2 is 11 * 12,  % 11
+    Period3 is 7.35 * 12,
+    Period4 is 5.5 * 12,
+    Period5 is 4.4 * 12,
+    Period6 is 3.65 * 12,  % 3.65
+*/
+
     Sin mapdot yearly_sin_period(Period,Lunar_Factor) ~> Months,
     Cos mapdot yearly_cos_period(Period,Lunar_Factor) ~> Months,
     Sin2 mapdot yearly_sin_period(Period2,Lunar_Factor) ~> Months,
@@ -497,6 +549,13 @@ plot(Request) :-
     Cos3 mapdot yearly_cos_period(Period3,Lunar_Factor) ~> Months,
     Sin4 mapdot yearly_sin_period(Period4,Lunar_Factor) ~> Months,
     Cos4 mapdot yearly_cos_period(Period4,Lunar_Factor) ~> Months,
+    Sin5 mapdot yearly_sin_period(Period5,Lunar_Factor) ~> Months,
+    Cos5 mapdot yearly_cos_period(Period5,Lunar_Factor) ~> Months,
+    Sin6 mapdot yearly_sin_period(Period6,Lunar_Factor) ~> Months,
+    Cos6 mapdot yearly_cos_period(Period6,Lunar_Factor) ~> Months,
+    get_scmss(Year, 0, SCMSS),
+    get_cmss(Year, 0, CMSS),
+
 
     /*
     Cos = Zeros,
@@ -521,18 +580,24 @@ plot(Request) :-
     get_arctic(Year, AW, Arctic),
     get_nao(Year, SL, NAO),
 
-    get_fit([T, LogCO2, S2, TSI_F, V1, LOD_F, AAM, Arctic, NAO, Sin, Cos, Sin2, Cos2, Sin3, Cos3, Sin4, Cos4],
+    get_fit([T, LogCO2, S2, TSI_F, V1, LOD_F, AAM, Arctic, NAO, Sin,  Cos,  Sin2, Cos2, Sin3, Cos3,
+	                                                        Sin4, Cos4, Sin5, Cos5, Sin6, Cos6, SCMSS, CMSS],
 	    Coefficients, Int, _R2C),
 	    % [NoiseA, C, SO, TS, VC,   LO],
 
     check_coefficients(Coefficients, [], [C, SO, TS, VC,   LO, AA, ARC, NI, SW,	 CW,  SW2, CW2,
-					                                    SW3, CW3, SW4, CW4]),
+					                                    SW3, CW3, SW4, CW4,
+					                                    SW5, CW5, SW6, CW6, SC, CM]),
 
     Fluct mapdot SO .* S2 + TS .* TSI_F + VC .* V1 + LO .* LOD_F + AA .* AAM +
                  ARC .* Arctic + NI .* NAO + SW .* Sin + CW .* Cos
 		                           + SW2 .* Sin2 + CW2 .* Cos2
-					   + SW3 .* Sin3 + CW3 .* Cos3
-					   + SW4 .* Sin4 + CW4 .* Cos4,
+		                           + SW3 .* Sin3 + CW3 .* Cos3
+		                           + SW4 .* Sin4 + CW4 .* Cos4
+		                           + SW5 .* Sin5 + CW5 .* Cos5
+		                           + SW6 .* Sin6 + CW6 .* Cos6
+                                           + SC .* SCMSS + CM .* CMSS,
+
     T_CO2_R mapdot C .* LogCO2 + Fluct,
     T_R mapdot Int .+ T_CO2_R,
     T_Diff mapdot T - T_R,
@@ -558,13 +623,23 @@ plot(Request) :-
          get_months_from_start(T, Months),
 	 Data tuple Months + Cross,
          Header = [month, cross]
-
      ;
        Characteristic = cross ->
 	 Y_Lunar mapdot SW .* Sin + CW .* Cos + SW2 .* Sin2 + CW2 .* Cos2,
 	 Data tuple Year + Y_Lunar + T_Diff,
          Header = [XLabel, yearly, residual]
 */
+     ;
+       Characteristic = cross ->
+	 Y_Lunar mapdot SW .* Sin + CW .* Cos + SW2 .* Sin2 + CW2 .* Cos2
+                                              + SW3 .* Sin3 + CW3 .* Cos3
+                                              + SW4 .* Sin4 + CW4 .* Cos4
+                                              + SW5 .* Sin5 + CW5 .* Cos5
+                                              + SW6 .* Sin6 + CW6 .* Cos6,
+         % Y_Lunar_Win lag Y_Lunar/60,
+         TSI_C mapdot  TS .* TSI_F,
+	 Data tuple Year + Y_Lunar + TSI_C,
+         Header = [XLabel, solar, tsi]
      ;
        Characteristic = residual ->
          (   FFT ->
@@ -599,9 +674,12 @@ plot(Request) :-
          AAM_D mapdot AA .* AAM,
          ARCTIC_D mapdot ARC .* Arctic,
          NAO_D mapdot NI .* NAO,
-	 Y_Lunar mapdot SW .* Sin + CW .* Cos + SW2 .* Sin2 + CW2 .* Cos2 +
-                                                SW3 .* Sin3 + CW3 .* Cos3 +
-                                                SW4 .* Sin4 + CW4 .* Cos4,
+	 Y_Lunar mapdot SW .* Sin + CW .* Cos + SW2 .* Sin2 + CW2 .* Cos2
+                                              + SW3 .* Sin3 + CW3 .* Cos3
+                                              + SW4 .* Sin4 + CW4 .* Cos4
+					      + SW5 .* Sin5 + CW5 .* Cos5
+                                              + SW6 .* Sin6 + CW6 .* Cos6 +
+                                               SC .* SCMSS + CM .* CMSS,
 
      /*
          Angular mapdot AAM_D + LOLOD_F + Y_Lunar,
@@ -609,7 +687,7 @@ plot(Request) :-
 	 Header = [XLabel, soi,   aero,  tsi,      arctic,    nao,    angular]
      */
          Data tuple Year + S0S2 + VCV1 + LOLOD_F + TSTSI_F + AAM_D + ARCTIC_D + NAO_D + Y_Lunar,
-	 Header = [XLabel, soi,   aero,  lod,      tsi,      aam,    arctic,    nao,    yearly]
+	 Header = [XLabel, soi,   aero,  lod,      tsi,      aam,    arctic,    nao,    sun]
 
     ),
     temp_data(NameData, DataSet),
