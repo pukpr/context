@@ -9,8 +9,10 @@
 :- context:register(context_salt_model:navigate).
 :- context:register(context_salt_model:plot).
 
-yearly_sin_period(Period,L,X,Y) :- Y is L*sin(2*pi*X/Period).
-yearly_cos_period(Period,L,X,Y) :- Y is L*cos(2*pi*X/Period).
+yearly_sin_period(Period,true,X,Y) :- Y is sin(2*pi*X/Period).
+yearly_sin_period(_,false,_,0.0).
+yearly_cos_period(Period,true,X,Y) :- Y is cos(2*pi*X/Period).
+yearly_cos_period(_,false,_,0.0).
 
 temp_data('GISS', giss).
 temp_data('HADCRUT4', hadcrut).
@@ -100,7 +102,7 @@ navigate(Request) :-
 					  ['Match temperature with model', model],
 					  ['Correlate CO2 with model', correlate],
 					  ['Correlate temperature with model', map],
-					  ['Cross-Correlate scmss with lunar', cross],
+					  ['Cross-Correlate distance vs speed orbital modes ', cross],
 					  ['Show Arctic detrend (arctic_window > 0)', arctic]
                                          ])),
                           br([]),
@@ -110,13 +112,15 @@ navigate(Request) :-
                                   onclick('subm(this.form,"target_iframe");')]),
 			  input([type('submit'), name(kind), value('volcanos'),
                                  onclick('subm(this.form,"render");')]),
-			  \(con_text:check_box(aam, 'true', 'AAM')),
-			  \(con_text:check_box(wwii_adjust, 'true', 'WWII correction')),
+			  % \(con_text:check_box(aam, 'true', 'AAM')),
+			  \(con_text:check_box(fft, 'true', 'FFT of residual')),
+                          \(con_text:check_box(wave, 'true', 'add waves')),
 			  br([]),
 			  \(con_text:check_box(window, 'true', 'Apply 12 month window')),
-			  \(con_text:check_box(triple, 'true', 'Pratt window')),
-			  \(con_text:check_box(fft, 'true', 'FFT of residual')),
-			  \(con_text:check_box(lunar, 'true', 'lunar')),
+			  \(con_text:check_box(triple, 'true', 'Pratt filter')),
+                          \(con_text:check_box(wwii_adjust, 'true', 'WWII correction')),
+			  % \(con_text:check_box(lunar, 'true', 'lunar')),
+
 			  br([]),
 			  input([type('text'),
 				 size(2),
@@ -131,11 +135,14 @@ navigate(Request) :-
 			  table(
 			      % [width('20%')],
 			      %%%%%%%%%%%%%%%  Hard coded
-			      \(con_text:input_cells([[co2_lag,6,2],
+			      \(con_text:input_cells([[co2_lag,0,2],
 						      [soi_lag,6,2],
-						      [aero_lag,24,2],
+						      [aero_lag,18,2],
 						      [lod_lag,60.0,2],
 						      [tsi_lag,6,2],
+                                                      [aam_lag,6,2],
+                                                      [orbit_lag,1,2],
+                                                      [nao_lag,6,2],
 						      [arctic_window, -120,2]
 						     ]))
 			       )
@@ -235,7 +242,7 @@ get_anthro(false, _, Zeros, W) :-
 */
 
 
-scale(_, lin, cross, 'Month', '#', 'Correlation', ' ') :- !.
+scale(_, lin, cross, 'factor a', '#', 'factor b', '#') :- !.
 scale(_, lin, map, 'Model Temperature', 'C', 'Real Temperature', 'C') :- !.
 scale(_, lin, correlate, 'TCR*ln(CO2)/ln(2)', 'C', 'Temperature', 'C') :- !.
 scale(true, log, residual, 'Wavenumber', '2048/Month', 'Power Spectral', 'density') :- !.
@@ -484,9 +491,9 @@ plot(Request) :-
 			      window(Window, [boolean, default(false)]),
 			      triple(Triple, [boolean, default(false)]),
 			      volc(Sato, [boolean, default(false)]),
-			      aam(AAM_ON, [boolean, default(false)]),
+			      % aam(AAM_ON, [boolean, default(false)]),
 			      wwii_adjust(WWII_Adjust, [boolean, default(false)]),
-			      lunar(Lunar, [boolean, default(false)]),
+			      wave(WL, [boolean, default(false)]),
 			      t_units(Cal, []),
 			      lag(LagCal, [float]),
 			      soi_lag(SL, [number]),
@@ -494,6 +501,9 @@ plot(Request) :-
 			      co2_lag(AL, [number]),
 			      lod_lag(LL, [number]),
 			      tsi_lag(TL, [number]),
+			      aam_lag(ML, [number]),
+			      orbit_lag(OL, [number]),
+			      nao_lag(NL, [number]),
 			      arctic_window(AW, [number]),
                               dataset(DataSet, []),
                               evaluate(Characteristic, [default(model)])]),
@@ -516,11 +526,11 @@ plot(Request) :-
        % Period2 = 0.52267,
     %Period2 = 6.0,
        %Period3 is 0.5, %354.367066/24/(365/12),
-    (	Lunar ->
-    Lunar_Factor = 1
-    ;
-    Lunar_Factor = 0
-    ),
+%    (	WL >= 0 ->
+%    Lunar_Factor = 1
+%    ;
+%    Lunar_Factor = 0
+%    ),
     % Period2 is 22 * 12,  % 20
     % Period3 is 5.3 * 12,
     % Period4 is 12 * 12,
@@ -541,20 +551,20 @@ plot(Request) :-
     Period6 is 3.65 * 12,  % 3.65
 */
 
-    Sin mapdot yearly_sin_period(Period,Lunar_Factor) ~> Months,
-    Cos mapdot yearly_cos_period(Period,Lunar_Factor) ~> Months,
-    Sin2 mapdot yearly_sin_period(Period2,Lunar_Factor) ~> Months,
-    Cos2 mapdot yearly_cos_period(Period2,Lunar_Factor) ~> Months,
-    Sin3 mapdot yearly_sin_period(Period3,Lunar_Factor) ~> Months,
-    Cos3 mapdot yearly_cos_period(Period3,Lunar_Factor) ~> Months,
-    Sin4 mapdot yearly_sin_period(Period4,Lunar_Factor) ~> Months,
-    Cos4 mapdot yearly_cos_period(Period4,Lunar_Factor) ~> Months,
-    Sin5 mapdot yearly_sin_period(Period5,Lunar_Factor) ~> Months,
-    Cos5 mapdot yearly_cos_period(Period5,Lunar_Factor) ~> Months,
-    Sin6 mapdot yearly_sin_period(Period6,Lunar_Factor) ~> Months,
-    Cos6 mapdot yearly_cos_period(Period6,Lunar_Factor) ~> Months,
-    get_scmss(Year, 0, SCMSS),
-    get_cmss(Year, 0, CMSS),
+    Sin mapdot yearly_sin_period(Period,WL) ~> Months,
+    Cos mapdot yearly_cos_period(Period,WL) ~> Months,
+    Sin2 mapdot yearly_sin_period(Period2,WL) ~> Months,
+    Cos2 mapdot yearly_cos_period(Period2,WL) ~> Months,
+    Sin3 mapdot yearly_sin_period(Period3,WL) ~> Months,
+    Cos3 mapdot yearly_cos_period(Period3,WL) ~> Months,
+    Sin4 mapdot yearly_sin_period(Period4,WL) ~> Months,
+    Cos4 mapdot yearly_cos_period(Period4,WL) ~> Months,
+    Sin5 mapdot yearly_sin_period(Period5,WL) ~> Months,
+    Cos5 mapdot yearly_cos_period(Period5,WL) ~> Months,
+    Sin6 mapdot yearly_sin_period(Period6,WL) ~> Months,
+    Cos6 mapdot yearly_cos_period(Period6,WL) ~> Months,
+    get_scmss(Year, OL, SCMSS),
+    get_cmss(Year, OL, CMSS),
 
 
     /*
@@ -567,18 +577,18 @@ plot(Request) :-
     get_lod(Year, LL, LOD_F),
     get_soi(SL, S2),
     % get_soi_noise(SL, SOI_Noise, Noise2),
-    (	AAM_ON ->
-        AAM_Lag is abs(SL)
-    ;
-        AAM_Lag = -1
-    ),
+    % (	AAM_ON ->
+    %     AAM_Lag is abs(SL)
+    % ;
+    %     AAM_Lag = -1
+    % ),
     % get_aam(Year, AAM_Lag, AAM),
-    get_zonal(AAM_Lag, AAM),
+    get_zonal(ML, AAM),
     get_volcanos(Sato, Zeros, VL, V1),
     get_tsi(Year, TL, TSI_F),
     get_co2(Year, AL, LogCO2),
     get_arctic(Year, AW, Arctic),
-    get_nao(Year, SL, NAO),
+    get_nao(Year, NL, NAO),
 
     get_fit([T, LogCO2, S2, TSI_F, V1, LOD_F, AAM, Arctic, NAO, Sin,  Cos,  Sin2, Cos2, Sin3, Cos3,
 	                                                        Sin4, Cos4, Sin5, Cos5, Sin6, Cos6, SCMSS, CMSS],
@@ -631,15 +641,20 @@ plot(Request) :-
 */
      ;
        Characteristic = cross ->
-	 Y_Lunar mapdot SW .* Sin + CW .* Cos + SW2 .* Sin2 + CW2 .* Cos2
-                                              + SW3 .* Sin3 + CW3 .* Cos3
-                                              + SW4 .* Sin4 + CW4 .* Cos4
-                                              + SW5 .* Sin5 + CW5 .* Cos5
-                                              + SW6 .* Sin6 + CW6 .* Cos6,
+	 % Waves mapdot SW .* Sin + CW .* Cos + SW2 .* Sin2 + CW2 .* Cos2
+         %                                     + SW3 .* Sin3 + CW3 .* Cos3
+         %                                     + SW4 .* Sin4 + CW4 .* Cos4
+         %                                     + SW5 .* Sin5 + CW5 .* Cos5
+         %                                     + SW6 .* Sin6 + CW6 .* Cos6,
          % Y_Lunar_Win lag Y_Lunar/60,
-         TSI_C mapdot  TS .* TSI_F,
-	 Data tuple Year + Y_Lunar + TSI_C,
-         Header = [XLabel, solar, tsi]
+         % Orbit mapdot  SC .* SCMSS + CM .* CMSS,
+         % TSI_C mapdot  TS .* TSI_F,
+         % S0S2 mapdot SO .* S2,
+         % AAM_D mapdot AA .* AAM,
+         Distance mapdot  CM .* CMSS,
+         Speed mapdot  SC .* SCMSS,
+	 Data tuple Distance + Speed,
+         Header = [distance, speed]
      ;
        Characteristic = residual ->
          (   FFT ->
@@ -672,22 +687,22 @@ plot(Request) :-
 	 LOLOD_F mapdot LO .* LOD_F,
          % Noise_D mapdot NoiseA .* Noise2,
          AAM_D mapdot AA .* AAM,
-         ARCTIC_D mapdot ARC .* Arctic,
+         % ARCTIC_D mapdot ARC .* Arctic,
          NAO_D mapdot NI .* NAO,
-	 Y_Lunar mapdot SW .* Sin + CW .* Cos + SW2 .* Sin2 + CW2 .* Cos2
+	 Waves mapdot SW .* Sin + CW .* Cos + SW2 .* Sin2 + CW2 .* Cos2
                                               + SW3 .* Sin3 + CW3 .* Cos3
                                               + SW4 .* Sin4 + CW4 .* Cos4
 					      + SW5 .* Sin5 + CW5 .* Cos5
-                                              + SW6 .* Sin6 + CW6 .* Cos6 +
-                                               SC .* SCMSS + CM .* CMSS,
+                                              + SW6 .* Sin6 + CW6 .* Cos6,
+         Orbit mapdot  SC .* SCMSS + CM .* CMSS,
 
      /*
          Angular mapdot AAM_D + LOLOD_F + Y_Lunar,
          Data tuple Year + S0S2 + VCV1 + TSTSI_F + ARCTIC_D + NAO_D + Angular,
 	 Header = [XLabel, soi,   aero,  tsi,      arctic,    nao,    angular]
      */
-         Data tuple Year + S0S2 + VCV1 + LOLOD_F + TSTSI_F + AAM_D + ARCTIC_D + NAO_D + Y_Lunar,
-	 Header = [XLabel, soi,   aero,  lod,      tsi,      aam,    arctic,    nao,    sun]
+         Data tuple Year + S0S2 + VCV1 + LOLOD_F + TSTSI_F + AAM_D + NAO_D + Orbit + Waves,
+	 Header = [XLabel, soi,   aero,  lod,      tsi,      aam,    nao,    orbit,  wave]
 
     ),
     temp_data(NameData, DataSet),
@@ -697,9 +712,9 @@ plot(Request) :-
                      \(con_text:style)],
                     [
 		     table([tr([th('R=cc'), th('ln(co2)'),th(soi),th('a(volc)'),
-				th(lod),th(tsi), th(aam), th(nao), th(year), th(arctic)]),
+				th(lod),th(tsi), th(aam), th(orbit), th(nao), th(arctic)]),
 			    tr([td(b('~5f'-R2C2)),td('~3f'-C),td('~3f'-SO),td('~3f'-VC),
-				td('~3f'-LO),td('~3f'-TS), td('~5f'-AA), td('~5f'-NI), td('~5f'-SW), td('~5f'-ARC)])
+				td('~3f'-LO),td('~3f'-TS), td('~5f'-AA), td('~5f'-SC), td('~5f'-NI), td('~5f'-ARC)])
 			   ]),
 		     br([]),
 		     div([id('legend')],[]),
