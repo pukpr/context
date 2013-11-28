@@ -101,9 +101,9 @@ navigate(Request) :-
 					  ['View the fluctuation components', all],
 					  ['Match temperature with model', model],
 					  ['Correlate CO2 with model', correlate],
-					  ['Correlate temperature with model', map],
-					  ['Cross-Correlate distance vs speed orbital modes ', cross],
-					  ['Show Arctic detrend (arctic_window > 0)', arctic]
+					  ['Correlate temperature with model', map]
+					  % , ['Cross-Correlate distance vs speed orbital modes ', cross],
+					  % ['Show Arctic detrend (arctic_window > 0)', arctic]
                                          ])),
                           br([]),
 			  input([type('submit'), name(kind), value('graph'),
@@ -114,7 +114,7 @@ navigate(Request) :-
                                  onclick('subm(this.form,"render");')]),
 			  % \(con_text:check_box(aam, 'true', 'AAM')),
 			  \(con_text:check_box(fft, 'true', 'FFT of residual')),
-                          \(con_text:check_box(wave, 'true', 'add waves')),
+                          \(con_text:check_box(wave, 'true', 'add periodic')),
 			  br([]),
 			  \(con_text:check_box(window, 'true', 'Apply 12 month window')),
 			  \(con_text:check_box(triple, 'true', 'Pratt filter')),
@@ -278,14 +278,21 @@ temperature_series(false, DataSet, T) :-
 
 temperature_series(Correction, Window, Triple, DataSet, T, Offset) :-
    temperature_series(Window, Triple, DataSet, TT),
+   get_years_from_1880(TT, Year, _),
    (   Correction ->
-       Front range 0*[1,696],
-       Ramp range [0,0.1]/0.0025,
-       Middle range 0.1*[1,57],
-       % Middle range 0.1*[1,90],
-       Back range 0*[1,811],
-       Clip cat [Front,Ramp,Middle,Back],
-       Offset invert Clip,
+       Profile = [[1880,0],
+		  [1938,0],
+		  [1943, -0.12],
+		  [1944, -0.12],
+		  [1947,0],
+		  [2014,0]],
+       interpolate(Year, Profile, Offset),
+       % Front range 0*[1,696],
+       % Ramp range [0,0.1]/0.0025,
+       % Middle range 0.1*[1,57],
+       % Back range 0*[1,811],
+       % Clip cat [Front,Ramp,Middle,Back],
+       % Offset invert Clip,
        T mapdot TT + Offset
    ;
        T = TT,
@@ -701,8 +708,8 @@ plot(Request) :-
          Data tuple Year + S0S2 + VCV1 + TSTSI_F + ARCTIC_D + NAO_D + Angular,
 	 Header = [XLabel, soi,   aero,  tsi,      arctic,    nao,    angular]
      */
-         Data tuple Year + S0S2 + VCV1 + LOLOD_F + TSTSI_F + AAM_D + NAO_D + Orbit + Waves,
-	 Header = [XLabel, soi,   aero,  lod,      tsi,      aam,    nao,    orbit,  wave]
+         Data tuple Year + S0S2 + VCV1 + LOLOD_F + TSTSI_F + AAM_D + Orbit + Waves + NAO_D,
+	 Header = [XLabel, soi,   aero,  lod,      tsi,      aam,    orbit,  wave,    nao]
 
     ),
     temp_data(NameData, DataSet),
