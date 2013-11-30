@@ -37,6 +37,12 @@ temp_data('HADSST2', sst2).
 temp_data('NRDC', nrdc).
 temp_data('HADCRUT4_CW', hadcrut4_cw).
 
+orbital_period(tide_precession,  7.3,   'tidal precession - spring tides to realign with calendar date').
+orbital_period(tide_sme,         9.015, 'tidal cycle - sun-moon-earth configuration induced oscilation').
+orbital_period(lunar_standstill, 18.6,  'lunar standstill - nodal period when declination of the moon reaches max').
+orbital_period(lunar_absidal,    8.85,  'lunar apsidal - sidereal period exceeds anomalistic period by one month').
+orbital_period(jupiter_sidereal, 11.86, 'jupiter period - tidal sidereal period of jupiter').
+orbital_period(tidal_saros,      18.03, 'tidal cycle - Saros cycle period of eclipses of the sun and moon').
 
 
 dataset(giss, L) :- giss(L).
@@ -84,10 +90,13 @@ dataset(nrdc, L) :- nrdc(L).
 navigate(Request) :-
    collect_unit_options(calendar, Calendar),
    con_text:collect_options(context_salt_model:temp_data, DataSet),
+   findall([D,P], orbital_period(_,P,D), CycleData),
 
    reply_html_page(cliopatria(default),
                    [title('CSALT model response'),
-		    script([type('text/javascript'),src('/html/js/submit.js')], [])],
+		    script([type('text/javascript'),src('/html/js/submit.js')], [])
+		    %, \(con_text:style)
+		   ],
                    [\(con_text:table_with_iframe_target(
                                     Request,
 		     [
@@ -135,28 +144,42 @@ navigate(Request) :-
 				 value('0')]),
 			  select([name('t_units')], Calendar),
 			  i(' <= lag filter on Match'),
-			  h2([i('lag values (months)'),
-			      img([src('/html/images/magnify-clip.png'),
-				   title('if negative value entered, factor is zeroed')
-				  ])]),
-			  table(
-			      % [width('20%')],
-			      %%%%%%%%%%%%%%%  Hard coded
-			      \(con_text:input_cells([[co2_lag,0,2],
+
+			  \multi_columns([
+			       div([
+			       style([ type('text/css'), scoped ],
+					 '@import url("/html/css/context.css")'),
+			       table(
+				   % [width('20%')],
+				   %%%%%%%%%%%%%%%  Hard coded
+				   [
+					h2([i('lags[months]'),
+					   img([src('/html/images/magnify-clip.png'),
+						title('if negative value entered, factor is zeroed')
+					       ])]),
+				       \(con_text:input_cells([[co2_lag,0,2],
 						      [soi_lag,6,2],
 						      [aero_lag,15,2],
 						      [lod_lag,60.0,2],
 						      [tsi_lag,6,2],
                                                       [aam_lag,6,2],
                                                       [orbit_lag,6,2],
-                                                      [nao_lag,120,2],
-						      [arctic_window, -120,2]
+                                                      [amo_win,-120,2],
+						      [arctic_win, -120,2]
 						     ]))
-			       )
+				     ]
+				    )]),
+			       div([style([ type('text/css'), scoped ],
+					 '@import url("/html/css/context.css")'),
+				   \(con_text:table_multiple_entries(
+						  [['period description', year]],
+						  CycleData
+								    ))
+				 ])
+					 ])
 			 ]
-                          ),
-
-                      br([]),
+			  ),
+		      br([]),
 		      \(con_text:render_iframe(render))
 		     ]
 						       ))
@@ -249,11 +272,12 @@ get_anthro(false, _, Zeros, W) :-
 */
 
 
-scale(_, lin, cross, 'factor a', '#', 'factor b', '#') :- !.
-scale(_, lin, map, 'Model Temperature', 'C', 'Real Temperature', 'C') :- !.
-scale(_, lin, correlate, 'TCR*ln(CO2)/ln(2)', 'C', 'Temperature', 'C') :- !.
-scale(true, log, residual, 'Wavenumber', '2048/Month', 'Power Spectral', 'density') :- !.
-scale(_, lin, _, 'Time', 'year', 'Temperature', 'C').
+scale(_, lin, cross, 'factor a', '#', 'factor b', '#', false) :- !.
+scale(_, lin, map, 'Model Temperature', 'C', 'Real Temperature', 'C', false) :- !.
+scale(_, lin, correlate, 'TCR*ln(CO2)/ln(2)', 'C', 'Temperature', 'C', false) :- !.
+scale(true, log, residual, 'Wavenumber', '2048/Month', 'Power Spectral', 'density', false) :- !.
+scale(_, lin, model, 'Time', 'year', 'Temperature', 'C', true) :- !.
+scale(_, lin, _, 'Time', 'year', 'Temperature', 'C', false).
 
 single_filter(In, Out) :-
     median_filter(In, In0),
@@ -277,7 +301,8 @@ temperature_series(true, false, DataSet, T) :-
 %    uniform(12,Win),
 %    T window T0*Win.
 temperature_series(false, false, DataSet, T) :-
-    dataset(DataSet, T).
+    dataset(DataSet, T0),
+    median_filter(T0, T).
 
 /*
 temperature_series(true, DataSet, T) :-
@@ -294,8 +319,8 @@ temperature_series(Correction, Window, Triple, DataSet, T, Offset) :-
    (   Correction ->
        Profile = [[1880,0],
 		  [1938,0],
-		  [1943, -0.12],
-		  [1944, -0.12],
+		  [1943.5, -0.14],
+		  % [1944, -0.12],
 		  [1947,0],
 		  [2014,0]],
        interpolate(Year, Profile, Offset),
@@ -609,12 +634,12 @@ plot(Request) :-
 			      tsi_lag(TL, [number]),
 			      aam_lag(ML, [number]),
 			      orbit_lag(OL, [number]),
-			      nao_lag(NL, [number]),
-			      arctic_window(AW, [number]),
+			      amo_win(NL, [number]),
+			      arctic_win(AW, [number]),
                               dataset(DataSet, []),
                               evaluate(Characteristic, [default(model)])]),
 
-    scale(FFT, LogLin, Characteristic, XLabel, XUnits, YLabel, YUnits),
+    scale(FFT, LogLin, Characteristic, XLabel, XUnits, YLabel, YUnits, Show_Error_Bars),
     scaling(Cal, month, Scale),
     Lag is Scale*LagCal,
 
@@ -735,6 +760,10 @@ plot(Request) :-
     % Drift_Baseline mapdot C .* LogCO2 + LO .* LOD_F,
     % T_From_Baseline mapdot T - Drift_Baseline,
     !,
+    sum_of_squares(T, T_R, Sum_of_Sq),
+    length(Months, Length_Series),
+    Error_Bar is 2*sqrt(Sum_of_Sq/Length_Series),
+
     T_lag lag T / Lag,
     T_R_lag lag T_R / Lag,
     corrcoeff(T_lag, T_R_lag, R2C2),
@@ -744,7 +773,12 @@ plot(Request) :-
          Header = [XLabel, arctic]
      ;
        Characteristic = model ->
-	 Data tuple Year + T_lag + T_R_lag + Correction,
+         T_lag_low mapdot T_lag .- Error_Bar,
+         T_lag_high mapdot Error_Bar .+ T_lag,
+         T_lags tuple T_lag_low + T_lag + T_lag_high,
+         T_R_lags tuple T_R_lag + T_R_lag + T_R_lag,
+         Corrections tuple Correction + Correction + Correction,
+	 Data group Year + T_lags + T_R_lags + Corrections,
          Header = [XLabel, DataSet, model, correction]
      ;
        Characteristic = map ->
@@ -872,9 +906,12 @@ plot(Request) :-
 			   ]),
 		     br([]),
 		     div([id('legend')],[]),
-		     \(context_graphing:dygraph_native(LogLin, Header,
+		     % \(context_graphing:dygraph_native(LogLin, Header,
+		     %				       [XLabel,XUnits], [YLabel, YUnits],
+		     %				       [NameData, ' - CSALT:', Characteristic], Data)),
+		     \(context_graphing:dygraph_error_bars(LogLin, Header,
 						       [XLabel,XUnits], [YLabel, YUnits],
-						       [NameData, ' - CSALT:', Characteristic], Data)),
+						       [NameData, ' - CSALT:', Characteristic], Data, Show_Error_Bars)),
 		     br([]),
 		     br([]),
 		     p(i('TCR = ~4f C for doubling of CO2'-TCR)),
