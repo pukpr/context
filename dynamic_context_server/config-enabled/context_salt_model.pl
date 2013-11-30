@@ -37,12 +37,12 @@ temp_data('HADSST2', sst2).
 temp_data('NRDC', nrdc).
 temp_data('HADCRUT4_CW', hadcrut4_cw).
 
-orbital_period(tide_precession,  7.3,   'tidal precession - spring tides to realign with calendar date').
-orbital_period(tide_sme,         9.015, 'tidal cycle - sun-moon-earth configuration induced oscilation').
-orbital_period(lunar_standstill, 18.6,  'lunar standstill - nodal period when declination of the moon reaches max').
-orbital_period(lunar_absidal,    8.85,  'lunar apsidal - sidereal period exceeds anomalistic period by one month').
-orbital_period(jupiter_sidereal, 11.86, 'jupiter period - tidal sidereal period of jupiter').
-orbital_period(tidal_saros,      18.03, 'tidal cycle - Saros cycle period of eclipses of the sun and moon').
+orbital_period('tide precession',  7.3,   'spring tides to realign with calendar date').
+orbital_period('tidal cycle',      9.015, 'sun-moon-earth configuration induced oscillation').
+orbital_period('lunar standstill', 18.6,  'nodal period when declination of the moon reaches max').
+orbital_period('lunar absidal',    8.85,  'when sidereal period exceeds anomalistic period by one month').
+orbital_period('jupiter sidereal', 11.86, 'tidal sidereal period of jupiter').
+orbital_period('tidal saros',      18.03, 'Saros cycle period of eclipses of the sun and moon').
 
 
 dataset(giss, L) :- giss(L).
@@ -90,7 +90,7 @@ dataset(nrdc, L) :- nrdc(L).
 navigate(Request) :-
    collect_unit_options(calendar, Calendar),
    con_text:collect_options(context_salt_model:temp_data, DataSet),
-   findall([D,P], orbital_period(_,P,D), CycleData),
+   findall([N,D,P], orbital_period(N,P,D), CycleData),
 
    reply_html_page(cliopatria(default),
                    [title('CSALT model response'),
@@ -116,8 +116,8 @@ navigate(Request) :-
 					  ['View the fluctuation components', all],
 					  ['Match temperature with model', model],
 					  ['Correlate CO2 with model', correlate],
-					  ['Correlate temperature with model', map],
-					  ['Correlate AMO with periodic', cross]
+					  ['Correlate temperature with model', map]
+					  % ['Correlate AMO with periodic', cross]
 					  % , ['Cross-Correlate distance vs speed orbital modes ', cross],
 					  % ['Show Arctic detrend (arctic_window > 0)', arctic]
                                          ])),
@@ -130,7 +130,6 @@ navigate(Request) :-
                                  onclick('subm(this.form,"render");')]),
 			  % \(con_text:check_box(aam, 'true', 'AAM')),
 			  \(con_text:check_box(fft, 'true', 'FFT of residual')),
-                          \(con_text:check_box(wave, 'true', 'add periodic')),
 			  br([]),
 			  \(con_text:check_box(window, 'true', 'Apply 12 month window')),
 			  \(con_text:check_box(triple, 'true', 'Pratt filter')),
@@ -143,21 +142,19 @@ navigate(Request) :-
 				 name('lag'),
 				 value('0')]),
 			  select([name('t_units')], Calendar),
-			  i(' <= lag filter on Match'),
+			  small(i(' <= lag filter on Match, smooths data and model')),
 
-			  \multi_columns([
-			       div([
-			       style([ type('text/css'), scoped ],
-					 '@import url("/html/css/context.css")'),
-			       table(
-				   % [width('20%')],
-				   %%%%%%%%%%%%%%%  Hard coded
-				   [
+			  small(\multi_columns([
+				     div([
+					 style([ type('text/css'), scoped ],
+					       '@import url("/html/css/context.css")'),
+					 table(  %%%%%%%%%%%%%%%  Hard coded  values
+				       [
 					h2([i('lags[months]'),
 					   img([src('/html/images/magnify-clip.png'),
 						title('if negative value entered, factor is zeroed')
 					       ])]),
-				       \(con_text:input_cells([[co2_lag,0,2],
+					\(con_text:input_cells([[co2_lag,0,2],
 						      [soi_lag,6,2],
 						      [aero_lag,15,2],
 						      [lod_lag,60.0,2],
@@ -167,16 +164,18 @@ navigate(Request) :-
                                                       [amo_win,-120,2],
 						      [arctic_win, -120,2]
 						     ]))
-				     ]
-				    )]),
-			       div([style([ type('text/css'), scoped ],
+				       ]
+					)]),
+				     p([' ...... ']),
+				     div([style([ type('text/css'), scoped ],
 					 '@import url("/html/css/context.css")'),
-				   \(con_text:table_multiple_entries(
-						  [['period description', year]],
+					  \(con_text:check_box(wave, 'true', 'add periodic elements below')),
+					  \(con_text:table_multiple_entries(
+						  [[cycle, 'period description', year]],
 						  CycleData
 								    ))
 				 ])
-					 ])
+					 ]))
 			 ]
 			  ),
 		      br([]),
