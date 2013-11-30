@@ -741,8 +741,8 @@ def_list(A=B) -->
 paragraphs([]) --> !.
 paragraphs([F|R]) -->
    {with_output_to(atom(Text), write(F))},
-   html(p(Text)),
    (   {is_list(F)} ->
+       html(p(Text)),
        paragraphs(F)
    ;
        def_list(F)

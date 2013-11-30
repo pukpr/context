@@ -1,6 +1,7 @@
 :- module(context_salt_model, [
 			       yearly_sin_period/4,
-			       yearly_cos_period/4
+			       yearly_cos_period/4,
+			       square_with_sign/2
 			      ]).
 
 :- use_module(context_math).
@@ -13,6 +14,11 @@ yearly_sin_period(Period,true,X,Y) :- Y is sin(2*pi*X/Period).
 yearly_sin_period(_,false,_,0.0).
 yearly_cos_period(Period,true,X,Y) :- Y is cos(2*pi*X/Period).
 yearly_cos_period(_,false,_,0.0).
+/*
+square_with_sign(X,Y) :- X > 0, Y is X + 0.01*X*X, !.
+square_with_sign(X,X).
+*/
+square_with_sign(X,Y) :- Y is X^2 + 1*X.
 
 temp_data('GISS', giss).
 temp_data('HADCRUT4', hadcrut).
@@ -101,7 +107,8 @@ navigate(Request) :-
 					  ['View the fluctuation components', all],
 					  ['Match temperature with model', model],
 					  ['Correlate CO2 with model', correlate],
-					  ['Correlate temperature with model', map]
+					  ['Correlate temperature with model', map],
+					  ['Correlate AMO with periodic', cross]
 					  % , ['Cross-Correlate distance vs speed orbital modes ', cross],
 					  % ['Show Arctic detrend (arctic_window > 0)', arctic]
                                          ])),
@@ -137,12 +144,12 @@ navigate(Request) :-
 			      %%%%%%%%%%%%%%%  Hard coded
 			      \(con_text:input_cells([[co2_lag,0,2],
 						      [soi_lag,6,2],
-						      [aero_lag,18,2],
+						      [aero_lag,15,2],
 						      [lod_lag,60.0,2],
 						      [tsi_lag,6,2],
                                                       [aam_lag,6,2],
-                                                      [orbit_lag,1,2],
-                                                      [nao_lag,6,2],
+                                                      [orbit_lag,6,2],
+                                                      [nao_lag,120,2],
 						      [arctic_window, -120,2]
 						     ]))
 			       )
@@ -248,22 +255,27 @@ scale(_, lin, correlate, 'TCR*ln(CO2)/ln(2)', 'C', 'Temperature', 'C') :- !.
 scale(true, log, residual, 'Wavenumber', '2048/Month', 'Power Spectral', 'density') :- !.
 scale(_, lin, _, 'Time', 'year', 'Temperature', 'C').
 
+single_filter(In, Out) :-
+    median_filter(In, In0),
+    Out window In0*12.
 triple_filter(In, Out) :-
-    A window In*12,
+    median_filter(In, In0),
+    A window In0*12,
     B window A*9,
     Out window B*7.
 
-temperature_series(true, true, DataSet, T) :-
-    dataset(DataSet, T0),
-    triple_filter(T0, T1),
-    T window T1*12.
-temperature_series(false, true, DataSet, T) :-
+% temperature_series(true, true, DataSet, T) :-
+%     dataset(DataSet, T0),
+%    triple_filter(T0, T1),
+%    T window T1*12.
+temperature_series(_, true, DataSet, T) :-
     dataset(DataSet, T0),
     triple_filter(T0, T).
 temperature_series(true, false, DataSet, T) :-
     dataset(DataSet, T0),
-    uniform(12,Win),
-    T window T0*Win.
+    single_filter(T0, T).
+%    uniform(12,Win),
+%    T window T0*Win.
 temperature_series(false, false, DataSet, T) :-
     dataset(DataSet, T).
 
@@ -354,11 +366,56 @@ get_soi_noise(Lag, true, Noise_F) :-
 
 get_soi(Lag, SOI_F) :-
     soi(SOI),
-    S0 unbias SOI,
+    S unbias SOI,
+    % Square
+    % SU unbias S0,
+    % S mapdot square_with_sign ~> SU,
     (	Lag >= 0.0 ->
-        SOI_F lag S0 / Lag
+        SOI_F lag S / Lag
     ;
-        SOI_F mapdot 0 .* S0
+        SOI_F mapdot 0 .* S
+    ).
+get_tahiti_darwin(Lag, SOI_F) :-
+    tahiti(T),
+    TU unbias T,
+    % T2 mapdot T * T,
+    darwin(D),
+    DU unbias D,
+    % D2 mapdot D * D,
+    SOI mapdot TU - DU,
+    S unbias SOI,
+    (	Lag >= 0.0 ->
+        SOI_F lag S / Lag
+    ;
+        SOI_F mapdot 0 .* S
+    ).
+
+get_tahiti(Lag, SOI_F) :-
+    tahiti(SOI),
+    (	Lag >= 0.0 ->
+        SOI_F lag SOI / Lag
+    ;
+        SOI_F mapdot 0 .* SOI
+    ).
+
+get_darwin(Lag, SOI_F) :-
+    darwin(SOI),
+    (	Lag >= 0.0 ->
+        SOI_F lag SOI / Lag
+    ;
+        SOI_F mapdot 0 .* SOI
+    ).
+
+
+get_soi_peak(Lag, SOI_F) :-
+    soi(SOI),
+    % triple_filter(SOI, S0),
+    % peak_detector(S0, S1),
+    S unbias SOI,
+    (	Lag >= 0.0 ->
+        SOI_F lag S / Lag
+    ;
+        SOI_F mapdot 0 .* S
     ).
 
 get_volcanos(true, _, Lag, Vol_F) :-
@@ -415,6 +472,18 @@ get_nao(Years, Lag, Arctic_F) :-
         Arctic_F mapdot 0 .* Arc_L
     ).
 
+get_amo(Win, AMO_F) :-
+    amo_raw(AMO),
+    A unbias AMO,
+    (	Win >= 0 ->
+        AW window A * Win,
+	AI mapdot A - AW,
+        % AMO_F lag AI / Lag
+	triple_filter(AI, AMO_F)
+    ;
+        AMO_F mapdot 0 .* A
+    ).
+
 /*
 get_nao(_Noise, Win, Arctic_F) :-
     nao_hurrell(Arc_I),
@@ -465,6 +534,9 @@ get_zonal(Lag, Zonal_F) :-
     Zonal_Front mapdot Clip * Zonal_W,
     glaam(AAM),
     Profile mapdot 6.0 .* Zonal_Front + AAM,
+    % Square
+    % PU unbias P0,
+    % Profile mapdot square_with_sign ~> PU,
     (	Lag >= 0.0 ->
 	Zonal_F lag Profile / Lag
     ;
@@ -477,6 +549,33 @@ check_coefficients([F|Rest], List, Final ) :-
     check_coefficients(Rest, [0.0|List], Final).
 check_coefficients([F|Rest], List, Final ) :-
     check_coefficients(Rest, [F|List], Final).
+
+show_rms([], Out, Out).
+show_rms([[Name,A]|R], In, Out) :-
+    rms(A, RMS),
+    R1000 is 1000*RMS,
+    format(atom(Value), '~1f', [R1000]),
+    show_rms(R, [Name=Value|In], Out).
+show_rms(Array, Values) :-
+    show_rms(Array, [], Values).
+
+show_periods([], Out, Out).
+show_periods([[Period,S,C]|R], In, Out) :-
+    RMS is 1000*sqrt(S*S+C*C),
+    format(atom(Value), '~1f', [RMS]),
+    Year is Period / 12,
+    % format(atom(Name), '~dyears', [Year]),
+    show_periods(R, [Year=Value|In], Out).
+show_periods(Array, Values) :-
+    show_periods(Array, [], Values).
+
+html_rms(RMS, _) --> {var(RMS)}.
+html_rms(RMS, Periodic) -->
+    html(p(i('Temperature variance as RMS values in milliKelvin, baseline=1960'))),
+    con_text:paragraphs(RMS),
+    html(p(i('Individual periodic cycles in years'))),
+    con_text:paragraphs(Periodic).
+
 
 plot(Request) :-
     http_parameters(Request, [kind(volcanos, [])]),
@@ -542,12 +641,22 @@ plot(Request) :-
     % Period3 is 5.3 * 12,
     % Period4 is 12 * 12,
 
-    Period is 7.35 * 12,
-    Period2 is 9.15 * 12,  % 20
-    Period3 is 4.4 * 12,
-    Period4 is 5.5 * 12,
-    Period5 is 11.79 * 12,
-    Period6 is 3.35 * 12,
+/*  % Eureqa
+    Period is 7.3 * 12,
+    Period2 is 9.1 * 12,   % 9.1 Soli-lunar cycle 20
+    Period3 is 4.5 * 12,    % 4.5
+    Period4 is 18.03 * 12,  % 18.03 Soros cycle tide 18.03, Lunar precessional 18.6 5.5
+    Period5 is 11.86 * 12,  % Tidal sidereal period of Jupiter
+    Period6 is 3.35 * 12,   % 3.35 short duration sunspot
+*/
+    % Scafetta
+    Period is 7.3 * 12,      % precession cycle with the time for Spring tides to realign with the same day each year
+    Period2 is 9.015 * 12,   % Sun-Moon-Earth tidal configuration
+    Period3 is 18.6 * 12,    % Lunar precessional
+    Period4 is 8.85 * 12,    % Lunar apsidal precession
+    Period5 is 11.86 * 12,   % Tidal sidereal period of Jupiter
+    Period6 is 18.03 * 12,   % Soros cycle tide
+    % 7.3 = http://tallbloke.wordpress.com/2013/02/07/short-term-forecasting-uah-lower-troposphere/
 
 /*
     Period is 22 * 12,   % 22
@@ -583,6 +692,7 @@ plot(Request) :-
 
     get_lod(Year, LL, LOD_F),
     get_soi(SL, S2),
+    % get_tahiti_darwin(SL, S2),
     % get_soi_noise(SL, SOI_Noise, Noise2),
     % (	AAM_ON ->
     %     AAM_Lag is abs(SL)
@@ -595,7 +705,10 @@ plot(Request) :-
     get_tsi(Year, TL, TSI_F),
     get_co2(Year, AL, LogCO2),
     get_arctic(Year, AW, Arctic),
-    get_nao(Year, NL, NAO),
+    % get_nao(Year, NL, NAO),
+    get_amo(NL, NAO),
+    % get_darwin(NL, NAO),
+    % get_soi_peak(NL, NAO),
 
     get_fit([T, LogCO2, S2, TSI_F, V1, LOD_F, AAM, Arctic, NAO, Sin,  Cos,  Sin2, Cos2, Sin3, Cos3,
 	                                                        Sin4, Cos4, Sin5, Cos5, Sin6, Cos6, SCMSS, CMSS],
@@ -618,6 +731,9 @@ plot(Request) :-
     T_CO2_R mapdot C .* LogCO2 + Fluct,
     T_R mapdot Int .+ T_CO2_R,
     T_Diff mapdot T - T_R,
+    %
+    % Drift_Baseline mapdot C .* LogCO2 + LO .* LOD_F,
+    % T_From_Baseline mapdot T - Drift_Baseline,
     !,
     T_lag lag T / Lag,
     T_R_lag lag T_R / Lag,
@@ -634,8 +750,8 @@ plot(Request) :-
        Characteristic = map ->
 	 Data tuple T_R_lag + T_lag,
          Header = [model, DataSet]
-/*     ;
-       Characteristic = cross ->
+     ;
+/*       Characteristic = cross ->
          Cross correlate T_R_lag * T_lag,
          get_months_from_start(T, Months),
 	 Data tuple Months + Cross,
@@ -645,7 +761,7 @@ plot(Request) :-
 	 Y_Lunar mapdot SW .* Sin + CW .* Cos + SW2 .* Sin2 + CW2 .* Cos2,
 	 Data tuple Year + Y_Lunar + T_Diff,
          Header = [XLabel, yearly, residual]
-*/
+
      ;
        Characteristic = cross ->
 	 % Waves mapdot SW .* Sin + CW .* Cos + SW2 .* Sin2 + CW2 .* Cos2
@@ -663,16 +779,31 @@ plot(Request) :-
 	 Data tuple Distance + Speed,
          Header = [distance, speed]
      ;
+*/
+       Characteristic = cross ->
+	 Waves mapdot SW .* Sin + CW .* Cos + SW2 .* Sin2 + CW2 .* Cos2
+                                              + SW3 .* Sin3 + CW3 .* Cos3
+                                              + SW4 .* Sin4 + CW4 .* Cos4
+                                              + SW5 .* Sin5 + CW5 .* Cos5
+                                              + SW6 .* Sin6 + CW6 .* Cos6,
+         AMO_C mapdot  NI .* NAO,
+         % Combo mapdot Waves + AMO_C,
+         Orbit mapdot  SC .* SCMSS + CM .* CMSS,
+	 Data tuple Year + AMO_C + Waves + Orbit,
+         Header = [XLabel, amo, periods, orbit]
+     ;
        Characteristic = residual ->
          (   FFT ->
 	     R_FFT fft T_Diff,
 	     Range ordinal R_FFT,
 	     Data tuple Range + R_FFT
 	 ;
-	     Data tuple Year + T_Diff
+             % T_Base mapdot Int .+ C .* LogCO2 + LO .* LOD_F ,
+             % Noise_Level mapdot T - T_Base,
+	     Data tuple Year + T_Diff %  + Noise_Level
 	 ),
 
-         Header = [XLabel, residual]
+         Header = [XLabel, residual] % , fluctuation]
      ;
        Characteristic = signal ->
          CO2_Signal mapdot Int .+ C .* LogCO2,
@@ -702,6 +833,22 @@ plot(Request) :-
 					      + SW5 .* Sin5 + CW5 .* Cos5
                                               + SW6 .* Sin6 + CW6 .* Cos6,
          Orbit mapdot  SC .* SCMSS + CM .* CMSS,
+	 CO2_Strength mapdot C .* LogCO2,
+	 show_rms([[amo, NAO_D],
+		   ['set of observed cycle periods',Waves],
+		   [tsi,TSTSI_F],
+		   [orbit,Orbit],
+		   [aero, VCV1],
+		   [aam,AAM_D],
+		   [soi,S0S2],
+		   [lod,LOLOD_F],
+		   [co2, CO2_Strength]], RMS),
+	 show_periods([[Period, SW, CW],
+		       [Period2, SW2, CW2],
+		       [Period3, SW3, CW3],
+		       [Period4, SW4, CW4],
+		       [Period5, SW5, CW5],
+		       [Period6, SW6, CW6]], Periodic),
 
      /*
          Angular mapdot AAM_D + LOLOD_F + Y_Lunar,
@@ -730,7 +877,8 @@ plot(Request) :-
 						       [NameData, ' - CSALT:', Characteristic], Data)),
 		     br([]),
 		     br([]),
-		     p(i('TCR = ~4f C for doubling of CO2'-TCR))
+		     p(i('TCR = ~4f C for doubling of CO2'-TCR)),
+		     \html_rms(RMS, Periodic)
                     ]
 		  )
    ;

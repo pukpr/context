@@ -7,9 +7,11 @@
                        moment/3,
                        median/2,
                        rms/2,
+		       variance/2,
                        corrcoeff/3,
 		       sum_of_squares/3,
-		       median_filter/2
+		       median_filter/2,
+		       peak_detector/2
                      ]).
 
 /** <module>  Statistics operations on arrays
@@ -134,6 +136,16 @@ rms(X, Y) :-
     dist(X, M, Y0),
     Y is sqrt(Y0/N).
 
+%%   variance(+X, -Y)
+%
+%    Mean sum of squares of array
+%
+variance(X, Y) :-
+    mean(X, M),
+    length(X, N),
+    dist(X, M, Y0),
+    Y is Y0/N.
+
 %%   corrcoef(+X, +Y, -R)
 %
 %    Correlation Coefficient of two arrays
@@ -180,3 +192,23 @@ median_filter(F,[M,L], In, Y) :-
 median_filter(F, [M,L,R|Rest], In, Y) :-
     sorter([F,M,L],V),
     median_filter(M,[L,R|Rest], [V|In], Y).
+
+%%   peak_detector(+X,-Y)
+%
+%   Do a peak detector on a list.
+%
+
+peak_value([A,B,C], V) :-
+    V is 2*B - A - C.
+
+peak_detector([X|Rest], Y) :-
+    peak_detector(X, Rest, [X], Y), !.
+
+peak_detector(_,[L], In, Y) :-
+    reverse([L|In], Y), !.
+peak_detector(F,[M,L], In, Y) :-
+    peak_value([F,M,L],V),
+    peak_detector(M, [L], [V|In], Y).
+peak_detector(F, [M,L,R|Rest], In, Y) :-
+    peak_value([F,M,L],V),
+    peak_detector(M,[L,R|Rest], [V|In], Y).
