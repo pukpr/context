@@ -254,11 +254,18 @@ dygraph_native(LogScale, Headings, Xaxis, Yaxis, Title, Data) -->
          ])
         ]).
 
+pad_header([], In, Out) :- reverse(In,Out).
+pad_header([F|R], In, Out) :-
+   atom_concat(F, ' ', Str),
+   pad_header(R, [Str|In], Out).
+
+
 %%   dygraph_error_bars(+LogScale, +Headings, +Xaxis, +Yaxis, +Title, +Data)//
 %
 %    Dygraph error bar prototype, still under development
 dygraph_error_bars(LogScale, Headings, Xaxis, Yaxis, Title, Data, Bars) -->
    {
+    % pad_header(Headings, [], Headers),
     is_log(LogScale,Log),
     is_log(Bars,CustomBars),
     (	is_list(Title) ->

@@ -34,3 +34,18 @@ li
   color: slategray;
   font-size: 150%;
 }
+
+
+table.fixed { table-layout:fixed;
+	      width:620px;
+}
+table.fixed td { overflow: hidden; }
+table.fixed td:nth-of-type(1) {width:120px;} /*Setting the width of column 1.*/
+table.fixed td:nth-of-type(2) {width:500px;} /*Setting the width of column 2.*/
+
+
+caption
+{
+caption-side:right;
+text-align:left;
+}
