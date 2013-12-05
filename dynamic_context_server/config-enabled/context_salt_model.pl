@@ -51,6 +51,7 @@ temp_data('HADSST3', sst).
 temp_data('CRUTEM4', land).
 temp_data('GISSLand', gistemp_dts).
 temp_data('BEST+CRUTEM4+GISSLand', land_combo).
+temp_data('GISS+NRDC+NOAA', global_combo2).
 temp_data('CRUTEM+2*HADSST', composed).
 temp_data('NOAA LAND OCEAN', noaa_land_ocean).
 temp_data('NOAA LAND', noaa_land).
@@ -101,6 +102,11 @@ dataset(global_combo, L) :-
 	dataset(hadcrut4_cw,L2),
 	dataset(noaa_land_ocean,L3),
 	L mapdot 0.3333 .* L1 + 0.3333 .* L2 + 0.3333 .* L3.
+dataset(global_combo2, L) :-
+	dataset(giss,L1),
+	dataset(nrdc,L2),
+	dataset(noaa_land_ocean,L3),
+	L mapdot 0.3333 .* L1 + 0.3333 .* L2 + 0.3333 .* L3.
 dataset(land_combo, L) :-
 	dataset(land,L1),
 	dataset(best,L2),
@@ -148,6 +154,7 @@ navigate(Request) :-
 					  ['Match temperature with model', model],
 					  ['Correlate CO2 with model', correlate],
 					  ['Correlate temperature with model', map],
+					  ['View cycles', cycles],
 					  ['Correlate AMO with periodic', cross]
 					  % , ['Cross-Correlate distance vs speed orbital modes ', cross],
 					  % ['Show Arctic detrend (arctic_window > 0)', arctic]
@@ -648,7 +655,7 @@ html_rms(RMS, Periodic) -->
 	html(\(con_text:multi_columns([
 		     div([
 			 p(i('Temperature variance as RMS values in milliKelvin, baseline=1960')),
-			 \(con_text:table_multiple_entries([[period,rms]],RMS))
+			 \(con_text:table_multiple_entries([[factor,rms]],RMS))
 			 % \(con_text:paragraphs(RMS))
 		       ]),
 		     div([
@@ -731,15 +738,17 @@ plot(Request) :-
     Period5 is 11.86 * 12,  % Tidal sidereal period of Jupiter
     Period6 is 3.35 * 12,   % 3.35 short duration sunspot
 */
+
+    Q is 1, % -0.1,
     % Scafetta
     Period is 7.3 * 12,      % precession cycle with the time for Spring tides to realign with the same day each year
     Period2 is 9.015 * 12,   % Sun-Moon-Earth tidal configuration
     Period3 is 18.6 * 12,    % Lunar precessional
     Period4 is 8.85 * 12,    % Lunar apsidal precession
     Period5 is 11.86 * 12,   % Tidal sidereal period of Jupiter
-    Period6 is 18.03 * 12,   % Soros cycle tide
-    Period7 is 24,
-    Period8 is 6.2 * 12,          % 20.5
+    Period6 is Period2*2,    % Soros cycle tide
+    Period7 is 24*Q,
+    Period8 is Period3/3,    % 20.5
     % Chandler is 17.8 * 12,
     % 7.3 = http://tallbloke.wordpress.com/2013/02/07/short-term-forecasting-uah-lower-troposphere/
 
@@ -899,12 +908,40 @@ plot(Request) :-
                                               + SW5 .* Sin5 + CW5 .* Cos5
                                               + SW6 .* Sin6 + CW6 .* Cos6
                                               + SW7 .* Sin7 + CW7 .* Cos7
-                                              + SW8 .* Sin8 + CW8 .* Cos8,
-         AMO_C mapdot  NI .* NAO,
+                                              + SW8 .* Sin8 + CW8 .* Cos8
+					      + SC .* SCMSS + CM .* CMSS,
+         % AMO_C mapdot  NI .* NAO,
          Orbit mapdot  SC .* SCMSS + CM .* CMSS,
-         Combo mapdot Waves + AMO_C + Orbit,
-	 Data tuple Year + Waves + Combo,
-         Header = [XLabel, periods, combo]
+         % Combo mapdot Waves + Orbit,
+
+
+	 Data tuple Year + Waves + Orbit,
+         Header = [XLabel, periods, bary]
+     ;
+       Characteristic = cycles ->
+         Cycle0 mapdot SC .* SCMSS + CM .* CMSS,
+	 Cycle1 mapdot SW .* Sin + CW .* Cos,
+         Cycle2 mapdot SW2 .* Sin2 + CW2 .* Cos2,
+	 Cycle3 mapdot SW3 .* Sin3 + CW3 .* Cos3,
+	 Cycle4 mapdot SW4 .* Sin4 + CW4 .* Cos4,
+         Cycle5 mapdot SW5 .* Sin5 + CW5 .* Cos5,
+         Cycle6 mapdot SW6 .* Sin6 + CW6 .* Cos6,                                            Cycle7 mapdot SW7 .* Sin7 + CW7 .* Cos7,
+         Cycle8 mapdot SW8 .* Sin8 + CW8 .* Cos8,
+	 Data tuple Year + Cycle0 + Cycle1 + Cycle2 + Cycle3 + Cycle4
+                         + Cycle5 + Cycle6 + Cycle7 + Cycle8,
+         Header = [XLabel, bary, '7.3','9.015','18.6','8.85',
+				 '11.86', '18.03', '2', '6.2']
+/*
+    Period is 7.3 * 12,      % precession cycle with the time for Spring tides to realign with the same day each year
+    Period2 is 9.015 * 12,   % Sun-Moon-Earth tidal configuration
+    Period3 is 18.6 * 12,    % Lunar precessional
+    Period4 is 8.85 * 12,    % Lunar apsidal precession
+    Period5 is 11.86 * 12,   % Tidal sidereal period of Jupiter
+    Period6 is Period2*2,    % Soros cycle tide
+    Period7 is 24*Q,
+    Period8 is Period3/3,    % 20.5
+*/
+
      ;
        Characteristic = residual ->
          (   FFT ->
