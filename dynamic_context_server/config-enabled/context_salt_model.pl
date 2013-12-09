@@ -70,6 +70,7 @@ orbital_period('jupiter sidereal', 11.86, 'tidal sidereal period of jupiter').
 orbital_period('tidal saros',      18.03, 'Saros cycle period of eclipses of the sun and moon').
 orbital_period('lunar harmonic',   6.2,   'one third of the lunar standstill, Kola cycle').
 orbital_period('two year',         2,     'biennial cycle').
+% extra
 
 dataset(ou_rw, L) :-
     Range range [1,1605]/1,
@@ -233,9 +234,11 @@ get_fit([Temperature, CO2, SOI, TSI, Volc, LOD, AAM, Arctic, NAO, Sin, Cos,
 	                                                          S6,  C6,
 	                                                          S7,  C7,
 	                                                          S8,  C8,
+	                                                          S9,  C9,
 	                                                          SC, CM],
-	[             C,   S,   T,   A,    L,   M, Z, N, V, W, P, Q, E, F, G, H, D, I, R, U,
-		                                                  AA, BB, CC, DD, J, K], Int, R2) :-
+	[             C,   S,   T,   A,    L,   M, Z, N, V, W, P, Q,
+		                                E, F, G, H, D, I, R, U,
+		                                AA, BB, CC, DD, EE, FF, J, K], Int, R2) :-
    r_open_session,
    y <- Temperature,
    c <- CO2,
@@ -262,9 +265,11 @@ get_fit([Temperature, CO2, SOI, TSI, Volc, LOD, AAM, Arctic, NAO, Sin, Cos,
    bb <- C7,
    cc <- S8,
    dd <- C8,
+   ee <- S9,
+   ff <- C9,
    j <- SC,
    k <- CM,
-   fitxy <- lm('y~c+s+a+l+t+m+z+n+v+w+p+q+e+f+g+h+d+i+r+u+aa+bb+cc+dd+j+k'),  %   Add the variables here !!! don't forger
+   fitxy <- lm('y~c+s+a+l+t+m+z+n+v+w+p+q+e+f+g+h+d+i+r+u+aa+bb+cc+dd+ee+ff+j+k'),  %   Add the variables here !!! don't forger
    r_print(fitxy),
    Int <- 'as.double(fitxy$coefficients[1])',
    C <- 'as.double(fitxy$coefficients[2])',
@@ -291,8 +296,10 @@ get_fit([Temperature, CO2, SOI, TSI, Volc, LOD, AAM, Arctic, NAO, Sin, Cos,
    BB <- 'as.double(fitxy$coefficients[23])',
    CC  <- 'as.double(fitxy$coefficients[24])',
    DD <- 'as.double(fitxy$coefficients[25])',
-   J <- 'as.double(fitxy$coefficients[26])',
-   K <- 'as.double(fitxy$coefficients[27])',
+   EE <- 'as.double(fitxy$coefficients[26])',
+   FF <- 'as.double(fitxy$coefficients[27])',
+   J <- 'as.double(fitxy$coefficients[28])',
+   K <- 'as.double(fitxy$coefficients[29])',
    summary <- summary(fitxy),
    r_print(summary),
    R2 <- 'as.double(summary$r.squared)',
@@ -509,6 +516,14 @@ get_eclipses(_, Zeros, Ecl_F) :-
     sparse_list(Zeros, E, Ecl),
     Ecl_F lag Ecl/1.
 
+get_rh(Lag, RH_F) :-
+    rh(RH0),
+    RH unbias RH0,
+    (	Lag >= 0.0 ->
+        RH_F lag RH / Lag
+    ;
+        RH_F mapdot 0 .* RH
+    ).
 
 get_tsi(Years, Lag, TSI_F) :-
     tsi(TSI),
@@ -595,6 +610,16 @@ get_co2(Years, Lag, LogCO2) :-
      ;
         LogCO2 mapdot 0 .* CO2_I
      ).
+
+get_chandler_wobble(Years, Lag, CW_F) :-
+    chandler_wobble(CW),
+    interpolate(Years, CW, CW_I),
+    (	Lag >= 0.0 ->
+	CW_F delay CW_I / Lag
+    ;
+        CW_F mapdot 0 .* CW_I
+    ).
+
 
 get_aam(Years, Lag, AAM_F) :-
     aam_graph(AAM),
@@ -739,18 +764,35 @@ plot(Request) :-
     Period6 is 3.35 * 12,   % 3.35 short duration sunspot
 */
 
-    Q is 1, % -0.1,
+    Q is 1,
+
     % Scafetta
-    Period is 7.3 * 12,      % precession cycle with the time for Spring tides to realign with the same day each year
-    Period2 is 9.015 * 12,   % Sun-Moon-Earth tidal configuration
-    Period3 is 18.6 * 12,    % Lunar precessional
-    Period4 is 8.85 * 12,    % Lunar apsidal precession
-    Period5 is 11.86 * 12,   % Tidal sidereal period of Jupiter
-    Period6 is Period2*2,    % Soros cycle tide
-    Period7 is 24*Q,
-    Period8 is Period3/3,    % 20.5
+    Period is 7.3 * 12 *Q,      % precession cycle with the time for Spring tides to realign with the same day each year
+    Period2 is 9.015 * 12 *Q,   % Sun-Moon-Earth tidal configuration
+    Period3 is 18.613 * 12 *Q,  % Lunar precessional
+    Period4 is 8.848 * 12 *Q,   % Lunar apsidal precession
+    Period5 is 11.86* 12 *Q,   % 11.86 Tidal sidereal period of Jupiter
+    Period6 is Period2*2,       % Soros cycle tide
+    Period7 is Period5/2,       % Period5/2 24*Q,
+    Period8 is Period3/3,       % 20.5
+    Period9 is Period4/2,
     % Chandler is 17.8 * 12,
     % 7.3 = http://tallbloke.wordpress.com/2013/02/07/short-term-forecasting-uah-lower-troposphere/
+
+    /*
+
+ % Keeling Whorf
+    Period is 223 * Q,
+    Period2 is 112 * Q,
+    Period3 is 111 * Q,
+    Period4 is 76.5 * Q,
+    Period5 is 70 * Q,
+    Period6 is 41*Q,
+    Period7 is 35.5*Q,
+    Period8 is 34.5*Q,
+    Period9 is 28*Q,
+
+*/
 
 /*
     Period is 22 * 12,   % 22
@@ -777,6 +819,8 @@ plot(Request) :-
     Cos7 mapdot yearly_cos_period(Period7,WL) ~> Months,
     Sin8 mapdot yearly_sin_period(Period8,WL) ~> Months,
     Cos8 mapdot yearly_cos_period(Period8,WL) ~> Months,
+    Sin9 mapdot yearly_sin_period(Period9,WL) ~> Months,
+    Cos9 mapdot yearly_cos_period(Period9,WL) ~> Months,
     get_scmss(Year, OL, SCMSS),
     get_cmss(Year, OL, CMSS),
 
@@ -804,7 +848,9 @@ plot(Request) :-
     get_co2(Year, AL, LogCO2),
 
     % get_arctic(Year, AW, Arctic),
-    get_amo(NL, NAO),       % get_nao(Year, NL, NAO),
+    % get_amo(NL, NAO),       % get_nao(Year, NL, NAO),
+    get_rh(NL, NAO),
+    % get_chandler_wobble(Year, NL, NAO),
     get_pdo(Months, AW, Arctic),
 
     %EScale = 0.0046, % 676,
@@ -820,14 +866,16 @@ plot(Request) :-
     get_fit([T, LogCO2, S2, TSI_F, V1, LOD_F, AAM, Arctic, NAO, Sin,  Cos,  Sin2, Cos2,
 	                                                        Sin3, Cos3, Sin4, Cos4,
 								Sin5, Cos5, Sin6, Cos6,
-								Sin7, Cos7, Sin8, Cos8, SCMSS, CMSS],
+								Sin7, Cos7, Sin8, Cos8,
+	                                                        Sin9, Cos9, SCMSS, CMSS],
 	    Coefficients, Int, _R2C),
 	    % [NoiseA, C, SO, TS, VC,   LO],
 
     check_coefficients(Coefficients, [], [C, SO, TS, VC,   LO, AA, ARC, NI, SW,	 CW,  SW2, CW2,
 					                                    SW3, CW3, SW4, CW4,
 					                                    SW5, CW5, SW6, CW6,
-					                                    SW7, CW7, SW8, CW8, SC, CM]),
+					                                    SW7, CW7, SW8, CW8,
+					                                    SW9, CW9, SC, CM]),
 
     Fluct mapdot SO .* S2 + TS .* TSI_F + VC .* V1 + LO .* LOD_F + AA .* AAM +
                  ARC .* Arctic + NI .* NAO + SW .* Sin + CW .* Cos
@@ -838,6 +886,7 @@ plot(Request) :-
 		                           + SW6 .* Sin6 + CW6 .* Cos6
 		                           + SW7 .* Sin7 + CW7 .* Cos7
 		                           + SW8 .* Sin8 + CW8 .* Cos8
+		                           + SW9 .* Sin9 + CW9 .* Cos9
                                            + SC .* SCMSS + CM .* CMSS,
 
     T_CO2_R mapdot C .* LogCO2 + Fluct,
@@ -925,12 +974,13 @@ plot(Request) :-
 	 Cycle3 mapdot SW3 .* Sin3 + CW3 .* Cos3,
 	 Cycle4 mapdot SW4 .* Sin4 + CW4 .* Cos4,
          Cycle5 mapdot SW5 .* Sin5 + CW5 .* Cos5,
-         Cycle6 mapdot SW6 .* Sin6 + CW6 .* Cos6,                                            Cycle7 mapdot SW7 .* Sin7 + CW7 .* Cos7,
+         Cycle6 mapdot SW6 .* Sin6 + CW6 .* Cos6,					 Cycle7 mapdot SW7 .* Sin7 + CW7 .* Cos7,
          Cycle8 mapdot SW8 .* Sin8 + CW8 .* Cos8,
+         Cycle9 mapdot SW9 .* Sin9 + CW9 .* Cos9,
 	 Data tuple Year + Cycle0 + Cycle1 + Cycle2 + Cycle3 + Cycle4
-                         + Cycle5 + Cycle6 + Cycle7 + Cycle8,
+                         + Cycle5 + Cycle6 + Cycle7 + Cycle8 + Cycle9,
          Header = [XLabel, bary, '7.3','9.015','18.6','8.85',
-				 '11.86', '18.03', '2', '6.2']
+				 '11.86', '18.03', '7.3/2', '6.2', '8.85/2']
 /*
     Period is 7.3 * 12,      % precession cycle with the time for Spring tides to realign with the same day each year
     Period2 is 9.015 * 12,   % Sun-Moon-Earth tidal configuration
@@ -951,10 +1001,11 @@ plot(Request) :-
 	 ;
              % T_Base mapdot Int .+ C .* LogCO2 + LO .* LOD_F ,
              % Noise_Level mapdot T - T_Base,
-	     Data tuple Year + T_Diff %  + Noise_Level
+	     RHV mapdot NI .* NAO,
+	     Data tuple Year + T_Diff +RHV   %  + Noise_Level
 	 ),
 
-         Header = [XLabel, residual] % , fluctuation]
+         Header = [XLabel, residual, rh] % , fluctuation]
      ;
        Characteristic = signal ->
          CO2_Signal mapdot Int .+ C .* LogCO2,
@@ -982,7 +1033,11 @@ plot(Request) :-
                                               + SW3 .* Sin3 + CW3 .* Cos3
                                               + SW4 .* Sin4 + CW4 .* Cos4
 					      + SW5 .* Sin5 + CW5 .* Cos5
-                                              + SW6 .* Sin6 + CW6 .* Cos6,
+                                              + SW6 .* Sin6 + CW6 .* Cos6
+					      + SW7 .* Sin7 + CW7 .* Cos7
+                                              + SW8 .* Sin8 + CW8 .* Cos8
+                                              + SW9 .* Sin9 + CW9 .* Cos9,
+
          Orbit mapdot  SC .* SCMSS + CM .* CMSS,
 	 CO2_Strength mapdot C .* LogCO2,
 	 show_rms([[amo, NAO_D],
@@ -1002,7 +1057,8 @@ plot(Request) :-
 		       [Period5, SW5, CW5],
 		       [Period6, SW6, CW6],
 		       [Period7, SW7, CW7],
-		       [Period8, SW8, CW8]
+		       [Period8, SW8, CW8],
+		       [Period9, SW9, CW9]
 		        ], Periodic),
 
      /*
