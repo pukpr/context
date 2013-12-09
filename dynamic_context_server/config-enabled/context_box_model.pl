@@ -116,26 +116,26 @@ volcanos([
           [628, 6],
           [901,4],
           [1006,22],% 1963   996         1964 1.661 17.7
-          [1150,2], % 1976   1152        1975 0.682 7.3
+          % [1150,2], % 1976   1152        1975 0.682 7.3
           [1222,24],% 1982   1224	   1983 1.744 18.6
           [1344,30]   % 1992 1332          1992 2.822 30 *
 	 ]).
 
 volcano_data([
-          [krakatoa, 1883,8, 42, 22],   % 1883    4  36      1884 3.33  35.5
-          [colima_,  1892,6, 126, 9.5], % 1892               1890 0.893 9.5
-          [calbuco,  1893,1, 144, 5.1], %		     1892 0.48  5.1
-          [mayon,    1897,6, 210, 4.3], %                    1896 0.4   4.3
-         [santamaria,1902,10,274, 17.6],% 1902   264         1903 1.654 17.6
-          [ksudach,  1907,5, 324, 4],   % guess
-          [novarupta,1912,6, 390, 5.7], % 1913   384         1913 0.538 5.7
+          [krakatoa, 1883,8, 42, 12, 6],   % 22 1883    4  36      1884 3.33  35.5
+          [colima,   1890,6, 126, 12, 4], % 9.5 1892               1890 0.893 9.5
+          [calbuco,  1893,1, 144, 12, 4], % 5.1		     1892 0.48  5.1
+          % [mayon,    1897,6, 210, 4.3], %                    1896 0.4   4.3
+         [santamaria,1902,10,274, 18, 6],% 1902   264         1903 1.654 17.6
+          [ksudach,  1907,5, 324, 20, 5],   % guess
+          [novarupta,1912,6, 390, 8, 6], % 5.7 1913   384         1913 0.538 5.7
           % [colima,   1913, 0, 396, 5],
-          [cerroazul,1932,4, 624, 4],
-          [bezymianny,1955,1, 901, 4],
-          [agung,    1963,2, 998,17.7],% 1963   996         1964 1.661 17.7
-          [augustine,1976,0, 1152,7.3], % 1976   1152        1975 0.682 7.3
-          [elchichon,1982,4, 1228,18.6],% 1982   1224	   1983 1.744 18.6
-          [pinatubo, 1991,6, 1338,30]   % 1992 1332          1992 2.822 30 *
+          [cerroazul,1932,4, 624, 6, 5],  % 4
+          [bezymianny,1955,1, 901, 4, 5],
+          [agung,    1963,2, 998,22, 5],%17.7  1963   996         1964 1.661 17.7
+          % [augustine,1976,0, 1152,2], % 7.3 1976   1152        1975 0.682 7.3
+          [elchichon,1982,4, 1228,24, 5],% 18.6 1982   1224	   1983 1.744 18.6
+          [pinatubo, 1991,6, 1338,30, 6]   % 1992 1332          1992 2.822 30 *
 	 ]).
 
 
@@ -304,7 +304,7 @@ plot(Request) :-
      ;
        Characteristic = rw ->
 	 uniform(18, Win),
-         Zrw0 mapdot 0.0 .* H,
+         % Zrw0 mapdot 0.0 .* H,
          % semi_random_walker(H, 1.2, [6.0,12.0], [6.0,12.0], Zrw0, ZRW),
          context_random_walk:ou_random_walker(0.01, 1.0, 0.25, H, ZRW),
          ZRWD window ZRW/Win,
@@ -317,7 +317,7 @@ plot(Request) :-
      ;
        Characteristic = rw_ac ->
 	 uniform(18, Win),
-         Zrw0 mapdot 0.0 .* H,
+         % Zrw0 mapdot 0.0 .* H,
          % semi_random_walker(H, 1.2, [6.0,12.0], [6.0,12.0], Zrw0, ZRW),
          context_random_walk:ou_random_walker(0.01, 1.0, 0.25, H, ZRW),
          ZRWD window ZRW/Win,
@@ -336,7 +336,7 @@ plot(Request) :-
        Characteristic = rw_fft ->
 	 uniform(18, Win),
          % context_random_walk:ou_random_walker(0.00000001, 1.0, 0.035, H, ZRW),
-         Zrw0 mapdot 0.0 .* H,
+         % Zrw0 mapdot 0.0 .* H,
          % semi_random_walker(H, 1.2, [6.0,12.0], [6.0,12.0], Zrw0, ZRW),
          context_random_walk:ou_random_walker(0.01, 1.0, 0.25, H, ZRW),
          ZRWD window ZRW/Win,

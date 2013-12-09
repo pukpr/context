@@ -69,7 +69,8 @@ orbital_period('lunar absidal',    8.85,  'when sidereal period exceeds anomalis
 orbital_period('jupiter sidereal', 11.86, 'tidal sidereal period of jupiter').
 orbital_period('tidal saros',      18.03, 'Saros cycle period of eclipses of the sun and moon').
 orbital_period('lunar harmonic',   6.2,   'one third of the lunar standstill, Kola cycle').
-orbital_period('two year',         2,     'biennial cycle').
+orbital_period('absidal subharmonic', 4.42,    'one half lunar absidal').
+orbital_period('jupiter subharmonic', 5.93,    'one half jupiter sidereal').
 % extra
 
 dataset(ou_rw, L) :-
@@ -155,8 +156,8 @@ navigate(Request) :-
 					  ['Match temperature with model', model],
 					  ['Correlate CO2 with model', correlate],
 					  ['Correlate temperature with model', map],
-					  ['View cycles', cycles],
-					  ['Correlate AMO with periodic', cross]
+					  ['View cycles', cycles]
+					  % ['Correlate AMO with periodic', cross]
 					  % , ['Cross-Correlate distance vs speed orbital modes ', cross],
 					  % ['Show Arctic detrend (arctic_window > 0)', arctic]
                                          ])),
@@ -199,9 +200,9 @@ navigate(Request) :-
 						      [lod_lag,60.0,2],
 						      [tsi_lag,6,2],
                                                       [aam_lag,6,2],
-                                                      [orbit_lag,6,2],
-                                                      [amo_win,-120,2],
-						      [arctic_win, -120,2]
+                                                      [orbit_lag,6,2]
+                                                      % [amo_win,-120,2],
+						      % [arctic_win, -120,2]
 						     ]))
 				       ]
 					)]),
@@ -327,7 +328,7 @@ get_anthro(false, _, Zeros, W) :-
 */
 
 
-scale(_, lin, cross, 'factor a', '#', 'factor b', '#', false) :- !.
+% scale(_, lin, cross, 'factor a', '#', 'factor b', '#', false) :- !.
 scale(_, lin, map, 'Model Temperature', 'C', 'Real Temperature', 'C', false) :- !.
 scale(_, lin, correlate, 'TCR*ln(CO2)/ln(2)', 'C', 'Temperature', 'C', false) :- !.
 scale(true, log, residual, 'Wavenumber', '2048/Month', 'Power Spectral', 'density', false) :- !.
@@ -698,7 +699,7 @@ plot(Request) :-
                        \(con_text:style)],
                       [
                        \(con_text:table_multiple_entries(
-                                      [['eruption',year,month,'month#',intensity]],
+                                      [['eruption',year,month,'month#',intensity, 'VEI']],
                                       Data
                                                         ))
                       ]
@@ -723,8 +724,8 @@ plot(Request) :-
 			      tsi_lag(TL, [number]),
 			      aam_lag(ML, [number]),
 			      orbit_lag(OL, [number]),
-			      amo_win(NL, [number]),
-			      arctic_win(AW, [number]),
+			      % amo_win(NL, [number]),
+			      % arctic_win(AW, [number]),
                               dataset(DataSet, []),
                               evaluate(Characteristic, [default(model)])]),
 
@@ -849,9 +850,9 @@ plot(Request) :-
 
     % get_arctic(Year, AW, Arctic),
     % get_amo(NL, NAO),       % get_nao(Year, NL, NAO),
-    get_rh(NL, NAO),
+    get_rh(-1, NAO),
     % get_chandler_wobble(Year, NL, NAO),
-    get_pdo(Months, AW, Arctic),
+    get_pdo(Months, -1, Arctic),
 
     %EScale = 0.0046, % 676,
     %Arctic mapdot eureqa_sin(EScale) ~> Months,
@@ -980,7 +981,7 @@ plot(Request) :-
 	 Data tuple Year + Cycle0 + Cycle1 + Cycle2 + Cycle3 + Cycle4
                          + Cycle5 + Cycle6 + Cycle7 + Cycle8 + Cycle9,
          Header = [XLabel, bary, '7.3','9.015','18.6','8.85',
-				 '11.86', '18.03', '7.3/2', '6.2', '8.85/2']
+				 '11.86', '18.03', '6.2', '8.85/2', '11.86/2']
 /*
     Period is 7.3 * 12,      % precession cycle with the time for Spring tides to realign with the same day each year
     Period2 is 9.015 * 12,   % Sun-Moon-Earth tidal configuration
@@ -1001,11 +1002,11 @@ plot(Request) :-
 	 ;
              % T_Base mapdot Int .+ C .* LogCO2 + LO .* LOD_F ,
              % Noise_Level mapdot T - T_Base,
-	     RHV mapdot NI .* NAO,
-	     Data tuple Year + T_Diff +RHV   %  + Noise_Level
+	     % RHV mapdot NI .* NAO,
+	     Data tuple Year + T_Diff   %  + Noise_Level
 	 ),
 
-         Header = [XLabel, residual, rh] % , fluctuation]
+         Header = [XLabel, residual] % , fluctuation]
      ;
        Characteristic = signal ->
          CO2_Signal mapdot Int .+ C .* LogCO2,
@@ -1027,8 +1028,8 @@ plot(Request) :-
 	 LOLOD_F mapdot LO .* LOD_F,
          % Noise_D mapdot NoiseA .* Noise2,
          AAM_D mapdot AA .* AAM,
-         ARCTIC_D mapdot ARC .* Arctic,
-         NAO_D mapdot NI .* NAO,
+         % ARCTIC_D mapdot ARC .* Arctic,
+         % NAO_D mapdot NI .* NAO,
 	 Waves mapdot SW .* Sin + CW .* Cos + SW2 .* Sin2 + CW2 .* Cos2
                                               + SW3 .* Sin3 + CW3 .* Cos3
                                               + SW4 .* Sin4 + CW4 .* Cos4
@@ -1038,13 +1039,13 @@ plot(Request) :-
                                               + SW8 .* Sin8 + CW8 .* Cos8
                                               + SW9 .* Sin9 + CW9 .* Cos9,
 
-         Orbit mapdot  SC .* SCMSS + CM .* CMSS,
+         Bary mapdot  SC .* SCMSS + CM .* CMSS,
 	 CO2_Strength mapdot C .* LogCO2,
-	 show_rms([[amo, NAO_D],
-		   [arctic, ARCTIC_D],
+	 show_rms([% [amo, NAO_D],
+		   % [arctic, ARCTIC_D],
 		   ['set of orbital cycles',Waves],
 		   [tsi,TSTSI_F],
-		   [orbit,Orbit],
+		   [bary,Bary],
 		   [aero, VCV1],
 		   [aam,AAM_D],
 		   [soi,S0S2],
@@ -1066,7 +1067,7 @@ plot(Request) :-
          Data tuple Year + S0S2 + VCV1 + TSTSI_F + ARCTIC_D + NAO_D + Angular,
 	 Header = [XLabel, soi,   aero,  tsi,      arctic,    nao,    angular]
      */
-         Data tuple Year + S0S2 + VCV1 + LOLOD_F + TSTSI_F + AAM_D + Orbit + Waves, %  + NAO_D,
+         Data tuple Year + S0S2 + VCV1 + LOLOD_F + TSTSI_F + AAM_D + Bary + Waves, %  + NAO_D,
 	 Header = [XLabel, soi,   aero,  lod,      tsi,      aam,    bary,   orbit] % ,    amo]
 
     ),
@@ -1077,9 +1078,12 @@ plot(Request) :-
                      \(con_text:style)],
                     [
 		     table([tr([th('R=cc'), th('ln(co2)'),th(soi),th('a(volc)'),
-				th(lod),th(tsi), th(aam), th(orbit), th(amo), th(arctic)]),
+				th(lod),th(tsi), th(aam), th(bary) % , th(amo), th(arctic)
+			       ]),
 			    tr([td(b('~5f'-R2C2)),td('~3f'-C),td('~3f'-SO),td('~3f'-VC),
-				td('~3f'-LO),td('~3f'-TS), td('~5f'-AA), td('~5f'-SC), td('~5f'-NI), td('~5f'-ARC)])
+				td('~3f'-LO),td('~3f'-TS), td('~5f'-AA), td('~5f'-SC)
+			        % ,('~5f'-NI), td('~5f'-ARC)
+			       ])
 			   ]),
 		     br([]),
 

@@ -780,6 +780,10 @@ table_entries(Content) -->
        ).
 
 each_cell(_Cell, []) --> !.
+each_cell(td, [F|R]) -->   % if list just take head
+   {is_list(F)},
+   html(td(\(table_multiple_entries([],[F])))),
+   each_cell(td,R).
 each_cell(td, [F|R]) -->
    html(td(F)),
    each_cell(td,R).
