@@ -5,7 +5,8 @@
                                eureqa_sin/3,
                                eureqa_cos/3,
                                pdo/2,
-                               fake_power_law/4
+                               fake_power_law/4,
+                               eur/2
 			      ]).
 
 :- use_module(context_math).
@@ -33,6 +34,17 @@ eureqa_cos(S, X, Y) :-
     Year is X/12,    % Y is 0.05169*sin(1.405*Year)*sin(5.779 + 0.04055*Year)*sin(5.013 - 0.04486*Year).
     Y is % 0.03369*sin(0.0534 + 0.02544*Year)*
          cos(S*(Year^2) - 2*Year).
+
+eur(X,Y) :-
+   E1 = -0.09,
+   E2 = 1.09,
+   E3 = -2.3,
+   E4 = 0.46,
+   E5 = -0.32,
+   C = 0.205,
+   T is (X - 0.933*12)/12,
+   Y is C*(0.06972*cos(-1.5*T+E1)+0.06418*sin(-1.863*T+E2)+0.06185*cos(-1.19*T+E3)
+   -0.1132*sin(-0.3053*T+E4)*cos(-2.247*T+E5)).
 
 pdo(X,Y) :-
     Year is (X-0)/12,
@@ -200,9 +212,9 @@ navigate(Request) :-
 						      [lod_lag,60.0,2],
 						      [tsi_lag,6,2],
                                                       [aam_lag,6,2],
-                                                      [orbit_lag,6,2]
-                                                      % [amo_win,-120,2],
-						      % [arctic_win, -120,2]
+                                                      [orbit_lag,6,2],
+                                                      [amo_win,-120,2],
+						      [arctic_win, -120,2]
 						     ]))
 				       ]
 					)]),
@@ -581,6 +593,14 @@ get_pdo(Months, Lag, AMO_F) :-
         AMO_F mapdot 0 .* AMO
     ).
 
+get_eureka(Months, Lag, E_F) :-
+    E mapdot eur ~> Months,
+    (	Lag >= 0 ->
+        E_F = E
+    ;
+        E_F mapdot 0 .* E
+    ).
+
 /*
 get_nao(_Noise, Win, Arctic_F) :-
     nao_hurrell(Arc_I),
@@ -724,8 +744,8 @@ plot(Request) :-
 			      tsi_lag(TL, [number]),
 			      aam_lag(ML, [number]),
 			      orbit_lag(OL, [number]),
-			      % amo_win(NL, [number]),
-			      % arctic_win(AW, [number]),
+			      amo_win(NL, [number]),
+			      arctic_win(AW, [number]),
                               dataset(DataSet, []),
                               evaluate(Characteristic, [default(model)])]),
 
@@ -850,9 +870,10 @@ plot(Request) :-
 
     % get_arctic(Year, AW, Arctic),
     % get_amo(NL, NAO),       % get_nao(Year, NL, NAO),
-    get_rh(-1, NAO),
+    % get_rh(-1, NAO),
+    get_eureka(Months, NL, NAO),
     % get_chandler_wobble(Year, NL, NAO),
-    get_pdo(Months, -1, Arctic),
+    get_pdo(Months, AW, Arctic),
 
     %EScale = 0.0046, % 676,
     %Arctic mapdot eureqa_sin(EScale) ~> Months,
