@@ -1,4 +1,4 @@
-﻿@base            <http://purl.org/net/biblio> .
+@base            <http://purl.org/net/biblio> .
 @prefix wordnet: <http://xmlns.com/wordnet/1.6/> .
 @prefix    foaf: <http://xmlns.com/foaf/0.1/> .
 @prefix    skos: <http://www.w3.org/2004/02/skos/core#> .

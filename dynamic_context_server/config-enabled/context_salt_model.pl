@@ -69,8 +69,8 @@ orbital_period('lunar absidal',    8.85,  'when sidereal period exceeds anomalis
 orbital_period('jupiter sidereal', 11.86, 'tidal sidereal period of jupiter').
 orbital_period('tidal saros',      18.03, 'Saros cycle period of eclipses of the sun and moon').
 orbital_period('lunar harmonic',   6.2,   'one third of the lunar standstill, Kola cycle').
-orbital_period('absidal subharmonic', 4.42,    'one half lunar absidal').
-orbital_period('jupiter subharmonic', 5.93,    'one half jupiter sidereal').
+orbital_period('absidal harmonic', 4.42,    'one half lunar absidal').
+orbital_period('jupiter harmonic', 5.93,    'one half jupiter sidereal').
 % extra
 
 dataset(ou_rw, L) :-
@@ -971,17 +971,15 @@ plot(Request) :-
        Characteristic = cycles ->
          Cycle0 mapdot SC .* SCMSS + CM .* CMSS,
 	 Cycle1 mapdot SW .* Sin + CW .* Cos,
-         Cycle2 mapdot SW2 .* Sin2 + CW2 .* Cos2,
-	 Cycle3 mapdot SW3 .* Sin3 + CW3 .* Cos3,
-	 Cycle4 mapdot SW4 .* Sin4 + CW4 .* Cos4,
-         Cycle5 mapdot SW5 .* Sin5 + CW5 .* Cos5,
-         Cycle6 mapdot SW6 .* Sin6 + CW6 .* Cos6,					 Cycle7 mapdot SW7 .* Sin7 + CW7 .* Cos7,
-         Cycle8 mapdot SW8 .* Sin8 + CW8 .* Cos8,
-         Cycle9 mapdot SW9 .* Sin9 + CW9 .* Cos9,
-	 Data tuple Year + Cycle0 + Cycle1 + Cycle2 + Cycle3 + Cycle4
-                         + Cycle5 + Cycle6 + Cycle7 + Cycle8 + Cycle9,
-         Header = [XLabel, bary, '7.3','9.015','18.6','8.85',
-				 '11.86', '18.03', '6.2', '8.85/2', '11.86/2']
+         Cycle2 mapdot SW2 .* Sin2 + CW2 .* Cos2 + SW6 .* Sin6 + CW6 .* Cos6,
+	 Cycle3 mapdot SW3 .* Sin3 + CW3 .* Cos3 + SW8 .* Sin8 + CW8 .* Cos8,
+	 Cycle4 mapdot SW4 .* Sin4 + CW4 .* Cos4 + SW9 .* Sin9 + CW9 .* Cos9,
+         Cycle5 mapdot SW5 .* Sin5 + CW5 .* Cos5 + SW7 .* Sin7 + CW7 .* Cos7,
+         % Cycle6 mapdot SW6 .* Sin6 + CW6 .* Cos6,					 % Cycle7 mapdot SW7 .* Sin7 + CW7 .* Cos7,
+         % Cycle8 mapdot SW8 .* Sin8 + CW8 .* Cos8,
+         % Cycle9 mapdot SW9 .* Sin9 + CW9 .* Cos9,
+	 Data tuple Year + Cycle0 + Cycle1 + Cycle2 + Cycle3 + Cycle4 + Cycle5,
+         Header = [XLabel, bary,    '7.3',   '18.03', '18.6',  '8.85',  '11.86']
 /*
     Period is 7.3 * 12,      % precession cycle with the time for Spring tides to realign with the same day each year
     Period2 is 9.015 * 12,   % Sun-Moon-Earth tidal configuration

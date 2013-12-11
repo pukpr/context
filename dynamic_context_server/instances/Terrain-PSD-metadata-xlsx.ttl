@@ -1,4 +1,4 @@
-@base        <user> .
+﻿@base        <user> .
 @prefix rdfs: <http://www.w3.org/2000/01/rdf-schema#> .
 @prefix foaf: <http://xmlns.com/foaf/0.1/> .
 @prefix xsd: <http://www.w3.org/2001/XMLSchema#> .
@@ -7,7 +7,7 @@
 @prefix ent: <http://entroplet.com/terms#> .
 
 
-<http://entroplet.com/terms#ATC_Belgian_Block_10_logspaced>
+ent:ATC_Belgian_Block_10_logspaced
    a rdfs:Resource ;
    ent:locale ent:APG ;
    ent:feature "fine terrain features" ;
@@ -23,7 +23,7 @@
 	ent:FMU_source_data "0" ;
         ent:docref "ABB10".
 
-<http://entroplet.com/terms#ATC_Belgian_Block_90_logspaced>
+ent:ATC_Belgian_Block_90_logspaced
    a rdfs:Resource ;
    ent:locale ent:APG ;
    ent:feature "fine terrain features" ;
@@ -39,7 +39,7 @@
 	ent:FMU_source_data "1.0" ;
         ent:docref "ABB90".
 
-<http://entroplet.com/terms#ATC_Belgian_Block_logspaced>
+ent:ATC_Belgian_Block_logspaced
    a rdfs:Resource ;
    ent:locale ent:APG ;
    ent:feature "fine terrain features" ;
@@ -55,7 +55,7 @@
 	ent:FMU_source_data "2.0" ;
         ent:docref "ABB".
 
-<http://entroplet.com/terms#ATC_Churchville_B_10_logspaced>
+ent:ATC_Churchville_B_10_logspaced
    a rdfs:Resource ;
    ent:locale ent:APG ;
    ent:feature "fine terrain features" ;
@@ -71,7 +71,7 @@
 	ent:FMU_source_data "3.0" ;
         ent:docref "ACB10".
 
-<http://entroplet.com/terms#ATC_Churchville_B_90_logspaced>
+ent:ATC_Churchville_B_90_logspaced
    a rdfs:Resource ;
    ent:locale ent:APG ;
    ent:feature "fine terrain features" ;
@@ -87,7 +87,7 @@
 	ent:FMU_source_data "4.0" ;
         ent:docref "ACB90".
 
-<http://entroplet.com/terms#ATC_Churchville_B_logspaced>
+ent:ATC_Churchville_B_logspaced
    a rdfs:Resource ;
    ent:locale ent:APG ;
    ent:feature "fine terrain features" ;
@@ -103,7 +103,7 @@
 	ent:FMU_source_data "5.0" ;
         ent:docref "ACB".
 
-<http://entroplet.com/terms#ATC_Churchville_C_10_logspaced>
+ent:ATC_Churchville_C_10_logspaced
    a rdfs:Resource ;
    ent:locale ent:APG ;
    ent:feature "fine terrain features" ;
@@ -119,7 +119,7 @@
 	ent:FMU_source_data "6.0" ;
         ent:docref "ACC10".
 
-<http://entroplet.com/terms#ATC_Churchville_C_90_logspaced>
+ent:ATC_Churchville_C_90_logspaced
    a rdfs:Resource ;
    ent:locale ent:APG ;
    ent:feature "fine terrain features" ;
@@ -135,7 +135,7 @@
 	ent:FMU_source_data "7.0" ;
         ent:docref "ACC90".
 
-<http://entroplet.com/terms#ATC_Churchville_C_logspaced>
+ent:ATC_Churchville_C_logspaced
    a rdfs:Resource ;
    ent:locale ent:APG ;
    ent:feature "fine terrain features" ;
@@ -151,7 +151,7 @@
 	ent:FMU_source_data "8.0" ;
         ent:docref "ACC".
 
-<http://entroplet.com/terms#ATC_Munson_Gravel_10_logspaced>
+ent:ATC_Munson_Gravel_10_logspaced
    a rdfs:Resource ;
    ent:locale ent:APG ;
    ent:feature "fine terrain features" ;
@@ -167,7 +167,7 @@
 	ent:FMU_source_data "9.0" ;
         ent:docref "AMG10".
 
-<http://entroplet.com/terms#ATC_Munson_Gravel_90_logspaced>
+ent:ATC_Munson_Gravel_90_logspaced
    a rdfs:Resource ;
    ent:locale ent:APG ;
    ent:feature "fine terrain features" ;
@@ -183,7 +183,7 @@
 	ent:FMU_source_data "10.0" ;
         ent:docref "AMG90".
 
-<http://entroplet.com/terms#ATC_Munson_Gravel_logspaced>
+ent:ATC_Munson_Gravel_logspaced
    a rdfs:Resource ;
    ent:locale ent:APG ;
    ent:feature "fine terrain features" ;
@@ -199,7 +199,7 @@
 	ent:FMU_source_data "11.0" ;
         ent:docref "AMG".
 
-<http://entroplet.com/terms#ATC_Perryman_1_10_logspaced>
+ent:ATC_Perryman_1_10_logspaced
    a rdfs:Resource ;
    ent:locale ent:APG ;
    ent:feature "fine terrain features" ;
@@ -215,7 +215,7 @@
 	ent:FMU_source_data "12.0" ;
         ent:docref "AP110".
 
-<http://entroplet.com/terms#ATC_Perryman_1_90_logspaced>
+ent:ATC_Perryman_1_90_logspaced
    a rdfs:Resource ;
    ent:locale ent:APG ;
    ent:feature "fine terrain features" ;
@@ -231,7 +231,7 @@
 	ent:FMU_source_data "13.0" ;
         ent:docref "AP190".
 
-<http://entroplet.com/terms#ATC_Perryman_1_logspaced>
+ent:ATC_Perryman_1_logspaced
    a rdfs:Resource ;
    ent:locale ent:APG ;
    ent:feature "fine terrain features" ;
@@ -247,7 +247,7 @@
 	ent:FMU_source_data "14.0" ;
         ent:docref "AP1".
 
-<http://entroplet.com/terms#ATC_Perryman_2_10_logspaced>
+ent:ATC_Perryman_2_10_logspaced
    a rdfs:Resource ;
    ent:locale ent:APG ;
    ent:feature "fine terrain features" ;
@@ -263,7 +263,7 @@
 	ent:FMU_source_data "15.0" ;
         ent:docref "AP210".
 
-<http://entroplet.com/terms#ATC_Perryman_2_90_logspaced>
+ent:ATC_Perryman_2_90_logspaced
    a rdfs:Resource ;
    ent:locale ent:APG ;
    ent:feature "fine terrain features" ;
@@ -279,7 +279,7 @@
 	ent:FMU_source_data "16.0" ;
         ent:docref "AP290".
 
-<http://entroplet.com/terms#ATC_Perryman_2_logspaced>
+ent:ATC_Perryman_2_logspaced
    a rdfs:Resource ;
    ent:locale ent:APG ;
    ent:feature "fine terrain features" ;
@@ -295,7 +295,7 @@
 	ent:FMU_source_data "17.0" ;
         ent:docref "AP2".
 
-<http://entroplet.com/terms#ATC_Perryman_3_10_logspaced>
+ent:ATC_Perryman_3_10_logspaced
    a rdfs:Resource ;
    ent:locale ent:APG ;
    ent:feature "fine terrain features" ;
@@ -311,7 +311,7 @@
 	ent:FMU_source_data "18.0" ;
         ent:docref "AP310".
 
-<http://entroplet.com/terms#ATC_Perryman_3_90_logspaced>
+ent:ATC_Perryman_3_90_logspaced
    a rdfs:Resource ;
    ent:locale ent:APG ;
    ent:feature "fine terrain features" ;
@@ -327,7 +327,7 @@
 	ent:FMU_source_data "19.0" ;
         ent:docref "AP390".
 
-<http://entroplet.com/terms#ATC_Perryman_3_logspaced>
+ent:ATC_Perryman_3_logspaced
    a rdfs:Resource ;
    ent:locale ent:APG ;
    ent:feature "fine terrain features" ;
@@ -343,7 +343,7 @@
 	ent:FMU_source_data "20.0" ;
         ent:docref "AP3".
 
-<http://entroplet.com/terms#ATC_Perryman_A_10_logspaced>
+ent:ATC_Perryman_A_10_logspaced
    a rdfs:Resource ;
    ent:locale ent:APG ;
    ent:feature "fine terrain features" ;
@@ -359,7 +359,7 @@
 	ent:FMU_source_data "21.0" ;
         ent:docref "APA10".
 
-<http://entroplet.com/terms#ATC_Perryman_A_90_logspaced>
+ent:ATC_Perryman_A_90_logspaced
    a rdfs:Resource ;
    ent:locale ent:APG ;
    ent:feature "fine terrain features" ;
@@ -375,7 +375,7 @@
 	ent:FMU_source_data "22.0" ;
         ent:docref "APA90".
 
-<http://entroplet.com/terms#ATC_Perryman_A_logspaced>
+ent:ATC_Perryman_A_logspaced
    a rdfs:Resource ;
    ent:locale ent:APG ;
    ent:feature "fine terrain features" ;
@@ -391,7 +391,7 @@
 	ent:FMU_source_data "23.0" ;
         ent:docref "APA".
 
-<http://entroplet.com/terms#YTC_Desert_March_logspaced>
+ent:YTC_Desert_March_logspaced
    a rdfs:Resource ;
    ent:locale ent:YPG ;
    ent:feature "fine terrain features" ;
@@ -407,7 +407,7 @@
 	ent:FMU_source_data "24.0" ;
         ent:docref "YDM".
 
-<http://entroplet.com/terms#YTC_KOFA_Level_Gravel_logspaced>
+ent:YTC_KOFA_Level_Gravel_logspaced
    a rdfs:Resource ;
    ent:locale ent:YPG ;
    ent:feature "fine terrain features" ;
@@ -423,7 +423,7 @@
 	ent:FMU_source_data "25.0" ;
         ent:docref "YKLG".
 
-<http://entroplet.com/terms#YTC_Laguna_Hilly_Trails_logspaced>
+ent:YTC_Laguna_Hilly_Trails_logspaced
    a rdfs:Resource ;
    ent:locale ent:YPG ;
    ent:feature "fine terrain features" ;
@@ -440,7 +440,7 @@
         ent:soil_classification "['GP', 'GP-GM', 'GC', 'GW']";
         ent:docref "YLHT".
 
-<http://entroplet.com/terms#YTC_Laguna_Level_Trails_East_logspaced>
+ent:YTC_Laguna_Level_Trails_East_logspaced
    a rdfs:Resource ;
    ent:locale ent:YPG ;
    ent:feature "fine terrain features" ;
@@ -457,7 +457,7 @@
         ent:soil_classification "['GP', 'GP-GM', 'GC', 'GW']";
         ent:docref "YLLTE".
 
-<http://entroplet.com/terms#YTC_Laguna_Level_logspaced>
+ent:YTC_Laguna_Level_logspaced
    a rdfs:Resource ;
    ent:locale ent:YPG ;
    ent:feature "fine terrain features" ;
@@ -473,7 +473,7 @@
 	ent:FMU_source_data "28.0" ;
         ent:docref "YLL".
 
-<http://entroplet.com/terms#YTC_Laguna_Levels_Trails_West_logspaced>
+ent:YTC_Laguna_Levels_Trails_West_logspaced
    a rdfs:Resource ;
    ent:locale ent:YPG ;
    ent:feature "fine terrain features" ;
@@ -489,7 +489,7 @@
 	ent:FMU_source_data "29.0" ;
         ent:docref "YLLTW".
 
-<http://entroplet.com/terms#YTC_Laguna_Paved_logspaced>
+ent:YTC_Laguna_Paved_logspaced
    a rdfs:Resource ;
    ent:locale ent:YPG ;
    ent:feature "fine terrain features" ;
@@ -505,7 +505,7 @@
 	ent:FMU_source_data "30.0" ;
         ent:docref "YLP".
 
-<http://entroplet.com/terms#YTC_Midid-Eastpercent20Secpercent20B>
+ent:YTC_Midid-Eastpercent20Secpercent20B
    a rdfs:Resource ;
    ent:locale ent:YPG ;
    ent:feature "fine terrain features" ;
@@ -521,7 +521,7 @@
 	ent:FMU_source_data "31.0" ;
         ent:docref "YMEB".
 
-<http://entroplet.com/terms#YTC_Midid-Eastpercent20Start>
+ent:YTC_Midid-Eastpercent20Start
    a rdfs:Resource ;
    ent:locale ent:YPG ;
    ent:feature "fine terrain features" ;
@@ -537,7 +537,7 @@
 	ent:FMU_source_data "32.0" ;
         ent:docref "YME".
 
-<http://entroplet.com/terms#YTC_Midid-Eastpercent20WashEnd>
+ent:YTC_Midid-Eastpercent20WashEnd
    a rdfs:Resource ;
    ent:locale ent:YPG ;
    ent:feature "fine terrain features" ;
@@ -553,7 +553,7 @@
 	ent:FMU_source_data "33.0" ;
         ent:docref "YMEW".
 
-<http://entroplet.com/terms#YTC_MidEast_Sec_A_logspaced>
+ent:YTC_MidEast_Sec_A_logspaced
    a rdfs:Resource ;
    ent:locale ent:YPG ;
    ent:feature "fine terrain features" ;
@@ -569,7 +569,7 @@
 	ent:FMU_source_data "34.0" ;
         ent:docref "YMEA".
 
-<http://entroplet.com/terms#YTC_Patton_Hilly_Gravel_logspaced>
+ent:YTC_Patton_Hilly_Gravel_logspaced
    a rdfs:Resource ;
    ent:locale ent:YPG ;
    ent:feature "fine terrain features" ;
@@ -586,7 +586,7 @@
         ent:soil_classification "['GP', 'GP-GM', 'GC', 'GW']";
         ent:docref "YPHG".
 
-<http://entroplet.com/terms#YTC_Patton_Hilly_Trails_logspaced>
+ent:YTC_Patton_Hilly_Trails_logspaced
    a rdfs:Resource ;
    ent:locale ent:YPG ;
    ent:feature "fine terrain features" ;
@@ -603,7 +603,7 @@
         ent:soil_classification "['GP', 'GP-GM', 'GC', 'GW-GM']";
         ent:docref "YPHT".
 
-<http://entroplet.com/terms#YTC_Patton_Level_Gravel_logspaced>
+ent:YTC_Patton_Level_Gravel_logspaced
    a rdfs:Resource ;
    ent:locale ent:YPG ;
    ent:feature "fine terrain features" ;
@@ -619,7 +619,7 @@
 	ent:FMU_source_data "37.0" ;
         ent:docref "YPLG".
 
-<http://entroplet.com/terms#YTC_Patton_Level_Trails_logspaced>
+ent:YTC_Patton_Level_Trails_logspaced
    a rdfs:Resource ;
    ent:locale ent:YPG ;
    ent:feature "fine terrain features" ;
@@ -636,7 +636,7 @@
         ent:soil_classification "['GP', 'GP-GM', 'GC', 'SM', 'SP-SM', 'SP']";
         ent:docref "YPLT".
 
-<http://entroplet.com/terms#BAE_Systems_Concrete_logspaced>
+ent:BAE_Systems_Concrete_logspaced
    a rdfs:Resource ;
    ent:feature "fine terrain features" ;
 	ent:course_name "BAE Systems Concrete" ;
@@ -650,7 +650,7 @@
 	ent:PSD_JSON_file "BAE_Systems_Concrete_logspaced.JSON" ;
 	ent:FMU_source_data "39.0" .
 
-<http://entroplet.com/terms#ATC_MTA_2InchWashboard>
+ent:ATC_MTA_2InchWashboard
    a rdfs:Resource ;
    ent:locale ent:APG ;
    ent:feature "fine terrain features" ;
@@ -664,7 +664,7 @@
 	ent:PSD_text_file "ATC_MTA_2InchWashboard.txt" ;
 	ent:PSD_JSON_file "ATC_MTA_2InchWashboard.JSON" .
 
-<http://entroplet.com/terms#ATC_MTA_RadialWashboard>
+ent:ATC_MTA_RadialWashboard
    a rdfs:Resource ;
    ent:locale ent:APG ;
    ent:feature "fine terrain features" ;
@@ -678,7 +678,7 @@
 	ent:PSD_text_file "ATC_MTA_RadialWashboard.txt" ;
 	ent:PSD_JSON_file "ATC_MTA_RadialWashboard.JSON" .
 
-<http://entroplet.com/terms#ATC_MTA_3InchSpacedBump>
+ent:ATC_MTA_3InchSpacedBump
    a rdfs:Resource ;
    ent:locale ent:APG ;
    ent:feature "fine terrain features" ;
@@ -692,7 +692,7 @@
 	ent:PSD_text_file "ATC_MTA_3InchSpacedBump.txt" ;
 	ent:PSD_JSON_file "ATC_MTA_3InchSpacedBump.JSON" .
 
-<http://entroplet.com/terms#ATC_MTA_6InchWashboard>
+ent:ATC_MTA_6InchWashboard
    a rdfs:Resource ;
    ent:locale ent:APG ;
    ent:feature "fine terrain features" ;
@@ -706,7 +706,7 @@
 	ent:PSD_text_file "ATC_MTA_6InchWashboard.txt" ;
 	ent:PSD_JSON_file "ATC_MTA_6InchWashboard.JSON" .
 
-<http://entroplet.com/terms#ATC_MTA30percentConcreteSlope>
+ent:ATC_MTA30percentConcreteSlope
    a rdfs:Resource ;
    ent:locale ent:APG ;
    ent:feature "fine terrain features" ;
@@ -719,7 +719,7 @@
 	ent:PSD_text_file "ATC_MTA30percentConcreteSlope.txt" ;
 	ent:PSD_JSON_file "ATC_MTA30percentConcreteSlope.JSON" .
 
-<http://entroplet.com/terms#ATC_MTA40percentConcreteSlope>
+ent:ATC_MTA40percentConcreteSlope
    a rdfs:Resource ;
    ent:locale ent:APG ;
    ent:feature "fine terrain features" ;
@@ -732,7 +732,7 @@
 	ent:PSD_text_file "ATC_MTA40percentConcreteSlope.txt" ;
 	ent:PSD_JSON_file "ATC_MTA40percentConcreteSlope.JSON" .
 
-<http://entroplet.com/terms#ATC_MTA45percentConcreteSlope>
+ent:ATC_MTA45percentConcreteSlope
    a rdfs:Resource ;
    ent:locale ent:APG ;
    ent:feature "fine terrain features" ;
@@ -745,7 +745,7 @@
 	ent:PSD_text_file "ATC_MTA45percentConcreteSlope.txt" ;
 	ent:PSD_JSON_file "ATC_MTA45percentConcreteSlope.JSON" .
 
-<http://entroplet.com/terms#ATC_MTA50percentConcreteSlope>
+ent:ATC_MTA50percentConcreteSlope
    a rdfs:Resource ;
    ent:locale ent:APG ;
    ent:feature "fine terrain features" ;
@@ -758,7 +758,7 @@
 	ent:PSD_text_file "ATC_MTA50percentConcreteSlope.txt" ;
 	ent:PSD_JSON_file "ATC_MTA50percentConcreteSlope.JSON" .
 
-<http://entroplet.com/terms#ATC_MTA60percentConcreteSlope>
+ent:ATC_MTA60percentConcreteSlope
    a rdfs:Resource ;
    ent:locale ent:APG ;
    ent:feature "fine terrain features" ;
@@ -771,7 +771,7 @@
 	ent:PSD_text_file "ATC_MTA60percentConcreteSlope.txt" ;
 	ent:PSD_JSON_file "ATC_MTA60percentConcreteSlope.JSON" .
 
-<http://entroplet.com/terms#ATC+20percent25+Side+Slope>  a rdfs:Resource ;
+ent:ATC_20percent25_Side_Slope  a rdfs:Resource ;
    ent:locale ent:APG ;
    ent:feature "fine terrain features" ;
 	ent:course_name "ATC 20percent Side Slope" ;
@@ -781,7 +781,7 @@
 	ent:F_static "1.0" ;
 	ent:F_dynamic "0.8" .
 
-<http://entroplet.com/terms#ATC+30percent25+Side+Slope>  a rdfs:Resource ;
+ent:ATC0_30percent25_Side_Slope  a rdfs:Resource ;
    ent:locale ent:APG ;
    ent:feature "fine terrain features" ;
 	ent:course_name "ATC 30percent Side Slope" ;
@@ -791,7 +791,7 @@
 	ent:F_static "1.0" ;
 	ent:F_dynamic "0.8" .
 
-<http://entroplet.com/terms#ATC+40percent25+Side+Slope>  a rdfs:Resource ;
+ent:ATC_40percent25_Side_Slope  a rdfs:Resource ;
    ent:locale ent:APG ;
    ent:feature "fine terrain features" ;
 	ent:course_name "ATC 40percent Side Slope" ;
@@ -801,7 +801,7 @@
 	ent:F_static "1.0" ;
 	ent:F_dynamic "0.8" .
 
-<http://entroplet.com/terms#ATC_MTA_15DegreeLoadingRamp>
+ent:ATC_MTA_15DegreeLoadingRamp
    a rdfs:Resource ;
    ent:locale ent:APG ;
    ent:feature "fine terrain features" ;
@@ -814,7 +814,7 @@
 	ent:PSD_text_file "ATC_MTA_15DegreeLoadingRamp.txt" ;
 	ent:PSD_JSON_file "ATC_MTA_15DegreeLoadingRamp.JSON" .
 
-<http://entroplet.com/terms#ATC_MTA_20DegreeLoadingRamp>
+ent:ATC_MTA_20DegreeLoadingRamp
    a rdfs:Resource ;
    ent:locale ent:APG ;
    ent:feature "fine terrain features" ;
@@ -827,7 +827,7 @@
 	ent:PSD_text_file "ATC_MTA_20DegreeLoadingRamp.txt" ;
 	ent:PSD_JSON_file "ATC_MTA_20DegreeLoadingRamp.JSON" .
 
-<http://entroplet.com/terms#ATC_MTA_StandardDitch>
+ent:ATC_MTA_StandardDitch
    a rdfs:Resource ;
    ent:locale ent:APG ;
    ent:feature "fine terrain features" ;
@@ -840,7 +840,7 @@
 	ent:PSD_text_file "ATC_MTA_StandardDitch.txt" ;
 	ent:PSD_JSON_file "ATC_MTA_StandardDitch.JSON" .
 
-<http://entroplet.com/terms#ATC+Turning+Circle>  a rdfs:Resource ;
+ent:ATC_Turning_Circle  a rdfs:Resource ;
    ent:locale ent:APG ;
    ent:feature "fine terrain features" ;
 	ent:course_name "ATC Turning Circle" ;
@@ -850,7 +850,7 @@
 	ent:F_static "1.0" ;
 	ent:F_dynamic "0.8" .
 
-<http://entroplet.com/terms#ATC_MTA_ProfileIVCourse>
+ent:ATC_MTA_ProfileIVCourse
    a rdfs:Resource ;
    ent:locale ent:APG ;
    ent:feature "fine terrain features" ;
