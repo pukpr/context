@@ -171,7 +171,7 @@ navigate(Request) :-
 					  ['Correlate CO2 with model', correlate],
 					  ['Correlate temperature with model', map],
 					  ['View cycles', cycles],
-					  ['Correlate 7.3  periodic', cross]
+					  ['Dump all factors', cross]
 					  % , ['Cross-Correlate distance vs speed orbital modes ', cross],
 					  % ['Show Arctic detrend (arctic_window > 0)', arctic]
                                          ])),
@@ -214,9 +214,9 @@ navigate(Request) :-
 						      [lod_lag,60.0,2],
 						      [tsi_lag,6,2],
                                                       [aam_lag,6,2],
-                                                      [orbit_lag,6,2],
-                                                      [amo_win,-120,2],
-						      [arctic_win, -120,2]
+                                                      [bary_lag,6,2]
+                                                      % [amo_win,-120,2],
+						      % [arctic_win, -120,2]
 						     ]))
 				       ]
 					)]),
@@ -390,8 +390,8 @@ scale(_, lin, model, 'Time', 'year', 'Temperature', 'C', true) :- !.
 scale(_, lin, _, 'Time', 'year', 'Temperature', 'C', false).
 
 single_filter(In, Out) :-
-    median_filter(In, In0),
-    Out window In0*12.
+    % median_filter(In, In0),
+    Out window In*12.
 triple_filter(In, Out) :-
     median_filter(In, In0),
     A window In0*12,
@@ -431,7 +431,8 @@ temperature_series(Correction, Window, Triple, DataSet, T, Offset) :-
 		  [1938,0],
 		  [1943.5, -0.14],
 		  % [1944, -0.12],
-		  [1947,0],
+		  [1947,0], %-0.02],
+		  [1967,0],
 		  [2014,0]],
        interpolate(Year, Profile, Offset),
        % Front range 0*[1,696],
@@ -806,9 +807,9 @@ plot(Request) :-
 			      lod_lag(LL, [number]),
 			      tsi_lag(TL, [number]),
 			      aam_lag(ML, [number]),
-			      orbit_lag(OL, [number]),
-			      amo_win(NL, [number]),
-			      arctic_win(AW, [number]),
+			      bary_lag(OL, [number]),
+			      % amo_win(NL, [number]),
+			      % arctic_win(AW, [number]),
                               dataset(DataSet, []),
                               evaluate(Characteristic, [default(model)])]),
 
@@ -860,7 +861,8 @@ plot(Request) :-
     Period3 is 18.613 * 12 *Q,  % Lunar precessional
     Period4 is 8.848 * 12 *Q,   % Lunar apsidal precession
     Period5 is 11.86* 12 *Q,   % 11.86 Tidal sidereal period of Jupiter
-    Period6 is Period2*2,       % Soros cycle tide
+    % Period6 is Period2*2,       % Soros cycle tide
+    Period6 is 3.22 * 12 *Q,       % Soros cycle tide
     Period7 is Period5/2,       % Period5/2 24*Q,
     Period8 is Period3/3,       % 20.5
     Period9 is Period4/2,
@@ -877,6 +879,7 @@ plot(Request) :-
     % PeriodG is 1*12 *Q,
     % PeriodG is Random_F*12*50,  % Hale/7 *12 *Q,
     PeriodG is 27*12*Q,
+    PeriodH is 2.46*12*Q,
     % 1.19, 1.5, 1.863
 
     % Chandler is 17.8 * 12,
@@ -938,6 +941,8 @@ plot(Request) :-
     CosF mapdot yearly_cos_period(PeriodF,WL) ~> Months,
     SinG mapdot yearly_sin_period(PeriodG,WL) ~> Months,
     CosG mapdot yearly_cos_period(PeriodG,WL) ~> Months,
+    SinH mapdot yearly_sin_period(PeriodH,WL) ~> Months,
+    CosH mapdot yearly_cos_period(PeriodH,WL) ~> Months,
     get_scmss(Year, OL, SCMSS),
     get_cmss(Year, OL, CMSS),
 
@@ -968,8 +973,8 @@ plot(Request) :-
     % get_amo(NL, NAO),       % get_nao(Year, NL, NAO),
     % get_rh(-1, NAO),
     % get_chandler_wobble(Year, NL, NAO),
-    get_eureka(Months, NL, NAO),
-    get_pdo(Months, AW, Arctic),
+    % ? get_eureka(Months, NL, NAO),
+    % ? get_pdo(Months, AW, Arctic),
     %get_t(Months, NL, NAO),
     %get_t2(Months, AW, Arctic),
 
@@ -983,7 +988,8 @@ plot(Request) :-
     % get_darwin(NL, NAO),
     % get_soi_peak(NL, NAO),
 
-    get_fit([T, LogCO2, S2, TSI_F, V1, LOD_F, AAM, Arctic, NAO, Sin,  Cos,  Sin2, Cos2,
+    get_fit([T, LogCO2, S2, TSI_F, V1, LOD_F, AAM, SinH, CosH, % Arctic, NAO,
+	                                                        Sin,  Cos,  Sin2, Cos2,
 	                                                        Sin3, Cos3, Sin4, Cos4,
 								Sin5, Cos5, Sin6, Cos6,
 								Sin7, Cos7, Sin8, Cos8,
@@ -995,7 +1001,8 @@ plot(Request) :-
 	    Coefficients, Int, _R2C),
 	    % [NoiseA, C, SO, TS, VC,   LO],
 
-    check_coefficients(Coefficients, [], [C, SO, TS, VC,   LO, AA, ARC, NI, SW,	 CW,  SW2, CW2,
+    check_coefficients(Coefficients, [], [C, SO, TS, VC,   LO, AA, SWH, CWH, % ARC, NI,
+					                                    SW,	 CW,  SW2, CW2,
 					                                    SW3, CW3, SW4, CW4,
 					                                    SW5, CW5, SW6, CW6,
 					                                    SW7, CW7, SW8, CW8,
@@ -1006,7 +1013,8 @@ plot(Request) :-
 					                                    SC, CM]),
 
     Fluct mapdot SO .* S2 + TS .* TSI_F + VC .* V1 + LO .* LOD_F + AA .* AAM +
-                 ARC .* Arctic + NI .* NAO + SW .* Sin + CW .* Cos
+                                           + SWH .* SinH + CWH .* CosH  % ARC .* Arctic + NI .* NAO
+		                           + SW .* Sin + CW .* Cos
 		                           + SW2 .* Sin2 + CW2 .* Cos2
 		                           + SW3 .* Sin3 + CW3 .* Cos3
 		                           + SW4 .* Sin4 + CW4 .* Cos4
@@ -1039,10 +1047,6 @@ plot(Request) :-
     T_R_lag lag T_R / Lag,
     corrcoeff(T_lag, T_R_lag, R2C2),
     (
-       Characteristic = arctic ->
-	 Data tuple Year + Arctic,
-         Header = [XLabel, arctic]
-     ;
        Characteristic = model ->
          T_lag_low mapdot T_lag .- Error_Bar,
          T_lag_high mapdot Error_Bar .+ T_lag,
@@ -1085,6 +1089,7 @@ plot(Request) :-
          Header = [distance, speed]
      ;
 */
+/*
        Characteristic = cross ->
          TSI_alone mapdot TS .* TSI_F,
 	 Waves mapdot % TS .* TSI_F +
@@ -1094,15 +1099,6 @@ plot(Request) :-
                     + SWC .* SinC + CWC .* CosC
                     + SWD .* SinD + CWD .* CosD
                     + SWE .* SinE + CWE .* CosE ,
-/*                     + SW2 .* Sin2 + CW2 .* Cos2
-		     + SW3 .* Sin3 + CW3 .* Cos3
-                     + SW4 .* Sin4 + CW4 .* Cos4
-                                              + SW5 .* Sin5 + CW5 .* Cos5
-                                              + SW6 .* Sin6 + CW6 .* Cos6
-                                              + SW7 .* Sin7 + CW7 .* Cos7
-                                              + SW8 .* Sin8 + CW8 .* Cos8
-					      + SC .* SCMSS + CM .* CMSS,
-     */
 
          % AMO_C mapdot  NI .* NAO,
          % Orbit mapdot  SC .* SCMSS + CM .* CMSS,
@@ -1111,7 +1107,42 @@ plot(Request) :-
 
 	 Data tuple Year +TSI_alone + Waves, % + Combo,
          Header = [XLabel, tsi, period7] %, harmonics]
+*/
+       Characteristic = cross ->
+         S0S2 mapdot SO .* S2,
+         TSTSI_F mapdot TS .* TSI_F,
+         VCV1 mapdot VC .* V1,
+	 LOLOD_F mapdot LO .* LOD_F,
+         AAM_D mapdot AA .* AAM,
+	 Waves1 mapdot SW .* Sin + CW .* Cos,
+	 Waves2 mapdot SW2 .* Sin2 + CW2 .* Cos2,
+         Waves3 mapdot SW3 .* Sin3 + CW3 .* Cos3,
+         Waves4 mapdot SW4 .* Sin4 + CW4 .* Cos4,
+	 Waves5 mapdot SW5 .* Sin5 + CW5 .* Cos5,
+         Waves6 mapdot SW6 .* Sin6 + CW6 .* Cos6,
+	 Waves7 mapdot SW7 .* Sin7 + CW7 .* Cos7,
+         Waves8 mapdot SW8 .* Sin8 + CW8 .* Cos8,
+	 Waves9 mapdot SW9 .* Sin9 + CW9 .* Cos9,
+	 WavesA mapdot SWA .* SinA + CWA .* CosA,
+	 WavesB mapdot SWB .* SinB + CWB .* CosB,
+	 WavesC mapdot SWC .* SinC + CWC .* CosC,
+	 WavesD mapdot SWD .* SinD + CWD .* CosD,
+	 WavesE mapdot SWE .* SinE + CWE .* CosE,
+	 WavesF mapdot SWF .* SinF + CWF .* CosF,
+	 WavesG mapdot SWG .* SinG + CWG .* CosG,
+	 WavesH mapdot SWH .* SinH + CWH .* CosH,
+
+         Bary mapdot  SC .* SCMSS + CM .* CMSS,
+	 CO2_Strength mapdot C .* LogCO2,
+         Data tuple Year + CO2_Strength + S0S2 + VCV1 + LOLOD_F + TSTSI_F + AAM_D + Bary +
+	            Waves1 + Waves2 + Waves3 + Waves4 + Waves5 + Waves6 + Waves7 + Waves8 + Waves9 +
+		    WavesA + WavesB + WavesC + WavesD + WavesE + WavesF + WavesG + WavesH, %  + NAO_D,
+	 Header = [XLabel, co2, soi,   aero,  lod, tsi,	aam, bary,
+		   p_22_3, p_9, p_18_6, p_8_85, p_11_86, p_3_22, p_11_86_2, p_18_6_3, p_8_85_2,
+		   p_5_3, p_22_5, p_22_6, p_22_2, p_22_1, p_3_35, p_27, p_2_46]
+
      ;
+
        Characteristic = cycles ->
          % Cycle0 mapdot SC .* SCMSS + CM .* CMSS,
 	 Cycle1 mapdot SW .*  Sin +  CW .*  Cos +  SWA .* SinA + CWA .* CosA +
