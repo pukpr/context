@@ -258,13 +258,15 @@ get_fit([Temperature, CO2, SOI, TSI, Volc, LOD, AAM, Arctic, NAO, Sin, Cos,
 	                                                          SE,  CE,
 	                                                          SF,  CF,
 	                                                          SG,  CG,
+	                                                          SI,  CI,
+	                                                          SJ,  CJ,
 	                                                          BSC, BCM],
 	[             C,   S,   T,   A,    L,   M, Z, N, V, W, P, Q,
 		                                E, F, G, H, D, I, R, U,
 		                                A1, B1, C1, D1, E1, F1,
 		                                G1, H1, I1, J1, K1, L1,
 		                                M1, N1, O1, P1, Q1, R1,
-		                                S1, T1, J, K], Int, R2) :-
+		                                S1, T1, U1, V1, W1, X1, J, K], Int, R2) :-
    r_open_session,
    y <- Temperature,
    c <- CO2,
@@ -307,9 +309,13 @@ get_fit([Temperature, CO2, SOI, TSI, Volc, LOD, AAM, Arctic, NAO, Sin, Cos,
    r1 <- CF,
    s1 <- SG,
    t1 <- CG,
+   u1 <- SI,
+   v1 <- CI,
+   w1 <- SJ,
+   x1 <- CJ,
    j <- BSC,
    k <- BCM,
-   fitxy <- lm('y~c+s+a+l+t+m+z+n+v+w+p+q+e+f+g+h+d+i+r+u+a1+b1+c1+d1+e1+f1+g1+h1+i1+j1+k1+l1+m1+n1+o1+p1+q1+r1+s1+t1+j+k'),
+   fitxy <- lm('y~c+s+a+l+t+m+z+n+v+w+p+q+e+f+g+h+d+i+r+u+a1+b1+c1+d1+e1+f1+g1+h1+i1+j1+k1+l1+m1+n1+o1+p1+q1+r1+s1+t1+u1+v1+w1+x1+j+k'),
    %   Add the variables here !!! don't forger
    r_print(fitxy),
    Int <- 'as.double(fitxy$coefficients[1])',
@@ -353,8 +359,12 @@ get_fit([Temperature, CO2, SOI, TSI, Volc, LOD, AAM, Arctic, NAO, Sin, Cos,
    R1 <- 'as.double(fitxy$coefficients[39])',
    S1 <- 'as.double(fitxy$coefficients[40])',
    T1 <- 'as.double(fitxy$coefficients[41])',
-   J <- 'as.double(fitxy$coefficients[42])',
-   K <- 'as.double(fitxy$coefficients[43])',
+   U1 <- 'as.double(fitxy$coefficients[42])',
+   V1 <- 'as.double(fitxy$coefficients[43])',
+   W1 <- 'as.double(fitxy$coefficients[44])',
+   X1 <- 'as.double(fitxy$coefficients[45])',
+   J <- 'as.double(fitxy$coefficients[46])',
+   K <- 'as.double(fitxy$coefficients[47])',
    summary <- summary(fitxy),
    r_print(summary),
    R2 <- 'as.double(summary$r.squared)',
@@ -429,9 +439,13 @@ temperature_series(Correction, Window, Triple, DataSet, T, Offset) :-
    (   Correction ->
        Profile = [[1880,0],
 		  [1938,0],
-		  [1943.5, -0.14],
+		  [1941,0],
+		  [1942.5,-0.14],
+		  [1946,-0.14],
+		  [1947,0],
+%		  [1943.5, -0.14],
 		  % [1944, -0.12],
-		  [1947,0], %-0.02],
+%		  [1947,0], %-0.02],
 		  [1967,0],
 		  [2014,0]],
        interpolate(Year, Profile, Offset),
@@ -851,7 +865,7 @@ plot(Request) :-
 
     Q is 1,
     (	Hale_Cycle ->
-	Hale=21.98;  % 21.9
+	Hale=21.98;  % 21.98
         Hale=0.0
     ), % 21.9,
 
@@ -862,24 +876,29 @@ plot(Request) :-
     Period4 is 8.848 * 12 *Q,   % Lunar apsidal precession
     Period5 is 11.86* 12 *Q,   % 11.86 Tidal sidereal period of Jupiter
     % Period6 is Period2*2,       % Soros cycle tide
-    Period6 is 3.22 * 12 *Q,       % Soros cycle tide
+    % Period6 is 3.22 * 12 *Q,       % Soros cycle tide
+    Period6 is Hale/7 * 1.0245* 12 *Q,       % Soros cycle tide
     Period7 is Period5/2,       % Period5/2 24*Q,
+    % Period7 is Period2*2/3,       % Period5/2 24*Q,
     Period8 is Period3/3,       % 20.5
     Period9 is Period4/2,
     %PeriodA is 2*pi*12/1.189, %Hale/4 *12 *Q,
     %PeriodB is 2*pi*12/1.499, %Hale/5 *12 *Q,
     %PeriodC is 2*pi*12/1.872, %Hale/6 *12 *Q,
-    PeriodA is Hale/4 *0.965*12 *Q,
-    PeriodB is Hale/5 *0.956*12 *Q,
-    PeriodC is Hale/6 *0.99924*12 *Q,
-    PeriodD is Hale/2 *0.9999*12 *Q,
-    PeriodE is Hale/1 *0.9999*12 *Q,
+    PeriodA is Hale/4 *0.964*12 *Q,
+    PeriodB is Hale/5 *0.955*12 *Q,
+    PeriodC is Hale/6 *12 *Q,
+    PeriodD is Hale/2 *12 *Q,
+    PeriodE is Hale/1 *12 *Q,
     % random(Random_F),
     PeriodF is 3.35*12 *Q, % 3.344 Random_F*12*20, % 2*12 *Q,
     % PeriodG is 1*12 *Q,
     % PeriodG is Random_F*12*50,  % Hale/7 *12 *Q,
-    PeriodG is 27*12*Q,
+    PeriodG is 27.0*12*Q,
     PeriodH is 2.46*12*Q,
+    PeriodI is 1.986*12*Q,
+    PeriodJ is Period2/3,
+    % PeriodH is Hale/9 * 12 *Q,       % Soros cycle tide
     % 1.19, 1.5, 1.863
 
     % Chandler is 17.8 * 12,
@@ -943,6 +962,10 @@ plot(Request) :-
     CosG mapdot yearly_cos_period(PeriodG,WL) ~> Months,
     SinH mapdot yearly_sin_period(PeriodH,WL) ~> Months,
     CosH mapdot yearly_cos_period(PeriodH,WL) ~> Months,
+    SinI mapdot yearly_sin_period(PeriodI,WL) ~> Months,
+    CosI mapdot yearly_cos_period(PeriodI,WL) ~> Months,
+    SinJ mapdot yearly_sin_period(PeriodJ,WL) ~> Months,
+    CosJ mapdot yearly_cos_period(PeriodJ,WL) ~> Months,
     get_scmss(Year, OL, SCMSS),
     get_cmss(Year, OL, CMSS),
 
@@ -997,6 +1020,7 @@ plot(Request) :-
 	                                                        SinB, CosB, SinC, CosC,
 	                                                        SinD, CosD, SinE, CosE,
 	                                                        SinF, CosF, SinG, CosG,
+	                                                        SinI, CosI, SinJ, CosJ,
 	                                                        SCMSS, CMSS],
 	    Coefficients, Int, _R2C),
 	    % [NoiseA, C, SO, TS, VC,   LO],
@@ -1010,6 +1034,7 @@ plot(Request) :-
 					                                    SWB, CWB, SWC, CWC,
 					                                    SWD, CWD, SWE, CWE,
 					                                    SWF, CWF, SWG, CWG,
+									    SWI, CWI, SWJ, CWJ,
 					                                    SC, CM]),
 
     Fluct mapdot SO .* S2 + TS .* TSI_F + VC .* V1 + LO .* LOD_F + AA .* AAM +
@@ -1030,6 +1055,8 @@ plot(Request) :-
 		                           + SWE .* SinE + CWE .* CosE
 		                           + SWF .* SinF + CWF .* CosF
 		                           + SWG .* SinG + CWG .* CosG
+		                           + SWI .* SinI + CWI .* CosI
+		                           + SWJ .* SinJ + CWJ .* CosJ
                                            + SC .* SCMSS + CM .* CMSS,
 
     T_CO2_R mapdot C .* LogCO2 + Fluct,
