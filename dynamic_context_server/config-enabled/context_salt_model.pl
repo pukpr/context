@@ -72,7 +72,7 @@ temp_data('NOAA LAND', noaa_land).
 temp_data('NOAA OCEAN', noaa_ocean).
 temp_data('HADCRUT3', hadcrut3).
 temp_data('HADSST2', sst2).
-temp_data('NRDC', nrdc).
+temp_data('NCDC', ncdc).
 temp_data('HADCRUT4_CW', hadcrut4_cw).
 temp_data('OU Random Walk', ou_rw).
 
@@ -120,7 +120,7 @@ dataset(global_combo, L) :-
 	L mapdot 0.3333 .* L1 + 0.3333 .* L2 + 0.3333 .* L3.
 dataset(global_combo2, L) :-
 	dataset(giss,L1),
-	dataset(nrdc,L2),
+	dataset(ncdc,L2),
 	dataset(noaa_land_ocean,L3),
 	L mapdot 0.3333 .* L1 + 0.3333 .* L2 + 0.3333 .* L3.
 dataset(land_combo, L) :-
@@ -137,7 +137,7 @@ dataset(noaa_land, L) :- noa_land(L).
 dataset(noaa_ocean, L) :- noa_ocean(L).
 dataset(sst2, L) :- hadsst2(L).
 dataset(hadcrut3, L) :- hadcrut3(L).
-dataset(nrdc, L) :- nrdc(L).
+dataset(ncdc, L) :- ncdc(L).
 
 
 navigate(Request) :-
@@ -436,13 +436,14 @@ temperature_series(false, DataSet, T) :-
 temperature_series(Correction, Window, Triple, DataSet, T, Offset) :-
    temperature_series(Window, Triple, DataSet, TT),
    get_years_from_1880(TT, Year, _),
+   Shift = -0.14,
    (   Correction ->
        Profile = [[1880,0],
 		  [1938,0],
 		  [1941,0],
-		  [1942.5,-0.14],
-		  [1946,-0.14],
-		  [1947,0],
+		  [1942.5,Shift],
+		  [1946,Shift],
+		  [1947,-0.0],
 %		  [1943.5, -0.14],
 		  % [1944, -0.12],
 %		  [1947,0], %-0.02],
@@ -863,9 +864,9 @@ plot(Request) :-
     Period6 is 3.35 * 12,   % 3.35 short duration sunspot
 */
 
-    Q is 1,
+    Q is 1.0,
     (	Hale_Cycle ->
-	Hale=21.98;  % 21.98
+	Hale=21.98; % 21.98
         Hale=0.0
     ), % 21.9,
 
@@ -894,12 +895,14 @@ plot(Request) :-
     PeriodF is 3.35*12 *Q, % 3.344 Random_F*12*20, % 2*12 *Q,
     % PeriodG is 1*12 *Q,
     % PeriodG is Random_F*12*50,  % Hale/7 *12 *Q,
-    PeriodG is 27.0*12*Q,
-    PeriodH is 2.46*12*Q,
-    PeriodI is 1.986*12*Q,
+    PeriodG is Period2*3,  % 27
+    PeriodH is 8*12*Q, % 2.54
+    PeriodI is 1.986*12*Q,  % 1.986
     PeriodJ is Period2/3,
     % PeriodH is Hale/9 * 12 *Q,       % Soros cycle tide
     % 1.19, 1.5, 1.863
+
+    %Period3/4
 
     % Chandler is 17.8 * 12,
     % 7.3 = http://tallbloke.wordpress.com/2013/02/07/short-term-forecasting-uah-lower-troposphere/
@@ -1158,15 +1161,17 @@ plot(Request) :-
 	 WavesF mapdot SWF .* SinF + CWF .* CosF,
 	 WavesG mapdot SWG .* SinG + CWG .* CosG,
 	 WavesH mapdot SWH .* SinH + CWH .* CosH,
+	 WavesI mapdot SWI .* SinI + CWI .* CosI,
+	 WavesJ mapdot SWJ .* SinJ + CWJ .* CosJ,
 
          Bary mapdot  SC .* SCMSS + CM .* CMSS,
 	 CO2_Strength mapdot C .* LogCO2,
          Data tuple Year + CO2_Strength + S0S2 + VCV1 + LOLOD_F + TSTSI_F + AAM_D + Bary +
 	            Waves1 + Waves2 + Waves3 + Waves4 + Waves5 + Waves6 + Waves7 + Waves8 + Waves9 +
-		    WavesA + WavesB + WavesC + WavesD + WavesE + WavesF + WavesG + WavesH, %  + NAO_D,
+		    WavesA + WavesB + WavesC + WavesD + WavesE + WavesF + WavesG + WavesH + WavesI + WavesJ,
 	 Header = [XLabel, co2, soi,   aero,  lod, tsi,	aam, bary,
 		   p_22_3, p_9, p_18_6, p_8_85, p_11_86, p_3_22, p_11_86_2, p_18_6_3, p_8_85_2,
-		   p_5_3, p_22_5, p_22_6, p_22_2, p_22_1, p_3_35, p_27, p_2_46]
+		   p_5_30, p_4_20, p_22_6, p_22_2, p_22_1, p_3_35, p_27, p_2_46, p_2_00, p_9_3]
 
      ;
 
@@ -1226,14 +1231,33 @@ plot(Request) :-
          Header = [co2, data, log_model]
      ;
        Characteristic = all ->
-         S0S2 mapdot SO .* S2,
-         TSTSI_F mapdot TS .* TSI_F,
-         VCV1 mapdot VC .* V1,
-	 LOLOD_F mapdot LO .* LOD_F,
+         S0S2 mapdot 1.0 .+ SO .* S2,
+         TSTSI_F mapdot 0.9 .+ TS .* TSI_F,
+         VCV1 mapdot 0.8 .+ VC .* V1,
+	 LOLOD_F mapdot 0.7 .+ LO .* LOD_F,
          % Noise_D mapdot NoiseA .* Noise2,
-         AAM_D mapdot AA .* AAM,
+         AAM_D mapdot 0.6 .+ AA .* AAM,
          % ARCTIC_D mapdot ARC .* Arctic,
          % NAO_D mapdot NI .* NAO,
+	 Diurnal mapdot 0.5 .+ SW3 .* Sin3 + CW3 .* Cos3 +
+	                SW8 .* Sin8 + CW8 .* Cos8,
+	 SemiDiurnal mapdot 0.4 .+ SW4 .* Sin4 + CW4 .* Cos4 +
+	                    SW9 .* Sin9 + CW9 .* Cos9,
+	 HaleCycle mapdot 0.3 .+ SW .* Sin + CW .* Cos +
+	                SWC .* SinC + CWC .* CosC +
+	                SWD .* SinD + CWD .* CosD +
+	                SWE .* SinE + CWE .* CosE,
+	 Jupiter mapdot 0.2 .+ SW5 .* Sin5 + CW5 .* Cos5 +
+	                SW7 .* Sin7 + CW7 .* Cos7,
+	 Biennial mapdot 0.1 .+ SWI .* SinI + CWI .* CosI,
+	 QBO  mapdot SWH .* SinH + CWH .* CosH,
+	 SunMoonEarth  mapdot -0.1 .+ SWG .* SinG + CWG .* CosG +
+	                SW2 .* Sin2 + CW2 .* Cos2,
+	 Cycle_20_80 mapdot -0.2 .+ SWF .* SinF + CWF .* CosF +
+	                SW6 .* Sin6 + CW6 .* Cos6 +
+	                SWA .* SinA + CWA .* CosA +
+	                SWB .* SinB + CWB .* CosB,
+
 	 Waves mapdot SW .* Sin + CW .* Cos + SW2 .* Sin2 + CW2 .* Cos2
                                               + SW3 .* Sin3 + CW3 .* Cos3
                                               + SW4 .* Sin4 + CW4 .* Cos4
@@ -1243,8 +1267,9 @@ plot(Request) :-
                                               + SW8 .* Sin8 + CW8 .* Cos8
                                               + SW9 .* Sin9 + CW9 .* Cos9,
 
-         Bary mapdot  SC .* SCMSS + CM .* CMSS,
-	 CO2_Strength mapdot C .* LogCO2,
+         Bary mapdot  -0.3 .+ SC .* SCMSS + CM .* CMSS,
+	 CO2_Strength mapdot Int .+ C .* LogCO2,
+	 ResidNoise mapdot -0.4 .+ T_Diff,
 	 show_rms([% [amo, NAO_D],
 		   % [arctic, ARCTIC_D],
 		   ['set of orbital cycles',Waves],
@@ -1271,8 +1296,11 @@ plot(Request) :-
          Data tuple Year + S0S2 + VCV1 + TSTSI_F + ARCTIC_D + NAO_D + Angular,
 	 Header = [XLabel, soi,   aero,  tsi,      arctic,    nao,    angular]
      */
-         Data tuple Year + S0S2 + VCV1 + LOLOD_F + TSTSI_F + AAM_D + Bary + Waves, %  + NAO_D,
-	 Header = [XLabel, soi,   aero,  lod,      tsi,      aam,    bary,   orbit] % ,    amo]
+         Data tuple Year + S0S2 + TSTSI_F + VCV1 + LOLOD_F + AAM_D +
+	                   Diurnal+SemiDiurnal + HaleCycle + Jupiter + Biennial + QBO +SunMoonEarth +
+			   Cycle_20_80 + Bary + ResidNoise + CO2_Strength,
+	 Header = [XLabel, soi,   tsi,  aero,      lod,      aam,
+		           diurnal, semi, hale, jupiter, biennial, qbo, sme, '20/80', bary, residual,co2]
 
     ),
     temp_data(NameData, DataSet),
