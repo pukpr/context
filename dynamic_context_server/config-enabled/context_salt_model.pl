@@ -166,12 +166,12 @@ navigate(Request) :-
 					 [
                                           ['Underlying CO2 signal', signal],
 					  ['View the residual error', residual],
-					  ['View the fluctuation components', all],
+					  ['View staggered fluctuation components', all],
 					  ['Match temperature with model', model],
 					  ['Correlate CO2 with model', correlate],
 					  ['Correlate temperature with model', map],
-					  ['View cycles', cycles],
-					  ['Dump all factors', cross]
+					  ['View composite cycles', cycles],
+					  ['Dump all component factors', cross]
 					  % , ['Cross-Correlate distance vs speed orbital modes ', cross],
 					  % ['Show Arctic detrend (arctic_window > 0)', arctic]
                                          ])),
@@ -315,8 +315,13 @@ get_fit([Temperature, CO2, SOI, TSI, Volc, LOD, AAM, Arctic, NAO, Sin, Cos,
    x1 <- CJ,
    j <- BSC,
    k <- BCM,
+   pccr <- princomp('~y+c+s+a+l+t+m+z+j+k+n+v+w+p+q+e+f+g+h+d+i+r+u+a1+b1+c1+d1+e1+f1+g1+h1+i1+j1+k1+l1+m1+n1+o1+p1+q1+r1+s1+t1+u1+v1+w1+x1'),
+   r_print(summary(pccr)),
+   % Test <- 'as.double(pccr$coefficients[1])',
+   % print(user_error, Test),
+   % r_print(loadings(pccr)),
    fitxy <- lm('y~c+s+a+l+t+m+z+n+v+w+p+q+e+f+g+h+d+i+r+u+a1+b1+c1+d1+e1+f1+g1+h1+i1+j1+k1+l1+m1+n1+o1+p1+q1+r1+s1+t1+u1+v1+w1+x1+j+k'),
-   %   Add the variables here !!! don't forger
+   %   Add the variables here !!! don't forget
    r_print(fitxy),
    Int <- 'as.double(fitxy$coefficients[1])',
    C <- 'as.double(fitxy$coefficients[2])',
@@ -896,13 +901,11 @@ plot(Request) :-
     % PeriodG is 1*12 *Q,
     % PeriodG is Random_F*12*50,  % Hale/7 *12 *Q,
     PeriodG is Period2*3,  % 27
-    PeriodH is 8*12*Q, % 2.54
-    PeriodI is 1.986*12*Q,  % 1.986
+    PeriodH is 7.944*12*Q, % 2.54  Venus
+    PeriodI is PeriodH/4,  % 1.986
     PeriodJ is Period2/3,
-    % PeriodH is Hale/9 * 12 *Q,       % Soros cycle tide
-    % 1.19, 1.5, 1.863
 
-    %Period3/4
+
 
     % Chandler is 17.8 * 12,
     % 7.3 = http://tallbloke.wordpress.com/2013/02/07/short-term-forecasting-uah-lower-troposphere/
@@ -1176,7 +1179,7 @@ plot(Request) :-
      ;
 
        Characteristic = cycles ->
-         % Cycle0 mapdot SC .* SCMSS + CM .* CMSS,
+         Cycle0 mapdot SC .* SCMSS + CM .* CMSS,
 	 Cycle1 mapdot SW .*  Sin +  CW .*  Cos +  SWA .* SinA + CWA .* CosA +
 	               SWB .* SinB + CWB .* CosB + SWC .* SinC + CWC .* CosC +
 		       SWD .* SinD + CWD .* CosD + SWE .* SinE + CWE .* CosE + SWG .* SinG + CWG .* CosG,
@@ -1185,11 +1188,14 @@ plot(Request) :-
 	 Cycle4 mapdot SW4 .* Sin4 + CW4 .* Cos4 + SW9 .* Sin9 + CW9 .* Cos9,
          Cycle5 mapdot SW5 .* Sin5 + CW5 .* Cos5 + SW7 .* Sin7 + CW7 .* Cos7,
          Cycle6 mapdot SWF .* SinF + CWF .* CosF,
+	 Cycle7 mapdot SWH .* SinH + CWH .* CosH + SWI .* SinI + CWI .* CosI + SWJ .* SinJ + CWJ .* CosJ,
+	 AllCycles mapdot Cycle0 + Cycle1 + Cycle2 +Cycle3 +Cycle4 + Cycle5 + Cycle6 +Cycle7,
 	 % Cycle7 mapdot SW7 .* Sin7 + CW7 .* Cos7,
          % Cycle8 mapdot SW8 .* Sin8 + CW8 .* Cos8,
          % Cycle9 mapdot SW9 .* Sin9 + CW9 .* Cos9,
-	 Data tuple Year + Cycle1 + Cycle2 + Cycle3 + Cycle4 + Cycle5 + Cycle6,
-         Header = [XLabel, '22',   '18.03', '18.6',  '8.85',  '11.86', '2']
+	 Data tuple Year + AllCycles,
+         % Header = [XLabel, '22',   '18.03', '18.6',  '8.85',  '11.86', '2']
+         Header = [XLabel, 'cycles']
 /*
     Period is 7.3 * 12,      % precession cycle with the time for Spring tides to realign with the same day each year
     Period2 is 9.015 * 12,   % Sun-Moon-Earth tidal configuration
@@ -1249,11 +1255,11 @@ plot(Request) :-
 	                SWE .* SinE + CWE .* CosE,
 	 Jupiter mapdot 0.2 .+ SW5 .* Sin5 + CW5 .* Cos5 +
 	                SW7 .* Sin7 + CW7 .* Cos7,
-	 Biennial mapdot 0.1 .+ SWI .* SinI + CWI .* CosI,
-	 QBO  mapdot SWH .* SinH + CWH .* CosH,
-	 SunMoonEarth  mapdot -0.1 .+ SWG .* SinG + CWG .* CosG +
+	 Venus mapdot 0.1 .+ SWI .* SinI + CWI .* CosI
+	                   + SWH .* SinH + CWH .* CosH,
+	 SunMoonEarth  mapdot SWG .* SinG + CWG .* CosG +
 	                SW2 .* Sin2 + CW2 .* Cos2,
-	 Cycle_20_80 mapdot -0.2 .+ SWF .* SinF + CWF .* CosF +
+	 Cycle_20_80 mapdot -0.1 .+ SWF .* SinF + CWF .* CosF +
 	                SW6 .* Sin6 + CW6 .* Cos6 +
 	                SWA .* SinA + CWA .* CosA +
 	                SWB .* SinB + CWB .* CosB,
@@ -1265,11 +1271,11 @@ plot(Request) :-
                                               + SW6 .* Sin6 + CW6 .* Cos6
 					      + SW7 .* Sin7 + CW7 .* Cos7
                                               + SW8 .* Sin8 + CW8 .* Cos8
-                                              + SW9 .* Sin9 + CW9 .* Cos9,
+                                              + SW9 .* Sin9 + CW9 .* Cos9, % Check
 
-         Bary mapdot  -0.3 .+ SC .* SCMSS + CM .* CMSS,
+         Bary mapdot  -0.2 .+ SC .* SCMSS + CM .* CMSS,
 	 CO2_Strength mapdot Int .+ C .* LogCO2,
-	 ResidNoise mapdot -0.4 .+ T_Diff,
+	 ResidNoise mapdot -0.3 .+ T_Diff,
 	 show_rms([% [amo, NAO_D],
 		   % [arctic, ARCTIC_D],
 		   ['set of orbital cycles',Waves],
@@ -1297,10 +1303,10 @@ plot(Request) :-
 	 Header = [XLabel, soi,   aero,  tsi,      arctic,    nao,    angular]
      */
          Data tuple Year + S0S2 + TSTSI_F + VCV1 + LOLOD_F + AAM_D +
-	                   Diurnal+SemiDiurnal + HaleCycle + Jupiter + Biennial + QBO +SunMoonEarth +
+	                   Diurnal+SemiDiurnal + HaleCycle + Jupiter + Venus + SunMoonEarth +
 			   Cycle_20_80 + Bary + ResidNoise + CO2_Strength,
 	 Header = [XLabel, soi,   tsi,  aero,      lod,      aam,
-		           diurnal, semi, hale, jupiter, biennial, qbo, sme, '20/80', bary, residual,co2]
+		           diurnal, semi, hale, jupiter, venus, sme, '20/80', bary, residual,co2]
 
     ),
     temp_data(NameData, DataSet),
