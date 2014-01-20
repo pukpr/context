@@ -6,7 +6,9 @@
                                eureqa_cos/3,
                                pdo/2,
                                fake_power_law/4,
-                               eur/2
+                               eur/2,
+			       cmss_fit/2,
+			       scmss_fit/2
 			      ]).
 
 :- use_module(context_math).
@@ -55,6 +57,17 @@ pdo(X,Y) :-
 pdo(X,Y) :-
     Year is (X-0)/12 - 96.85,
     Y is 0.04771*sin(5.756 + 2.554*Year)*sin(1.056 - 0.0182*(Year^2)).
+
+cmss_fit(X,Y) :-
+    Year is 1880.0 + (X-1)/12,
+    Y is 0.05027*sin(0.03572 + 0.4539*Year) - 0.1037*sin(0.4901*Year) - 0.1972*sin(6.266 - 0.3148*Year).
+  % Y is 0.05315*sin(0.0 + 0.4507*Year) - 0.10023*sin(0.00422+0.4901*Year) - 0.196*sin(0.0 - 0.3148*Year).
+  % Y is 0.05358*sin(0.0 + 0.4507*Year) - 0.1005*sin(0.0 + 0.4901*Year) + 0.1949*sin(0.0 + 0.3148*Year).
+
+scmss_fit(X,Y) :-
+    Year is 1880.0 + (X-1)/12,
+    Y is  0.06039*sin(0.02401 + 0.5287*Year) - 0.2699*cos(0.3156*Year) - 0.05436*sin(0.4713*Year)*sin(-0.01807*Year).
+    %-0.06385*sin(6.277 + 0.5304*Year) - 0.2691*sin(0.9902 - 0.3153*Year).
 
 
 temp_data('GISS', giss).
@@ -489,19 +502,21 @@ get_lod(Years, Lag, LOD_F) :-
         LOD_F mapdot 0 .* LOD_U
     ).
 
-get_scmss(Years, Lag, S_F) :-
-    scmss(SCMSS),
-    interpolate(Years, SCMSS, S_I),
-    S_U unbias S_I,
+get_scmss(Months, Lag, S_F) :-
+    %scmss(SCMSS),
+    %interpolate(Years, SCMSS, S_I),
+    %S_U unbias S_I,
+    S_U mapdot scmss_fit ~> Months,
     (	Lag >= 0.0 ->
         S_F delay S_U / Lag
     ;
         S_F mapdot 0 .* S_U
     ).
-get_cmss(Years, Lag, C_F) :-
-    cmss(CMSS),
-    interpolate(Years, CMSS, C_I),
-    C_U unbias C_I,
+get_cmss(Months, Lag, C_F) :-
+    %cmss(CMSS),
+    %interpolate(Years, CMSS, C_I),
+    %C_U unbias C_I,
+    C_U mapdot cmss_fit ~> Months,
     (	Lag >= 0.0 ->
         C_F delay C_U / Lag
     ;
@@ -972,8 +987,10 @@ plot(Request) :-
     CosI mapdot yearly_cos_period(PeriodI,WL) ~> Months,
     SinJ mapdot yearly_sin_period(PeriodJ,WL) ~> Months,
     CosJ mapdot yearly_cos_period(PeriodJ,WL) ~> Months,
-    get_scmss(Year, OL, SCMSS),
-    get_cmss(Year, OL, CMSS),
+    %get_scmss(Year, OL, SCMSS),
+    %get_cmss(Year, OL, CMSS),
+    get_scmss(Months, OL, SCMSS),
+    get_cmss(Months, OL, CMSS),
 
 
     /*
