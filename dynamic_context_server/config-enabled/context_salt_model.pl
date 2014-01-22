@@ -167,9 +167,13 @@ navigate(Request) :-
                                     Request,
 		     [
                       h1('CSALT Model'),
-                      p('Select a data set and a view of the defluctuated profile'),
                       form([action(plot), target(target_iframe)],
 			 [
+                           p(['Select a data set and a view of the defluctuated profile',
+			       input([type('text'),
+				 size(4),
+				 name('fitYear'),
+				 value('2013')])]),
 			  select([name('dataset')], DataSet),
 			  % \(con_text:check_box(anthro, 'true', 'anthro aerosols')),
 			  \(con_text:check_box(volc, 'true', 'GISS aerosol model')),
@@ -195,7 +199,7 @@ navigate(Request) :-
                                   onclick('subm(this.form,"target_iframe");')]),
 			  input([type('submit'), name(kind), value('volcanos'),
                                  onclick('subm(this.form,"render");')]),
-			  % \(con_text:check_box(aam, 'true', 'AAM')),
+			  \(con_text:check_box(eq, 'true', 'EQ')),
 			  \(con_text:check_box(fft, 'true', 'FFT of residual')),
 			  br([]),
 			  \(con_text:check_box(window, 'true', 'Apply 12 month window')),
@@ -255,7 +259,7 @@ navigate(Request) :-
 
 
 
-get_fit([Temperature, CO2, SOI, TSI, Volc, LOD, AAM, Arctic, NAO, Sin, Cos,
+get_fit(EndDate, [Temperature, CO2, SOI, TSI, Volc, LOD, AAM, Arctic, NAO, Sin, Cos,
 	                                                          S2,  C2,
 	                                                          S3,  C3,
 	                                                          S4,  C4,
@@ -328,12 +332,26 @@ get_fit([Temperature, CO2, SOI, TSI, Volc, LOD, AAM, Arctic, NAO, Sin, Cos,
    x1 <- CJ,
    j <- BSC,
    k <- BCM,
-   pccr <- princomp('~y+c+s+a+l+t+m+z+j+k+n+v+w+p+q+e+f+g+h+d+i+r+u+a1+b1+c1+d1+e1+f1+g1+h1+i1+j1+k1+l1+m1+n1+o1+p1+q1+r1+s1+t1+u1+v1+w1+x1'),
-   r_print(summary(pccr)),
+   % pccr <- princomp('~y+c+s+a+l+t+m+z+j+k+n+v+w+p+q+e+f+g+h+d+i+r+u+a1+b1+c1+d1+e1+f1+g1+h1+i1+j1+k1+l1+m1+n1+o1+p1+q1+r1+s1+t1+u1+v1+w1+x1'),
+   % r_print(summary(pccr)),
    % Test <- 'as.double(pccr$coefficients[1])',
    % print(user_error, Test),
    % r_print(loadings(pccr)),
-   fitxy <- lm('y~c+s+a+l+t+m+z+n+v+w+p+q+e+f+g+h+d+i+r+u+a1+b1+c1+d1+e1+f1+g1+h1+i1+j1+k1+l1+m1+n1+o1+p1+q1+r1+s1+t1+u1+v1+w1+x1+j+k'),
+   B is (EndDate - 1880)*12,
+   format(atom(Eq), 'y[1:~d]~~c[1:~d]+s[1:~d]+a[1:~d]+l[1:~d]+t[1:~d]+m[1:~d]+z[1:~d]+n[1:~d]+v[1:~d]+w[1:~d]+p[1:~d]+q[1:~d]+e[1:~d]+f[1:~d]+g[1:~d]+h[1:~d]+d[1:~d]+i[1:~d]+r[1:~d]+u[1:~d]+a1[1:~d]+b1[1:~d]+c1[1:~d]+d1[1:~d]+e1[1:~d]+f1[1:~d]+g1[1:~d]+h1[1:~d]+i1[1:~d]+j1[1:~d]+k1[1:~d]+l1[1:~d]+m1[1:~d]+n1[1:~d]+o1[1:~d]+p1[1:~d]+q1[1:~d]+r1[1:~d]+s1[1:~d]+t1[1:~d]+u1[1:~d]+v1[1:~d]+w1[1:~d]+x1[1:~d]+j[1:~d]+k[1:~d]',
+	  [B,B,B,B,B,B,B,B,B,B,
+	   B,B,B,B,B,B,B,B,B,B,
+	   B,B,B,B,B,B,B,B,B,B,
+	   B,B,B,B,B,B,B,B,B,B,
+	   B,B,B,B,B,B,B,B]),
+   fitxy <- lm(Eq),
+
+	% fitxy <- lm('y~c+s+a+l+t+m+z+n+v+w+p+q+e+f+g+h+d+i+r+u+a1+b1+c1+d1+e1+f1+g1+h1+i1+j1+k1+l1+m1+n1+o1+p1+q1+r1+s1+t1+u1+v1+w1+x1+j+k'),
+   %fitxy <- lm('y[1:1320]~c[1:1320]+s[1:1320]+a[1:1320]+l[1:1320]+t[1:1320]+m[1:1320]+z[1:1320]+n[1:1320]+v[1:1320]+w[1:1320]+p[1:1320]+q[1:1320]+e[1:1320]+f[1:1320]+g[1:1320]+h[1:1320]+d[1:1320]+i[1:1320]+r[1:1320]+u[1:1320]+a1[1:1320]+b1[1:1320]+c1[1:1320]+d1[1:1320]+e1[1:1320]+f1[1:1320]+g1[1:1320]+h1[1:1320]+i1[1:1320]+j1[1:1320]+k1[1:1320]+l1[1:1320]+m1[1:1320]+n1[1:1320]+o1[1:1320]+p1[1:1320]+q1[1:1320]+r1[1:1320]+s1[1:1320]+t1[1:1320]+u1[1:1320]+v1[1:1320]+w1[1:1320]+x1[1:1320]+j[1:1320]+k[1:1320]'),
+   % fitxy <- lm('y[1:900]~c[1:900]+s[1:900]+a[1:900]+l[1:900]+t[1:900]+m[1:900]+z[1:900]+n[1:900]+v[1:900]+w[1:900]+p[1:900]+q[1:900]+e[1:900]+f[1:900]+g[1:900]+h[1:900]+d[1:900]+i[1:900]+r[1:900]+u[1:900]+a1[1:900]+b1[1:900]+c1[1:900]+d1[1:900]+e1[1:900]+f1[1:900]+g1[1:900]+h1[1:900]+i1[1:900]+j1[1:900]+k1[1:900]+l1[1:900]+m1[1:900]+n1[1:900]+o1[1:900]+p1[1:900]+q1[1:900]+r1[1:900]+s1[1:900]+t1[1:900]+u1[1:900]+v1[1:900]+w1[1:900]+x1[1:900]+j[1:900]+k[1:900]'),
+
+   % fitxy <- lm('y[1:1601]~c[1:1601]+s[1:1601]+a[1:1601]+l[1:1601]+t[1:1601]+m[1:1601]+z[1:1601]+n[1:1601]+v[1:1601]+w[1:1601]+p[1:1601]+q[1:1601]+e[1:1601]+f[1:1601]+g[1:1601]+h[1:1601]+d[1:1601]+i[1:1601]+r[1:1601]+u[1:1601]+a1[1:1601]+b1[1:1601]+c1[1:1601]+d1[1:1601]+e1[1:1601]+f1[1:1601]+g1[1:1601]+h1[1:1601]+i1[1:1601]+j1[1:1601]+k1[1:1601]+l1[1:1601]+m1[1:1601]+n1[1:1601]+o1[1:1601]+p1[1:1601]+q1[1:1601]+r1[1:1601]+s1[1:1601]+t1[1:1601]+u1[1:1601]+v1[1:1601]+w1[1:1601]+x1[1:1601]+j[1:1601]+k[1:1601]'),
+
    %   Add the variables here !!! don't forget
    r_print(fitxy),
    Int <- 'as.double(fitxy$coefficients[1])',
@@ -454,7 +472,7 @@ temperature_series(false, DataSet, T) :-
 temperature_series(Correction, Window, Triple, DataSet, T, Offset) :-
    temperature_series(Window, Triple, DataSet, TT),
    get_years_from_1880(TT, Year, _),
-   Shift = -0.14,
+   Shift = -0.14, % -0.4
    (   Correction ->
        Profile = [[1880,0],
 		  [1938,0],
@@ -502,21 +520,27 @@ get_lod(Years, Lag, LOD_F) :-
         LOD_F mapdot 0 .* LOD_U
     ).
 
-get_scmss(Months, Lag, S_F) :-
-    %scmss(SCMSS),
-    %interpolate(Years, SCMSS, S_I),
-    %S_U unbias S_I,
-    S_U mapdot scmss_fit ~> Months,
+get_scmss(EQ_ON,Time, Lag, S_F) :-
+    (	EQ_ON ->
+        S_U mapdot scmss_fit ~> Time % Months
+    ;
+        scmss(SCMSS),
+        interpolate(Time, SCMSS, S_I),
+        S_U unbias S_I
+    ),
     (	Lag >= 0.0 ->
         S_F delay S_U / Lag
     ;
         S_F mapdot 0 .* S_U
     ).
-get_cmss(Months, Lag, C_F) :-
-    %cmss(CMSS),
-    %interpolate(Years, CMSS, C_I),
-    %C_U unbias C_I,
-    C_U mapdot cmss_fit ~> Months,
+get_cmss(EQ_ON, Time, Lag, C_F) :-
+    (	EQ_ON ->
+        C_U mapdot cmss_fit ~> Time
+    ;
+        cmss(CMSS),
+        interpolate(Time, CMSS, C_I),
+        C_U unbias C_I
+    ),
     (	Lag >= 0.0 ->
         C_F delay C_U / Lag
     ;
@@ -830,11 +854,12 @@ plot(Request) :-
 			      window(Window, [boolean, default(false)]),
 			      triple(Triple, [boolean, default(false)]),
 			      volc(Sato, [boolean, default(false)]),
-			      % aam(AAM_ON, [boolean, default(false)]),
+			      eq(EQ_ON, [boolean, default(false)]),
 			      wwii_adjust(WWII_Adjust, [boolean, default(false)]),
 			      wave(WL, [boolean, default(false)]),
 			      hale(Hale_Cycle, [boolean, default(false)]),
 			      t_units(Cal, []),
+			      fitYear(FitYear, [integer]),
 			      lag(LagCal, [float]),
 			      soi_lag(SL, [number]),
 			      aero_lag(VL, [number]),
@@ -909,16 +934,16 @@ plot(Request) :-
     PeriodA is Hale/4 *0.964*12 *Q,
     PeriodB is Hale/5 *0.955*12 *Q,
     PeriodC is Hale/6 *12 *Q,
-    PeriodD is Hale/2 *12 *Q,
-    PeriodE is Hale/1 *12 *Q,
+    PeriodD is Hale/10 *12 *Q,
+    PeriodE is Hale/11 *12 *Q,
     % random(Random_F),
     PeriodF is 3.35*12 *Q, % 3.344 Random_F*12*20, % 2*12 *Q,
     % PeriodG is 1*12 *Q,
     % PeriodG is Random_F*12*50,  % Hale/7 *12 *Q,
     PeriodG is Period2*3,  % 27
-    PeriodH is 7.944*12*Q, % 2.54  Venus
+    PeriodH is 7.944*12*Q, % 7.944 2.54  Venus
     PeriodI is PeriodH/4,  % 1.986
-    PeriodJ is Period2/3,
+    PeriodJ is 9.015 * 12 *Q/3,
 
 
 
@@ -987,10 +1012,13 @@ plot(Request) :-
     CosI mapdot yearly_cos_period(PeriodI,WL) ~> Months,
     SinJ mapdot yearly_sin_period(PeriodJ,WL) ~> Months,
     CosJ mapdot yearly_cos_period(PeriodJ,WL) ~> Months,
-    %get_scmss(Year, OL, SCMSS),
-    %get_cmss(Year, OL, CMSS),
-    get_scmss(Months, OL, SCMSS),
-    get_cmss(Months, OL, CMSS),
+    (	 EQ_ON ->
+    get_scmss(EQ_ON, Months, OL, SCMSS),
+    get_cmss(EQ_ON, Months, OL, CMSS)
+    ;
+    get_scmss(EQ_ON, Year, OL, SCMSS),
+    get_cmss(EQ_ON, Year, OL, CMSS)
+    ),
 
 
     /*
@@ -1034,7 +1062,7 @@ plot(Request) :-
     % get_darwin(NL, NAO),
     % get_soi_peak(NL, NAO),
 
-    get_fit([T, LogCO2, S2, TSI_F, V1, LOD_F, AAM, SinH, CosH, % Arctic, NAO,
+    get_fit(FitYear, [T, LogCO2, S2, TSI_F, V1, LOD_F, AAM, SinH, CosH, % Arctic, NAO,
 	                                                        Sin,  Cos,  Sin2, Cos2,
 	                                                        Sin3, Cos3, Sin4, Cos4,
 								Sin5, Cos5, Sin6, Cos6,
@@ -1328,8 +1356,8 @@ plot(Request) :-
     ),
     temp_data(NameData, DataSet),
     TCR is C*ln(2),
-    PPP is PeriodG/12,
-    print(user_error, ['random period ', PPP]),
+    % PPP is PeriodG/12,
+    % print(user_error, ['random period ', PPP]),
 
     (	Kind = graph ->
     reply_html_page([title('GISS and SOI'),
@@ -1351,11 +1379,11 @@ plot(Request) :-
 				td(
 		     \(context_graphing:dygraph_error_bars(LogLin, Header,
 						       [XLabel,XUnits], [YLabel, YUnits],
-						       [NameData, ' - CSALT:', Characteristic], Data, Show_Error_Bars))
+						       [NameData, FitYear, ' - CSALT:', Characteristic], Data, Show_Error_Bars))
 				  )
 			       ])]),
 		     br([]),
-		     br([]),
+		     % br([]),
 		     p(i('TCR = ~4f C for doubling of CO2'-TCR)),
 		     \html_rms(RMS, Periodic)
                     ]
