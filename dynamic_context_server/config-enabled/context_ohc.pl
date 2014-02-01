@@ -113,18 +113,18 @@ plot(Request) :-
     TS = 50,
     W2J = 1.126,
     Time range [0, TS]/1,
-    D = 0.008,  % 0.008
-    Loss = 0.45, % 0.45,
+    D = 0.01,  % 0.008
+    Loss = 1.0, % 0.45,
     % Offset = 0.0,
     DDtop mapdot dd_ohc(1.0, 0.002, D) ~> Time,
     DD3 mapdot dd_ohc(1.0, 0.3, D) ~> Time,
     DD7 mapdot dd_ohc(1.0, 0.7, D) ~> Time,
-    DD100 mapdot dd_ohc(1.0, 100.0, D) ~> Time,
+    DD100 mapdot dd_ohc(1.0, 1000.0, D) ~> Time,
     DD20 mapdot dd_ohc(1.0, 2.0, D) ~> Time,
     Scale is  Loss*W2J,
     forcing(F),
     Forcing mapdot Scale .* F,
-    Linear_Scale is Loss*W2J*1.55/TS,
+    Linear_Scale is Loss*W2J*0.9/TS,
     Linear_Forcing mapdot Linear_Scale .* Time,
     (
        Characteristic  = top ->
@@ -155,11 +155,14 @@ plot(Request) :-
        Characteristic = forcing  ->
          OHC3 convolve DD3*Linear_Forcing,
          OHC7 convolve DD7*Linear_Forcing,
+         OHC20 convolve DD20*Linear_Forcing,
          OHC100 convolve DD100*Linear_Forcing,
          ohc_data_2000(OD2000),
          ohc_data_700(OD700),
-	 Data tuple Time + OHC3 + OHC7 + OHC100 + OD700 + OD2000,
-         Heading = [X,    '0.3km','0.7km', 'All', 'Data700', 'Data2000']
+	 % Data tuple Time + OHC3 + OHC7 + OHC20 + OHC100 + OD700 + OD2000,
+         % Heading = [X,    '0.3km','0.7km', '2km', 'All', 'Data700', 'Data2000']
+	 Data tuple Time +  OHC100 + OHC20 + OD2000 + OHC7 + OD700 + OHC3,
+         Heading = [X,     'All',  '2km', 'Data2000', '0.7km', 'Data700', '0.3km' ]
     ),
     X = 'Time',
     XUnits = ' year',

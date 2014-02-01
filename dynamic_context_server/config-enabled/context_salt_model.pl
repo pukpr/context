@@ -8,7 +8,8 @@
                                fake_power_law/4,
                                eur/2,
 			       cmss_fit/2,
-			       scmss_fit/2
+			       scmss_fit/2,
+			       sin_n/5
 			      ]).
 
 :- use_module(context_math).
@@ -29,6 +30,10 @@ square_with_sign(X,X).
 */
 square_with_sign(X,Y) :- Y is X^2 + 1*X.
 fake_power_law(S,N,X,Y) :- Y is (X/S)^N.
+
+sin_n(N,Period,Phase,X,Y) :- Y is (1-0.3*sin(2*pi*X/(2*Period) + Phase))*sin(2*pi*X/Period + Phase)^N, Y < -0.002.
+sin_n(_,_,_,_,0.0).
+
 
 eureqa_sin(S, X, Y) :-
     Year is X/12,     % Y is 0.05169*sin(1.405*Year)*sin(5.779 + 0.04055*Year)*sin(5.013 - 0.04486*Year).
@@ -169,11 +174,18 @@ navigate(Request) :-
                       h1('CSALT Model'),
                       form([action(plot), target(target_iframe)],
 			 [
-                           p(['Select a data set and a view of the defluctuated profile',
-			       input([type('text'),
+                           p(['Select data set and a profile view ',
+			      input([type('text'),
+				 size(4),
+				 name('startYear'),
+				 value('1880')]),
+			      ' : ',
+			      input([type('text'),
 				 size(4),
 				 name('fitYear'),
-				 value('2013')])]),
+				 value('2014')])
+			     ]),
+
 			  select([name('dataset')], DataSet),
 			  % \(con_text:check_box(anthro, 'true', 'anthro aerosols')),
 			  \(con_text:check_box(volc, 'true', 'GISS aerosol model')),
@@ -187,6 +199,7 @@ navigate(Request) :-
 					  ['Match temperature with model', model],
 					  ['Correlate CO2 with model', correlate],
 					  ['Correlate temperature with model', map],
+					  ['Match natural variability', fluctuation],
 					  ['View composite cycles', cycles],
 					  ['Dump all component factors', cross]
 					  % , ['Cross-Correlate distance vs speed orbital modes ', cross],
@@ -228,7 +241,7 @@ navigate(Request) :-
 					\(con_text:input_cells([[co2_lag,0,2],
 						      [soi_lag,6,2],
 						      [aero_lag,15,2],
-						      [lod_lag,60.0,2],
+						      [lod_lag,48.0,2],
 						      [tsi_lag,6,2],
                                                       [aam_lag,6,2],
                                                       [bary_lag,6,2]
@@ -240,8 +253,9 @@ navigate(Request) :-
 				     p([' ...... ']),
 				     div([style([ type('text/css'), scoped ],
 					 '@import url("/html/css/context.css")'),
-					  \(con_text:check_box(wave, 'true', 'add orbital periodic elements below')),
-					  \(con_text:check_box(hale, 'true', 'Hale')),
+					  \(con_text:check_box(wave, 'true', 'cycles On ')),
+					  \(con_text:check_box(fit_res, 1, 'fit res')),
+					  \(con_text:check_box(high_res, 1, 'high res')),
 					  \(con_text:table_multiple_entries(
 						  [[cycle, 'period description', year]],
 						  CycleData
@@ -259,7 +273,7 @@ navigate(Request) :-
 
 
 
-get_fit(EndDate, [Temperature, CO2, SOI, TSI, Volc, LOD, AAM, Arctic, NAO, Sin, Cos,
+get_fit(StartDate, EndDate, [Temperature, CO2, SOI, TSI, Volc, LOD, AAM, Arctic, NAO, Sin, Cos,
 	                                                          S2,  C2,
 	                                                          S3,  C3,
 	                                                          S4,  C4,
@@ -277,13 +291,16 @@ get_fit(EndDate, [Temperature, CO2, SOI, TSI, Volc, LOD, AAM, Arctic, NAO, Sin, 
 	                                                          SG,  CG,
 	                                                          SI,  CI,
 	                                                          SJ,  CJ,
-	                                                          BSC, BCM],
+	                                                          BSC, BCM,
+								  Dynamo
+			                                          %, Methane
+								  ],
 	[             C,   S,   T,   A,    L,   M, Z, N, V, W, P, Q,
 		                                E, F, G, H, D, I, R, U,
 		                                A1, B1, C1, D1, E1, F1,
 		                                G1, H1, I1, J1, K1, L1,
 		                                M1, N1, O1, P1, Q1, R1,
-		                                S1, T1, U1, V1, W1, X1, J, K], Int, R2) :-
+		                                S1, T1, U1, V1, W1, X1, J, K, DY], Int, R2) :-
    r_open_session,
    y <- Temperature,
    c <- CO2,
@@ -332,18 +349,22 @@ get_fit(EndDate, [Temperature, CO2, SOI, TSI, Volc, LOD, AAM, Arctic, NAO, Sin, 
    x1 <- CJ,
    j <- BSC,
    k <- BCM,
+   dy <- Dynamo,
+   % y1 <- Methane,
    % pccr <- princomp('~y+c+s+a+l+t+m+z+j+k+n+v+w+p+q+e+f+g+h+d+i+r+u+a1+b1+c1+d1+e1+f1+g1+h1+i1+j1+k1+l1+m1+n1+o1+p1+q1+r1+s1+t1+u1+v1+w1+x1'),
    % r_print(summary(pccr)),
    % Test <- 'as.double(pccr$coefficients[1])',
    % print(user_error, Test),
    % r_print(loadings(pccr)),
    B is (EndDate - 1880)*12,
-   format(atom(Eq), 'y[1:~d]~~c[1:~d]+s[1:~d]+a[1:~d]+l[1:~d]+t[1:~d]+m[1:~d]+z[1:~d]+n[1:~d]+v[1:~d]+w[1:~d]+p[1:~d]+q[1:~d]+e[1:~d]+f[1:~d]+g[1:~d]+h[1:~d]+d[1:~d]+i[1:~d]+r[1:~d]+u[1:~d]+a1[1:~d]+b1[1:~d]+c1[1:~d]+d1[1:~d]+e1[1:~d]+f1[1:~d]+g1[1:~d]+h1[1:~d]+i1[1:~d]+j1[1:~d]+k1[1:~d]+l1[1:~d]+m1[1:~d]+n1[1:~d]+o1[1:~d]+p1[1:~d]+q1[1:~d]+r1[1:~d]+s1[1:~d]+t1[1:~d]+u1[1:~d]+v1[1:~d]+w1[1:~d]+x1[1:~d]+j[1:~d]+k[1:~d]',
-	  [B,B,B,B,B,B,B,B,B,B,
-	   B,B,B,B,B,B,B,B,B,B,
-	   B,B,B,B,B,B,B,B,B,B,
-	   B,B,B,B,B,B,B,B,B,B,
-	   B,B,B,B,B,B,B,B]),
+   O is (StartDate - 1880)*12 + 1,
+   % O = 1, % 840,
+   format(atom(Eq), 'y[~d:~d]~~c[~d:~d]+s[~d:~d]+a[~d:~d]+l[~d:~d]+t[~d:~d]+m[~d:~d]+z[~d:~d]+n[~d:~d]+v[~d:~d]+w[~d:~d]+p[~d:~d]+q[~d:~d]+e[~d:~d]+f[~d:~d]+g[~d:~d]+h[~d:~d]+d[~d:~d]+i[~d:~d]+r[~d:~d]+u[~d:~d]+a1[~d:~d]+b1[~d:~d]+c1[~d:~d]+d1[~d:~d]+e1[~d:~d]+f1[~d:~d]+g1[~d:~d]+h1[~d:~d]+i1[~d:~d]+j1[~d:~d]+k1[~d:~d]+l1[~d:~d]+m1[~d:~d]+n1[~d:~d]+o1[~d:~d]+p1[~d:~d]+q1[~d:~d]+r1[~d:~d]+s1[~d:~d]+t1[~d:~d]+u1[~d:~d]+v1[~d:~d]+w1[~d:~d]+x1[~d:~d]+j[~d:~d]+k[~d:~d]+dy[~d:~d]', % +y1[~d:~d]',
+	  [O,B,O,B,O,B,O,B,O,B,O,B,O,B,O,B,O,B,O,B,
+	   O,B,O,B,O,B,O,B,O,B,O,B,O,B,O,B,O,B,O,B,
+	   O,B,O,B,O,B,O,B,O,B,O,B,O,B,O,B,O,B,O,B,
+	   O,B,O,B,O,B,O,B,O,B,O,B,O,B,O,B,O,B,O,B,
+	   O,B,O,B,O,B,O,B,O,B,O,B,O,B,O,B,O,B]),
    fitxy <- lm(Eq),
 
 	% fitxy <- lm('y~c+s+a+l+t+m+z+n+v+w+p+q+e+f+g+h+d+i+r+u+a1+b1+c1+d1+e1+f1+g1+h1+i1+j1+k1+l1+m1+n1+o1+p1+q1+r1+s1+t1+u1+v1+w1+x1+j+k'),
@@ -401,6 +422,8 @@ get_fit(EndDate, [Temperature, CO2, SOI, TSI, Volc, LOD, AAM, Arctic, NAO, Sin, 
    X1 <- 'as.double(fitxy$coefficients[45])',
    J <- 'as.double(fitxy$coefficients[46])',
    K <- 'as.double(fitxy$coefficients[47])',
+   DY <- 'as.double(fitxy$coefficients[48])',
+   % LM <- 'as.double(fitxy$coefficients[48])',
    summary <- summary(fitxy),
    r_print(summary),
    R2 <- 'as.double(summary$r.squared)',
@@ -437,10 +460,10 @@ scale(_, lin, _, 'Time', 'year', 'Temperature', 'C', false).
 
 single_filter(In, Out) :-
     % median_filter(In, In0),
-    Out window In*12.
+    Out window In*13.
 triple_filter(In, Out) :-
     median_filter(In, In0),
-    A window In0*12,
+    A window In0*13,
     B window A*9, % 9
     Out window B*7. % 7
 
@@ -472,7 +495,8 @@ temperature_series(false, DataSet, T) :-
 temperature_series(Correction, Window, Triple, DataSet, T, Offset) :-
    temperature_series(Window, Triple, DataSet, TT),
    get_years_from_1880(TT, Year, _),
-   Shift = -0.14, % -0.4
+   Shift = -0.1, % -0.4
+   Shift2 = -0.075,
    (   Correction ->
        Profile = [[1880,0],
 		  [1938,0],
@@ -480,9 +504,10 @@ temperature_series(Correction, Window, Triple, DataSet, T, Offset) :-
 		  [1942.5,Shift],
 		  [1946,Shift],
 		  [1947,-0.0],
-%		  [1943.5, -0.14],
-		  % [1944, -0.12],
-%		  [1947,0], %-0.02],
+                  [1952, 0],
+                  [1952.5, Shift2],
+                  [1953.5, Shift2],
+                  [1954, 0],
 		  [1967,0],
 		  [2014,0]],
        interpolate(Year, Profile, Offset),
@@ -621,7 +646,7 @@ get_volcanos(false, Zeros, Lag, Vol_F) :-
     Lag >= 0.0,
     context_box_model:volcanos(V),
     sparse_list(Zeros, V, Vol),
-    V0 lag Vol/6,
+    V0 lag Vol/9,
     Vol_F lag V0/Lag.
 get_volcanos(_, Zeros, _, Zeros).
 
@@ -641,6 +666,7 @@ get_rh(Lag, RH_F) :-
     ).
 
 get_tsi(Years, Lag, TSI_F) :-
+    % equinox(TSI),
     tsi(TSI),
     interpolate(Years, TSI, TSI_I),
     TSI_U unbias TSI_I,
@@ -792,6 +818,17 @@ get_zonal(Lag, Zonal_F) :-
 get_qbo(T) :-
     qbo(T).
 
+get_methane(Years, Lag, LogMethane) :-
+    methane(Methane),
+    interpolate(Years, Methane, Methane_I),
+    (	Lag >= 0.0 ->
+	Methane_Lag lag Methane_I / Lag,
+        LogMethane mapdot ln ~> Methane_Lag
+    ;
+        LogMethane mapdot 0 .* Methane_I
+    ).
+
+
 check_coefficients([], List, Final ) :- reverse(List, Final), !.
 check_coefficients([F|Rest], List, Final ) :-
     F = 'NA', !,
@@ -808,19 +845,36 @@ show_rms([[Name,A]|R], In, Out) :-
 show_rms(Array, Values) :-
     show_rms(Array, [], Values).
 
+show_equation([], Out, Out).
+show_equation([[0.0,0.0,0.0]|R], In, Out) :-
+    show_equation(R,In, Out).
+show_equation([[Period,S,C]|R], In, Out) :-
+    Val is sqrt(S*S+C*C),
+    Phase is atan(S,C),
+    format(atom(Value), '+ ~5g * sin(2*pi()*$a1/~5g+~5g) ', [Val,Period,Phase]),
+    concat(In, Value, Eq),
+    show_equation(R,Eq, Out).
+
 show_periods([], Out, Out).
+show_periods([[0.0,0.0,0.0]|R], In, Out) :-
+    show_periods(R, In, Out).
 show_periods([[Period,S,C]|R], In, Out) :-
     RMS is 1000*sqrt(S*S+C*C),
     format(atom(Value), '~1f', [RMS]),
     Year is Period / 12,
     % format(atom(Name), '~dyears', [Year]),
     show_periods(R, [[Year,Value]|In], Out).
-show_periods(Array, Values) :-
-    show_periods(Array, [], Values).
 
-html_rms(RMS, _) --> {var(RMS)}.
-html_rms(RMS, Periodic) -->
-	html(\(con_text:multi_columns([
+show_periods(Array, out(Values, Equation)) :-
+    show_periods(Array, [], Values),
+    show_equation(Array, '', Equation).
+
+html_rms(RMS, _, _) --> {var(RMS)}.
+html_rms(RMS, Periodic, Equation) -->
+	html(
+	    [
+	    p(Equation),
+	    \(con_text:multi_columns([
 		     div([
 			 p(i('Temperature variance as RMS values in milliKelvin, baseline=1960')),
 			 \(con_text:table_multiple_entries([[factor,rms]],RMS))
@@ -831,7 +885,11 @@ html_rms(RMS, Periodic) -->
 			 \(con_text:table_multiple_entries([[period,rms]],Periodic))
 			 % \(con_text:paragraphs(Periodic))
 			])
-			       ]))).    % .
+			       ]
+				     )
+	      )
+	    ]
+	    ).    % .
 
 
 plot(Request) :-
@@ -857,8 +915,10 @@ plot(Request) :-
 			      eq(EQ_ON, [boolean, default(false)]),
 			      wwii_adjust(WWII_Adjust, [boolean, default(false)]),
 			      wave(WL, [boolean, default(false)]),
-			      hale(Hale_Cycle, [boolean, default(false)]),
+			      fit_res(Others, [integer, default(0)]),
+			      high_res(Add, [integer, default(0)]),
 			      t_units(Cal, []),
+			      startYear(StartYear, [integer]),
 			      fitYear(FitYear, [integer]),
 			      lag(LagCal, [float]),
 			      soi_lag(SL, [number]),
@@ -909,40 +969,38 @@ plot(Request) :-
     Period6 is 3.35 * 12,   % 3.35 short duration sunspot
 */
 
-    Q is 1.0,
-    (	Hale_Cycle ->
-	Hale=21.98; % 21.98
-        Hale=0.0
-    ), % 21.9,
+    Q is 1,
+
+    Hale=21.98,
 
     % Scafetta
     Period is Hale/3 * 12 *Q,      % precession cycle with the time for Spring tides to realign with the same day each year
-    Period2 is 9.015 * 12 *Q,   % Sun-Moon-Earth tidal configuration
+    Period2 is 9.015 * 12 *Q,   % 9.015 Sun-Moon-Earth tidal configuration 8.715
     Period3 is 18.613 * 12 *Q,  % Lunar precessional
-    Period4 is 8.848 * 12 *Q,   % Lunar apsidal precession
-    Period5 is 11.86* 12 *Q,   % 11.86 Tidal sidereal period of Jupiter
+    Period4 is Add*8.848 * 12 *Q,   % Lunar apsidal precession
+    Period5 is Add*11.86* 12 *Q,   % 11.86 Tidal sidereal period of Jupiter
     % Period6 is Period2*2,       % Soros cycle tide
     % Period6 is 3.22 * 12 *Q,       % Soros cycle tide
-    Period6 is Hale/7 * 1.0245* 12 *Q,       % Soros cycle tide
+    Period6 is Others*Hale/7 * 1.0245* 12 *Q,       % Soros cycle tide -------
     Period7 is Period5/2,       % Period5/2 24*Q,
     % Period7 is Period2*2/3,       % Period5/2 24*Q,
     Period8 is Period3/3,       % 20.5
-    Period9 is Period4/2,
+    Period9 is 8.848 * 12 *Q/2,
     %PeriodA is 2*pi*12/1.189, %Hale/4 *12 *Q,
     %PeriodB is 2*pi*12/1.499, %Hale/5 *12 *Q,
     %PeriodC is 2*pi*12/1.872, %Hale/6 *12 *Q,
-    PeriodA is Hale/4 *0.964*12 *Q,
-    PeriodB is Hale/5 *0.955*12 *Q,
+    PeriodA is Add*Hale/4 *0.964*12 *Q,
+    PeriodB is Others*Hale/5 *0.955*12 *Q, % -------
     PeriodC is Hale/6 *12 *Q,
-    PeriodD is Hale/10 *12 *Q,
-    PeriodE is Hale/11 *12 *Q,
+    PeriodD is Add*Hale/2 *12 *Q,
+    PeriodE is Add*Hale/1 *12 *Q,
     % random(Random_F),
-    PeriodF is 3.35*12 *Q, % 3.344 Random_F*12*20, % 2*12 *Q,
+    PeriodF is Others*3.35*12 *Q, % 3.344 Random_F*12*20, % 2*12 *Q, % ------
     % PeriodG is 1*12 *Q,
     % PeriodG is Random_F*12*50,  % Hale/7 *12 *Q,
-    PeriodG is Period2*3,  % 27
-    PeriodH is 7.944*12*Q, % 7.944 2.54  Venus
-    PeriodI is PeriodH/4,  % 1.986
+    PeriodG is 9.015 * 12 *Q*3,  % 27
+    PeriodH is Add*7.944*12*Q, % 7.944 2.54  Venus 9.315*12*Q,  %
+    PeriodI is Add*PeriodH/4,  % 1.986
     PeriodJ is 9.015 * 12 *Q/3,
 
 
@@ -1008,6 +1066,9 @@ plot(Request) :-
     CosG mapdot yearly_cos_period(PeriodG,WL) ~> Months,
     SinH mapdot yearly_sin_period(PeriodH,WL) ~> Months,
     CosH mapdot yearly_cos_period(PeriodH,WL) ~> Months,
+
+    Dynamo mapdot sin_n(11,172.4,-1.1) ~> Months,
+
     SinI mapdot yearly_sin_period(PeriodI,WL) ~> Months,
     CosI mapdot yearly_cos_period(PeriodI,WL) ~> Months,
     SinJ mapdot yearly_sin_period(PeriodJ,WL) ~> Months,
@@ -1042,6 +1103,7 @@ plot(Request) :-
     get_volcanos(Sato, Zeros, VL, V1),
     get_tsi(Year, TL, TSI_F),
     get_co2(Year, AL, LogCO2),
+    % get_methane(Year, AL, LogMethane),
 
     % get_arctic(Year, AW, Arctic),
     % get_amo(NL, NAO),       % get_nao(Year, NL, NAO),
@@ -1062,7 +1124,7 @@ plot(Request) :-
     % get_darwin(NL, NAO),
     % get_soi_peak(NL, NAO),
 
-    get_fit(FitYear, [T, LogCO2, S2, TSI_F, V1, LOD_F, AAM, SinH, CosH, % Arctic, NAO,
+    get_fit(StartYear, FitYear, [T, LogCO2, S2, TSI_F, V1, LOD_F, AAM, SinH, CosH, % Arctic, NAO,
 	                                                        Sin,  Cos,  Sin2, Cos2,
 	                                                        Sin3, Cos3, Sin4, Cos4,
 								Sin5, Cos5, Sin6, Cos6,
@@ -1072,7 +1134,8 @@ plot(Request) :-
 	                                                        SinD, CosD, SinE, CosE,
 	                                                        SinF, CosF, SinG, CosG,
 	                                                        SinI, CosI, SinJ, CosJ,
-	                                                        SCMSS, CMSS],
+	                                                        SCMSS, CMSS, Dynamo],
+				                                % LogMethane],
 	    Coefficients, Int, _R2C),
 	    % [NoiseA, C, SO, TS, VC,   LO],
 
@@ -1086,7 +1149,7 @@ plot(Request) :-
 					                                    SWD, CWD, SWE, CWE,
 					                                    SWF, CWF, SWG, CWG,
 									    SWI, CWI, SWJ, CWJ,
-					                                    SC, CM]),
+					                                    SC, CM, DY]),
 
     Fluct mapdot SO .* S2 + TS .* TSI_F + VC .* V1 + LO .* LOD_F + AA .* AAM +
                                            + SWH .* SinH + CWH .* CosH  % ARC .* Arctic + NI .* NAO
@@ -1108,7 +1171,9 @@ plot(Request) :-
 		                           + SWG .* SinG + CWG .* CosG
 		                           + SWI .* SinI + CWI .* CosI
 		                           + SWJ .* SinJ + CWJ .* CosJ
-                                           + SC .* SCMSS + CM .* CMSS,
+                                           + SC .* SCMSS + CM .* CMSS
+					   + DY .* Dynamo,
+					   % + LM .* LogMethane,
 
     T_CO2_R mapdot C .* LogCO2 + Fluct,
     T_R mapdot Int .+ T_CO2_R,
@@ -1134,7 +1199,14 @@ plot(Request) :-
 	 Data group Year + T_lags + T_R_lags + Corrections,
          Header = [XLabel, DataSet, model, correction]
      ;
-       Characteristic = map ->
+       Characteristic = fluctuation ->
+         TCO2 mapdot Int .+ C .* LogCO2,
+         TFluct mapdot T_lag - TCO2,
+         FF lag Fluct / Lag,
+         Data tuple Year + TFluct + FF,
+         Header = [XLabel, signal,  variability]
+    ;
+         Characteristic = map ->
 	 Data tuple T_R_lag + T_lag,
          Header = [model, DataSet]
      ;
@@ -1234,13 +1306,18 @@ plot(Request) :-
          Cycle5 mapdot SW5 .* Sin5 + CW5 .* Cos5 + SW7 .* Sin7 + CW7 .* Cos7,
          Cycle6 mapdot SWF .* SinF + CWF .* CosF,
 	 Cycle7 mapdot SWH .* SinH + CWH .* CosH + SWI .* SinI + CWI .* CosI + SWJ .* SinJ + CWJ .* CosJ,
+         % Bary mapdot  SC .* SCMSS + CM .* CMSS,
 	 AllCycles mapdot Cycle0 + Cycle1 + Cycle2 +Cycle3 +Cycle4 + Cycle5 + Cycle6 +Cycle7,
 	 % Cycle7 mapdot SW7 .* Sin7 + CW7 .* Cos7,
          % Cycle8 mapdot SW8 .* Sin8 + CW8 .* Cos8,
          % Cycle9 mapdot SW9 .* Sin9 + CW9 .* Cos9,
-	 Data tuple Year + AllCycles,
+         S0S2 mapdot SO .* S2,
+         % TSTSI_F mapdot TS .* TSI_F,
+         AAM_D mapdot AA .* AAM,
+	 AllNatural mapdot AAM_D + S0S2,
+	 Data tuple Year + AllCycles + AllNatural,
          % Header = [XLabel, '22',   '18.03', '18.6',  '8.85',  '11.86', '2']
-         Header = [XLabel, 'cycles']
+         Header = [XLabel, 'cycles', 'natural']
 /*
     Period is 7.3 * 12,      % precession cycle with the time for Spring tides to realign with the same day each year
     Period2 is 9.015 * 12,   % Sun-Moon-Earth tidal configuration
@@ -1282,28 +1359,29 @@ plot(Request) :-
          Header = [co2, data, log_model]
      ;
        Characteristic = all ->
-         S0S2 mapdot 1.0 .+ SO .* S2,
-         TSTSI_F mapdot 0.9 .+ TS .* TSI_F,
-         VCV1 mapdot 0.8 .+ VC .* V1,
-	 LOLOD_F mapdot 0.7 .+ LO .* LOD_F,
+         S0S2 mapdot 0.8 .+ SO .* S2,
+         TSTSI_F mapdot 0.7 .+ TS .* TSI_F,
+         VCV1 mapdot 0.6 .+ VC .* V1,
+	 LOLOD_F mapdot 0.5 .+ LO .* LOD_F,
          % Noise_D mapdot NoiseA .* Noise2,
-         AAM_D mapdot 0.6 .+ AA .* AAM,
+         AAM_D mapdot 0.4 .+ AA .* AAM,
          % ARCTIC_D mapdot ARC .* Arctic,
          % NAO_D mapdot NI .* NAO,
-	 Diurnal mapdot 0.5 .+ SW3 .* Sin3 + CW3 .* Cos3 +
+	 Diurnal mapdot 0.3 .+ SW3 .* Sin3 + CW3 .* Cos3 +
 	                SW8 .* Sin8 + CW8 .* Cos8,
-	 SemiDiurnal mapdot 0.4 .+ SW4 .* Sin4 + CW4 .* Cos4 +
+	 SemiDiurnal mapdot 0.2 .+ SW4 .* Sin4 + CW4 .* Cos4 +
 	                    SW9 .* Sin9 + CW9 .* Cos9,
-	 HaleCycle mapdot 0.3 .+ SW .* Sin + CW .* Cos +
+	 HaleCycle mapdot 0.1 .+ SW .* Sin + CW .* Cos +
 	                SWC .* SinC + CWC .* CosC +
 	                SWD .* SinD + CWD .* CosD +
 	                SWE .* SinE + CWE .* CosE,
-	 Jupiter mapdot 0.2 .+ SW5 .* Sin5 + CW5 .* Cos5 +
-	                SW7 .* Sin7 + CW7 .* Cos7,
-	 Venus mapdot 0.1 .+ SWI .* SinI + CWI .* CosI
-	                   + SWH .* SinH + CWH .* CosH,
+	 % Jupiter mapdot 0.2 .+ SW5 .* Sin5 + CW5 .* Cos5 +
+	 %                SW7 .* Sin7 + CW7 .* Cos7,
+	 Dyno_F mapdot 1.0 .+ DY .* Dynamo,
 	 SunMoonEarth  mapdot SWG .* SinG + CWG .* CosG +
-	                SW2 .* Sin2 + CW2 .* Cos2,
+	                SW2 .* Sin2 + CW2 .* Cos2 +
+			SWJ .* SinJ + CWJ .* CosJ,
+			 % SWH .* SinH + CWH .* CosH,
 	 Cycle_20_80 mapdot -0.1 .+ SWF .* SinF + CWF .* CosF +
 	                SW6 .* Sin6 + CW6 .* Cos6 +
 	                SWA .* SinA + CWA .* CosA +
@@ -1320,6 +1398,7 @@ plot(Request) :-
 
          Bary mapdot  -0.2 .+ SC .* SCMSS + CM .* CMSS,
 	 CO2_Strength mapdot Int .+ C .* LogCO2,
+	 % Meth mapdot 0.0 .+ LM .* LogMethane,
 	 ResidNoise mapdot -0.3 .+ T_Diff,
 	 show_rms([% [amo, NAO_D],
 		   % [arctic, ARCTIC_D],
@@ -1339,19 +1418,30 @@ plot(Request) :-
 		       [Period6, SW6, CW6],
 		       [Period7, SW7, CW7],
 		       [Period8, SW8, CW8],
-		       [Period9, SW9, CW9]
-		        ], Periodic),
+		       [Period9, SW9, CW9],
+		       [PeriodA, SWA, CWA],
+		       [PeriodB, SWB, CWB],
+		       [PeriodC, SWC, CWC],
+		       [PeriodD, SWD, CWD],
+		       [PeriodE, SWE, CWE],
+		       [PeriodF, SWF, CWF],
+		       [PeriodG, SWG, CWG],
+		       [PeriodH, SWH, CWH],
+		       [PeriodI, SWI, CWI],
+		       [PeriodJ, SWJ, CWJ]
+		        ], out(Periodic, Equation)),
 
      /*
          Angular mapdot AAM_D + LOLOD_F + Y_Lunar,
          Data tuple Year + S0S2 + VCV1 + TSTSI_F + ARCTIC_D + NAO_D + Angular,
 	 Header = [XLabel, soi,   aero,  tsi,      arctic,    nao,    angular]
      */
-         Data tuple Year + S0S2 + TSTSI_F + VCV1 + LOLOD_F + AAM_D +
-	                   Diurnal+SemiDiurnal + HaleCycle + Jupiter + Venus + SunMoonEarth +
-			   Cycle_20_80 + Bary + ResidNoise + CO2_Strength,
-	 Header = [XLabel, soi,   tsi,  aero,      lod,      aam,
-		           diurnal, semi, hale, jupiter, venus, sme, '20/80', bary, residual,co2]
+         Data tuple Year + Dyno_F + S0S2 + TSTSI_F + VCV1 + LOLOD_F + AAM_D +
+	                   Diurnal+SemiDiurnal + HaleCycle % + Jupiter + Venus
+			   + SunMoonEarth + Cycle_20_80 + Bary + ResidNoise + CO2_Strength, % + Meth,
+	 Header = [XLabel, dynamo, soi,   tsi,  aero,      lod,      aam,
+		           diurnal, semi, hale, % jupiter, venus,
+		           sme, '20/80', bary, residual,co2] % , methane]
 
     ),
     temp_data(NameData, DataSet),
@@ -1385,7 +1475,7 @@ plot(Request) :-
 		     br([]),
 		     % br([]),
 		     p(i('TCR = ~4f C for doubling of CO2'-TCR)),
-		     \html_rms(RMS, Periodic)
+		     \html_rms(RMS, Periodic, Equation)
                     ]
 		  )
    ;
