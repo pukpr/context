@@ -1,8 +1,4 @@
 :- module(context_soim, [
-			       yearly_sin_period/5,
-			       yearly_cos_period/5,
-			       square_with_sign/2,
-                               fake_power_law/4
 			      ]).
 
 :- use_module(context_math).
@@ -11,56 +7,40 @@
 :- context:register(context_soim:navigate).
 :- context:register(context_soim:plot).
 
-% test_period(N,_,Period) :- Period is N*N/20*12+N*2.134.
-test_period(_,P,P).
+soi_data('SOI', soi).
+soi_data('Darwin', darwin).
+soi_data('Tahiti', tahiti).
+soi_data('OU Random Walk', ou_rw).
+soi_data('Tahiti-Darwin', combined).
 
-yearly_sin_period(0.0,N,M,_,0) :- N =< M.
-yearly_sin_period(Period,N,M,X,Y) :- N =< M, test_period(N,Period,P), Y is sin(2*pi*X/P).
-yearly_sin_period(_,N,M,_,0.0) :- N > M.
-yearly_cos_period(0.0,N,M,_,0) :- N =< M.
-yearly_cos_period(Period,N,M,X,Y) :- N =< M, test_period(N,Period,P), Y is cos(2*pi*X/P).
-yearly_cos_period(_,N,M,_,0.0) :- N > M.
-square_with_sign(X,Y) :- Y is X^2 + 1*X.
-fake_power_law(S,N,X,Y) :- Y is (X/S)^N.
-
-
-temp_data('SOI', soi).
-temp_data('Darwin', darwin).
-temp_data('Tahiti', tahiti).
-temp_data('OU Random Walk', ou_rw).
-
-
-dataset(soi, L) :-
+dataset(1, soi, L) :-
     soi(L0),
     L unbias L0.
-dataset(darwin, L) :-
+dataset(2, darwin, L) :-
     darwin(L0),
     L unbias L0.
-dataset(tahiti, L) :-
+dataset(1, tahiti, L) :-
     tahiti(L0),
     L unbias L0.
 
 
-dataset(ou_rw, L) :-
+dataset(1, ou_rw, RW) :-
     Range range [1,1605]/1,
-    context_random_walk:ou_random_walker(0.005,1,0.1,Range,RW),
-    L mapdot % PL +
-             RW, !.
-
+    context_random_walk:ou_random_walker(0.005,1,0.1,Range,RW),!.
 
 
 navigate(Request) :-
    collect_unit_options(calendar, Calendar),
-   con_text:collect_options(context_salt_model:temp_data, DataSet),
+   con_text:collect_options(context_soim:soi_data, DataSet),
 
    reply_html_page(cliopatria(default),
-                   [title('CSALT model response'),
+                   [title('SOI Model response'),
 		    script([type('text/javascript'),src('/html/js/submit.js')], [])
 		   ],
                    [\(con_text:table_with_iframe_target(
                                     Request,
 		     [
-                      h1('CSALT Model'),
+                      h1('SOI Model'),
                       form([action(plot), target(target_iframe)],
 			 [
                            p(['Select data set and a profile view ',
@@ -76,7 +56,6 @@ navigate(Request) :-
 			     ]),
 
 			  select([name('dataset')], DataSet),
-			  \(con_text:check_box(volc, 'true', 'GISS aerosol model')),
 			  br([]),
 			  \(con_text:radio_toggles(
 					 'evaluate',
@@ -89,8 +68,6 @@ navigate(Request) :-
                                   onclick('subm(this.form,"target_iframe");')]),
 			  input([type('submit'), name(kind), value('table'),
                                   onclick('subm(this.form,"target_iframe");')]),
-			  input([type('submit'), name(kind), value('volcanos'),
-                                 onclick('subm(this.form,"render");')]),
 			  \(con_text:check_box(fft, 'true', 'FFT of residual')),
 			  br([]),
 			  \(con_text:check_box(window, 'true', 'Apply 12 month window')),
@@ -100,23 +77,7 @@ navigate(Request) :-
 				 size(2),
 				 name('lag'),
 				 value('0')]),
-			  select([name('t_units')], Calendar),
-			  small(i(' <= lag filter on Match, smooths data and model')),
-
-			  small(\multi_columns([
-				     div([
-					 style([ type('text/css'), scoped ],
-					       '@import url("/html/css/context.css")'),
-					 table(  %%%%%%%%%%%%%%%  Hard coded  values
-				       [
-					h2([i('lags[months]'),
-					   img([src('/html/images/magnify-clip.png'),
-						title('if negative value entered, factor is zeroed')
-					       ])])
-				       ]
-					)]),
-				     p([' ...... '])
-					 ]))
+			  select([name('t_units')], Calendar)
 			 ]
 			  ),
 		      br([]),
@@ -291,23 +252,22 @@ triple_filter(In, Out) :-
     B window A*9, % 9
     Out window B*7. % 7
 
-temperature_series(_, true, DataSet, T) :-
-    dataset(DataSet, T0),
+temperature_series(N, _, true, DataSet, T) :-
+    dataset(N, DataSet, T0),
     triple_filter(T0, T).
-temperature_series(true, false, DataSet, T) :-
-    dataset(DataSet, T0),
+temperature_series(N, true, false, DataSet, T) :-
+    dataset(N, DataSet, T0),
     single_filter(T0, T).
-temperature_series(false, false, DataSet, T) :-
-    dataset(DataSet, T0),
+temperature_series(N, false, false, DataSet, T) :-
+    dataset(N, DataSet, T0),
     median_filter(T0, T).
 
 
-temperature_series(_, Window, Triple, DataSet, T, Offset) :-
-   temperature_series(Window, Triple, DataSet, TT),
+temperature_series(N, Window, Triple, DataSet, T, Offset) :-
+   temperature_series(N, Window, Triple, DataSet, TT),
    T = TT,
    Offset mapdot 0 .* TT
    .
-
 
 get_years_from_1880(T, Years, Zeros) :-
     length(T, L),
@@ -320,8 +280,6 @@ get_months_from_start(T, H) :-
     length(T, L),
     H range [1, L]/1.
 
-
-
 check_coefficients([], List, Final ) :- reverse(List, Final), !.
 check_coefficients([F|Rest], List, Final ) :-
     F = 'NA', !,
@@ -330,141 +288,61 @@ check_coefficients([F|Rest], List, Final ) :-
     check_coefficients(Rest, [F|List], Final).
 
 
-html_rms(RMS, _, _) --> {var(RMS)}.
-html_rms(RMS, Periodic, Equation) -->
-	html(
-	    [
-	    p(Equation),
-	    \(con_text:multi_columns([
-		     div([
-			 p(i('Temperature variance as RMS values in milliKelvin, baseline=1960')),
-			 \(con_text:table_multiple_entries([[factor,rms]],RMS))
-			 % \(con_text:paragraphs(RMS))
-		       ]),
-		     div([
-			 p(i('Individual periodic cycles in years')),
-			 \(con_text:table_multiple_entries([[period,rms]],Periodic))
-			 % \(con_text:paragraphs(Periodic))
-			])
-			       ]
-				     )
-	      )
-	    ]
-	    ).    % .
-
-
-
-plot(Request) :-
-    garbage_collect,
-    http_parameters(Request, [kind(Kind, []),
-			      fft(FFT, [boolean, default(false)]),
-			      window(Window, [boolean, default(false)]),
-			      triple(Triple, [boolean, default(false)]),
-			      wave(WL, [integer, default(0)]),
-			      t_units(Cal, []),
-			      startYear(StartYear, [integer]),
-			      fitYear(FitYear, [integer]),
-			      lag(LagCal, [float]),
-                              dataset(DataSet, []),
-                              evaluate(Characteristic, [default(model)])]),
-
-    scale(FFT, LogLin, Characteristic, XLabel, XUnits, YLabel, YUnits, Show_Error_Bars),
-    scaling(Cal, month, Scale),
-    Lag is Scale*LagCal,
-
-    % Get the temperature series
-    temperature_series(_, Window, Triple, DataSet, T, Correction),
+gen_model(N, Window,Triple,DataSet,Year,Months,StartYear,FitYear,Int,Fluct,T) :-
+    temperature_series(N, Window, Triple, DataSet, T, _Correction),
 
     get_years_from_1880(T, Year, Zeros),
-
-
     get_months_from_start(T, Months),
 
-    Q is 1 , % 0.9333,
+    % Q is 1 , % 0.9333,
 
-    Hale=21.98,
-    Add =1,
-    Others=1,
-
-    % Scafetta
-    Period is Hale/3 * 12 *Q,      % precession cycle with the time for Spring tides to realign with the same day each year
-    Period2 is 9.015 * 12 *Q,   % 9.015 Sun-Moon-Earth tidal configuration 8.715
-    Period3 is 18.613 * 12 *Q,  % Lunar precessional
-    Period4 is Add*8.848 * 12 *Q,   % Lunar apsidal precession
-    Period5 is Add*11.86* 12 *Q,   % 11.86 Tidal sidereal period of Jupiter
-    Period6 is Others*Hale/7 * 1.026* 12 *Q,       % Soros cycle tide -------
-    Period7 is Add*Period5/2,       % Period5/2 24*Q,
-    Period8 is Period3/3,       % 20.5
-    Period9 is 8.848 * 12 *Q/2,
-    PeriodA is Add*Hale/4 *0.955*12 *Q,
-    PeriodB is Others*Hale/5 *0.955*12 *Q, % -------
-    PeriodC is Hale/6 *12 *Q,
-    PeriodD is Add*Hale/2 *12 *Q,
-    PeriodE is Add*Hale/1 *12 *Q,
-    PeriodF is Others*3.35*12 *Q, % 3.344 Random_F*12*20, % 2*12 *Q, % ------
-    PeriodG is 9.015 * 12 *Q*3,  % 27
-    PeriodH is Add*7.944*12*Q, % 7.944 2.54  Venus 9.315*12*Q,  %
-    PeriodI is Add*PeriodH/4,  % 1.986
-    PeriodJ is 9.015 * 12 *Q/3,
-
-    %X Sin mapdot yearly_sin_period(Period,1,WL) ~> Months,
     r2s(Sin),
-    %X Cos mapdot yearly_cos_period(Period,1,WL) ~> Months,
     r2c(Cos),
-    %X Sin2 mapdot yearly_sin_period(Period2,2,WL) ~> Months,
     r15s(Sin2),
-    %X Cos2 mapdot yearly_cos_period(Period2,2,WL) ~> Months,
     r15c(Cos2),
-    Sin3 mapdot yearly_sin_period(Period3,8 ,WL) ~> Months,
-    Cos3 mapdot yearly_cos_period(Period3,8 ,WL) ~> Months,
-    Sin4 mapdot yearly_sin_period(Period4,6,WL) ~> Months,
-    % r27s(Sin4),
-    Cos4 mapdot yearly_cos_period(Period4,6,WL) ~> Months,
+    Sin3  = Zeros,
+    Cos3 = Zeros,
+    Sin4 = Zeros,
+    Cos4 = Zeros,
     % r27c(Cos4),
-    Sin5 mapdot yearly_sin_period(Period5,3,WL) ~> Months,
+    Sin5 = Zeros,
     % r18s(Sin5),
-    Cos5 mapdot yearly_cos_period(Period5,3,WL) ~> Months,
+    Cos5 = Zeros,
     % r18c(Cos5),
-    Sin6 mapdot yearly_sin_period(Period6,14,WL) ~> Months,
+    Sin6 = Zeros,
     % r11s(Sin6),
-    Cos6 mapdot yearly_cos_period(Period6,14,WL) ~> Months,
+    Cos6 = Zeros,
     % r11c(Cos6),
-    Sin7 mapdot yearly_sin_period(Period7,20,WL) ~> Months,
-    % TSI_I mapdot planck_hale(20.05,23.62,-1.25,-1.05) ~> Months,
-    % Sin7 mapdot planck_hale(21.8,22.2,-1.45,-1.25) ~> Months,
-    % Sin7 lag TSI_I / TL,
+    Sin7 = Zeros,
 
-    Cos7 mapdot yearly_cos_period(Period7,20,WL) ~> Months,
-    Sin8 mapdot yearly_sin_period(Period8,7 ,WL) ~> Months,
-    Cos8 mapdot yearly_cos_period(Period8,7 ,WL) ~> Months,
-    Sin9 mapdot yearly_sin_period(Period9,9 ,WL) ~> Months,
-    Cos9 mapdot yearly_cos_period(Period9,9 ,WL) ~> Months,
-    SinA mapdot yearly_sin_period(PeriodA,13,WL) ~> Months,
-    CosA mapdot yearly_cos_period(PeriodA,13,WL) ~> Months,
-    SinB mapdot yearly_sin_period(PeriodB,12 ,WL) ~> Months,
-    CosB mapdot yearly_cos_period(PeriodB,12 ,WL) ~> Months,
-    SinC mapdot yearly_sin_period(PeriodC,11 ,WL) ~> Months,
-    CosC mapdot yearly_cos_period(PeriodC,11 ,WL) ~> Months,
-    SinD mapdot yearly_sin_period(PeriodD,17,WL) ~> Months,
-    CosD mapdot yearly_cos_period(PeriodD,17,WL) ~> Months,
-    SinE mapdot yearly_sin_period(PeriodE,19,WL) ~> Months,
-    CosE mapdot yearly_cos_period(PeriodE,19,WL) ~> Months,
-    % CosE mapdot comb ~> Months,
-    SinF mapdot yearly_sin_period(PeriodF,10 ,WL) ~> Months,
-    CosF mapdot yearly_cos_period(PeriodF,10 ,WL) ~> Months,
-    %X SinG mapdot yearly_sin_period(PeriodG,5,WL) ~> Months,
+    Cos7 =Zeros,
+    Sin8 =Zeros,
+    Cos8 =Zeros,
+    Sin9 =Zeros,
+    Cos9 =Zeros,
+    SinA =Zeros,
+    CosA =Zeros,
+    SinB =Zeros,
+    CosB =Zeros,
+    SinC =Zeros,
+    CosC =Zeros,
+    SinD =Zeros,
+    CosD =Zeros,
+    SinE =Zeros,
+    CosE =Zeros,
+    SinF =Zeros,
+    CosF = Zeros,
     r7s(SinG),
-    %X CosG mapdot yearly_cos_period(PeriodG,5,WL) ~> Months,
     r7c(CosG),
-    SinH mapdot yearly_sin_period(PeriodH,15,WL) ~> Months,
-    CosH mapdot yearly_cos_period(PeriodH,15,WL) ~> Months,
+    SinH =Zeros,
+    CosH = Zeros,
 
     Dynamo = Zeros,
 
-    SinI mapdot yearly_sin_period(PeriodI,18,WL) ~> Months,
-    CosI mapdot yearly_cos_period(PeriodI,18,WL) ~> Months,
-    SinJ mapdot yearly_sin_period(PeriodJ,16,WL) ~> Months,
-    CosJ mapdot yearly_cos_period(PeriodJ,16,WL) ~> Months,
+    SinI = Zeros,
+    CosI = Zeros,
+    SinJ = Zeros,
+    CosJ = Zeros,
     r3c(SCMSS),
     r3s(CMSS),
 
@@ -500,7 +378,7 @@ plot(Request) :-
 									    SWI, CWI, SWJ, CWJ,
 					                                    SC, CM, DY]),
 
-    Fluct mapdot SO .* S2 + TS .* TSI_F + VC .* V1 + LO .* LOD_F + AA .* AAM +
+    Fluct0 mapdot SO .* S2 + TS .* TSI_F + VC .* V1 + LO .* LOD_F + AA .* AAM +
                                            + SWH .* SinH + CWH .* CosH  % ARC .* Arctic + NI .* NAO
 		                           + SW .* Sin + CW .* Cos
 		                           + SW2 .* Sin2 + CW2 .* Cos2
@@ -522,57 +400,75 @@ plot(Request) :-
 		                           + SWJ .* SinJ + CWJ .* CosJ
                                            + SC .* SCMSS + CM .* CMSS
 					   + DY .* Dynamo,
+    Fluct mapdot C .* LogCO2 + Fluct0
+    .
 
-    T_CO2_R mapdot C .* LogCO2 + Fluct,
-    T_R mapdot Int .+ T_CO2_R,
+
+
+plot(Request) :-
+    garbage_collect,
+    http_parameters(Request, [kind(Kind, []),
+			      fft(FFT, [boolean, default(false)]),
+			      window(Window, [boolean, default(false)]),
+			      triple(Triple, [boolean, default(false)]),
+			      wave(_WL, [integer, default(0)]),
+			      t_units(Cal, []),
+			      startYear(StartYear, [integer]),
+			      fitYear(FitYear, [integer]),
+			      lag(_LagCal, [float]),
+                              dataset(DataSet, []),
+                              evaluate(Characteristic, [default(model)])]),
+
+    scale(FFT, LogLin, Characteristic, XLabel, XUnits, YLabel, YUnits, Show_Error_Bars),
+    scaling(Cal, month, _Scale),
+    % Lag is Scale*LagCal,
+
+    ( DataSet = combined ->
+      temperature_series(_, Window, Triple, soi, T, _Correction),
+      gen_model(1, Window,Triple,tahiti,Year,Months,StartYear,FitYear,Int1,Fluct1,_T1),
+      gen_model(2, Window,Triple,darwin,Year,Months,StartYear,FitYear,Int2,Fluct2,_T2),
+      Int is Int1 - Int2,
+      Fluct mapdot Fluct1 - Fluct2
+      % T mapdot T1 - T2
+    ;
+      gen_model(_, Window,Triple,DataSet,Year,Months,StartYear,FitYear,Int,Fluct,T)
+    ),
+    T_R mapdot Int .+ Fluct,
     T_Diff mapdot T - T_R,
     !,
     sum_of_squares(T, T_R, Sum_of_Sq),
     length(Months, Length_Series),
     Error_Bar is 2*sqrt(Sum_of_Sq/Length_Series),
 
-    T_lag lag T / Lag,
-    T_R_lag lag T_R / Lag,
-    corrcoeff(T_lag, T_R_lag, R2C2),
+    corrcoeff(T, T_R, R2C2),
     (
        Characteristic = model ->
-         T_lag_low mapdot T_lag .- Error_Bar,
-         T_lag_high mapdot Error_Bar .+ T_lag,
-         T_lags tuple T_lag_low + T_lag + T_lag_high,
-         T_R_lags tuple T_R_lag + T_R_lag + T_R_lag,
-         Corrections tuple Correction + Correction + Correction,
-	 Data group Year + T_lags + T_R_lags + Corrections,
-         Header = [XLabel, DataSet, model, correction]
-
+         T_low mapdot T .- Error_Bar,
+         T_high mapdot Error_Bar .+ T,
+         Ts tuple T_low + T + T_high,
+         T_Rs tuple T_R + T_R + T_R,
+	 Data group Year + Ts + T_Rs,
+         Header = [XLabel, DataSet, model]
      ;
-
        Characteristic = residual ->
          (   FFT ->
 	     R_FFT fft T_Diff,
 	     Range ordinal R_FFT,
 	     Data tuple Range + R_FFT
 	 ;
-	     Data tuple Year + T_Diff   %  + Noise_Level
+	     Data tuple Year + T_Diff
 	 ),
-
-         Header = [XLabel, residual, qbo] % , fluctuation]
+         Header = [XLabel, residual]
 
     ),
-    temp_data(NameData, DataSet),
-    PPP is Period7/12,
-    print(user_error, ['random period ', PPP]),
+    soi_data(NameData, DataSet),
 
     (	Kind = graph ->
     reply_html_page([title('GISS and SOI'),
                      \(con_text:style)],
                     [
-		     table([tr([th('R=cc'), th('ln(co2)'),th(soi),th('a(volc)'),
-				th(lod),th(tsi), th(aam), th(bary) % , th(amo), th(arctic)
-			       ]),
-			    tr([td(b('~5f'-R2C2)),td('~3f'-C),td('~3f'-SO),td('~3f'-VC),
-				td('~3f'-LO),td('~3f'-TS), td('~5f'-AA), td('~5f'-SC)
-			        % ,('~5f'-NI), td('~5f'-ARC)
-			       ])
+		     table([tr([th('R=cc')]),
+			    tr([td(b('~5f'-R2C2))])
 			   ]),
 		     br([]),
 
@@ -582,7 +478,7 @@ plot(Request) :-
 				td(
 		     \(context_graphing:dygraph_error_bars(LogLin, Header,
 						       [XLabel,XUnits], [YLabel, YUnits],
-						       [NameData, FitYear, ' - CSALT:', Characteristic], Data, Show_Error_Bars))
+						       [NameData, FitYear, ' - SOIM:', Characteristic], Data, Show_Error_Bars))
 				  )
 			       ])])
                     ]

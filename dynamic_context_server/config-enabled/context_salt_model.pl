@@ -20,11 +20,14 @@
 :- context:register(context_salt_model:navigate).
 :- context:register(context_salt_model:plot).
 
+% test_period(N,_,Period) :- Period is N*N/20*12+N*2.134.
+test_period(_,P,P).
+
 yearly_sin_period(0.0,N,M,_,0) :- N =< M.
-yearly_sin_period(Period,N,M,X,Y) :- N =< M, Y is sin(2*pi*X/Period).
+yearly_sin_period(Period,N,M,X,Y) :- N =< M, test_period(N,Period,P), Y is sin(2*pi*X/P).
 yearly_sin_period(_,N,M,_,0.0) :- N > M.
 yearly_cos_period(0.0,N,M,_,0) :- N =< M.
-yearly_cos_period(Period,N,M,X,Y) :- N =< M, Y is cos(2*pi*X/Period).
+yearly_cos_period(Period,N,M,X,Y) :- N =< M, test_period(N,Period,P), Y is cos(2*pi*X/P).
 yearly_cos_period(_,N,M,_,0.0) :- N > M.
 /*
 square_with_sign(X,Y) :- X > 0, Y is X + 0.01*X*X, !.
@@ -447,7 +450,6 @@ get_fit(StartDate, EndDate, [Temperature, CO2, SOI, TSI, Volc, LOD, AAM, Arctic,
    r_print(summary),
    R2 <- 'as.double(summary$r.squared)',
    r_close, !.
-
 
 /*
 wars([
@@ -1025,10 +1027,14 @@ plot(Request) :-
 
     % Scafetta
     Period is Hale/3 * 12 *Q,      % precession cycle with the time for Spring tides to realign with the same day each year
+    % Period is 15*12*Q,
     Period2 is 9.015 * 12 *Q,   % 9.015 Sun-Moon-Earth tidal configuration 8.715
+    % Period2 is 6*12*Q,
     Period3 is 18.613 * 12 *Q,  % Lunar precessional
     Period4 is Add*8.848 * 12 *Q,   % Lunar apsidal precession
+    % Period4 is 3*12*Q,
     Period5 is Add*11.86* 12 *Q,   % 11.86 Tidal sidereal period of Jupiter
+    % Period5 is 5*12*Q,
     % Period6 is Period2*2,       % Soros cycle tide
     % Period6 is 3.22 * 12 *Q,       % Soros cycle tide
     Period6 is Others*Hale/7 * 1.026* 12 *Q,       % Soros cycle tide -------
@@ -1037,6 +1043,7 @@ plot(Request) :-
     Period7 is Add*Period5/2,       % Period5/2 24*Q,
     % Period7 is Period2*2/3,       % Period5/2 24*Q,
     Period8 is Period3/3,       % 20.5
+    % Period8 is 2*12*Q,
     Period9 is 8.848 * 12 *Q/2,
     %PeriodA is 2*pi*12/1.189, %Hale/4 *12 *Q,
     %PeriodB is 2*pi*12/1.499, %Hale/5 *12 *Q,
@@ -1051,6 +1058,7 @@ plot(Request) :-
     % PeriodG is 1*12 *Q,
     % PeriodG is Random_F*12*50,  % Hale/7 *12 *Q,
     PeriodG is 9.015 * 12 *Q*3,  % 27
+    % PeriodG is 4*12*Q,
     PeriodH is Add*7.944*12*Q, % 7.944 2.54  Venus 9.315*12*Q,  %
     PeriodI is Add*PeriodH/4,  % 1.986
     PeriodJ is 9.015 * 12 *Q/3,
@@ -1059,48 +1067,52 @@ plot(Request) :-
     Cos mapdot yearly_cos_period(Period,1,WL) ~> Months,
     Sin2 mapdot yearly_sin_period(Period2,2,WL) ~> Months,
     Cos2 mapdot yearly_cos_period(Period2,2,WL) ~> Months,
-    Sin3 mapdot yearly_sin_period(Period3,11,WL) ~> Months,
-    Cos3 mapdot yearly_cos_period(Period3,11,WL) ~> Months,
-    Sin4 mapdot yearly_sin_period(Period4,5,WL) ~> Months,
-    Cos4 mapdot yearly_cos_period(Period4,5,WL) ~> Months,
+    Sin3 mapdot yearly_sin_period(Period3,8 ,WL) ~> Months,
+    Cos3 mapdot yearly_cos_period(Period3,8 ,WL) ~> Months,
+    Sin4 mapdot yearly_sin_period(Period4,6,WL) ~> Months,
+    Cos4 mapdot yearly_cos_period(Period4,6,WL) ~> Months,
     Sin5 mapdot yearly_sin_period(Period5,3,WL) ~> Months,
     Cos5 mapdot yearly_cos_period(Period5,3,WL) ~> Months,
-    Sin6 mapdot yearly_sin_period(Period6,13,WL) ~> Months,
-    Cos6 mapdot yearly_cos_period(Period6,13,WL) ~> Months,
-    Sin7 mapdot yearly_sin_period(Period7,17,WL) ~> Months,
+    Sin6 mapdot yearly_sin_period(Period6,14,WL) ~> Months,
+    Cos6 mapdot yearly_cos_period(Period6,14,WL) ~> Months,
+    Sin7 mapdot yearly_sin_period(Period7,20,WL) ~> Months,
     % TSI_I mapdot planck_hale(20.05,23.62,-1.25,-1.05) ~> Months,
     % Sin7 mapdot planck_hale(21.8,22.2,-1.45,-1.25) ~> Months,
     % Sin7 lag TSI_I / TL,
 
-    Cos7 mapdot yearly_cos_period(Period7,17,WL) ~> Months,
-    Sin8 mapdot yearly_sin_period(Period8,9,WL) ~> Months,
-    Cos8 mapdot yearly_cos_period(Period8,9,WL) ~> Months,
-    Sin9 mapdot yearly_sin_period(Period9,10,WL) ~> Months,
-    Cos9 mapdot yearly_cos_period(Period9,10,WL) ~> Months,
-    SinA mapdot yearly_sin_period(PeriodA,12,WL) ~> Months,
-    CosA mapdot yearly_cos_period(PeriodA,12,WL) ~> Months,
-    SinB mapdot yearly_sin_period(PeriodB,6,WL) ~> Months,
-    CosB mapdot yearly_cos_period(PeriodB,6,WL) ~> Months,
-    SinC mapdot yearly_sin_period(PeriodC,7,WL) ~> Months,
-    CosC mapdot yearly_cos_period(PeriodC,7,WL) ~> Months,
-    SinD mapdot yearly_sin_period(PeriodD,16,WL) ~> Months,
-    CosD mapdot yearly_cos_period(PeriodD,16,WL) ~> Months,
-    SinE mapdot yearly_sin_period(PeriodE,18,WL) ~> Months,
-    CosE mapdot yearly_cos_period(PeriodE,18,WL) ~> Months,
+    Cos7 mapdot yearly_cos_period(Period7,20,WL) ~> Months,
+    Sin8 mapdot yearly_sin_period(Period8,7 ,WL) ~> Months,
+    Cos8 mapdot yearly_cos_period(Period8,7 ,WL) ~> Months,
+    Sin9 mapdot yearly_sin_period(Period9,9 ,WL) ~> Months,
+    Cos9 mapdot yearly_cos_period(Period9,9 ,WL) ~> Months,
+    SinA mapdot yearly_sin_period(PeriodA,13,WL) ~> Months,
+    CosA mapdot yearly_cos_period(PeriodA,13,WL) ~> Months,
+    SinB mapdot yearly_sin_period(PeriodB,12 ,WL) ~> Months,
+    CosB mapdot yearly_cos_period(PeriodB,12 ,WL) ~> Months,
+    SinC mapdot yearly_sin_period(PeriodC,11 ,WL) ~> Months,
+    CosC mapdot yearly_cos_period(PeriodC,11 ,WL) ~> Months,
+    SinD mapdot yearly_sin_period(PeriodD,17,WL) ~> Months,
+    CosD mapdot yearly_cos_period(PeriodD,17,WL) ~> Months,
+    SinE mapdot yearly_sin_period(PeriodE,19,WL) ~> Months,
+    CosE mapdot yearly_cos_period(PeriodE,19,WL) ~> Months,
     % CosE mapdot comb ~> Months,
-    SinF mapdot yearly_sin_period(PeriodF,8,WL) ~> Months,
-    CosF mapdot yearly_cos_period(PeriodF,8,WL) ~> Months,
-    SinG mapdot yearly_sin_period(PeriodG,4,WL) ~> Months,
-    CosG mapdot yearly_cos_period(PeriodG,4,WL) ~> Months,
-    SinH mapdot yearly_sin_period(PeriodH,14,WL) ~> Months,
-    CosH mapdot yearly_cos_period(PeriodH,14,WL) ~> Months,
+    SinF mapdot yearly_sin_period(PeriodF,10 ,WL) ~> Months,
+    CosF mapdot yearly_cos_period(PeriodF,10 ,WL) ~> Months,
+    SinG mapdot yearly_sin_period(PeriodG,5,WL) ~> Months,
+    CosG mapdot yearly_cos_period(PeriodG,5,WL) ~> Months,
+    SinH mapdot yearly_sin_period(PeriodH,15,WL) ~> Months,
+    CosH mapdot yearly_cos_period(PeriodH,15,WL) ~> Months,
 
-    Dynamo mapdot sin_n(11,172.4,-1.1) ~> Months,
+    (	4 =< WL ->
+       Dynamo mapdot sin_n(11,172.4,-1.1) ~> Months
+    ;
+       Dynamo = Zeros
+    ),
 
-    SinI mapdot yearly_sin_period(PeriodI,19,WL) ~> Months,
-    CosI mapdot yearly_cos_period(PeriodI,19,WL) ~> Months,
-    SinJ mapdot yearly_sin_period(PeriodJ,15,WL) ~> Months,
-    CosJ mapdot yearly_cos_period(PeriodJ,15,WL) ~> Months,
+    SinI mapdot yearly_sin_period(PeriodI,18,WL) ~> Months,
+    CosI mapdot yearly_cos_period(PeriodI,18,WL) ~> Months,
+    SinJ mapdot yearly_sin_period(PeriodJ,16,WL) ~> Months,
+    CosJ mapdot yearly_cos_period(PeriodJ,16,WL) ~> Months,
     (	 EQ_ON ->
     get_scmss(EQ_ON, Months, OL, SCMSS),
     get_cmss(EQ_ON, Months, OL, CMSS)
@@ -1132,6 +1144,7 @@ plot(Request) :-
     get_tsi(Year, TL, TSI_F),
 
     get_co2(Year, AL, LogCO2),
+
     % get_methane(Year, AL, LogMethane),
 
     % get_arctic(Year, AW, Arctic),
