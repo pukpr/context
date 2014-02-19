@@ -1087,8 +1087,12 @@ plot(Request) :-
     Cos9 mapdot yearly_cos_period(Period9,9 ,WL) ~> Months,
     SinA mapdot yearly_sin_period(PeriodA,13,WL) ~> Months,
     CosA mapdot yearly_cos_period(PeriodA,13,WL) ~> Months,
+    %r4s(SinA),
+    %r4c(CosA),
     SinB mapdot yearly_sin_period(PeriodB,12 ,WL) ~> Months,
     CosB mapdot yearly_cos_period(PeriodB,12 ,WL) ~> Months,
+    %r7s(SinB),
+    %r7c(CosB),
     SinC mapdot yearly_sin_period(PeriodC,11 ,WL) ~> Months,
     CosC mapdot yearly_cos_period(PeriodC,11 ,WL) ~> Months,
     SinD mapdot yearly_sin_period(PeriodD,17,WL) ~> Months,
@@ -1111,6 +1115,8 @@ plot(Request) :-
 
     SinI mapdot yearly_sin_period(PeriodI,18,WL) ~> Months,
     CosI mapdot yearly_cos_period(PeriodI,18,WL) ~> Months,
+    %r3s(SinI),
+    %r3c(CosI),
     SinJ mapdot yearly_sin_period(PeriodJ,16,WL) ~> Months,
     CosJ mapdot yearly_cos_period(PeriodJ,16,WL) ~> Months,
     (	 EQ_ON ->
