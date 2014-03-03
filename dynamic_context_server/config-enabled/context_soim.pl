@@ -1,5 +1,6 @@
 :- module(context_soim, [ soi_model/2,
 			  soi_model_2/2,
+			  soi_model_3/2,
 			  sinm/3,
 			  cosm/3
 			      ]).
@@ -17,6 +18,8 @@ soi_data('OU Random Walk', ou_rw).
 soi_data('Tahiti-Darwin', combined).
 soi_data('MEI', mei).
 soi_data('SOI pre', soi_pre).
+soi_data('GLAAM', aam).
+soi_data('SOI+AAM', soi_aam).
 
 
 
@@ -32,6 +35,18 @@ soi_model_2(T,Z) :-
    Z is cos( (M*2.698-I)*Y+1)*cos(2.9+(M*2.698+I)*Y) - cos(N*1.968757339*Y)*cos(P*0.212256*Y).
        % cos( (M*2.698-I)*Y+1)*cos(2.9+(M*2.698+I)*Y) - cos(N*1.968757339*Y)*cos(P*0.212256*Y)
 
+soi_model_3(T,Z) :-
+   Time is 1880 + (T+1)/12,
+   Omega = 0.86196,
+   Long = 0.0552717,
+   Scale = 0.353873,
+   % A is 0.2763*cos(1.988*Time)*cos(0.7635*Time)-0.1553*sin(2.985*Time)-0.1985*cos(2.567*Time)-0.1594*cos(6.189 + 0.447*Time),
+   % A is 0.0109*cos(1.763*Time)*cos(1.52*Time) - 0.006388*cos(1.52*Time) - 0.009238*cos(2.177*Time) - 0.0109*cos(1.763*Time)
+   %     - 0.02643*sin(-0.08289*Time)*cos(1.031*Time),
+   B is 0.2473*cos(Omega*Time) + 0.2164*cos(Long*Time) + 0.4764*sin(Time)*cos(Omega*Time) +
+      Scale*(sin(Omega*Time)*cos(Omega*Time)*cos(Long*Time) - sin(Omega*Time)*cos(Omega*Time) - cos(Omega*Time)*cos(Long*Time)),
+   Z is 1.075*B. %  + 0.745*A .
+
 sinm(W,T,Z) :-
    Y is T/12,
    Z is sin(W*Y).
@@ -39,9 +54,24 @@ cosm(W,T,Z) :-
    Y is T/12,
    Z is cos(W*Y).
 
+dataset(1, aam, L) :-
+    Extra range [1, 60]/1,
+    Zeros mapdot 0 .* Extra,
+    H range [1, 1605]/1,
+    Y mapdot H ./ 12.0,
+    Years mapdot 1880 .+ Y,
+    context_salt_model:get_aam(Years, 0.0, L1),
+    L cat [L1,Zeros].
 dataset(1, soi, L) :-
+    Extra range [1, 60]/1,
+    Zeros mapdot 0 .* Extra,
     soi(L0),
-    L unbias L0.
+    L1 unbias L0,
+    L cat [L1,Zeros].
+dataset(1, soi_aam, L) :-
+    dataset(1, aam, L0),
+    dataset(1, soi, L1),
+    L mapdot L1 - L0.
 dataset(2, darwin, L) :-
     darwin(L0),
     L unbias L0.
@@ -87,7 +117,7 @@ navigate(Request) :-
 			      input([type('text'),
 				 size(4),
 				 name('fitYear'),
-				 value('2014')])
+				 value('2013')])
 			     ]),
 
 			  select([name('dataset')], DataSet),
@@ -366,7 +396,8 @@ gen_model(Harm, LongC, Window,Triple,DataSet,Year,Months,StartYear,FitYear,Int,F
     rset(M, 17 ,SW_17, CW_17),
     rset(M, 18 ,SW_18, CW_18),
     % rset(M, 19 ,SW_1, CW_1),
-    Extra = Zeros,
+    Extra mapdot soi_model_3 ~> Months,
+    % Extra = Zeros,
 
     SineZeros=Harm,
     (	SineZeros ->

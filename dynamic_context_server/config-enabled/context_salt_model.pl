@@ -98,7 +98,9 @@ scmss_fit(X,Y) :-
 
 temp_data('GISS', giss).
 temp_data('HADCRUT4', hadcrut).
-temp_data('BEST', best).
+temp_data('BESTLand', best).
+temp_data('BEST', best_land_ocean).
+temp_data('BEST ER', bester).
 temp_data('GISS+HADCRUT4_CW+NOAA', global_combo).
 temp_data('HADSST3', sst).
 temp_data('CRUTEM4', land).
@@ -114,6 +116,8 @@ temp_data('HADSST2', sst2).
 temp_data('NCDC', ncdc).
 temp_data('HADCRUT4_CW', hadcrut4_cw).
 temp_data('OU Random Walk', ou_rw).
+temp_data('ER SST', er).
+temp_data('CET', cet).
 
 orbital_period('tide precession',  7.3,   'spring tides to realign with calendar date').
 orbital_period('tidal cycle',      9.015, 'sun-moon-earth configuration induced oscillation').
@@ -148,7 +152,8 @@ dataset(hadcrut4_cw, L) :-
         L mapdot M + CW.
 
 dataset(hadcrut, L) :- hadcrut(L).
-dataset(best, L) :- best(L).
+dataset(best, L) :- best(L). %best_land_update(L). %  best(L).
+dataset(best_land_ocean, L) :- best_land_ocean(L).
 dataset(sst, L) :- sst(L).
 dataset(land, L) :- land(L).
 dataset(gistemp_dts, L) :- gistemp_dts(L).
@@ -162,6 +167,14 @@ dataset(global_combo2, L) :-
 	dataset(ncdc,L2),
 	dataset(noaa_land_ocean,L3),
 	L mapdot 0.3333 .* L1 + 0.3333 .* L2 + 0.3333 .* L3.
+dataset(er, L) :-
+	er_sst(L).
+dataset(bester, L) :-
+	% er_sst(L1),
+	dataset(noaa_ocean, L1),
+	dataset(best,L2),
+	L mapdot 0.72 .* L1 + 0.28 .* L2.
+
 dataset(land_combo, L) :-
 	dataset(land,L1),
 	dataset(best,L2),
@@ -177,6 +190,9 @@ dataset(noaa_ocean, L) :- noa_ocean(L).
 dataset(sst2, L) :- hadsst2(L).
 dataset(hadcrut3, L) :- hadcrut3(L).
 dataset(ncdc, L) :- ncdc(L).
+dataset(cet, L) :-
+        cet(L0),
+	L unbias L0.
 
 
 navigate(Request) :-
@@ -573,8 +589,9 @@ get_scmss(EQ_ON,Time, Lag, S_F) :-
     (	EQ_ON ->
         S_U mapdot scmss_fit ~> Time % Months
     ;
-        scmss(SCMSS),
-        interpolate(Time, SCMSS, S_I),
+        % scmss(SCMSS),
+        % interpolate(Time, SCMSS, S_I),
+        bary_speed(S_I),
         S_U unbias S_I
     ),
     (	Lag >= 0.0 ->
@@ -586,8 +603,9 @@ get_cmss(EQ_ON, Time, Lag, C_F) :-
     (	EQ_ON ->
         C_U mapdot cmss_fit ~> Time
     ;
-        cmss(CMSS),
-        interpolate(Time, CMSS, C_I),
+        % cmss(CMSS),
+        % interpolate(Time, CMSS, C_I),
+        bary_distance(C_I),
         C_U unbias C_I
     ),
     (	Lag >= 0.0 ->
@@ -665,6 +683,7 @@ get_soi_peak(Lag, SOI_F) :-
 get_volcanos(true, _, Lag, Vol_F) :-
     Lag >= 0.0,
     sato_volc(V),
+    % V0 lag V/6,
     Vol_F lag V/6.
 get_volcanos(false, Zeros, Lag, Vol_F) :-
     Lag >= 0.0,
