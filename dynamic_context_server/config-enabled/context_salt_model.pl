@@ -627,7 +627,8 @@ get_soi_noise(Lag, true, Noise_F) :-
     ).
 
 get_soi(Lag, SOI_F) :-
-    soi(SOI),
+    % soi(SOI),
+    context_soim: soi_result(SOI),
     S unbias SOI,
     % Square
     % SU unbias S0,
@@ -1118,6 +1119,9 @@ plot(Request) :-
     CosD mapdot yearly_cos_period(PeriodD,17,WL) ~> Months,
     SinE mapdot yearly_sin_period(PeriodE,19,WL) ~> Months,
     CosE mapdot yearly_cos_period(PeriodE,19,WL) ~> Months,
+    %context_soim:soi_result(CosE0),
+    %CosE1 shrink CosE0 / Months,
+    %CosE lag CosE1 / SL,
     % CosE mapdot comb ~> Months,
     SinF mapdot yearly_sin_period(PeriodF,10 ,WL) ~> Months,
     CosF mapdot yearly_cos_period(PeriodF,10 ,WL) ~> Months,
@@ -1393,7 +1397,9 @@ plot(Request) :-
 	 AllNatural mapdot AAM_D + S0S2,
 	 Data tuple Year + AllCycles + AllNatural,
          % Header = [XLabel, '22',   '18.03', '18.6',  '8.85',  '11.86', '2']
-         Header = [XLabel, 'cycles', 'natural']
+         Header = [XLabel, 'cycles', 'natural'],
+	 corrcoeff(AllCycles, AllNatural, CycleCC),
+	 print(user_error, [cycleCC, CycleCC])
 /*
     Period is 7.3 * 12,      % precession cycle with the time for Spring tides to realign with the same day each year
     Period2 is 9.015 * 12,   % Sun-Moon-Earth tidal configuration
@@ -1512,12 +1518,18 @@ plot(Request) :-
          Data tuple Year + S0S2 + VCV1 + TSTSI_F + ARCTIC_D + NAO_D + Angular,
 	 Header = [XLabel, soi,   aero,  tsi,      arctic,    nao,    angular]
      */
+	 % Double mapdot SemiDiurnal + SunMoonEarth,
          Data tuple Year + Dyno_F  + TSTSI_F + S0S2 + VCV1 + LOLOD_F + AAM_D +
-	                   Diurnal+SemiDiurnal + HaleCycle % + Jupiter + Venus
-			   + SunMoonEarth + Cycle_20_80 + Bary + ResidNoise + CO2_Strength, % + Meth,
+	                   Diurnal %
+			   +SemiDiurnal
+			   % + Double
+			   + HaleCycle % + Jupiter + Venus
+			   + SunMoonEarth
+			   + Cycle_20_80 + Bary + ResidNoise + CO2_Strength, % + Meth,
 	 Header = [XLabel, dynamo, tsi,  soi, aero,      lod,      aam,
 		           diurnal, semi, hale, % jupiter, venus,
-		           sme, '20/80', bary, residual,co2] % , methane]
+		           sme,
+		           '20/80', bary, residual,co2] % , methane]
 
     ),
     temp_data(NameData, DataSet),

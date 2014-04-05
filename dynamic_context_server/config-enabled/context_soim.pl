@@ -1,6 +1,7 @@
 :- module(context_soim, [ soi_model/2,
 			  soi_model_2/2,
 			  soi_model_3/2,
+			  soi_model_4/2,
 			  sinm/3,
 			  cosm/3
 			      ]).
@@ -10,8 +11,11 @@
 
 :- context:register(context_soim:navigate).
 :- context:register(context_soim:plot).
+:- context:register(context_soim:data).
 
 soi_data('SOI', soi).
+soi_data('SOI Aus', soi_aus).
+soi_data('SOI avg', soi_avg).
 soi_data('Darwin', darwin).
 soi_data('Tahiti', tahiti).
 soi_data('OU Random Walk', ou_rw).
@@ -20,6 +24,7 @@ soi_data('MEI', mei).
 soi_data('SOI pre', soi_pre).
 soi_data('GLAAM', aam).
 soi_data('SOI+AAM', soi_aam).
+soi_data('SOI Integral', soi_integral).
 
 
 
@@ -47,6 +52,24 @@ soi_model_3(T,Z) :-
       Scale*(sin(Omega*Time)*cos(Omega*Time)*cos(Long*Time) - sin(Omega*Time)*cos(Omega*Time) - cos(Omega*Time)*cos(Long*Time)),
    Z is 1.075*B. %  + 0.745*A .
 
+
+soi_model_4(T,Z) :-
+   Time is 1880 + (T+1)/12,
+   Z is   0.1656*cos(1.0*(Time-15/12))
+	- 0.1005*cos(0.8544*(Time))
+	- 0.1407*cos(0.9235*(Time-1/12))
+	- 0.1731*cos(1.4343*(Time-2/12))
+	- 0.1827*cos(0.05685*(Time-11/12)).
+
+/*
+soi_model_4(T,Z) :-
+   Time is 1880 + (T+1)/12,
+   Z is   0.1408*cos(1.0*(Time-14/12))
+	- 0.1739*cos(1.428*(Time-5/12))
+	- 0.1986*cos(2.944*(Time-30))
+	- 0.2041*cos(0.06014*(Time-51/12))
+	- 0.2362*cos(2.689*(Time-4/12)).
+*/
 sinm(W,T,Z) :-
    Y is T/12,
    Z is sin(W*Y).
@@ -63,21 +86,47 @@ dataset(1, aam, L) :-
     context_salt_model:get_aam(Years, 0.0, L1),
     L cat [L1,Zeros].
 dataset(1, soi, L) :-
+    Start range [1, 480]/1, % 168 is 1866
     Extra range [1, 60]/1,
-    Zeros mapdot 0 .* Extra,
+    ZerosS mapdot 0 .* Start,
+    ZerosE mapdot 0 .* Extra,
     soi(L0),
     L1 unbias L0,
+    L cat [ L1].
+    % L cat [ ZeroS, L1, ZerosE].
+dataset(1, soi_integral, L) :-
+    soi(L0),
+    L1 unbias L0,
+    L accumulate L1.
+    % L cat [ ZeroS, L1, ZerosE].
+dataset(1, soi_aus, L) :-
+    Extra range [1, 60]/1,
+    Zeros mapdot 0 .* Extra,
+    soi_aus(L0),
+    L1 unbias L0,
     L cat [L1,Zeros].
+dataset(1, soi_avg, L) :-
+    dataset(1, soi_aus, L0),
+    La normalize L0,
+    dataset(1, soi, L1),
+    Lb normalize L1,
+    L mapdot La + Lb.
 dataset(1, soi_aam, L) :-
     dataset(1, aam, L0),
     dataset(1, soi, L1),
     L mapdot L1 - L0.
 dataset(2, darwin, L) :-
+    Extra range [1, 60]/1,
+    Zeros mapdot 0 .* Extra,
     darwin(L0),
-    L unbias L0.
+    L1 unbias L0,
+    L cat [L1,Zeros].
 dataset(1, tahiti, L) :-
+    Extra range [1, 60]/1,
+    Zeros mapdot 0 .* Extra,
     tahiti(L0),
-    L unbias L0.
+    L1 unbias L0,
+    L cat [L1,Zeros].
 dataset(1, mei, L) :-
     mei_ext(L0),
     L unbias L0.
@@ -127,7 +176,11 @@ navigate(Request) :-
 					 [
 					  ['View the residual error', residual],
 					  ['Match temperature with model', model],
-					  ['Power spectrum', spectrum]
+					  ['Differentiate integral form', diff],
+					  ['Power spectrum', spectrum],
+					  ['Periodogram', periodogram],
+					  ['Compare component', component],
+					  ['Cycles', cycles]
                                          ])),
                           br([]),
 			  input([type('submit'), name(kind), value('graph'),
@@ -143,8 +196,16 @@ navigate(Request) :-
 			  input([type('text'),
 				 size(2),
 				 name('longCycle'),
-				 value('0.2')]),
+				 value('0.119')]),
 			  br([]),
+			  i('#'),
+			  input([type('text'),
+				 size(2),
+				 name('numberComps'),
+				 value('10')]),
+			  br([]),
+
+			  i('lag'),
 			  input([type('text'),
 				 size(2),
 				 name('lag'),
@@ -161,7 +222,7 @@ navigate(Request) :-
 
 
 
-get_fit(StartDate, EndDate, [Temperature, CO2, SOI, TSI, Volc, LOD, AAM, Arctic, NAO, Sin, Cos,
+get_fit(StartDate, EndDate, [Temperature, CO2, SOI, Volc, LOD, TSI, AAM, Arctic, NAO, Sin, Cos,
 	                                                          S2,  C2,
 	                                                          S3,  C3,
 	                                                          S4,  C4,
@@ -183,7 +244,7 @@ get_fit(StartDate, EndDate, [Temperature, CO2, SOI, TSI, Volc, LOD, AAM, Arctic,
 								  Dynamo
 			                                          %, Methane
 								  ],
-	[             C,   S,   T,   A,    L,   M, Z, N, V, W, P, Q,
+	[             C,   S,   A,   L,    T,   M, Z, N, V, W, P, Q,
 		                                E, F, G, H, D, I, R, U,
 		                                A1, B1, C1, D1, E1, F1,
 		                                G1, H1, I1, J1, K1, L1,
@@ -309,6 +370,8 @@ get_fit(StartDate, EndDate, [Temperature, CO2, SOI, TSI, Volc, LOD, AAM, Arctic,
 
 
 scale(_, lin, model, 'Time', 'year', 'Index', 'hPa', true) :- !.
+scale(_, lin, cycles, 'Time', 'year', 'Index', 'hPa', true) :- !.
+scale(true, log, periodogram, 'Period', 'Year', 'Power Spectral', 'density', false) :- !.
 scale(true, log, residual, 'Wavenumber', '2048/Month', 'Power Spectral', 'density', false) :- !.
 scale(true, log, spectrum, 'Wavenumber', '2048/Month', 'Power Spectral', 'density', false) :- !.
 scale(_, lin, _, 'Time', 'year', 'Index', 'hPa', false).
@@ -358,16 +421,21 @@ check_coefficients([F|Rest], List, Final ) :-
     check_coefficients(Rest, [F|List], Final).
 
 
-rset(a(mathieu,_), Num, Sin, Cos) :-
+rset(a(mathieu,_), Num, Sin, Cos,NComps) :-
+    Num < NComps + 1,
     mathieu(Num,s, Sin),
     mathieu(Num,c, Cos).
-rset(a(trig,Months), Num, Sin, Cos) :-
+rset(a(mathieu,Months), _, Sin, Cos,_NComps) :-
+    Sin mapdot 0 ~> Months,
+    Cos mapdot 0 ~> Months.
+rset(a(trig,Months), Num, Sin, Cos,_NComps) :-
     A is sqrt(2.82),
+    % A = 1,
     Theta is 2*pi*A/Num,
     Sin mapdot sinm(Theta) ~> Months,
     Cos mapdot cosm(Theta) ~> Months.
 
-gen_model(Harm, LongC, Window,Triple,DataSet,Year,Months,StartYear,FitYear,Int,Fluct,T) :-
+gen_model(Harm, LongC, Window,Triple,DataSet,Year,Months,StartYear,FitYear,Int,Fluct,T, Comp1, Cycles,NComps) :-
     temperature_series(_, Window, Triple, DataSet, T, _Correction),
 
     get_years_from_1880(T, Year, Zeros),
@@ -377,53 +445,71 @@ gen_model(Harm, LongC, Window,Triple,DataSet,Year,Months,StartYear,FitYear,Int,F
     M = a(mathieu,Months),
     % M = a(trig,Months),
 
-    rset(M, 1 ,SW_1, CW_1),
-    rset(M, 2 ,SW_2, CW_2),
-    rset(M, 3 ,SW_3, CW_3),
-    rset(M, 4 ,SW_4, CW_4),
-    rset(M, 5 ,SW_5, CW_5),
-    rset(M, 6 ,SW_6, CW_6),
-    rset(M, 7 ,SW_7, CW_7),
-    rset(M, 8 ,SW_8, CW_8),
-    rset(M, 9 ,SW_9, CW_9),
-    rset(M, 10 ,SW_10, CW_10),
-    rset(M, 11 ,SW_11, CW_11),
-    rset(M, 12 ,SW_12, CW_12),
-    rset(M, 13 ,SW_13, CW_13),
-    rset(M, 14 ,SW_14, CW_14),
-    rset(M, 15 ,SW_15, CW_15),
-    rset(M, 16 ,SW_16, CW_16),
-    rset(M, 17 ,SW_17, CW_17),
-    rset(M, 18 ,SW_18, CW_18),
-    % rset(M, 19 ,SW_1, CW_1),
-    Extra mapdot soi_model_3 ~> Months,
-    % Extra = Zeros,
+    rset(M, 1 ,SW_1, CW_1,NComps),
+%    rset(M, 2 ,SW_2, CW_2,NComps),
+%    rset(M, 3 ,SW_3, CW_3,NComps),
+%    rset(M, 4 ,SW_4, CW_4,NComps),
+    rset(M, 5 ,SW_5, CW_5,NComps),
+    rset(M, 6 ,SW_6, CW_6,NComps),
+    rset(M, 7 ,SW_7, CW_7,NComps),
+    rset(M, 8 ,SW_8, CW_8,NComps),
+    rset(M, 9 ,SW_9, CW_9,NComps),
+    rset(M, 10 ,SW_10, CW_10,NComps),
+    rset(M, 11 ,SW_11, CW_11,NComps),
+    rset(M, 12 ,SW_12, CW_12,NComps),
+    rset(M, 13 ,SW_13, CW_13,NComps),
+    rset(M, 14 ,SW_14, CW_14,NComps),
+    rset(M, 15 ,SW_15, CW_15,NComps),
+    rset(M, 16 ,SW_16, CW_16,NComps),
+    rset(M, 17 ,SW_17, CW_17,NComps),
+    rset(M, 18 ,SW_18, CW_18,NComps),
+    rset(M, 19 ,SW_A, CW_A,NComps),
+    rset(M, 20 ,SW_B, CW_B,NComps),
+    rset(M, 21 ,SW_C, CW_C,NComps),
 
     SineZeros=Harm,
     (	SineZeros ->
-        SW_A =Zeros,
-        CW_A =Zeros
+        % SW_1 = Zeros,
+	% CW_1 = Zeros,
+        Extra = Zeros
+        %
+        % Extra mapdot soi_model_4 ~> Months
     ;
-        SW_A mapdot sinm(2.69756) ~> Months,
-        CW_A mapdot cosm(2.69756) ~> Months
+        % SW_1 mapdot sinm(0.86196) ~> Months,
+        % CW_1 mapdot cosm(0.86196) ~> Months,
+        Extra mapdot soi_model_3 ~> Months
     ),
+
     (	SineZeros ->
-        SW_B =Zeros,
-        CW_B =Zeros
+        rset(M, 2 ,SW_2, CW_2,NComps)
     ;
-        SW_B mapdot sinm(0.99262) ~> Months,
-        CW_B mapdot cosm(0.99262) ~> Months
-    ),
+        rset(M, 2 ,SW_2, CW_2,NComps)
+        % SW_2 mapdot sinm(2.69756) ~> Months,
+        % CW_2 mapdot cosm(2.69756) ~> Months
+    )
+    ,
     (	SineZeros ->
-        SW_C =Zeros,
-        CW_C =Zeros
+        rset(M, 3 ,SW_3, CW_3,NComps)
     ;
-        SW_C mapdot sinm(2.175665) ~> Months,
-        CW_C mapdot cosm(2.175665) ~> Months
+        rset(M, 3 ,SW_3, CW_3,NComps)
+        % SW_3 mapdot sinm(0.99262) ~> Months,
+        % CW_3 mapdot cosm(0.99262) ~> Months
+    )
+    ,
+    (	SineZeros ->
+        % SW_4 mapdot sinm(0.157) ~> Months,
+        % CW_4 mapdot cosm(0.157) ~> Months
+        rset(M, 4 ,SW_4, CW_4,NComps)
+    ;
+        rset(M, 4 ,SW_4, CW_4,NComps)
+        % SW_4 mapdot sinm(2.175665) ~> Months,
+        % CW_4 mapdot cosm(2.175665) ~> Months
     ),
     (	SineZeros ->
         SW_D =Zeros,
         CW_D =Zeros
+        %SW_D mapdot sinm(0.14) ~> Months,
+        % CW_D mapdot cosm(0.14) ~> Months
     ;
         SW_D mapdot sinm(1.757415) ~> Months,
         CW_D mapdot cosm(1.757415) ~> Months
@@ -431,6 +517,8 @@ gen_model(Harm, LongC, Window,Triple,DataSet,Year,Months,StartYear,FitYear,Int,F
     (	SineZeros ->
         SW_E =Zeros,
         CW_E =Zeros
+        % SW_E mapdot sinm(LongC) ~> Months,
+        % CW_E mapdot cosm(LongC) ~> Months
     ;
         SW_E mapdot sinm(LongC) ~> Months,
         CW_E mapdot cosm(LongC) ~> Months
@@ -454,15 +542,31 @@ gen_model(Harm, LongC, Window,Triple,DataSet,Year,Months,StartYear,FitYear,Int,F
 				    SW17,CW17,SW18,CW18,SWA, CWA, SWB, CWB,
 				    SWC, CWC, SWD, CWD, SWE, CWE, Ex]),
 
+    Cycles mapdot  SW1 .* SW_1 + CW1 .* CW_1
+                 + SW2 .* SW_2 + CW2 .* CW_2
+		 + SW3 .* SW_3 + CW3 .* CW_3
+                 + SW4 .* SW_4 + CW4 .* CW_4
+		 + SWD .* SW_D + CWD .* CW_D
+		 + Ex  .* Extra,
+
     Fluct mapdot  SW1 .* SW_1 + CW1 .* CW_1 + SW2 .* SW_2 + CW2 .* CW_2 + SW3 .* SW_3 + CW3 .* CW_3
-                + SW4 .* SW_4 + CW4 .* CW_4 + SW5 .* SW_5 + CW5 .* CW_6 + SW6 .* SW_6 + CW6 .* CW_6
+                + SW4 .* SW_4 + CW4 .* CW_4 + SW5 .* SW_5 + CW5 .* CW_5 + SW6 .* SW_6 + CW6 .* CW_6
 		+ SW7 .* SW_7 + CW7 .* CW_7 + SW8 .* SW_8 + CW8 .* CW_8 + SW9 .* SW_9 + CW9 .* CW_9
 		+ SW10 .* SW_10 + CW10 .* CW_10 + SW11 .* SW_11 + CW11 .* CW_11 + SW12 .* SW_12 + CW12 .* CW_12
 		+ SW13 .* SW_13 + CW13 .* CW_13 + SW14 .* SW_14 + CW14 .* CW_14 + SW15 .* SW_15 + CW15 .* CW_15
 		+ SW16 .* SW_16 + CW16 .* CW_16 + SW17 .* SW_17 + CW17 .* CW_17 + SW18 .* SW_18 + CW18 .* CW_18
 		+ SWA .* SW_A + CWA .* CW_A + SWB .* SW_B + CWB .* CW_B + SWC .* SW_C + CWC .* CW_C
-		+ SWD .* SW_D + CWD .* CW_D + SWE .* SW_E + CWE .* CW_E + Ex .* Extra
-    .
+		+ SWD .* SW_D + CWD .* CW_D + SWE .* SW_E + CWE .* CW_E + Ex .* Extra,
+    Comp1 mapdot SW1 .* SW_1 + CW1 .* CW_1 + SW11 .* SW_11 + CW11 .* CW_11 .
+
+
+
+save_fluct(Fluct) :-
+   (
+   retract(soi_result(_));
+   true
+   ),
+   assert(soi_result(Fluct)).
 
 
 
@@ -480,6 +584,7 @@ plot(Request) :-
 			      fitYear(FitYear, [integer]),
 			      longCycle(LongC, [float]),
                               dataset(DataSet, []),
+			      numberComps(NComps, [integer]),
                               evaluate(Characteristic, [default(model)])]),
 
     scale(FFT, LogLin, Characteristic, XLabel, XUnits, YLabel, YUnits, Show_Error_Bars),
@@ -488,15 +593,16 @@ plot(Request) :-
 
     ( DataSet = combined ->
       temperature_series(_, Window, Triple, soi, T, _Correction),
-      gen_model(Harm, LongC,Window,Triple,tahiti,Year,Months,StartYear,FitYear,Int1,Fluct1,_T1),
-      gen_model(Harm, LongC,Window,Triple,darwin,Year,Months,StartYear,FitYear,Int2,Fluct2,_T2),
+      gen_model(Harm, LongC,Window,Triple,tahiti,Year,Months,StartYear,FitYear,Int1,Fluct1,_T1,_,_,NComps),
+      gen_model(Harm, LongC,Window,Triple,darwin,Year,Months,StartYear,FitYear,Int2,Fluct2,_T2,_,_,NComps),
       Int is Int1 - Int2,
       Fluct mapdot Fluct1 - Fluct2
       % T mapdot T1 - T2
     ;
-      gen_model(Harm, LongC,Window,Triple,DataSet,Year,Months,StartYear,FitYear,Int,Fluct,T)
+      gen_model(Harm, LongC,Window,Triple,DataSet,Year,Months,StartYear,FitYear,Int,Fluct,T, Comp1,Cycles,NComps)
     ),
     T_R mapdot Int .+ Fluct,
+    save_fluct(Fluct),
     T_Diff mapdot T - T_R,
     !,
     sum_of_squares(T, T_R, Sum_of_Sq),
@@ -513,6 +619,20 @@ plot(Request) :-
 	 Data group Year + Ts + T_Rs,
          Header = [XLabel, DataSet, model]
      ;
+       Characteristic = diff ->
+         TD derivative T/1,
+	 TRD derivative T_R/1,
+	 Data tuple Year + TD + TRD,
+         Header = [XLabel, DataSet, model]
+     ;
+       Characteristic = cycles ->
+	 Data tuple Year + Cycles,
+         Header = [XLabel, residual_model]
+     ;
+       Characteristic = component ->
+	 Data tuple Year + T + Comp1,
+         Header = [XLabel, DataSet, comp1]
+     ;
        Characteristic = residual ->
          (   FFT ->
 	     R_FFT fft T_Diff,
@@ -528,6 +648,21 @@ plot(Request) :-
          Data_FFT fft T,
 	 Range ordinal Model_FFT,
 	 Data tuple Range + Data_FFT + Model_FFT,
+         Header = [XLabel, data, model]
+     ;
+       Characteristic = periodogram ->
+         Model_FFT fft Fluct,
+         Data_FFT fft T,
+	 Range ordinal Model_FFT,
+         Period_Range offset Range - 1,  % get rid of zerp
+         D_FFT offset Data_FFT - 1,
+         M_FFT offset Model_FFT - 1,
+         Periods reciprocal Period_Range,
+	 reverse(Periods,RPeriods),
+	 reverse(D_FFT,DFFT),
+	 reverse(M_FFT,MFFT),
+         RP mapdot 2048/12 .* RPeriods,
+	 Data tuple RP + DFFT + MFFT,
          Header = [XLabel, data, model]
 /*
     ;
@@ -577,54 +712,50 @@ plot(Request) :-
     ).
 
 
+data(_Request) :-
+    M = a(mathieu,_),
+    soi(SOI),
+    Number = 30,
+    rset(M, 1 ,SW_1, CW_1,Number),
+    rset(M, 2 ,SW_2, CW_2,Number),
+    rset(M, 3 ,SW_3, CW_3,Number),
+    rset(M, 4 ,SW_4, CW_4,Number),
+    rset(M, 5 ,SW_5, CW_5,Number),
+    rset(M, 6 ,SW_6, CW_6,Number),
+    rset(M, 7 ,SW_7, CW_7,Number),
+    rset(M, 8 ,SW_8, CW_8,Number),
+    rset(M, 9 ,SW_9, CW_9,Number),
+    rset(M, 10 ,SW_10, CW_10,Number),
+    rset(M, 11 ,SW_11, CW_11,Number),
+    rset(M, 12 ,SW_12, CW_12,Number),
+    rset(M, 13 ,SW_13, CW_13,Number),
+    rset(M, 14 ,SW_14, CW_14,Number),
+    rset(M, 15 ,SW_15, CW_15,Number),
+    rset(M, 16 ,SW_16, CW_16,Number),
+    rset(M, 17 ,SW_17, CW_17,Number),
+    rset(M, 18 ,SW_18, CW_18,Number),
+    rset(M, 19 ,SW_19, CW_19,Number),
+    rset(M, 20 ,SW_20, CW_20,Number),
+    rset(M, 21 ,SW_21, CW_21,Number),
+    length(SW_1, L),
+    Range range [1, L]/1,
 
-    /*
-    r1s(SW_1),
-    r1c(CW_1),
-    r2s(SW_2),
-    r2c(CW_2),
-    r3s(SW_3),
-    r3c(CW_3),
-    r4s(SW_4),
-    r4c(CW_4),
-    r5s(SW_5),
-    r5c(CW_5),
-    r6s(SW_6),
-    r6c(CW_6),
-    r7s(SW_7),
-    r7c(CW_7),
-    r8s(SW_8),
-    r8c(CW_8),
-    r9s(SW_9),
-    r9c(CW_9),
-    r10s(SW_10),
-    r10c(CW_10),
-    r11s(SW_11),
-    r11c(CW_11),
-    r12s(SW_12),
-    r12c(CW_12),
-
-    r13s(SW_13),
-    r13c(CW_13),
-    r14s(SW_14),
-    r14c(CW_14),
-    r15s(SW_15),
-    r15c(CW_15),
-    r16s(SW_16),
-    r16c(CW_16),
-    r17s(SW_17),
-    r17c(CW_17),
-    r18s(SW_18),
-    r18c(CW_18),
-*/
-    /*
-    SW_16 = Zeros,
-    CW_16 = Zeros,
-    SW_17 = Zeros,
-    CW_17 = Zeros,
-    SW_18 = Zeros,
-    CW_18 = Zeros,
-    */
+    Data tuple Range + SOI + SW_1 + CW_1 + SW_2 + CW_2 + SW_3 + CW_3 + SW_4 + CW_4 + SW_5 + CW_5 +
+		       SW_6 + CW_6 + SW_7 + CW_7 + SW_8 + CW_8 + SW_9 + CW_9 +SW_10 + CW_10 +
+		       SW_11 + CW_11 + SW_12 + CW_12 + SW_13 + CW_13 + SW_14 + CW_14 + SW_15 + CW_15 +
+		      SW_16 + CW_16 + SW_17 + CW_17 + SW_18 + CW_18 +  SW_19 + CW_19 + SW_20 + CW_20 + SW_21 + CW_21,
+    Header = [t, soi, s1, c1, s2, c2, s3, c3, s4, c4, s5, c5, s6, c6, s7, c7, s8, c8, s9, c9,
+		s10, c10, s11, c11, s12, c12, s13, c13, s14, c14, s15, c15, s16, c16, s17, c17, s18, c18, s19, c19, s20, c20, s21, c21],
+    reply_html_page([title(data),
+                       \(con_text:style)],
+                      [
+                       \(con_text:table_multiple_entries(
+                                      [Header],
+                                      Data
+                                                        ))
+                      ]
+                     )
+    .
 
 
 

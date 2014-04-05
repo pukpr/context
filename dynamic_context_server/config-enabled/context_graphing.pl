@@ -278,7 +278,7 @@ dygraph_error_bars(LogScale, Headings, Xaxis, Yaxis, Title, Data, Bars) -->
          div([id('graphdiv'), style('display:block')], []),
          script([type('text/javascript')],
          [
-          \js_call('handleDygraphListErrorBars'(Log,Xaxis,Yaxis,Text,Headings,Data,CustomBars))
+          \js_call('handleDygraphListErrorBars'(Log,Xaxis,Yaxis,Text,Headings,Data,CustomBars, 1200, 400))
          ])
         ]).
 
