@@ -14,6 +14,7 @@
 :- context:register(context_soim:data).
 
 soi_data('SOI', soi).
+soi_data('SOI detrend', soi_detrend).
 soi_data('SOI Aus', soi_aus).
 soi_data('SOI avg', soi_avg).
 soi_data('Darwin', darwin).
@@ -24,7 +25,8 @@ soi_data('MEI', mei).
 soi_data('SOI pre', soi_pre).
 soi_data('GLAAM', aam).
 soi_data('SOI+AAM', soi_aam).
-soi_data('SOI Integral', soi_integral).
+soi_data('SST Integral', nino_3_4_integral).
+soi_data('SST Nino 3.4', nino_3_4).
 
 
 
@@ -83,8 +85,8 @@ dataset(1, aam, L) :-
     H range [1, 1605]/1,
     Y mapdot H ./ 12.0,
     Years mapdot 1880 .+ Y,
-    context_salt_model:get_aam(Years, 0.0, L1),
-    L cat [L1,Zeros].
+    context_salt_model:get_aam(Years, 0.0, L).
+    % L cat [L1,Zeros].
 dataset(1, soi, L) :-
     Start range [1, 480]/1, % 168 is 1866
     Extra range [1, 60]/1,
@@ -94,6 +96,9 @@ dataset(1, soi, L) :-
     L1 unbias L0,
     L cat [ L1].
     % L cat [ ZeroS, L1, ZerosE].
+dataset(1, soi_detrend, L) :-
+    soi_detrend(L0),
+    L unbias L0.
 dataset(1, soi_integral, L) :-
     soi(L0),
     L1 unbias L0,
@@ -103,13 +108,13 @@ dataset(1, soi_aus, L) :-
     Extra range [1, 60]/1,
     Zeros mapdot 0 .* Extra,
     soi_aus(L0),
-    L1 unbias L0,
-    L cat [L1,Zeros].
+    L unbias L0.
+    % L cat [L1,Zeros].
 dataset(1, soi_avg, L) :-
-    dataset(1, soi_aus, L0),
-    La normalize L0,
-    dataset(1, soi, L1),
-    Lb normalize L1,
+    dataset(1, soi_aus, La),
+    % La normalize L0,
+    dataset(1, soi, Lb),
+    % Lb normalize L1,
     L mapdot La + Lb.
 dataset(1, soi_aam, L) :-
     dataset(1, aam, L0),
@@ -119,14 +124,20 @@ dataset(2, darwin, L) :-
     Extra range [1, 60]/1,
     Zeros mapdot 0 .* Extra,
     darwin(L0),
-    L1 unbias L0,
-    L cat [L1,Zeros].
+    L1 mapdot -1 .* L0,
+    L unbias L1.
+    % L cat [L1,Zeros].
 dataset(1, tahiti, L) :-
     Extra range [1, 60]/1,
     Zeros mapdot 0 .* Extra,
     tahiti(L0),
-    L1 unbias L0,
-    L cat [L1,Zeros].
+    L unbias L0.
+    % L cat [L1,Zeros].
+dataset(1, combined, L) :-
+    dataset(1, tahiti, LT),
+    dataset(2, darwin, LD),
+    L mapdot 0.5 .* (LT + LD).
+    % L cat [L1,Zeros].
 dataset(1, mei, L) :-
     mei_ext(L0),
     L unbias L0.
@@ -141,6 +152,15 @@ dataset(1, soi_pre, L) :-
 dataset(1, ou_rw, RW) :-
     Range range [1,1605]/1,
     context_random_walk:ou_random_walker(0.005,1,0.1,Range,RW),!.
+
+dataset(1, nino_3_4, L) :-
+    nino_3_4(L0),
+    L1 unbias L0,
+    L cat [ L1].
+dataset(1, nino_3_4_integral, L) :-
+    nino_3_4(L0),
+    L1 unbias L0,
+    L accumulate L1.
 
 
 navigate(Request) :-
@@ -187,6 +207,8 @@ navigate(Request) :-
                                   onclick('subm(this.form,"target_iframe");')]),
 			  input([type('submit'), name(kind), value('table'),
                                   onclick('subm(this.form,"target_iframe");')]),
+			  input([type('submit'), name(kind), value('diffEq'),
+                                  onclick('subm(this.form,"target_iframe");')]),
 			  \(con_text:check_box(fft, 'true', 'FFT of residual')),
 			  br([]),
 			  \(con_text:check_box(window, 'true', 'Apply 12 month window')),
@@ -196,7 +218,7 @@ navigate(Request) :-
 			  input([type('text'),
 				 size(2),
 				 name('longCycle'),
-				 value('0.119')]),
+				 value('1.775')]),  %0.16
 			  br([]),
 			  i('#'),
 			  input([type('text'),
@@ -477,7 +499,10 @@ gen_model(Harm, LongC, Window,Triple,DataSet,Year,Months,StartYear,FitYear,Int,F
     ;
         % SW_1 mapdot sinm(0.86196) ~> Months,
         % CW_1 mapdot cosm(0.86196) ~> Months,
-        Extra mapdot soi_model_3 ~> Months
+        % Extra mapdot soi_model_3 ~> Months
+        Extra = Zeros
+        % soi_noise(Extra0),
+        % Extra unbias Extra0
     ),
 
     (	SineZeros ->
@@ -511,8 +536,14 @@ gen_model(Harm, LongC, Window,Triple,DataSet,Year,Months,StartYear,FitYear,Int,F
         %SW_D mapdot sinm(0.14) ~> Months,
         % CW_D mapdot cosm(0.14) ~> Months
     ;
-        SW_D mapdot sinm(1.757415) ~> Months,
-        CW_D mapdot cosm(1.757415) ~> Months
+        % SW_D mapdot sinm(1.757415) ~> Months,
+        % CW_D mapdot cosm(1.757415) ~> Months
+        %SW_D =Zeros,
+        %CW_D =Zeros
+        %SW_D mapdot sinm(1.735) ~> Months,
+        %CW_D mapdot cosm(1.735) ~> Months
+        SW_D mapdot sinm(2.172) ~> Months,
+        CW_D mapdot cosm(2.172) ~> Months % 0.4564
     ),
     (	SineZeros ->
         SW_E =Zeros,
@@ -567,7 +598,96 @@ save_fluct(Fluct) :-
    true
    ),
    assert(soi_result(Fluct)).
+/*
+   mathieu <- 'function(t,y,p){list(c(y[2],0.0145*cos(.9961*(t-0.68))+0.021*(sin(2.9286*(t+0.22))+1.32*sin(2.597*(t-0.76)))-(p[1]+1.208*sin(0.755*(t-0.3)+ifelse(t<52.0,-0.501,0.0))-1.24*cos(2*3.14159*t-1.9))*y[1]))}',
+*/
 
+diffEq_solve(_Params, TS) :-
+   r_open_session,
+   r_in(library(deSolve)),
+   yini    <- 'c(y1=0.0006,y2=-0.0078)',
+   mathieu <- 'function(t,y,p){list(c(y[2],-0.05*sin(5.003*(t-0.141))-0.0004-0.000065*t-0.0145*cos(.9961*(t-0.68)+ifelse(t<52.0,p[2],p[3]))-0.021*(sin(2.9286*(t+0.22+ifelse(t<52.0,p[2],p[3])))+1.32*sin(2.597*(t-0.76+ifelse(t<52.0,p[2],p[3]))))-(p[1]+1.208*sin(0.755*(t-0.3)+ifelse(t<52.0,-0.501,0.0))-1.24*cos(2*pi*t-1.9))*y[1]))}',
+   soln    <- 'ode(y = yini, func = mathieu, times=seq(0.0, 135.0, by=0.083333333), parms=c(2.106,1.34,0.0065))',
+   r_in('ts1<-soln[1:400,2]'),
+   r_in('ts2<-soln[401:800,2]'),
+   r_in('ts3<-soln[801:1200,2]'),
+   r_in('ts4<-soln[1201:1605,2]'),
+   TS1 <- ts1,
+   TS2 <- ts2,
+   TS3 <- ts3,
+   TS4 <- ts4,
+   TS cat[TS1,TS2,TS3,TS4],
+   r_close.
+   %length(TS, N),
+   % print(user_error, [length,N]).
+
+   % mathieu <- function(t, y, p) {list(c(y[2], 10.4*sin(2.5*t)-10.4*sin(2.8*t)-(p[1]+p[2]*cos(2*t))*y[1]))},
+   %  soln    <- ode(y = yini, func = mathieu, times=seq(0,300, by=0.01), parms=c(2.8,2.6))
+   % plot(soln[,1], soln[,2])
+
+
+plot(Request) :-
+    garbage_collect,
+    http_parameters(Request, [kind(diffEq, []),
+			      fft(FFT, [boolean, default(false)]),
+			      window(Window, [boolean, default(false)]),
+			      triple(Triple, [boolean, default(false)]),
+			      % mathieu(Mathieu, [boolean, default(false)]),
+			      wave(_WL, [integer, default(0)]),
+			      t_units(Cal, []),
+			      startYear(StartYear, [integer]),
+			      fitYear(FitYear, [integer]),
+                              dataset(DataSet, []),
+			      numberComps(NComps, [integer]),
+                              evaluate(Characteristic, [default(model)])]),
+
+    scale(FFT, LogLin, Characteristic, XLabel, XUnits, YLabel, YUnits, Show_Error_Bars),
+    scaling(Cal, month, _Scale),
+    temperature_series(_, Window, Triple, DataSet, T, _Correction),
+    soi_data(NameData, DataSet),
+
+    get_years_from_1880(T, Year, Zeros),
+    diffEq_solve(_Params, TS),
+
+    % get_months_from_start(T, Months),
+    T1 mapdot -0.012 .* T,
+    (
+       Characteristic = residual ->
+          T_Diff mapdot T1 - TS,
+          Data tuple Year + T_Diff,
+          Header = [year, residual]
+    ;
+       Characteristic = spectrum ->
+         Model_FFT fft TS,
+         Data_FFT fft T1,
+	 Range ordinal Model_FFT,
+	 Data tuple Range + Data_FFT + Model_FFT,
+         Header = [XLabel, data, model]
+    ;
+         Data tuple Year + T1  +  TS,
+         Header = [year, DataSet, model]
+    ),
+    corrcoeff(T1, TS, R2C2),
+
+    reply_html_page([title(Characteristic),
+                       \(con_text:style)],
+                      [
+		     table([tr([th('R=cc'),th('start fit'),th('end fit')]),
+			    tr([td(b('~5f'-R2C2)),td(b('~d'-StartYear)), td(b('~d'-FitYear))])
+			   ]),
+		     br([]),
+		     table( % [class('fixed')],
+			   [caption(div([id('legend')],[])),
+			    tr([
+				td(
+		     \(context_graphing:dygraph_error_bars(LogLin, Header,
+						       [XLabel,XUnits], [YLabel, YUnits],
+						       [NameData, ' ', FitYear, ' - SOIM:', Characteristic], Data, false))
+				  )
+			       ])])
+                    ]
+                     )
+     .
 
 
 plot(Request) :-
@@ -693,7 +813,7 @@ plot(Request) :-
 				td(
 		     \(context_graphing:dygraph_error_bars(LogLin, Header,
 						       [XLabel,XUnits], [YLabel, YUnits],
-						       [NameData, FitYear, ' - SOIM:', Characteristic], Data, Show_Error_Bars))
+						       [NameData, ' ', FitYear, ' - SOIM:', Characteristic], Data, Show_Error_Bars))
 				  )
 			       ])])
                     ]

@@ -11,7 +11,8 @@
 			       scmss_fit/2,
 			       sin_n/5,
 			       planck_hale/6,
-			       comb/2
+			       comb/2,
+			       cfc_fit/2
 			      ]).
 
 :- use_module(context_math).
@@ -94,6 +95,10 @@ scmss_fit(X,Y) :-
     Year is 1880.0 + (X-1)/12,
     Y is  0.06039*sin(0.02401 + 0.5287*Year) - 0.2699*cos(0.3156*Year) - 0.05436*sin(0.4713*Year)*sin(-0.01807*Year).
     %-0.06385*sin(6.277 + 0.5304*Year) - 0.2691*sin(0.9902 - 0.3153*Year).
+
+cfc_fit(X,Y) :-
+    Year is 1880.0 + (X-1)/12,
+    Y is 0.147*exp(-((Year-2012.5)^3)/(-4000)-((Year-2012.5)^2)/38000).
 
 
 temp_data('GISS', giss).
@@ -330,15 +335,15 @@ get_fit(StartDate, EndDate, [Temperature, CO2, SOI, TSI, Volc, LOD, AAM, Arctic,
 	                                                          SI,  CI,
 	                                                          SJ,  CJ,
 	                                                          BSC, BCM,
-								  Dynamo
-			                                          %, Methane
+								  Dynamo,
+			                                          Methane
 								  ],
 	[             C,   S,   T,   A,    L,   M, Z, N, V, W, P, Q,
 		                                E, F, G, H, D, I, R, U,
 		                                A1, B1, C1, D1, E1, F1,
 		                                G1, H1, I1, J1, K1, L1,
 		                                M1, N1, O1, P1, Q1, R1,
-		                                S1, T1, U1, V1, W1, X1, J, K, DY], Int, R2) :-
+		                                S1, T1, U1, V1, W1, X1, J, K, DY,LM], Int, R2) :-
    r_open_session,
    y <- Temperature,
    c <- CO2,
@@ -388,7 +393,7 @@ get_fit(StartDate, EndDate, [Temperature, CO2, SOI, TSI, Volc, LOD, AAM, Arctic,
    bsc <- BSC,
    bcm <- BCM,
    dyn <- Dynamo,
-   % y1 <- Methane,
+   y1 <- Methane,
    % pccr <- princomp('~y+c+s+a+l+t+m+z+j+k+n+v+w+p+q+e+f+g+h+d+i+r+u+a1+b1+c1+d1+e1+f1+g1+h1+i1+j1+k1+l1+m1+n1+o1+p1+q1+r1+s1+t1+u1+v1+w1+x1'),
    % r_print(summary(pccr)),
    % Test <- 'as.double(pccr$coefficients[1])',
@@ -397,12 +402,12 @@ get_fit(StartDate, EndDate, [Temperature, CO2, SOI, TSI, Volc, LOD, AAM, Arctic,
    B is (EndDate - 1880)*12,
    O is (StartDate - 1880)*12 + 1,
    % O = 1, % 840,
-   format(atom(Eq), 'y[~d:~d]~~c[~d:~d]+s[~d:~d]+a[~d:~d]+l[~d:~d]+t[~d:~d]+m[~d:~d]+veS[~d:~d]+veC[~d:~d]+h3S[~d:~d]+h3C[~d:~d]+s9S[~d:~d]+s9C[~d:~d]+diS[~d:~d]+diC[~d:~d]+t1S[~d:~d]+t1C[~d:~d]+j1S[~d:~d]+j1C[~d:~d]+h7S[~d:~d]+h7C[~d:~d]+j2S[~d:~d]+j2C[~d:~d]+d3S[~d:~d]+d3C[~d:~d]+t2S[~d:~d]+t2C[~d:~d]+h4S[~d:~d]+h4C[~d:~d]+h5S[~d:~d]+h5C[~d:~d]+h6S[~d:~d]+h6C[~d:~d]+h2S[~d:~d]+h2C[~d:~d]+h1S[~d:~d]+h1C[~d:~d]+q3S[~d:~d]+q3C[~d:~d]+loS[~d:~d]+loC[~d:~d]+v4S[~d:~d]+v4C[~d:~d]+s3S[~d:~d]+s3C[~d:~d]+bsc[~d:~d]+bcm[~d:~d]+dyn[~d:~d]', % +y1[~d:~d]',
+   format(atom(Eq), 'y[~d:~d]~~c[~d:~d]+s[~d:~d]+a[~d:~d]+l[~d:~d]+t[~d:~d]+m[~d:~d]+veS[~d:~d]+veC[~d:~d]+h3S[~d:~d]+h3C[~d:~d]+s9S[~d:~d]+s9C[~d:~d]+diS[~d:~d]+diC[~d:~d]+t1S[~d:~d]+t1C[~d:~d]+j1S[~d:~d]+j1C[~d:~d]+h7S[~d:~d]+h7C[~d:~d]+j2S[~d:~d]+j2C[~d:~d]+d3S[~d:~d]+d3C[~d:~d]+t2S[~d:~d]+t2C[~d:~d]+h4S[~d:~d]+h4C[~d:~d]+h5S[~d:~d]+h5C[~d:~d]+h6S[~d:~d]+h6C[~d:~d]+h2S[~d:~d]+h2C[~d:~d]+h1S[~d:~d]+h1C[~d:~d]+q3S[~d:~d]+q3C[~d:~d]+loS[~d:~d]+loC[~d:~d]+v4S[~d:~d]+v4C[~d:~d]+s3S[~d:~d]+s3C[~d:~d]+bsc[~d:~d]+bcm[~d:~d]+dyn[~d:~d]+y1[~d:~d]',
 	  [O,B,O,B,O,B,O,B,O,B,O,B,O,B,O,B,O,B,O,B,
 	   O,B,O,B,O,B,O,B,O,B,O,B,O,B,O,B,O,B,O,B,
 	   O,B,O,B,O,B,O,B,O,B,O,B,O,B,O,B,O,B,O,B,
 	   O,B,O,B,O,B,O,B,O,B,O,B,O,B,O,B,O,B,O,B,
-	   O,B,O,B,O,B,O,B,O,B,O,B,O,B,O,B,O,B]),
+	   O,B,O,B,O,B,O,B,O,B,O,B,O,B,O,B,O,B,O,B]),
    fitxy <- lm(Eq),
 
 	% fitxy <- lm('y~c+s+a+l+t+m+z+n+v+w+p+q+e+f+g+h+d+i+r+u+a1+b1+c1+d1+e1+f1+g1+h1+i1+j1+k1+l1+m1+n1+o1+p1+q1+r1+s1+t1+u1+v1+w1+x1+j+k'),
@@ -461,7 +466,7 @@ get_fit(StartDate, EndDate, [Temperature, CO2, SOI, TSI, Volc, LOD, AAM, Arctic,
    J <- 'as.double(fitxy$coefficients[46])',
    K <- 'as.double(fitxy$coefficients[47])',
    DY <- 'as.double(fitxy$coefficients[48])',
-   % LM <- 'as.double(fitxy$coefficients[48])',
+   LM <- 'as.double(fitxy$coefficients[49])',
    summary <- summary(fitxy),
    r_print(summary),
    R2 <- 'as.double(summary$r.squared)',
@@ -627,8 +632,8 @@ get_soi_noise(Lag, true, Noise_F) :-
     ).
 
 get_soi(Lag, SOI_F) :-
-    % soi(SOI),
-    context_soim: soi_result(SOI),
+    soi(SOI),
+    % context_soim: soi_result(SOI),
     S unbias SOI,
     % Square
     % SU unbias S0,
@@ -872,6 +877,14 @@ get_methane(Years, Lag, LogMethane) :-
         LogMethane mapdot 0 .* Methane_I
     ).
 
+get_cfc(Time, Lag, CFC) :-
+    CFC_R mapdot cfc_fit ~> Time,
+    (	Lag >= 0.0 ->
+        CFC unbias CFC_R
+	% CFC lag CFC_U / Lag
+    ;
+        CFC mapdot 0 .* CFC_R
+    ).
 
 check_coefficients([], List, Final ) :- reverse(List, Final), !.
 check_coefficients([F|Rest], List, Final ) :-
@@ -1175,6 +1188,7 @@ plot(Request) :-
     get_co2(Year, AL, LogCO2),
 
     % get_methane(Year, AL, LogMethane),
+    get_cfc(Months, 1, LogMethane),
 
     % get_arctic(Year, AW, Arctic),
     % get_amo(NL, NAO),       % get_nao(Year, NL, NAO),
@@ -1205,8 +1219,8 @@ plot(Request) :-
 	                                                        SinD, CosD, SinE, CosE,
 	                                                        SinF, CosF, SinG, CosG,
 	                                                        SinI, CosI, SinJ, CosJ,
-	                                                        SCMSS, CMSS, Dynamo],
-				                                % LogMethane],
+	                                                        SCMSS, CMSS, Dynamo,
+				                                LogMethane],
 	    Coefficients, Int, _R2C),
 	    % [NoiseA, C, SO, TS, VC,   LO],
 
@@ -1220,7 +1234,7 @@ plot(Request) :-
 					                                    SWD, CWD, SWE, CWE,
 					                                    SWF, CWF, SWG, CWG,
 									    SWI, CWI, SWJ, CWJ,
-					                                    SC, CM, DY]),
+					                                    SC, CM, DY, LM]),
 
     Fluct mapdot SO .* S2 + TS .* TSI_F + VC .* V1 + LO .* LOD_F + AA .* AAM +
                                            + SWH .* SinH + CWH .* CosH  % ARC .* Arctic + NI .* NAO
@@ -1243,8 +1257,8 @@ plot(Request) :-
 		                           + SWI .* SinI + CWI .* CosI
 		                           + SWJ .* SinJ + CWJ .* CosJ
                                            + SC .* SCMSS + CM .* CMSS
-					   + DY .* Dynamo,
-					   % + LM .* LogMethane,
+					   + DY .* Dynamo
+					   + LM .* LogMethane,
 
     T_CO2_R mapdot C .* LogCO2 + Fluct,
     T_R mapdot Int .+ T_CO2_R,
