@@ -1,0 +1,4470 @@
+:- module(context_soim, [ soi_model/2,
+			  soi_model_2/2,
+			  soi_model_3/2,
+			  soi_model_4/2,
+			  sinm/3,
+			  cosm/3
+			      ]).
+
+:- use_module(context_math).
+:- use_module(context_stats).
+
+:- context:register(context_soim:navigate).
+:- context:register(context_soim:plot).
+:- context:register(context_soim:data).
+
+soi_data('SOI', soi).
+soi_data('SOI detrend', soi_detrend).
+soi_data('SOI Aus', soi_aus).
+soi_data('SOI avg', soi_avg).
+soi_data('Darwin', darwin).
+soi_data('Tahiti', tahiti).
+soi_data('OU Random Walk', ou_rw).
+soi_data('Tahiti-Darwin', combined).
+soi_data('MEI', mei).
+soi_data('SOI pre', soi_pre).
+soi_data('GLAAM', aam).
+soi_data('SOI+AAM', soi_aam).
+soi_data('SST Integral', nino_3_4_integral).
+soi_data('SST Nino 3.4', nino_3_4).
+
+
+
+
+soi_model(T,Z) :-
+   Y is T/12,
+   M is 2.69756, H=0.2, I=0.99262, L=2, N is 1.96654, P is 0.209125,
+   Z is sin(M*Y+H)+cos(I*Y+H) - L*cos(N*Y+H)*cos(P*Y+H).
+
+soi_model_2(T,Z) :-
+   Y is T/12,
+   N=0.99875, P=0.98644, I = 0.99262, M = 0.99984,
+   Z is cos( (M*2.698-I)*Y+1)*cos(2.9+(M*2.698+I)*Y) - cos(N*1.968757339*Y)*cos(P*0.212256*Y).
+       % cos( (M*2.698-I)*Y+1)*cos(2.9+(M*2.698+I)*Y) - cos(N*1.968757339*Y)*cos(P*0.212256*Y)
+
+soi_model_3(T,Z) :-
+   Time is 1880 + (T+1)/12,
+   Omega = 0.86196,
+   Long = 0.0552717,
+   Scale = 0.353873,
+   % A is 0.2763*cos(1.988*Time)*cos(0.7635*Time)-0.1553*sin(2.985*Time)-0.1985*cos(2.567*Time)-0.1594*cos(6.189 + 0.447*Time),
+   % A is 0.0109*cos(1.763*Time)*cos(1.52*Time) - 0.006388*cos(1.52*Time) - 0.009238*cos(2.177*Time) - 0.0109*cos(1.763*Time)
+   %     - 0.02643*sin(-0.08289*Time)*cos(1.031*Time),
+   B is 0.2473*cos(Omega*Time) + 0.2164*cos(Long*Time) + 0.4764*sin(Time)*cos(Omega*Time) +
+      Scale*(sin(Omega*Time)*cos(Omega*Time)*cos(Long*Time) - sin(Omega*Time)*cos(Omega*Time) - cos(Omega*Time)*cos(Long*Time)),
+   Z is 1.075*B. %  + 0.745*A .
+
+
+soi_model_4(T,Z) :-
+   Time is 1880 + (T+1)/12,
+   Z is   0.1656*cos(1.0*(Time-15/12))
+	- 0.1005*cos(0.8544*(Time))
+	- 0.1407*cos(0.9235*(Time-1/12))
+	- 0.1731*cos(1.4343*(Time-2/12))
+	- 0.1827*cos(0.05685*(Time-11/12)).
+
+/*
+soi_model_4(T,Z) :-
+   Time is 1880 + (T+1)/12,
+   Z is   0.1408*cos(1.0*(Time-14/12))
+	- 0.1739*cos(1.428*(Time-5/12))
+	- 0.1986*cos(2.944*(Time-30))
+	- 0.2041*cos(0.06014*(Time-51/12))
+	- 0.2362*cos(2.689*(Time-4/12)).
+*/
+sinm(W,T,Z) :-
+   Y is T/12,
+   Z is sin(W*Y).
+cosm(W,T,Z) :-
+   Y is T/12,
+   Z is cos(W*Y).
+
+dataset(1, aam, L) :-
+    Extra range [1, 60]/1,
+    Zeros mapdot 0 .* Extra,
+    H range [1, 1605]/1,
+    Y mapdot H ./ 12.0,
+    Years mapdot 1880 .+ Y,
+    context_salt_model:get_aam(Years, 0.0, L).
+    % L cat [L1,Zeros].
+dataset(1, soi, L) :-
+    Start range [1, 480]/1, % 168 is 1866
+    Extra range [1, 60]/1,
+    ZerosS mapdot 0 .* Start,
+    ZerosE mapdot 0 .* Extra,
+    soi(L0),
+    L1 unbias L0,
+    L cat [ L1].
+    % L cat [ ZeroS, L1, ZerosE].
+dataset(1, soi_detrend, L) :-
+    soi_detrend(L0),
+    L unbias L0.
+dataset(1, soi_integral, L) :-
+    soi(L0),
+    L1 unbias L0,
+    L accumulate L1.
+    % L cat [ ZeroS, L1, ZerosE].
+dataset(1, soi_aus, L) :-
+    Extra range [1, 60]/1,
+    Zeros mapdot 0 .* Extra,
+    soi_aus(L0),
+    L unbias L0.
+    % L cat [L1,Zeros].
+dataset(1, soi_avg, L) :-
+    dataset(1, soi_aus, La),
+    % La normalize L0,
+    dataset(1, soi, Lb),
+    % Lb normalize L1,
+    L mapdot La + Lb.
+dataset(1, soi_aam, L) :-
+    dataset(1, aam, L0),
+    dataset(1, soi, L1),
+    L mapdot L1 - L0.
+dataset(2, darwin, L) :-
+    Extra range [1, 60]/1,
+    Zeros mapdot 0 .* Extra,
+    darwin(L0),
+    L1 mapdot -1 .* L0,
+    L unbias L1.
+    % L cat [L1,Zeros].
+dataset(1, tahiti, L) :-
+    Extra range [1, 60]/1,
+    Zeros mapdot 0 .* Extra,
+    tahiti(L0),
+    L unbias L0.
+    % L cat [L1,Zeros].
+dataset(1, combined, L) :-
+    dataset(1, tahiti, LT),
+    dataset(2, darwin, LD),
+    L mapdot 0.5 .* (LT + LD).
+    % L cat [L1,Zeros].
+dataset(1, mei, L) :-
+    mei_ext(L0),
+    L unbias L0.
+dataset(1, soi_pre, L) :-
+    soi_pre(L0),
+    soi(S),
+    L1 cat [L0, S],
+    L2 shrink L1/S,
+    L unbias L2.
+
+
+dataset(1, ou_rw, RW) :-
+    Range range [1,1605]/1,
+    context_random_walk:ou_random_walker(0.005,1,0.1,Range,RW),!.
+
+dataset(1, nino_3_4, L) :-
+    nino_3_4(L0),
+    L1 unbias L0,
+    L cat [ L1].
+dataset(1, nino_3_4_integral, L) :-
+    nino_3_4(L0),
+    L1 unbias L0,
+    L accumulate L1.
+
+
+navigate(Request) :-
+   collect_unit_options(calendar, Calendar),
+   con_text:collect_options(context_soim:soi_data, DataSet),
+
+   reply_html_page(cliopatria(default),
+                   [title('SOI Model response'),
+		    script([type('text/javascript'),src('/html/js/submit.js')], [])
+		   ],
+                   [\(con_text:table_with_iframe_target(
+                                    Request,
+		     [
+                      h1('SOI Model'),
+                      form([action(plot), target(target_iframe)],
+			 [
+                           p(['Select data set and a profile view ',
+			      input([type('text'),
+				 size(4),
+				 name('startYear'),
+				 value('1880')]),
+			      ' : ',
+			      input([type('text'),
+				 size(4),
+				 name('fitYear'),
+				 value('2013')])
+			     ]),
+
+			  select([name('dataset')], DataSet),
+			  br([]),
+			  \(con_text:radio_toggles(
+					 'evaluate',
+					 [
+					  ['View the residual error', residual],
+					  ['Match temperature with model', model],
+					  ['Differentiate integral form', diff],
+					  ['Power spectrum', spectrum],
+					  ['Periodogram', periodogram],
+					  ['Compare component', component],
+					  ['Cycles', cycles]
+                                         ])),
+                          br([]),
+			  input([type('submit'), name(kind), value('graph'),
+                                  onclick('subm(this.form,"target_iframe");')]),
+			  input([type('submit'), name(kind), value('table'),
+                                  onclick('subm(this.form,"target_iframe");')]),
+			  input([type('submit'), name(kind), value('diffEq'),
+                                  onclick('subm(this.form,"target_iframe");')]),
+			  \(con_text:check_box(fft, 'true', 'FFT of residual')),
+			  br([]),
+			  \(con_text:check_box(window, 'true', 'Apply 12 month window')),
+			  \(con_text:check_box(triple, 'true', 'Pratt filter')),
+			  % \(con_text:check_box(mathieu, 'true', 'Mathieu functions')),
+			  \(con_text:check_box(harmonics, 'true', 'Only Mathieu')),
+			  input([type('text'),
+				 size(2),
+				 name('longCycle'),
+				 value('1.775')]),  %0.16
+			  br([]),
+			  i('#'),
+			  input([type('text'),
+				 size(2),
+				 name('numberComps'),
+				 value('10')]),
+			  br([]),
+
+			  i('lag'),
+			  input([type('text'),
+				 size(2),
+				 name('lag'),
+				 value('0')]),
+			  select([name('t_units')], Calendar)
+			 ]
+			  ),
+		      br([]),
+		      \(con_text:render_iframe(render))
+		     ]
+						       ))
+		   ]
+		  ).
+
+
+
+get_fit(StartDate, EndDate, [Temperature, CO2, SOI, Volc, LOD, TSI, AAM, Arctic, NAO, Sin, Cos,
+	                                                          S2,  C2,
+	                                                          S3,  C3,
+	                                                          S4,  C4,
+	                                                          S5,  C5,
+	                                                          S6,  C6,
+	                                                          S7,  C7,
+	                                                          S8,  C8,
+	                                                          S9,  C9,
+	                                                          SA,  CA,
+	                                                          SB,  CB,
+	                                                          SC,  CC,
+	                                                          SD,  CD,
+	                                                          SE,  CE,
+	                                                          SF,  CF,
+	                                                          SG,  CG,
+	                                                          SI,  CI,
+	                                                          SJ,  CJ,
+	                                                          BSC, BCM,
+								  Dynamo
+			                                          %, Methane
+								  ],
+	[             C,   S,   A,   L,    T,   M, Z, N, V, W, P, Q,
+		                                E, F, G, H, D, I, R, U,
+		                                A1, B1, C1, D1, E1, F1,
+		                                G1, H1, I1, J1, K1, L1,
+		                                M1, N1, O1, P1, Q1, R1,
+		                                S1, T1, U1, V1, W1, X1, J, K, DY], Int, R2) :-
+   r_open_session,
+   y <- Temperature,
+   r1s <- CO2,
+   r1c <- SOI,
+   r2s <- Volc,
+   r2c <- LOD,
+   r3s <- TSI,
+   r3c <- AAM,
+   r4s <- Arctic,
+   r4c <- NAO,
+   r5s <- Sin,
+   r5c <- Cos,
+   r6s <- S2,
+   r6c <- C2,
+   r7s <- S3,
+   r7c <- C3,
+   r8s <- S4,
+   r8c <- C4,
+   r9s <- S5,
+   r9c <- C5,
+   r10s <- S6,
+   r10c <- C6,
+   r11s <- S7,
+   r11c <- C7,
+   r12s <- S8,
+   r12c <- C8,
+   r13s <- S9,
+   r13c <- C9,
+   r14s <- SA,
+   r14c <- CA,
+   r15s <- SB,
+   r15c <- CB,
+   r16s <- SC,
+   r16c <- CC,
+   r17s <- SD,
+   r17c <- CD,
+   r18s <- SE,
+   r18c <- CE,
+   r19s <- SF,
+   r19c <- CF,
+   r20s <- SG,
+   r20c <- CG,
+   r21s <- SI,
+   r21c <- CI,
+   r22s <- SJ,
+   r22c <- CJ,
+   r23s <- BSC,
+   r23c <- BCM,
+   r24 <- Dynamo,
+   B is (EndDate - 1880)*12,
+   O is (StartDate - 1880)*12 + 1,
+   % O = 1, % 840,
+   format(atom(Eq), 'y[~d:~d]~~r1s[~d:~d]+r1c[~d:~d]+r2s[~d:~d]+r2c[~d:~d]+r3s[~d:~d]+r3c[~d:~d]+r4s[~d:~d]+r4c[~d:~d]+r5s[~d:~d]+r5c[~d:~d]+r6s[~d:~d]+r6c[~d:~d]+r7s[~d:~d]+r7c[~d:~d]+r8s[~d:~d]+r8c[~d:~d]+r9s[~d:~d]+r9c[~d:~d]+r10s[~d:~d]+r10c[~d:~d]+r11s[~d:~d]+r11c[~d:~d]+r12s[~d:~d]+r12c[~d:~d]+r13s[~d:~d]+r13c[~d:~d]+r14s[~d:~d]+r14c[~d:~d]+r15s[~d:~d]+r15c[~d:~d]+r16s[~d:~d]+r16c[~d:~d]+r17s[~d:~d]+r17c[~d:~d]+r18s[~d:~d]+r18c[~d:~d]+r19s[~d:~d]+r19c[~d:~d]+r20s[~d:~d]+r20c[~d:~d]+r21s[~d:~d]+r21c[~d:~d]+r22s[~d:~d]+r22c[~d:~d]+r23s[~d:~d]+r23c[~d:~d]+r24[~d:~d]', % +y1[~d:~d]',
+	  [O,B,O,B,O,B,O,B,O,B,O,B,O,B,O,B,O,B,O,B,
+	   O,B,O,B,O,B,O,B,O,B,O,B,O,B,O,B,O,B,O,B,
+	   O,B,O,B,O,B,O,B,O,B,O,B,O,B,O,B,O,B,O,B,
+	   O,B,O,B,O,B,O,B,O,B,O,B,O,B,O,B,O,B,O,B,
+	   O,B,O,B,O,B,O,B,O,B,O,B,O,B,O,B,O,B]),
+   fitxy <- lm(Eq),
+
+
+   %   Add the variables here !!! don't forget
+   r_print(fitxy),
+   Int <- 'as.double(fitxy$coefficients[1])',
+   C <- 'as.double(fitxy$coefficients[2])',
+   S <- 'as.double(fitxy$coefficients[3])',
+   A <- 'as.double(fitxy$coefficients[4])',
+   L <- 'as.double(fitxy$coefficients[5])',
+   T <- 'as.double(fitxy$coefficients[6])',
+   M <- 'as.double(fitxy$coefficients[7])',
+   Z <- 'as.double(fitxy$coefficients[8])',
+   N <- 'as.double(fitxy$coefficients[9])',
+   V <- 'as.double(fitxy$coefficients[10])',
+   W <- 'as.double(fitxy$coefficients[11])',
+   P <- 'as.double(fitxy$coefficients[12])',
+   Q <- 'as.double(fitxy$coefficients[13])',
+   E <- 'as.double(fitxy$coefficients[14])',
+   F <- 'as.double(fitxy$coefficients[15])',
+   G <- 'as.double(fitxy$coefficients[16])',
+   H <- 'as.double(fitxy$coefficients[17])',
+   D <- 'as.double(fitxy$coefficients[18])',
+   I <- 'as.double(fitxy$coefficients[19])',
+   R <- 'as.double(fitxy$coefficients[20])',
+   U <- 'as.double(fitxy$coefficients[21])',
+   A1 <- 'as.double(fitxy$coefficients[22])',
+   B1 <- 'as.double(fitxy$coefficients[23])',
+   C1  <- 'as.double(fitxy$coefficients[24])',
+   D1 <- 'as.double(fitxy$coefficients[25])',
+   E1 <- 'as.double(fitxy$coefficients[26])',
+   F1 <- 'as.double(fitxy$coefficients[27])',
+   G1 <- 'as.double(fitxy$coefficients[28])',
+   H1 <- 'as.double(fitxy$coefficients[29])',
+   I1 <- 'as.double(fitxy$coefficients[30])',
+   J1 <- 'as.double(fitxy$coefficients[31])',
+   K1 <- 'as.double(fitxy$coefficients[32])',
+   L1 <- 'as.double(fitxy$coefficients[33])',
+   M1 <- 'as.double(fitxy$coefficients[34])',
+   N1 <- 'as.double(fitxy$coefficients[35])',
+   O1 <- 'as.double(fitxy$coefficients[36])',
+   P1 <- 'as.double(fitxy$coefficients[37])',
+   Q1 <- 'as.double(fitxy$coefficients[38])',
+   R1 <- 'as.double(fitxy$coefficients[39])',
+   S1 <- 'as.double(fitxy$coefficients[40])',
+   T1 <- 'as.double(fitxy$coefficients[41])',
+   U1 <- 'as.double(fitxy$coefficients[42])',
+   V1 <- 'as.double(fitxy$coefficients[43])',
+   W1 <- 'as.double(fitxy$coefficients[44])',
+   X1 <- 'as.double(fitxy$coefficients[45])',
+   J <- 'as.double(fitxy$coefficients[46])',
+   K <- 'as.double(fitxy$coefficients[47])',
+   DY <- 'as.double(fitxy$coefficients[48])',
+   % LM <- 'as.double(fitxy$coefficients[48])',
+   summary <- summary(fitxy),
+   r_print(summary),
+   R2 <- 'as.double(summary$r.squared)',
+   r_close, !.
+
+
+
+scale(_, lin, model, 'Time', 'year', 'Index', 'hPa', true) :- !.
+scale(_, lin, cycles, 'Time', 'year', 'Index', 'hPa', true) :- !.
+scale(true, log, periodogram, 'Period', 'Year', 'Power Spectral', 'density', false) :- !.
+scale(true, log, residual, 'Wavenumber', '2048/Month', 'Power Spectral', 'density', false) :- !.
+scale(true, log, spectrum, 'Wavenumber', '2048/Month', 'Power Spectral', 'density', false) :- !.
+scale(_, lin, _, 'Time', 'year', 'Index', 'hPa', false).
+
+single_filter(In, Out) :-
+    % median_filter(In, In0),
+    Out window In*13.
+triple_filter(In, Out) :-
+    median_filter(In, In0),
+    A window In0*13,
+    B window A*9, % 9
+    Out window B*7. % 7
+
+temperature_series(N, _, true, DataSet, T) :-
+    dataset(N, DataSet, T0),
+    triple_filter(T0, T).
+temperature_series(N, true, false, DataSet, T) :-
+    dataset(N, DataSet, T0),
+    single_filter(T0, T).
+temperature_series(N, false, false, DataSet, T) :-
+    dataset(N, DataSet, T0),
+    median_filter(T0, T).
+
+
+temperature_series(N, Window, Triple, DataSet, T, Offset) :-
+   temperature_series(N, Window, Triple, DataSet, TT),
+   T = TT,
+   Offset mapdot 0 .* TT
+   .
+
+get_years_from_1880(T, Years, Zeros) :-
+    length(T, L),
+    H range [1, L]/1,
+    Y mapdot H ./ 12.0,
+    Years mapdot 1880 .+ Y,
+    Zeros mapdot 0 .* H.
+
+get_months_from_start(T, H) :-
+    length(T, L),
+    H range [1, L]/1.
+
+check_coefficients([], List, Final ) :- reverse(List, Final), !.
+check_coefficients([F|Rest], List, Final ) :-
+    F = 'NA', !,
+    check_coefficients(Rest, [0.0|List], Final).
+check_coefficients([F|Rest], List, Final ) :-
+    check_coefficients(Rest, [F|List], Final).
+
+
+rset(a(mathieu,_), Num, Sin, Cos,NComps) :-
+    Num < NComps + 1,
+    mathieu(Num,s, Sin),
+    mathieu(Num,c, Cos).
+rset(a(mathieu,Months), _, Sin, Cos,_NComps) :-
+    Sin mapdot 0 ~> Months,
+    Cos mapdot 0 ~> Months.
+rset(a(trig,Months), Num, Sin, Cos,_NComps) :-
+    A is sqrt(2.82),
+    % A = 1,
+    Theta is 2*pi*A/Num,
+    Sin mapdot sinm(Theta) ~> Months,
+    Cos mapdot cosm(Theta) ~> Months.
+
+gen_model(Harm, LongC, Window,Triple,DataSet,Year,Months,StartYear,FitYear,Int,Fluct,T, Comp1, Cycles,NComps) :-
+    temperature_series(_, Window, Triple, DataSet, T, _Correction),
+
+    get_years_from_1880(T, Year, Zeros),
+    get_months_from_start(T, Months),
+
+    % Q is 1 , % 0.9333,
+    M = a(mathieu,Months),
+    % M = a(trig,Months),
+
+    rset(M, 1 ,SW_1, CW_1,NComps),
+%    rset(M, 2 ,SW_2, CW_2,NComps),
+%    rset(M, 3 ,SW_3, CW_3,NComps),
+%    rset(M, 4 ,SW_4, CW_4,NComps),
+    rset(M, 5 ,SW_5, CW_5,NComps),
+    rset(M, 6 ,SW_6, CW_6,NComps),
+    rset(M, 7 ,SW_7, CW_7,NComps),
+    rset(M, 8 ,SW_8, CW_8,NComps),
+    rset(M, 9 ,SW_9, CW_9,NComps),
+    rset(M, 10 ,SW_10, CW_10,NComps),
+    rset(M, 11 ,SW_11, CW_11,NComps),
+    rset(M, 12 ,SW_12, CW_12,NComps),
+    rset(M, 13 ,SW_13, CW_13,NComps),
+    rset(M, 14 ,SW_14, CW_14,NComps),
+    rset(M, 15 ,SW_15, CW_15,NComps),
+    rset(M, 16 ,SW_16, CW_16,NComps),
+    rset(M, 17 ,SW_17, CW_17,NComps),
+    rset(M, 18 ,SW_18, CW_18,NComps),
+    rset(M, 19 ,SW_A, CW_A,NComps),
+    rset(M, 20 ,SW_B, CW_B,NComps),
+    rset(M, 21 ,SW_C, CW_C,NComps),
+
+    SineZeros=Harm,
+    (	SineZeros ->
+        % SW_1 = Zeros,
+	% CW_1 = Zeros,
+        Extra = Zeros
+        %
+        % Extra mapdot soi_model_4 ~> Months
+    ;
+        % SW_1 mapdot sinm(0.86196) ~> Months,
+        % CW_1 mapdot cosm(0.86196) ~> Months,
+        % Extra mapdot soi_model_3 ~> Months
+        Extra = Zeros
+        % soi_noise(Extra0),
+        % Extra unbias Extra0
+    ),
+
+    (	SineZeros ->
+        rset(M, 2 ,SW_2, CW_2,NComps)
+    ;
+        rset(M, 2 ,SW_2, CW_2,NComps)
+        % SW_2 mapdot sinm(2.69756) ~> Months,
+        % CW_2 mapdot cosm(2.69756) ~> Months
+    )
+    ,
+    (	SineZeros ->
+        rset(M, 3 ,SW_3, CW_3,NComps)
+    ;
+        rset(M, 3 ,SW_3, CW_3,NComps)
+        % SW_3 mapdot sinm(0.99262) ~> Months,
+        % CW_3 mapdot cosm(0.99262) ~> Months
+    )
+    ,
+    (	SineZeros ->
+        % SW_4 mapdot sinm(0.157) ~> Months,
+        % CW_4 mapdot cosm(0.157) ~> Months
+        rset(M, 4 ,SW_4, CW_4,NComps)
+    ;
+        rset(M, 4 ,SW_4, CW_4,NComps)
+        % SW_4 mapdot sinm(2.175665) ~> Months,
+        % CW_4 mapdot cosm(2.175665) ~> Months
+    ),
+    (	SineZeros ->
+        SW_D =Zeros,
+        CW_D =Zeros
+        %SW_D mapdot sinm(0.14) ~> Months,
+        % CW_D mapdot cosm(0.14) ~> Months
+    ;
+        % SW_D mapdot sinm(1.757415) ~> Months,
+        % CW_D mapdot cosm(1.757415) ~> Months
+        %SW_D =Zeros,
+        %CW_D =Zeros
+        %SW_D mapdot sinm(1.735) ~> Months,
+        %CW_D mapdot cosm(1.735) ~> Months
+        SW_D mapdot sinm(2.172) ~> Months,
+        CW_D mapdot cosm(2.172) ~> Months % 0.4564
+    ),
+    (	SineZeros ->
+        SW_E =Zeros,
+        CW_E =Zeros
+        % SW_E mapdot sinm(LongC) ~> Months,
+        % CW_E mapdot cosm(LongC) ~> Months
+    ;
+        SW_E mapdot sinm(LongC) ~> Months,
+        CW_E mapdot cosm(LongC) ~> Months
+    )
+    ,
+
+
+    get_fit(StartYear, FitYear, [T, SW_1, CW_1, SW_2, CW_2, SW_3, CW_3, SW_4, CW_4,
+				    SW_5, CW_5, SW_6, CW_6, SW_7, CW_7, SW_8, CW_8,
+				    SW_9, CW_9, SW_10,CW_10,SW_11,CW_11,SW_12,CW_12,
+				    SW_13,CW_13,SW_14,CW_14,SW_15,CW_15,SW_16,CW_16,
+				    SW_17,CW_17,SW_18,CW_18,SW_A, CW_A, SW_B, CW_B,
+				    SW_C, CW_C, SW_D, CW_D, SW_E, CW_E, Extra],
+	    Coefficients, Int, _R2C),
+
+    check_coefficients(Coefficients, [],
+		                   [SW1, CW1, SW2, CW2, SW3, CW3, SW4, CW4,
+				    SW5, CW5, SW6, CW6, SW7, CW7, SW8, CW8,
+				    SW9, CW9, SW10,CW10,SW11,CW11,SW12,CW12,
+				    SW13,CW13,SW14,CW14,SW15,CW15,SW16,CW16,
+				    SW17,CW17,SW18,CW18,SWA, CWA, SWB, CWB,
+				    SWC, CWC, SWD, CWD, SWE, CWE, Ex]),
+
+    Cycles mapdot  SW1 .* SW_1 + CW1 .* CW_1
+                 + SW2 .* SW_2 + CW2 .* CW_2
+		 + SW3 .* SW_3 + CW3 .* CW_3
+                 + SW4 .* SW_4 + CW4 .* CW_4
+		 + SWD .* SW_D + CWD .* CW_D
+		 + Ex  .* Extra,
+
+    Fluct mapdot  SW1 .* SW_1 + CW1 .* CW_1 + SW2 .* SW_2 + CW2 .* CW_2 + SW3 .* SW_3 + CW3 .* CW_3
+                + SW4 .* SW_4 + CW4 .* CW_4 + SW5 .* SW_5 + CW5 .* CW_5 + SW6 .* SW_6 + CW6 .* CW_6
+		+ SW7 .* SW_7 + CW7 .* CW_7 + SW8 .* SW_8 + CW8 .* CW_8 + SW9 .* SW_9 + CW9 .* CW_9
+		+ SW10 .* SW_10 + CW10 .* CW_10 + SW11 .* SW_11 + CW11 .* CW_11 + SW12 .* SW_12 + CW12 .* CW_12
+		+ SW13 .* SW_13 + CW13 .* CW_13 + SW14 .* SW_14 + CW14 .* CW_14 + SW15 .* SW_15 + CW15 .* CW_15
+		+ SW16 .* SW_16 + CW16 .* CW_16 + SW17 .* SW_17 + CW17 .* CW_17 + SW18 .* SW_18 + CW18 .* CW_18
+		+ SWA .* SW_A + CWA .* CW_A + SWB .* SW_B + CWB .* CW_B + SWC .* SW_C + CWC .* CW_C
+		+ SWD .* SW_D + CWD .* CW_D + SWE .* SW_E + CWE .* CW_E + Ex .* Extra,
+    Comp1 mapdot SW1 .* SW_1 + CW1 .* CW_1 + SW11 .* SW_11 + CW11 .* CW_11 .
+
+
+
+save_fluct(Fluct) :-
+   (
+   retract(soi_result(_));
+   true
+   ),
+   assert(soi_result(Fluct)).
+/*
+   mathieu <- 'function(t,y,p){list(c(y[2],0.0145*cos(.9961*(t-0.68))+0.021*(sin(2.9286*(t+0.22))+1.32*sin(2.597*(t-0.76)))-(p[1]+1.208*sin(0.755*(t-0.3)+ifelse(t<52.0,-0.501,0.0))-1.24*cos(2*3.14159*t-1.9))*y[1]))}',
+*/
+
+diffEq_solve(_Params, TS) :-
+   r_open_session,
+   r_in(library(deSolve)),
+   yini    <- 'c(y1=0.0006,y2=-0.0078)',
+   mathieu <- 'function(t,y,p){list(c(y[2],-0.05*sin(5.003*(t-0.141))-0.0004-0.000065*t-0.0145*cos(.9961*(t-0.68)+ifelse(t<52.0,p[2],p[3]))-0.021*(sin(2.9286*(t+0.22+ifelse(t<52.0,p[2],p[3])))+1.32*sin(2.597*(t-0.76+ifelse(t<52.0,p[2],p[3]))))-(p[1]+1.208*sin(0.755*(t-0.3)+ifelse(t<52.0,-0.501,0.0))-1.24*cos(2*pi*t-1.9))*y[1]))}',
+   soln    <- 'ode(y = yini, func = mathieu, times=seq(0.0, 135.0, by=0.083333333), parms=c(2.106,1.34,0.0065))',
+   r_in('ts1<-soln[1:400,2]'),
+   r_in('ts2<-soln[401:800,2]'),
+   r_in('ts3<-soln[801:1200,2]'),
+   r_in('ts4<-soln[1201:1605,2]'),
+   TS1 <- ts1,
+   TS2 <- ts2,
+   TS3 <- ts3,
+   TS4 <- ts4,
+   TS cat[TS1,TS2,TS3,TS4],
+   r_close.
+   %length(TS, N),
+   % print(user_error, [length,N]).
+
+   % mathieu <- function(t, y, p) {list(c(y[2], 10.4*sin(2.5*t)-10.4*sin(2.8*t)-(p[1]+p[2]*cos(2*t))*y[1]))},
+   %  soln    <- ode(y = yini, func = mathieu, times=seq(0,300, by=0.01), parms=c(2.8,2.6))
+   % plot(soln[,1], soln[,2])
+
+
+plot(Request) :-
+    garbage_collect,
+    http_parameters(Request, [kind(diffEq, []),
+			      fft(FFT, [boolean, default(false)]),
+			      window(Window, [boolean, default(false)]),
+			      triple(Triple, [boolean, default(false)]),
+			      % mathieu(Mathieu, [boolean, default(false)]),
+			      wave(_WL, [integer, default(0)]),
+			      t_units(Cal, []),
+			      startYear(StartYear, [integer]),
+			      fitYear(FitYear, [integer]),
+                              dataset(DataSet, []),
+			      numberComps(NComps, [integer]),
+                              evaluate(Characteristic, [default(model)])]),
+
+    scale(FFT, LogLin, Characteristic, XLabel, XUnits, YLabel, YUnits, Show_Error_Bars),
+    scaling(Cal, month, _Scale),
+    temperature_series(_, Window, Triple, DataSet, T, _Correction),
+    soi_data(NameData, DataSet),
+
+    get_years_from_1880(T, Year, Zeros),
+    diffEq_solve(_Params, TS),
+
+    % get_months_from_start(T, Months),
+    T1 mapdot -0.012 .* T,
+    (
+       Characteristic = residual ->
+          T_Diff mapdot T1 - TS,
+          Data tuple Year + T_Diff,
+          Header = [year, residual]
+    ;
+       Characteristic = spectrum ->
+         Model_FFT fft TS,
+         Data_FFT fft T1,
+	 Range ordinal Model_FFT,
+	 Data tuple Range + Data_FFT + Model_FFT,
+         Header = [XLabel, data, model]
+    ;
+         Data tuple Year + T1  +  TS,
+         Header = [year, DataSet, model]
+    ),
+    corrcoeff(T1, TS, R2C2),
+
+    reply_html_page([title(Characteristic),
+                       \(con_text:style)],
+                      [
+		     table([tr([th('R=cc'),th('start fit'),th('end fit')]),
+			    tr([td(b('~5f'-R2C2)),td(b('~d'-StartYear)), td(b('~d'-FitYear))])
+			   ]),
+		     br([]),
+		     table( % [class('fixed')],
+			   [caption(div([id('legend')],[])),
+			    tr([
+				td(
+		     \(context_graphing:dygraph_error_bars(LogLin, Header,
+						       [XLabel,XUnits], [YLabel, YUnits],
+						       [NameData, ' ', FitYear, ' - SOIM:', Characteristic], Data, false))
+				  )
+			       ])])
+                    ]
+                     )
+     .
+
+
+plot(Request) :-
+    garbage_collect,
+    http_parameters(Request, [kind(Kind, []),
+			      fft(FFT, [boolean, default(false)]),
+			      window(Window, [boolean, default(false)]),
+			      triple(Triple, [boolean, default(false)]),
+			      % mathieu(Mathieu, [boolean, default(false)]),
+			      harmonics(Harm, [boolean, default(false)]),
+			      wave(_WL, [integer, default(0)]),
+			      t_units(Cal, []),
+			      startYear(StartYear, [integer]),
+			      fitYear(FitYear, [integer]),
+			      longCycle(LongC, [float]),
+                              dataset(DataSet, []),
+			      numberComps(NComps, [integer]),
+                              evaluate(Characteristic, [default(model)])]),
+
+    scale(FFT, LogLin, Characteristic, XLabel, XUnits, YLabel, YUnits, Show_Error_Bars),
+    scaling(Cal, month, _Scale),
+    % Lag is Scale*LagCal,
+
+    ( DataSet = combined ->
+      temperature_series(_, Window, Triple, soi, T, _Correction),
+      gen_model(Harm, LongC,Window,Triple,tahiti,Year,Months,StartYear,FitYear,Int1,Fluct1,_T1,_,_,NComps),
+      gen_model(Harm, LongC,Window,Triple,darwin,Year,Months,StartYear,FitYear,Int2,Fluct2,_T2,_,_,NComps),
+      Int is Int1 - Int2,
+      Fluct mapdot Fluct1 - Fluct2
+      % T mapdot T1 - T2
+    ;
+      gen_model(Harm, LongC,Window,Triple,DataSet,Year,Months,StartYear,FitYear,Int,Fluct,T, Comp1,Cycles,NComps)
+    ),
+    T_R mapdot Int .+ Fluct,
+    save_fluct(Fluct),
+    T_Diff mapdot T - T_R,
+    !,
+    sum_of_squares(T, T_R, Sum_of_Sq),
+    length(Months, Length_Series),
+    Error_Bar is 2*sqrt(Sum_of_Sq/Length_Series),
+
+    corrcoeff(T, T_R, R2C2),
+    (
+       Characteristic = model ->
+         T_low mapdot T .- Error_Bar,
+         T_high mapdot Error_Bar .+ T,
+         Ts tuple T_low + T + T_high,
+         T_Rs tuple T_R + T_R + T_R,
+	 Data group Year + Ts + T_Rs,
+         Header = [XLabel, DataSet, model]
+     ;
+       Characteristic = diff ->
+         TD derivative T/1,
+	 TRD derivative T_R/1,
+	 Data tuple Year + TD + TRD,
+         Header = [XLabel, DataSet, model]
+     ;
+       Characteristic = cycles ->
+	 Data tuple Year + Cycles,
+         Header = [XLabel, residual_model]
+     ;
+       Characteristic = component ->
+	 Data tuple Year + T + Comp1,
+         Header = [XLabel, DataSet, comp1]
+     ;
+       Characteristic = residual ->
+         (   FFT ->
+	     R_FFT fft T_Diff,
+	     Range ordinal R_FFT,
+	     Data tuple Range + R_FFT
+	 ;
+	     Data tuple Year + T_Diff
+	 ),
+         Header = [XLabel, residual]
+     ;
+       Characteristic = spectrum ->
+         Model_FFT fft Fluct,
+         Data_FFT fft T,
+	 Range ordinal Model_FFT,
+	 Data tuple Range + Data_FFT + Model_FFT,
+         Header = [XLabel, data, model]
+     ;
+       Characteristic = periodogram ->
+         Model_FFT fft Fluct,
+         Data_FFT fft T,
+	 Range ordinal Model_FFT,
+         Period_Range offset Range - 1,  % get rid of zerp
+         D_FFT offset Data_FFT - 1,
+         M_FFT offset Model_FFT - 1,
+         Periods reciprocal Period_Range,
+	 reverse(Periods,RPeriods),
+	 reverse(D_FFT,DFFT),
+	 reverse(M_FFT,MFFT),
+         RP mapdot 2048/12 .* RPeriods,
+	 Data tuple RP + DFFT + MFFT,
+         Header = [XLabel, data, model]
+/*
+    ;
+       Characteristic = all ->
+          R6 mapdot 0.1 .+ SW6 * SW_6 + CW6 * CW_6,
+          R7 mapdot 0.1 .+ SW7 * SW_7 + CW7 * CW_7,
+          R8 mapdot 0.1 .+ SW8 * SW_8 + CW8 * CW_8,
+          R9 mapdot 0.1 .+ SW9 * SW_9 + CW9 * CW_9,
+          R10 mapdot 0.1 .+ SW10 * SW_10 + CW10 * CW_10,
+	  Data tuple Year + R6 + R7 + R8 + R9 + R10 ,
+	  Header = [XLabel, m6, m7, m8, m9, m10]
+*/
+    ),
+    soi_data(NameData, DataSet),
+
+    (	Kind = graph ->
+    reply_html_page([title('GISS and SOI'),
+                     \(con_text:style)],
+                    [
+		     table([tr([th('R=cc'),th('start fit'),th('end fit')]),
+			    tr([td(b('~5f'-R2C2)),td(b('~d'-StartYear)), td(b('~d'-FitYear))])
+			   ]),
+		     br([]),
+
+		     table( % [class('fixed')],
+			   [caption(div([id('legend')],[])),
+			    tr([
+				td(
+		     \(context_graphing:dygraph_error_bars(LogLin, Header,
+						       [XLabel,XUnits], [YLabel, YUnits],
+						       [NameData, ' ', FitYear, ' - SOIM:', Characteristic], Data, Show_Error_Bars))
+				  )
+			       ])])
+                    ]
+		  )
+   ;
+      reply_html_page([title(Characteristic),
+                       \(con_text:style)],
+                      [
+                       \(con_text:table_multiple_entries(
+                                      [Header],
+                                      Data
+                                                        ))
+                      ]
+                     )
+
+    ).
+
+
+data(_Request) :-
+    M = a(mathieu,_),
+    soi(SOI),
+    Number = 30,
+    rset(M, 1 ,SW_1, CW_1,Number),
+    rset(M, 2 ,SW_2, CW_2,Number),
+    rset(M, 3 ,SW_3, CW_3,Number),
+    rset(M, 4 ,SW_4, CW_4,Number),
+    rset(M, 5 ,SW_5, CW_5,Number),
+    rset(M, 6 ,SW_6, CW_6,Number),
+    rset(M, 7 ,SW_7, CW_7,Number),
+    rset(M, 8 ,SW_8, CW_8,Number),
+    rset(M, 9 ,SW_9, CW_9,Number),
+    rset(M, 10 ,SW_10, CW_10,Number),
+    rset(M, 11 ,SW_11, CW_11,Number),
+    rset(M, 12 ,SW_12, CW_12,Number),
+    rset(M, 13 ,SW_13, CW_13,Number),
+    rset(M, 14 ,SW_14, CW_14,Number),
+    rset(M, 15 ,SW_15, CW_15,Number),
+    rset(M, 16 ,SW_16, CW_16,Number),
+    rset(M, 17 ,SW_17, CW_17,Number),
+    rset(M, 18 ,SW_18, CW_18,Number),
+    rset(M, 19 ,SW_19, CW_19,Number),
+    rset(M, 20 ,SW_20, CW_20,Number),
+    rset(M, 21 ,SW_21, CW_21,Number),
+    length(SW_1, L),
+    Range range [1, L]/1,
+
+    Data tuple Range + SOI + SW_1 + CW_1 + SW_2 + CW_2 + SW_3 + CW_3 + SW_4 + CW_4 + SW_5 + CW_5 +
+		       SW_6 + CW_6 + SW_7 + CW_7 + SW_8 + CW_8 + SW_9 + CW_9 +SW_10 + CW_10 +
+		       SW_11 + CW_11 + SW_12 + CW_12 + SW_13 + CW_13 + SW_14 + CW_14 + SW_15 + CW_15 +
+		      SW_16 + CW_16 + SW_17 + CW_17 + SW_18 + CW_18 +  SW_19 + CW_19 + SW_20 + CW_20 + SW_21 + CW_21,
+    Header = [t, soi, s1, c1, s2, c2, s3, c3, s4, c4, s5, c5, s6, c6, s7, c7, s8, c8, s9, c9,
+		s10, c10, s11, c11, s12, c12, s13, c13, s14, c14, s15, c15, s16, c16, s17, c17, s18, c18, s19, c19, s20, c20, s21, c21],
+    reply_html_page([title(data),
+                       \(con_text:style)],
+                      [
+                       \(con_text:table_multiple_entries(
+                                      [Header],
+                                      Data
+                                                        ))
+                      ]
+                     )
+    .
+
+
+
+soi_pre(
+[
+-1.200000,
+
+-0.300000,
+
+-1.000000,
+
+-0.700000,
+
+0.100000,
+
+-0.900000,
+
+-0.700000,
+
+0.700000,
+
+-0.400000,
+
+0.100000,
+
+1.600000,
+
+-0.300000,
+
+0.400000,
+
+-0.000000,
+
+-0.000000,
+
+0.800000,
+
+0.700000,
+
+-0.500000,
+
+0.600000,
+
+0.500000,
+
+0.100000,
+
+-0.700000,
+
+-1.200000,
+
+-1.700000,
+
+-0.400000,
+
+-0.800000,
+
+-2.700000,
+
+0.200000,
+
+-1.900000,
+
+-2.300000,
+
+-0.800000,
+
+-2.200000,
+
+-2.200000,
+
+-2.000000,
+
+-2.500000,
+
+1.000000,
+
+-3.900000,
+
+-0.600000,
+
+-0.800000,
+
+2.500000,
+
+2.100000,
+
+1.600000,
+
+2.100000,
+
+1.300000,
+
+0.200000,
+
+1.500000,
+
+0.900000,
+
+0.600000,
+
+1.900000,
+
+0.400000,
+
+-1.200000,
+
+0.400000,
+
+-0.300000,
+
+-1.200000,
+
+0.100000,
+
+1.400000,
+
+-0.000000,
+
+-0.900000,
+
+-1.400000,
+
+-2.400000,
+
+-2.400000,
+
+-0.300000,
+
+-3.400000,
+
+-0.500000,
+
+-0.600000,
+
+0.200000,
+
+0.400000,
+
+0.600000,
+
+1.000000,
+
+-0.200000,
+
+-0.000000,
+
+1.800000,
+
+5.300000,
+
+2.400000,
+
+2.800000,
+
+-0.900000,
+
+1.800000,
+
+2.600000,
+
+3.500000,
+
+1.400000,
+
+5.600000,
+
+3.100000,
+
+4.800000,
+
+5.000000,
+
+5.000000,
+
+2.400000,
+
+3.000000,
+
+2.200000,
+
+0.800000,
+
+-3.400000,
+
+-1.900000,
+
+-0.800000,
+
+-3.600000,
+
+-2.800000,
+
+-0.600000,
+
+2.300000,
+
+1.900000,
+
+-0.700000,
+
+-0.700000,
+
+1.000000,
+
+1.700000,
+
+-2.000000,
+
+-0.400000,
+
+1.300000,
+
+3.600000,
+
+3.600000,
+
+0.800000,
+
+2.100000,
+
+1.400000,
+
+-0.300000,
+
+-1.600000,
+
+1.400000,
+
+1.000000,
+
+2.700000,
+
+-0.900000,
+
+-0.300000,
+
+1.400000,
+
+1.800000,
+
+-2.400000,
+
+-1.100000,
+
+2.300000,
+
+2.100000,
+
+-0.300000,
+
+1.100000,
+
+0.900000,
+
+2.000000,
+
+-0.900000,
+
+1.800000,
+
+1.800000,
+
+-1.600000,
+
+-0.700000,
+
+-0.800000,
+
+-1.900000,
+
+-3.200000,
+
+-1.900000,
+
+-4.100000,
+
+-2.000000,
+
+-4.600000,
+
+-1.600000,
+
+-1.500000,
+
+-3.000000,
+
+-2.900000,
+
+-2.200000,
+
+-2.800000,
+
+-2.100000,
+
+-4.800000,
+
+-3.300000,
+
+-1.100000,
+
+0.200000,
+
+-0.600000,
+
+2.400000,
+
+1.900000,
+
+2.900000,
+
+1.600000,
+
+2.100000,
+
+3.300000,
+
+2.600000,
+
+2.900000,
+
+2.300000,
+
+1.600000,
+
+0.200000,
+
+1.900000,
+
+3.400000,
+
+3.400000,
+
+3.200000,
+
+2.400000,
+
+1.200000,
+
+-1.500000
+]
+).
+
+
+mei_ext(
+[
+0.032000,
+
+-0.055000,
+
+0.005000,
+
+0.420000,
+
+0.195000,
+
+-0.639000,
+
+-0.842000,
+
+-0.474000,
+
+-0.143000,
+
+0.072000,
+
+0.107000,
+
+-0.206000,
+
+-0.633000,
+
+-0.875000,
+
+-0.864000,
+
+-0.664000,
+
+-0.590000,
+
+-0.618000,
+
+-0.658000,
+
+-0.795000,
+
+-0.800000,
+
+-0.669000,
+
+-0.651000,
+
+-0.847000,
+
+-0.930000,
+
+-0.991000,
+
+-1.301000,
+
+-1.489000,
+
+-1.066000,
+
+-0.689000,
+
+-0.657000,
+
+-0.646000,
+
+-0.318000,
+
+-0.012000,
+
+-0.355000,
+
+-0.540000,
+
+-0.611000,
+
+-0.802000,
+
+-1.036000,
+
+-1.275000,
+
+-1.258000,
+
+-0.964000,
+
+-0.902000,
+
+-1.143000,
+
+-1.148000,
+
+-1.003000,
+
+-0.771000,
+
+-0.679000,
+
+-0.774000,
+
+-0.686000,
+
+-0.670000,
+
+-0.958000,
+
+-1.315000,
+
+-1.812000,
+
+-1.964000,
+
+-1.553000,
+
+-1.295000,
+
+-0.993000,
+
+-0.682000,
+
+-0.688000,
+
+-0.878000,
+
+-1.196000,
+
+-1.504000,
+
+-1.691000,
+
+-1.878000,
+
+-1.845000,
+
+-1.435000,
+
+-0.867000,
+
+-0.393000,
+
+-0.071000,
+
+0.088000,
+
+0.170000,
+
+0.193000,
+
+0.334000,
+
+0.373000,
+
+0.353000,
+
+0.441000,
+
+0.690000,
+
+1.318000,
+
+1.687000,
+
+1.788000,
+
+2.070000,
+
+2.165000,
+
+1.763000,
+
+1.877000,
+
+2.361000,
+
+2.495000,
+
+1.883000,
+
+1.006000,
+
+0.580000,
+
+0.540000,
+
+0.235000,
+
+-0.371000,
+
+-0.845000,
+
+-0.911000,
+
+-0.921000,
+
+-1.005000,
+
+-0.729000,
+
+-0.445000,
+
+-0.447000,
+
+-0.956000,
+
+-1.180000,
+
+-0.827000,
+
+-0.607000,
+
+-0.523000,
+
+-0.557000,
+
+-0.720000,
+
+-1.031000,
+
+-1.057000,
+
+-0.830000,
+
+-0.899000,
+
+-1.069000,
+
+-0.965000,
+
+-0.595000,
+
+0.113000,
+
+0.394000,
+
+0.083000,
+
+-0.228000,
+
+-0.128000,
+
+0.170000,
+
+0.148000,
+
+0.215000,
+
+0.174000,
+
+0.082000,
+
+-0.105000,
+
+-0.062000,
+
+-0.153000,
+
+-0.559000,
+
+-0.656000,
+
+-0.389000,
+
+-0.499000,
+
+-0.776000,
+
+-0.598000,
+
+-0.461000,
+
+-0.585000,
+
+-0.799000,
+
+-1.028000,
+
+-0.970000,
+
+-0.686000,
+
+-0.436000,
+
+-0.267000,
+
+-0.261000,
+
+-0.379000,
+
+-0.404000,
+
+-0.562000,
+
+-0.628000,
+
+-0.562000,
+
+-0.672000,
+
+-1.070000,
+
+-0.898000,
+
+-0.284000,
+
+-0.228000,
+
+-0.314000,
+
+-0.010000,
+
+0.004000,
+
+-0.012000,
+
+0.094000,
+
+0.121000,
+
+0.112000,
+
+0.369000,
+
+0.786000,
+
+0.725000,
+
+0.368000,
+
+0.433000,
+
+0.628000,
+
+0.525000,
+
+0.333000,
+
+0.432000,
+
+0.639000,
+
+0.599000,
+
+0.262000,
+
+0.247000,
+
+0.588000,
+
+0.414000,
+
+-0.044000,
+
+0.211000,
+
+0.506000,
+
+0.804000,
+
+1.216000,
+
+0.914000,
+
+0.384000,
+
+0.112000,
+
+0.016000,
+
+-0.103000,
+
+-0.619000,
+
+-1.274000,
+
+-1.466000,
+
+-1.351000,
+
+-1.228000,
+
+-1.233000,
+
+-1.306000,
+
+-1.272000,
+
+-1.451000,
+
+-1.573000,
+
+-1.313000,
+
+-1.088000,
+
+-1.257000,
+
+-0.926000,
+
+-0.066000,
+
+0.194000,
+
+0.113000,
+
+-0.154000,
+
+-0.314000,
+
+-0.155000,
+
+0.036000,
+
+0.389000,
+
+0.792000,
+
+0.948000,
+
+0.874000,
+
+0.921000,
+
+1.038000,
+
+1.340000,
+
+1.732000,
+
+1.788000,
+
+1.723000,
+
+1.851000,
+
+1.893000,
+
+1.865000,
+
+1.618000,
+
+1.163000,
+
+0.481000,
+
+-0.068000,
+
+-0.555000,
+
+-1.192000,
+
+-1.494000,
+
+-1.534000,
+
+-1.532000,
+
+-1.451000,
+
+-1.530000,
+
+-1.731000,
+
+-1.584000,
+
+-1.456000,
+
+-1.550000,
+
+-1.564000,
+
+-1.406000,
+
+-1.264000,
+
+-1.186000,
+
+-1.006000,
+
+-0.876000,
+
+-0.638000,
+
+-0.557000,
+
+-0.287000,
+
+0.170000,
+
+0.285000,
+
+0.061000,
+
+0.128000,
+
+0.360000,
+
+0.382000,
+
+0.192000,
+
+0.021000,
+
+-0.097000,
+
+-0.188000,
+
+-0.128000,
+
+-0.184000,
+
+-0.708000,
+
+-1.486000,
+
+-1.572000,
+
+-1.152000,
+
+-1.027000,
+
+-1.290000,
+
+-1.619000,
+
+-1.748000,
+
+-1.682000,
+
+-1.545000,
+
+-1.553000,
+
+-1.625000,
+
+-1.565000,
+
+-1.524000,
+
+-1.941000,
+
+-2.356000,
+
+-2.560000,
+
+-2.524000,
+
+-2.427000,
+
+-2.167000,
+
+-1.832000,
+
+-1.368000,
+
+-1.206000,
+
+-1.323000,
+
+-1.448000,
+
+-1.645000,
+
+-1.320000,
+
+-0.771000,
+
+-0.920000,
+
+-1.018000,
+
+-0.856000,
+
+-0.914000,
+
+-0.799000,
+
+-0.665000,
+
+-0.706000,
+
+-0.775000,
+
+-0.772000,
+
+-0.803000,
+
+-0.830000,
+
+-0.624000,
+
+-0.182000,
+
+0.281000,
+
+0.453000,
+
+0.264000,
+
+0.082000,
+
+0.044000,
+
+-0.160000,
+
+-0.208000,
+
+-0.065000,
+
+-0.161000,
+
+0.066000,
+
+0.657000,
+
+0.910000,
+
+1.223000,
+
+1.484000,
+
+1.294000,
+
+1.200000,
+
+1.418000,
+
+1.543000,
+
+1.351000,
+
+1.150000,
+
+1.085000,
+
+0.876000,
+
+0.369000,
+
+-0.031000,
+
+-0.147000,
+
+-0.296000,
+
+-0.449000,
+
+-0.348000,
+
+-0.384000,
+
+-0.461000,
+
+-0.691000,
+
+-0.999000,
+
+-0.896000,
+
+-0.550000,
+
+-0.425000,
+
+-0.307000,
+
+-0.597000,
+
+-1.093000,
+
+-0.850000,
+
+-0.312000,
+
+-0.334000,
+
+-0.608000,
+
+-0.694000,
+
+-0.539000,
+
+-0.245000,
+
+0.030000,
+
+0.182000,
+
+0.482000,
+
+0.883000,
+
+1.114000,
+
+0.966000,
+
+0.906000,
+
+1.079000,
+
+1.056000,
+
+1.050000,
+
+1.187000,
+
+1.460000,
+
+1.713000,
+
+1.653000,
+
+1.361000,
+
+0.688000,
+
+0.314000,
+
+0.354000,
+
+0.467000,
+
+0.438000,
+
+0.612000,
+
+0.533000,
+
+0.156000,
+
+-0.090000,
+
+-0.013000,
+
+-0.062000,
+
+-0.112000,
+
+0.074000,
+
+-0.121000,
+
+-0.383000,
+
+-0.576000,
+
+-0.425000,
+
+-0.328000,
+
+-0.256000,
+
+0.098000,
+
+0.487000,
+
+0.955000,
+
+1.519000,
+
+1.917000,
+
+1.591000,
+
+1.395000,
+
+1.706000,
+
+2.039000,
+
+1.713000,
+
+0.925000,
+
+0.853000,
+
+0.978000,
+
+0.606000,
+
+-0.058000,
+
+-0.397000,
+
+-0.460000,
+
+-0.657000,
+
+-0.495000,
+
+-0.504000,
+
+-0.784000,
+
+-0.925000,
+
+-1.194000,
+
+-1.251000,
+
+-1.090000,
+
+-0.924000,
+
+-0.563000,
+
+-0.208000,
+
+0.300000,
+
+0.657000,
+
+0.707000,
+
+0.812000,
+
+0.743000,
+
+0.736000,
+
+0.789000,
+
+0.893000,
+
+1.124000,
+
+1.261000,
+
+1.129000,
+
+1.457000,
+
+1.954000,
+
+1.869000,
+
+1.641000,
+
+1.482000,
+
+1.221000,
+
+1.232000,
+
+1.053000,
+
+0.664000,
+
+0.512000,
+
+0.477000,
+
+0.370000,
+
+0.169000,
+
+-0.280000,
+
+-0.492000,
+
+-0.792000,
+
+-1.184000,
+
+-0.874000,
+
+-0.674000,
+
+-0.828000,
+
+-0.727000,
+
+-0.669000,
+
+-0.890000,
+
+-1.016000,
+
+-0.923000,
+
+-0.511000,
+
+-0.008000,
+
+0.143000,
+
+0.024000,
+
+-0.356000,
+
+-0.466000,
+
+-0.447000,
+
+-0.465000,
+
+-0.644000,
+
+-0.988000,
+
+-1.306000,
+
+-1.320000,
+
+-0.873000,
+
+-0.672000,
+
+-0.885000,
+
+-1.004000,
+
+-1.064000,
+
+-1.282000,
+
+-1.029000,
+
+-0.613000,
+
+-0.677000,
+
+-0.914000,
+
+-0.975000,
+
+-1.203000,
+
+-1.500000,
+
+-1.673000,
+
+-1.753000,
+
+-1.600000,
+
+-1.532000,
+
+-1.498000,
+
+-1.385000,
+
+-1.420000,
+
+-1.623000,
+
+-1.813000,
+
+-1.911000,
+
+-1.985000,
+
+-2.008000,
+
+-1.650000,
+
+-1.488000,
+
+-1.611000,
+
+-1.426000,
+
+-1.348000,
+
+-1.196000,
+
+-0.728000,
+
+-0.550000,
+
+-1.047000,
+
+-1.550000,
+
+-1.556000,
+
+-0.919000,
+
+-0.050000,
+
+0.301000,
+
+0.502000,
+
+0.744000,
+
+0.789000,
+
+0.913000,
+
+1.004000,
+
+0.798000,
+
+0.619000,
+
+0.360000,
+
+-0.306000,
+
+-0.580000,
+
+-0.569000,
+
+-0.285000,
+
+0.003000,
+
+0.003000,
+
+-0.048000,
+
+-0.019000,
+
+0.194000,
+
+0.170000,
+
+-0.548000,
+
+-0.944000,
+
+-0.376000,
+
+0.056000,
+
+0.342000,
+
+0.681000,
+
+0.531000,
+
+0.548000,
+
+0.780000,
+
+0.805000,
+
+0.809000,
+
+0.796000,
+
+0.604000,
+
+0.451000,
+
+0.354000,
+
+0.613000,
+
+1.219000,
+
+1.328000,
+
+0.974000,
+
+1.028000,
+
+1.257000,
+
+1.308000,
+
+1.173000,
+
+0.885000,
+
+1.091000,
+
+1.556000,
+
+1.552000,
+
+0.983000,
+
+0.523000,
+
+0.210000,
+
+-0.317000,
+
+-0.688000,
+
+-0.589000,
+
+-0.405000,
+
+-0.675000,
+
+-0.993000,
+
+-0.872000,
+
+-0.851000,
+
+-1.053000,
+
+-1.498000,
+
+-2.099000,
+
+-2.173000,
+
+-1.773000,
+
+-1.678000,
+
+-1.899000,
+
+-1.915000,
+
+-1.764000,
+
+-1.606000,
+
+-1.572000,
+
+-1.745000,
+
+-1.713000,
+
+-1.127000,
+
+-0.967000,
+
+-1.093000,
+
+-1.116000,
+
+-1.127000,
+
+-1.202000,
+
+-1.328000,
+
+-1.138000,
+
+-0.949000,
+
+-0.787000,
+
+-0.574000,
+
+-0.055000,
+
+1.046000,
+
+1.479000,
+
+1.052000,
+
+0.969000,
+
+1.051000,
+
+1.158000,
+
+1.527000,
+
+1.753000,
+
+1.538000,
+
+1.083000,
+
+1.026000,
+
+1.279000,
+
+1.224000,
+
+1.151000,
+
+0.995000,
+
+0.810000,
+
+0.500000,
+
+0.145000,
+
+0.265000,
+
+0.564000,
+
+0.663000,
+
+0.567000,
+
+0.347000,
+
+0.248000,
+
+-0.197000,
+
+-0.342000,
+
+-0.235000,
+
+-0.300000,
+
+-0.054000,
+
+0.037000,
+
+0.034000,
+
+-0.052000,
+
+-0.638000,
+
+-1.124000,
+
+-0.834000,
+
+-0.578000,
+
+-0.605000,
+
+-0.563000,
+
+-0.595000,
+
+-0.617000,
+
+-0.368000,
+
+-0.296000,
+
+-0.483000,
+
+-0.565000,
+
+-0.365000,
+
+-0.044000,
+
+0.029000,
+
+-0.223000,
+
+-0.492000,
+
+-0.401000,
+
+-0.370000,
+
+-0.506000,
+
+-0.465000,
+
+-0.691000,
+
+-0.838000,
+
+-0.623000,
+
+-0.517000,
+
+-0.528000,
+
+-0.410000,
+
+-0.035000,
+
+0.494000,
+
+0.788000,
+
+0.895000,
+
+0.920000,
+
+1.021000,
+
+0.929000,
+
+0.664000,
+
+0.409000,
+
+0.124000,
+
+-0.216000,
+
+-0.685000,
+
+-1.093000,
+
+-1.244000,
+
+-1.448000,
+
+-1.458000,
+
+-0.996000,
+
+-0.845000,
+
+-0.956000,
+
+-0.954000,
+
+-0.790000,
+
+-0.482000,
+
+-0.134000,
+
+0.048000,
+
+0.025000,
+
+0.217000,
+
+0.802000,
+
+1.286000,
+
+1.511000,
+
+1.511000,
+
+1.588000,
+
+1.407000,
+
+1.350000,
+
+1.602000,
+
+1.710000,
+
+1.330000,
+
+1.060000,
+
+1.067000,
+
+0.685000,
+
+0.179000,
+
+-0.030000,
+
+-0.025000,
+
+-0.001000,
+
+0.014000,
+
+0.158000,
+
+0.193000,
+
+-0.274000,
+
+-0.399000,
+
+-0.239000,
+
+-0.405000,
+
+-0.195000,
+
+0.162000,
+
+0.206000,
+
+0.376000,
+
+0.343000,
+
+0.312000,
+
+0.476000,
+
+0.346000,
+
+-0.001000,
+
+-0.131000,
+
+0.071000,
+
+0.346000,
+
+0.060000,
+
+-0.471000,
+
+-0.466000,
+
+-0.296000,
+
+-0.161000,
+
+-0.064000,
+
+-0.054000,
+
+-0.189000,
+
+-0.237000,
+
+0.076000,
+
+0.418000,
+
+0.557000,
+
+0.734000,
+
+0.845000,
+
+0.677000,
+
+0.459000,
+
+0.468000,
+
+0.506000,
+
+0.552000,
+
+0.767000,
+
+1.038000,
+
+1.199000,
+
+1.054000,
+
+1.143000,
+
+1.395000,
+
+1.507000,
+
+1.652000,
+
+1.723000,
+
+1.925000,
+
+1.915000,
+
+1.855000,
+
+1.955000,
+
+1.905000,
+
+1.496000,
+
+0.877000,
+
+0.425000,
+
+0.262000,
+
+0.172000,
+
+0.179000,
+
+0.248000,
+
+0.197000,
+
+0.187000,
+
+0.276000,
+
+0.485000,
+
+0.787000,
+
+0.964000,
+
+0.998000,
+
+1.114000,
+
+1.025000,
+
+0.483000,
+
+-0.050000,
+
+-0.147000,
+
+-0.023000,
+
+-0.059000,
+
+-0.126000,
+
+-0.396000,
+
+-0.497000,
+
+-0.388000,
+
+-0.671000,
+
+-0.769000,
+
+-0.827000,
+
+-1.014000,
+
+-1.001000,
+
+-0.987000,
+
+-1.093000,
+
+-1.251000,
+
+-1.214000,
+
+-1.007000,
+
+-0.651000,
+
+-0.246000,
+
+-0.074000,
+
+-0.133000,
+
+-0.174000,
+
+0.037000,
+
+0.114000,
+
+-0.084000,
+
+-0.141000,
+
+-0.197000,
+
+-0.331000,
+
+-0.511000,
+
+-0.508000,
+
+-0.110000,
+
+0.096000,
+
+-0.055000,
+
+0.017000,
+
+0.322000,
+
+0.412000,
+
+0.364000,
+
+0.372000,
+
+0.193000,
+
+0.156000,
+
+0.319000,
+
+0.440000,
+
+0.513000,
+
+0.474000,
+
+0.292000,
+
+0.249000,
+
+0.206000,
+
+0.138000,
+
+0.258000,
+
+0.361000,
+
+0.340000,
+
+0.206000,
+
+0.218000,
+
+0.082000,
+
+-0.130000,
+
+-0.277000,
+
+-0.292000,
+
+-0.071000,
+
+0.186000,
+
+0.260000,
+
+0.157000,
+
+-0.081000,
+
+-0.277000,
+
+-0.408000,
+
+-0.477000,
+
+-0.680000,
+
+-0.971000,
+
+-1.035000,
+
+-1.250000,
+
+-1.392000,
+
+-1.198000,
+
+-0.787000,
+
+-0.595000,
+
+-0.714000,
+
+-0.786000,
+
+-0.824000,
+
+-0.979000,
+
+-0.930000,
+
+-0.433000,
+
+0.033000,
+
+0.269000,
+
+0.579000,
+
+0.877000,
+
+0.715000,
+
+0.313000,
+
+0.313000,
+
+0.658000,
+
+0.921000,
+
+1.163000,
+
+1.419000,
+
+1.441000,
+
+1.419000,
+
+1.352000,
+
+1.119000,
+
+0.988000,
+
+0.965000,
+
+0.873000,
+
+0.967000,
+
+1.350000,
+
+1.550000,
+
+1.793000,
+
+2.070000,
+
+2.269000,
+
+2.001000,
+
+1.496000,
+
+1.522000,
+
+1.514000,
+
+1.435000,
+
+1.629000,
+
+1.605000,
+
+1.324000,
+
+1.029000,
+
+0.870000,
+
+0.798000,
+
+0.410000,
+
+-0.262000,
+
+-0.706000,
+
+-0.879000,
+
+-0.908000,
+
+-0.968000,
+
+-1.089000,
+
+-1.165000,
+
+-1.257000,
+
+-1.166000,
+
+-0.846000,
+
+-0.463000,
+
+-0.004000,
+
+0.375000,
+
+0.504000,
+
+0.145000,
+
+-0.179000,
+
+-0.363000,
+
+-0.428000,
+
+-0.347000,
+
+-0.289000,
+
+-0.035000,
+
+0.220000,
+
+0.258000,
+
+0.239000,
+
+0.161000,
+
+0.108000,
+
+0.029000,
+
+-0.257000,
+
+-0.273000,
+
+-0.256000,
+
+-0.425000,
+
+-0.395000,
+
+-0.410000,
+
+-0.471000,
+
+-0.425000,
+
+-0.193000,
+
+0.024000,
+
+-0.362000,
+
+-0.645000,
+
+-0.462000,
+
+-0.010000,
+
+0.234000,
+
+-0.018000,
+
+-0.213000,
+
+-0.247000,
+
+-0.223000,
+
+-0.158000,
+
+-0.214000,
+
+-0.193000,
+
+-0.072000,
+
+-0.043000,
+
+0.141000,
+
+0.360000,
+
+0.330000,
+
+0.212000,
+
+0.197000,
+
+0.111000,
+
+-0.116000,
+
+-0.301000,
+
+-0.382000,
+
+-0.157000,
+
+-0.177000,
+
+-0.476000,
+
+-0.633000,
+
+-0.670000,
+
+-0.541000,
+
+-0.406000,
+
+-0.063000,
+
+0.326000,
+
+0.606000,
+
+0.569000,
+
+0.259000,
+
+0.180000,
+
+0.067000,
+
+-0.042000,
+
+-0.027000,
+
+-0.083000,
+
+-0.279000,
+
+-0.175000,
+
+0.066000,
+
+-0.063000,
+
+-0.252000,
+
+-0.133000,
+
+0.194000,
+
+0.007000,
+
+-0.519000,
+
+-0.698000,
+
+-0.611000,
+
+-0.726000,
+
+-0.957000,
+
+-0.924000,
+
+-0.941000,
+
+-1.131000,
+
+-1.347000,
+
+-1.377000,
+
+-1.282000,
+
+-1.232000,
+
+-1.538000,
+
+-1.797000,
+
+-1.433000,
+
+-1.030000,
+
+-1.109000,
+
+-1.378000,
+
+-1.264000,
+
+-1.180000,
+
+-1.176000,
+
+-0.795000,
+
+-0.130000,
+
+0.382000,
+
+0.782000,
+
+1.116000,
+
+1.233000,
+
+1.040000,
+
+0.867000,
+
+0.738000,
+
+0.613000,
+
+0.565000,
+
+0.449000,
+
+0.437000,
+
+0.434000,
+
+0.017000,
+
+-0.303000,
+
+-0.251000,
+
+0.004000,
+
+0.178000,
+
+-0.035000,
+
+-0.119000,
+
+0.154000,
+
+0.403000,
+
+0.590000,
+
+0.690000,
+
+0.758000,
+
+0.581000,
+
+0.310000,
+
+0.447000,
+
+0.778000,
+
+0.568000,
+
+0.104000,
+
+0.138000,
+
+0.103000,
+
+-0.137000,
+
+-0.024000,
+
+0.137000,
+
+-0.065000,
+
+-0.419000,
+
+-0.838000,
+
+-1.041000,
+
+-0.962000,
+
+-0.954000,
+
+-1.049000,
+
+-1.155000,
+
+-0.955000,
+
+-0.858000,
+
+-1.147000,
+
+-1.292000,
+
+-1.497000,
+
+-1.887000,
+
+-1.749000,
+
+-1.543000,
+
+-1.647000,
+
+-1.960000,
+
+-2.081000,
+
+-1.965000,
+
+-1.763000,
+
+-1.614000,
+
+-1.532000,
+
+-1.329000,
+
+-1.366000,
+
+-1.538000,
+
+-1.371000,
+
+-0.898000,
+
+-0.754000,
+
+-0.950000,
+
+-1.076000,
+
+-0.947000,
+
+-0.736000,
+
+-0.387000,
+
+0.049000,
+
+0.410000,
+
+0.792000,
+
+1.371000,
+
+1.628000,
+
+1.551000,
+
+1.436000,
+
+1.152000,
+
+1.157000,
+
+1.312000,
+
+1.478000,
+
+1.549000,
+
+1.505000,
+
+1.380000,
+
+1.500000,
+
+1.602000,
+
+1.419000,
+
+1.020000,
+
+0.604000,
+
+0.424000,
+
+0.373000,
+
+0.534000,
+
+0.639000,
+
+0.747000,
+
+0.860000,
+
+0.748000,
+
+0.797000,
+
+0.864000,
+
+0.549000,
+
+0.308000,
+
+0.232000,
+
+0.142000,
+
+0.048000,
+
+-0.125000,
+
+-0.070000,
+
+0.073000,
+
+0.106000,
+
+0.167000,
+
+0.177000,
+
+0.071000,
+
+-0.078000,
+
+-0.303000,
+
+-0.253000,
+
+-0.256000,
+
+-0.286000,
+
+-0.197000,
+
+-0.011000,
+
+0.016000,
+
+-0.065000,
+
+0.156000,
+
+0.273000,
+
+0.193000,
+
+0.087000,
+
+0.108000,
+
+0.006000,
+
+-0.396000,
+
+-0.508000,
+
+-0.526000,
+
+-0.894000,
+
+-0.891000,
+
+-0.434000,
+
+-0.436000,
+
+-0.975000,
+
+-0.894000,
+
+-0.408000,
+
+-0.408000,
+
+-0.534000,
+
+-0.590000,
+
+-0.616000,
+
+-0.300000,
+
+-0.371000,
+
+-0.579000,
+
+-0.461000,
+
+-0.233000,
+
+0.037000,
+
+0.232000,
+
+0.508000,
+
+0.910000,
+
+1.059000,
+
+1.110000,
+
+1.070000,
+
+0.974000,
+
+0.933000,
+
+0.730000,
+
+0.250000,
+
+-0.349000,
+
+-0.827000,
+
+-1.093000,
+
+-1.277000,
+
+-1.289000,
+
+-1.191000,
+
+-1.171000,
+
+-1.059000,
+
+-0.895000,
+
+-0.660000,
+
+-0.333000,
+
+-0.132000,
+
+0.076000,
+
+0.519000,
+
+1.025000,
+
+1.363000,
+
+1.731000,
+
+1.730000,
+
+1.420000,
+
+1.523000,
+
+1.726000,
+
+1.682000,
+
+1.526000,
+
+1.213000,
+
+0.889000,
+
+0.823000,
+
+0.648000,
+
+0.357000,
+
+0.264000,
+
+0.076000,
+
+-0.050000,
+
+0.070000,
+
+0.023000,
+
+-0.208000,
+
+-0.501000,
+
+-0.753000,
+
+-0.727000,
+
+-0.550000,
+
+-0.582000,
+
+-0.741000,
+
+-0.828000,
+
+-0.837000,
+
+-0.785000,
+
+-0.591000,
+
+-0.372000,
+
+-0.456000,
+
+-0.620000,
+
+-0.658000,
+
+-0.759000,
+
+-0.733000,
+
+-0.525000,
+
+-0.544000,
+
+-0.338000,
+
+0.204000,
+
+0.619000,
+
+0.726000,
+
+0.655000,
+
+0.755000,
+
+1.040000,
+
+1.027000,
+
+0.941000,
+
+1.092000,
+
+1.219000,
+
+1.077000,
+
+0.906000,
+
+0.857000,
+
+0.831000,
+
+0.760000,
+
+0.744000,
+
+0.675000,
+
+0.575000,
+
+0.439000,
+
+0.309000,
+
+0.090000,
+
+-0.501000,
+
+-1.153000,
+
+-1.347000,
+
+-1.228000,
+
+-1.100000,
+
+-1.060000,
+
+-1.128000,
+
+-1.281000,
+
+-1.563000,
+
+-1.873000,
+
+-1.979000,
+
+-1.764000,
+
+-1.534000,
+
+-1.304000,
+
+-1.041000,
+
+-1.296000,
+
+-1.398000,
+
+-1.102000,
+
+-0.986000,
+
+-0.651000,
+
+-0.258000,
+
+-0.146000,
+
+0.080000,
+
+0.751000,
+
+1.546000,
+
+2.087000,
+
+2.209000,
+
+2.068000,
+
+1.880000,
+
+1.844000,
+
+2.008000,
+
+2.023000,
+
+1.756000,
+
+1.303000,
+
+0.743000,
+
+0.154000,
+
+-0.520000,
+
+-1.077000,
+
+-1.363000,
+
+-1.664000,
+
+-1.742000,
+
+-1.591000,
+
+-1.768000,
+
+-2.024000,
+
+-2.188000,
+
+-2.088000,
+
+-1.802000,
+
+-1.241000,
+
+-0.821000,
+
+-0.976000,
+
+-0.858000,
+
+-0.543000,
+
+-0.815000,
+
+-1.094000,
+
+-1.033000,
+
+-0.703000,
+
+-0.479000,
+
+-0.625000,
+
+-0.953000,
+
+-1.083000,
+
+-1.168000,
+
+-1.408000,
+
+-1.744000,
+
+-2.055000,
+
+-2.270000,
+
+-2.190000,
+
+-1.909000,
+
+-1.764000,
+
+-1.626000,
+
+-1.459000,
+
+-1.289000,
+
+-0.777000,
+
+-0.007000,
+
+0.674000,
+
+0.771000,
+
+0.948000,
+
+1.272000,
+
+0.982000,
+
+0.731000,
+
+0.710000,
+
+0.651000,
+
+0.548000,
+
+0.558000,
+
+0.511000,
+
+0.421000,
+
+0.641000,
+
+0.749000,
+
+0.715000,
+
+0.831000,
+
+1.010000,
+
+1.112000,
+
+0.939000,
+
+0.846000,
+
+0.895000,
+
+0.570000,
+
+0.023000,
+
+-0.235000,
+
+-0.137000,
+
+0.190000,
+
+-0.056000,
+
+-0.142000,
+
+0.390000,
+
+0.626000,
+
+0.577000,
+
+0.402000,
+
+0.132000,
+
+0.164000,
+
+0.623000,
+
+0.637000,
+
+0.346000,
+
+0.584000,
+
+0.876000,
+
+0.818000,
+
+0.831000,
+
+1.012000,
+
+1.014000,
+
+0.813000,
+
+0.832000,
+
+1.167000,
+
+1.249000,
+
+0.919000,
+
+0.783000,
+
+0.689000,
+
+0.411000,
+
+0.336000,
+
+0.226000,
+
+0.189000,
+
+-0.087000,
+
+-0.337000,
+
+-0.128000,
+
+0.362000,
+
+0.290000,
+
+0.013000,
+
+-0.096000,
+
+-0.076000,
+
+0.082000,
+
+0.201000,
+
+0.177000,
+
+0.064000,
+
+0.077000,
+
+0.019000,
+
+0.107000,
+
+0.440000,
+
+0.949000,
+
+1.480000,
+
+1.768000,
+
+1.841000,
+
+1.871000,
+
+2.254000,
+
+2.593000,
+
+2.777000,
+
+3.080000,
+
+3.310000,
+
+3.349000,
+
+3.084000,
+
+2.665000,
+
+2.337000,
+
+1.922000,
+
+1.155000,
+
+0.462000,
+
+0.105000,
+
+-0.099000,
+
+0.054000,
+
+0.054000,
+
+-0.166000,
+
+-0.192000,
+
+0.096000,
+
+-0.052000,
+
+-0.402000,
+
+-0.416000,
+
+-0.365000,
+
+-0.214000,
+
+-0.102000,
+
+-0.359000,
+
+-0.660000,
+
+-0.744000,
+
+-0.777000,
+
+-0.863000,
+
+-0.772000,
+
+-0.791000,
+
+-0.533000,
+
+-0.102000,
+
+-0.365000,
+
+-0.601000,
+
+-0.257000,
+
+0.015000,
+
+-0.151000,
+
+-0.278000,
+
+-0.228000,
+
+-0.087000,
+
+-0.004000,
+
+0.141000,
+
+0.319000,
+
+0.377000,
+
+0.736000,
+
+1.147000,
+
+1.198000,
+
+1.237000,
+
+1.342000,
+
+1.380000,
+
+1.529000,
+
+1.883000,
+
+2.171000,
+
+2.162000,
+
+2.069000,
+
+2.200000,
+
+2.343000,
+
+2.054000,
+
+1.824000,
+
+1.575000,
+
+1.490000,
+
+1.387000,
+
+1.020000,
+
+0.703000,
+
+0.429000,
+
+-0.047000,
+
+-0.735000,
+
+-1.416000,
+
+-1.704000,
+
+-1.783000,
+
+-1.760000,
+
+-1.778000,
+
+-1.670000,
+
+-1.468000,
+
+-1.330000,
+
+-1.198000,
+
+-1.143000,
+
+-1.124000,
+
+-1.027000,
+
+-0.951000,
+
+-0.637000,
+
+-0.350000,
+
+-0.389000,
+
+-0.330000,
+
+0.001000,
+
+0.225000,
+
+0.462000,
+
+0.742000,
+
+0.723000,
+
+0.531000,
+
+0.422000,
+
+0.352000,
+
+0.147000,
+
+0.257000,
+
+0.454000,
+
+0.382000,
+
+0.298000,
+
+0.407000,
+
+0.413000,
+
+0.493000,
+
+0.763000,
+
+1.014000,
+
+1.184000,
+
+1.102000,
+
+0.553000,
+
+0.296000,
+
+0.800000,
+
+1.257000,
+
+1.450000,
+
+1.857000,
+
+2.039000,
+
+2.052000,
+
+2.289000,
+
+2.404000,
+
+2.293000,
+
+1.742000,
+
+0.723000,
+
+0.464000,
+
+0.751000,
+
+0.765000,
+
+0.808000,
+
+0.925000,
+
+1.049000,
+
+1.177000,
+
+1.440000,
+
+1.860000,
+
+1.835000,
+
+1.228000,
+
+0.724000,
+
+0.795000,
+
+1.186000,
+
+1.158000,
+
+0.784000,
+
+0.644000,
+
+0.422000,
+
+0.278000,
+
+0.646000,
+
+1.011000,
+
+0.992000,
+
+0.885000,
+
+0.731000,
+
+0.796000,
+
+1.355000,
+
+1.447000,
+
+1.319000,
+
+1.337000,
+
+1.196000,
+
+0.935000,
+
+0.830000,
+
+0.940000,
+
+0.813000,
+
+0.483000,
+
+0.258000,
+
+-0.081000,
+
+-0.274000,
+
+-0.407000,
+
+-0.432000,
+
+-0.437000,
+
+-0.421000,
+
+-0.348000,
+
+-0.361000,
+
+-0.435000,
+
+-0.272000,
+
+-0.214000,
+
+-0.218000,
+
+-0.220000,
+
+-0.327000,
+
+-0.213000,
+
+-0.203000,
+
+-0.453000,
+
+-0.577000,
+
+-0.323000,
+
+0.529000,
+
+1.610000,
+
+2.602000,
+
+3.120000,
+
+3.181000,
+
+3.168000,
+
+3.214000,
+
+3.201000,
+
+3.022000,
+
+2.822000,
+
+2.823000,
+
+2.944000,
+
+2.821000,
+
+2.336000,
+
+1.355000,
+
+0.180000,
+
+-0.731000,
+
+-0.863000,
+
+-0.759000,
+
+-0.857000,
+
+-0.973000,
+
+-1.108000,
+
+-1.231000,
+
+-1.121000,
+
+-1.098000,
+
+-1.187000,
+
+-0.975000,
+
+-0.826000,
+
+-0.801000,
+
+-0.727000,
+
+-0.847000,
+
+-1.045000,
+
+-1.182000,
+
+-1.255000,
+
+-1.295000,
+
+-1.319000,
+
+-1.168000,
+
+-0.960000,
+
+-0.711000,
+
+-0.479000,
+
+-0.298000,
+
+-0.113000,
+
+-0.109000,
+
+-0.397000,
+
+-0.642000,
+
+-0.706000,
+
+-0.796000,
+
+-0.710000,
+
+-0.398000,
+
+-0.322000,
+
+-0.349000,
+
+-0.225000,
+
+-0.041000,
+
+-0.098000,
+
+-0.256000,
+
+-0.290000,
+
+-0.199000,
+
+-0.064000,
+
+-0.091000,
+
+0.045000,
+
+0.359000,
+
+0.669000,
+
+0.912000,
+
+0.667000,
+
+0.636000,
+
+0.903000,
+
+1.090000,
+
+1.207000,
+
+1.223000,
+
+1.252000,
+
+1.084000,
+
+0.953000,
+
+0.816000,
+
+0.262000,
+
+-0.094000,
+
+0.004000,
+
+0.083000,
+
+0.360000,
+
+0.533000,
+
+0.594000,
+
+0.646000,
+
+0.526000,
+
+0.331000,
+
+0.118000,
+
+0.125000,
+
+0.299000,
+
+0.214000,
+
+0.271000,
+
+0.582000,
+
+0.803000
+/*
+0.680000,
+
+0.690000,
+
+0.740000,
+
+0.432000,
+
+0.280000,
+
+0.631000,
+
+0.773000,
+
+0.588000,
+
+0.737000,
+
+0.800000,
+
+0.492000,
+
+0.080000,
+
+-0.661000,
+
+-0.998000,
+
+-0.954000
+    */
+]
+       ).
+
+
+
+

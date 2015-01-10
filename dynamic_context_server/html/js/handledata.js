@@ -149,7 +149,7 @@ handleDygraphList = function(logselector, Xlabel, Ylabel, Title, Labels, data_ar
 };
 
 
-handleDygraphListErrorBars = function(logselector, Xlabel, Ylabel, Title, Labels, data_array, bars){  // data_array is a list of tuples
+handleDygraphListErrorBars = function(logselector, Xlabel, Ylabel, Title, Labels, data_array, bars, width, height){  // data_array is a list of tuples
  g = new Dygraph(  // containing div
                    document.getElementById("graphdiv"),
                    data_array,
@@ -163,6 +163,8 @@ handleDygraphListErrorBars = function(logselector, Xlabel, Ylabel, Title, Labels
 		      labelsDiv: "legend",
 		      ylabel: Ylabel,
 		      xlabel: Xlabel,
+		      width: width,  // 600 1200
+		      height: height, // 400,
 		      yAxisLabelWidth: 70,
 		      labels: Labels,
                       labelsSeparateLines: true,
