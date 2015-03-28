@@ -1,11 +1,10 @@
-/*  $Id$
-
-    Part of SWI-Prolog
+/*  Part of SWI-Prolog
 
     Author:        Jan Wielemaker
-    E-mail:        wielemak@science.uva.nl
+    E-mail:        J.Wielemaker@vu.nl
     WWW:           http://www.swi-prolog.org
-    Copyright (C): 1985-2005, University of Amsterdam
+    Copyright (C): 1985-2012, University of Amsterdam
+			      VU University Amsterdam
 
     This program is free software; you can redistribute it and/or
     modify it under the terms of the GNU General Public License
@@ -34,6 +33,7 @@
 
 	    rdfql_bind_null/1,		% +List
 	    rdfql_cond_bind_null/1,	% +List
+	    rdfql_triple_in/2,		% -Triple, +Triples
 
 					% SeRQL support
 	    serql_compare/3,		% +Comparison, +Left, +Right
@@ -42,7 +42,13 @@
 
 					% SPAQRL support
 	    sparql_true/1,		% +Term
-	    sparql_eval/2		% +Expression, -Result
+	    sparql_eval/2,		% +Expression, -Result
+	    sparql_find/5,		% ?From, ?To, ?F, ?T, :Q
+	    sparql_minus/2,		% :Q1, :Q2
+	    sparql_group/1,		% :Query
+	    sparql_group/3,		% :Query, +OuterVars, +InnerVars
+	    sparql_subquery/3,		% +Proj, +Query, +Solutions
+	    sparql_update/1		% +Updates
 	  ]).
 :- use_module(library(nb_set)).
 :- use_module(library(debug)).
@@ -96,8 +102,7 @@ rdfql_carthesian(M:Bags) :-
 	).
 
 solve_bags([], _, _, []).
-solve_bags([bag(Vars, Goal)|T0], M, N, [set(Templ,Set,Size)|T]) :-
-	Templ =.. [v|Vars],
+solve_bags([bag(Templ, Goal, _Branch, _Cost)|T0], M, N, [set(Templ,Set,Size)|T]) :-
 	empty_nb_set(Set),
 	(   M:Goal,
 	    add_nb_set(Templ, Set),
@@ -110,7 +115,11 @@ solve_bags([bag(Vars, Goal)|T0], M, N, [set(Templ,Set,Size)|T]) :-
 	N2 is N + 1,
 	solve_bags(T0, M, N2, T).
 
+
 carthesian_select([]).
+carthesian_select([call(Goal)|T]) :-
+	call(Goal),
+	carthesian_select(T).
 carthesian_select([set(Templ,Set,_)|T]) :-
 	gen_nb_set(Set, Templ),
 	carthesian_select(T).
@@ -148,3 +157,16 @@ rdfql_cond_bind_null([H|T]) :-
 rdfql_bind_null([]).
 rdfql_bind_null(['$null$'|T]) :-
 	rdfql_bind_null(T).
+
+
+%%	rdfql_triple_in(-Triple, +Triples) is nondet.
+%
+%	True when Triple is an rdf(S,P,O) element in Triples that does
+%	not contain NULL.  Used for CONSTRUCT and DESCRIBE.
+
+rdfql_triple_in(Triple, Triples) :-
+	Triple = rdf(S,P,O),
+	member(Triple, Triples),
+	S \== '$null$',
+	P \== '$null$',
+	O \== '$null$'.

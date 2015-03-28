@@ -184,7 +184,8 @@ conf_d_members(DirSpec, InfoRecords, Options) :-
 				     ]),
 		  conf_d_files(Dir, Files, Options)
 		), FileLists),
-	append(FileLists, Files),
+	append(FileLists, Files0),
+	sort(Files0, Files), % remove duplicates introduced by absolute & relative ClioPatria paths
 	maplist(conf_file, Files, InfoRecords).
 
 conf_file(File, config_file(Path, Module, Title)) :-
@@ -228,7 +229,12 @@ conf_d_member_data(loaded, config_file(F, _, _), B) :-
 %	is the directory holding =|run.pl|=.
 
 set_top_dir :-
-	prolog_load_context(directory, Dir),
+	(   source_file(add_relative_search_path(_,_), File)
+	->  file_directory_name(File, Dir)
+	;   prolog_load_context(directory, Dir)
+	->  true
+	;   working_directory(Dir,Dir)
+	),
 	(   user:file_search_path(cp_application, Dir)
 	->  true
 	;   assert(user:file_search_path(cp_application, Dir))

@@ -1,4 +1,3 @@
-ï»¿@base        <user> .
 @prefix rdfs: <http://www.w3.org/2000/01/rdf-schema#> .
 @prefix foaf: <http://xmlns.com/foaf/0.1/> .
 @prefix xsd: <http://www.w3.org/2001/XMLSchema#> .
@@ -805,8 +804,8 @@ ent:ATC_MTA_15DegreeLoadingRamp
    a rdfs:Resource ;
    ent:locale ent:APG ;
    ent:feature "fine terrain features" ;
-	ent:course_name "ATC 15Â° Simulated Loading Ramp" ;
-	ent:course_description "Concrete slope, constant incline of 15Â° up to 1.55 m elevation gain" ;
+	ent:course_name "ATC 15° Simulated Loading Ramp" ;
+	ent:course_description "Concrete slope, constant incline of 15° up to 1.55 m elevation gain" ;
 	ent:course_material "concrete" ;
 	ent:course_roughness_percent "50.0" ;
 	ent:F_static "1.0" ;
@@ -818,8 +817,8 @@ ent:ATC_MTA_20DegreeLoadingRamp
    a rdfs:Resource ;
    ent:locale ent:APG ;
    ent:feature "fine terrain features" ;
-	ent:course_name "ATC 20Â° Simulated Loading Ramp" ;
-	ent:course_description "Concrete slope, constant incline of 20Â° up to 4.1 m elevation gain" ;
+	ent:course_name "ATC 20° Simulated Loading Ramp" ;
+	ent:course_description "Concrete slope, constant incline of 20° up to 4.1 m elevation gain" ;
 	ent:course_material "concrete" ;
 	ent:course_roughness_percent "50.0" ;
 	ent:F_static "1.0" ;

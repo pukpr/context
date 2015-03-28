@@ -71,7 +71,7 @@ The example below adds an item to =Help= popup of ClioPatria:
 	display_link//2,		% +RDFObject, +Options
 	resource_link/2,		% +URI, -URL
 
-	list_resource//1,		% +URI
+	list_resource//2,		% +URI, +Options
 
 	user_preference_db/2,		% ?Property, ?Value
 	user_preference_default/2,	% ?Property, ?Value
@@ -79,6 +79,7 @@ The example below adds an item to =Help= popup of ClioPatria:
 	page_body//1,			% +Body
 	page_body//2,			% +Style, +Body
 	server_address//0,
+	logo//0,
 
 	predicate_order/2,		% +P, -Order
 	context_graph/2,		% +R, -RDF
@@ -168,7 +169,7 @@ The example below adds an item to =Help= popup of ClioPatria:
 		 *	    LOCAL VIEW		*
 		 *******************************/
 
-%%	list_resource(+URI)//
+%%	list_resource(+URI, +Options)//
 %
 %	This  hook  is  called   by  cpa_browse:list_resource//2,  which
 %	display the `local view' page for a   resource. This can be used
@@ -216,14 +217,20 @@ The example below adds an item to =Help= popup of ClioPatria:
 %	this should create an element of class =address= using the class
 %	=cliopatria=.
 
+%%	logo//
+%
+%	Logo placed left of the menu-bar.  Must   be  an object that has
+%	`float:left` style.
+
+
 		 /*******************************
 		 *	    RDF BROWSING	*
 		 *******************************/
 
 %%	predicate_order(+Pred, -Order) is semidet.
 %
-%	Define the in which predicates  appear   in  the local view. The
-%	Order  is  an  integer.  The  system   ordering  is  defined  by
+%	Define the order in which predicates appear in the local view.
+%	The Order is an integer. The system ordering is defined by
 %	cpa_browse:p_order/2. Predicates that are not explicitly ordered
 %	are placed at the end of the table an ordered alphabetically.
 %

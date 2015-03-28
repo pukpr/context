@@ -102,7 +102,8 @@ result_format -->
 	html(select(name(resultFormat),
 		    [ option([], xml),
 		      option([selected], html),
-		      option([], json)
+		      option([], json),
+		      option([], csv)
 		    ])).
 
 query_language(Options, Hidden) -->
@@ -215,9 +216,9 @@ stored_queries([Name-Query|T], I) -->
 	  atom_concat(f, I, FName),
 	  js_quoted(Query, QuotedQuery),
 	  format(atom(Script),
-		 'function ~w()\n
-		 { document.query.query.value=\'~w\';\n  
-		   document.getElementById(\'qid\').value="~w";\n
+		 'function ~w()\n\c
+		 { document.query.query.value=\'~w\';\n  \c
+		   document.getElementById(\'qid\').value="~w";\n\c
 		 }\n',
 		 [ FName, QuotedQuery, Name ]),
 	  assert(script_fragment(Script)),
@@ -289,7 +290,8 @@ js_quote_code(C) -->
 
 store_query(_, '', _) :- !.
 store_query(Type, As, Query) :-
-	set_high_id(As), !,
+	http_in_session(_), !,
+	set_high_id(As),
 	http_session_retractall(stored_query(As, Type, _)),
 	http_session_retractall(stored_query(_, Type, Query)),
 	http_session_asserta(stored_query(As, Type, Query)).

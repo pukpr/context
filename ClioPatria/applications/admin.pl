@@ -60,6 +60,7 @@ This module provides HTTP services to perform administrative actions.
 :- http_handler(cliopatria('admin/form/addUser'),	   add_user_form,	    []).
 :- http_handler(cliopatria('admin/form/addOpenIDServer'),  add_openid_server_form,  []).
 :- http_handler(cliopatria('admin/addUser'),		   add_user,		    []).
+:- http_handler(cliopatria('admin/selfRegister'),	   self_register,	    []).
 :- http_handler(cliopatria('admin/addOpenIDServer'),	   add_openid_server,	    []).
 :- http_handler(cliopatria('admin/form/editUser'),	   edit_user_form,	    []).
 :- http_handler(cliopatria('admin/editUser'),		   edit_user,		    []).
@@ -187,9 +188,9 @@ create_admin(_Request) :-
 			title('Create administrator'),
 			[ h1(align(center), 'Create administrator'),
 
-			  p('No accounts are available on this server. 
-			  This form allows for creation of an administrative 
-			  account that can subsequently be used to create 
+			  p('No accounts are available on this server. \c
+			  This form allows for creation of an administrative \c
+			  account that can subsequently be used to create \c
 			  new users.'),
 
 			  \new_user_form([ user(admin),
@@ -215,22 +216,17 @@ new_user_form(Options) -->
 	      PermUser = User
 	  ;   UserOptions = [],
 	      PermUser = (-)
-	  ),
-	  (   option(real_name(RealName), Options)
-	  ->  RealNameOptions = [value(RealName)]
-	  ;   RealNameOptions = []
 	  )
 	},
 	html([ h1('Add new user'),
 	       form([ action(location_by_id(add_user)),
-		      method('GET')
+		      method('POST')
 		    ],
 		    table([ class((form))
 			  ],
-			  [ \input(user,     'Name',
+			  [ \realname(Options),
+			    \input(user,     'Login',
 				   UserOptions),
-			    \input(realname, 'Realname',
-				   RealNameOptions),
 			    \input(pwd1,     'Password',
 				   [type(password)]),
 			    \input(pwd2,     'Retype',
@@ -252,6 +248,19 @@ input(Name, Label, Options) -->
 		  td(input([name(Name),size(40)|Options]))
 		])).
 
+%	Only provide a realname field if this is not already given. This
+%	is because firefox determines the login user from the text field
+%	immediately above the password entry. Other   browsers may do it
+%	different, so only having one text-field  is probably the savest
+%	solution.
+
+realname(Options) -->
+	{ option(real_name(RealName), Options) }, !,
+	hidden(realname, RealName).
+realname(_Options) -->
+	input(realname, 'Realname', []).
+
+
 %%	add_user(+Request)
 %
 %	API  to  register  a  new  user.  The  current  user  must  have
@@ -259,7 +268,7 @@ input(Name, Label, Options) -->
 
 add_user(Request) :-
 	(   \+ current_user(_)
-	->  true
+	->  FirstUser = true
 	;   authorized(admin(add_user))
 	),
 	http_parameters(Request,
@@ -289,7 +298,7 @@ add_user(Request) :-
 		   password(Hash),
 		   allow(Allow)
 		 ]),
-	(   User == admin
+	(   FirstUser == true
 	->  user_add(anonymous,
 		     [ realname('Define rights for not-logged in users'),
 		       allow([read(_,_)])
@@ -297,6 +306,40 @@ add_user(Request) :-
 	    reply_login([user(User), password(Password)])
 	;   list_users(Request)
 	).
+
+%%	self_register(Request)
+%
+%	Self-register and login a new user if
+%	cliopatria:enable_self_register is set to true.
+%       Users are registered with full read
+%	and limited (annotate-only) write access.
+%
+%	Returns a HTTP 403 forbidden error if:
+%	- cliopatria:enable_self_register is set to false
+%	- the user already exists
+
+self_register(Request) :-
+	http_location_by_id(self_register, MyUrl),
+	(   \+ setting(cliopatria:enable_self_register, true)
+	->  throw(http_reply(forbidden(MyUrl)))
+	;   true
+	),
+	http_parameters(Request,
+			[ user(User),
+			  realname(RealName),
+			  password(Password)
+			],
+			[ attribute_declarations(attribute_decl)
+			]),
+	(   current_user(User)
+	->  throw(http_reply(forbidden(MyUrl)))
+	;   true
+	),
+	password_hash(Password, Hash),
+	Allow = [ read(_,_), write(_,annotate) ],
+	user_add(User, [realname(RealName), password(Hash), allow(Allow)]),
+	reply_login([user(User), password(Password)]).
+
 
 %%	edit_user_form(+Request)
 %
@@ -324,7 +367,7 @@ edit_user_form(User) -->
 	html([ h1(['Edit user ', User, ' (', RealName, ')']),
 
 	       form([ action(location_by_id(edit_user)),
-		      method('GET')
+		      method('POST')
 		    ],
 		    [ \hidden(user, User),
 		      table([ class((form))
@@ -487,7 +530,7 @@ change_password_form(_Request) :-
 
 change_password_form(User) -->
 	html(form([ action(location_by_id(change_password)),
-		    method('GET')
+		    method('POST')
 		  ],
 		  [ table([ id('change-password-form'),
 			    class(form)
@@ -568,7 +611,7 @@ login_form(_Request) :-
 			'Login',
 			[ h1(align(center), 'Login'),
 			  form([ action(location_by_id(user_login)),
-				 method('GET')
+				 method('POST')
 			       ],
 			       table([ tr([ th(align(right), 'User:'),
 					    td(input([ name(user),

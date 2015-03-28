@@ -1,9 +1,9 @@
 /*  Part of ClioPatria semantic web server
 
     Author:        Jan Wielemaker
-    E-mail:        J.Wielemaker@cs.vu.nl
+    E-mail:        J.Wielemaker@cs.nl
     WWW:           http://www.swi-prolog.org
-    Copyright (C): 2008-2010, University of Amsterdam
+    Copyright (C): 2008-2014, University of Amsterdam
 			      VU University Amsterdam
 
     This program is free software; you can redistribute it and/or
@@ -33,7 +33,6 @@
 	  [
 	  ]).
 :- use_module(library(settings)).
-:- use_module(library(error)).
 :- use_module(library(semweb/rdf_db)).
 :- use_module(library(http/html_write)).
 :- use_module(library(http/http_hook)).
@@ -45,7 +44,7 @@ in addition to settings that can be   managed by the end-user. It should
 not be necessary to modify this file:
 
     * Web-locations can be modified externally using http:location/3
-    with an option priority(N), where N > 0. See http_absolute_path/3.
+    with an option priority(N), where N > 0. See http_absolute_location/3.
 
     * Settings can be changed using set_setting_default/2.
 
@@ -62,6 +61,9 @@ not be necessary to modify this file:
 % ClioPatria specific ones
 user:file_search_path(rdfql,	        cliopatria(rdfql)).
 user:file_search_path(cpack,	        cliopatria(cpack)).
+
+% Allow local file overwrites
+user:file_search_path(web,		web).
 
 % Package merge
 user:file_search_path(cpacks,	        cliopatria('.')).
@@ -83,6 +85,9 @@ user:file_search_path(js,		web(js)).
 user:file_search_path(html,		web(html)).
 user:file_search_path(help,		web(help)).
 user:file_search_path(tutorial,		web(tutorial)).
+user:file_search_path(flint,		web('FlintSparqlEditor/sparql')).
+user:file_search_path(yasqe,		web('yasqe/dist')).
+user:file_search_path(yasr,		web('yasr/dist')).
 
 
 		 /*******************************
@@ -90,12 +95,16 @@ user:file_search_path(tutorial,		web(tutorial)).
 		 *******************************/
 
 http:location(cliopatria,  root(.),	       []).
+http:location(web,	   cliopatria(web),    []).
 http:location(sesame,	   root(servlets),     []).
 http:location(sparql,	   root(sparql),       []).
 http:location(rdf_browser, cliopatria(browse), []).
+http:location(flint,       cliopatria(flint),  []).
 http:location(api,	   cliopatria(api),    []).
 http:location(json,	   api(json),	       []).
-
+http:location(yasgui,      cliopatria(yasgui), []).
+http:location(yasqe,	   cliopatria(yasqe),  []).
+http:location(yasr,	   cliopatria(yasr),   []).
 
 		 /*******************************
 		 *	       TYPES		*
@@ -167,8 +176,10 @@ http_settings:input_item(uri, Value, Name) -->
 	   'Session timeout.  If 0, session never times out').
 :- setting(http:server_url, atom, 'http://localhost:'+setting(http:port),
 	   'Url of the server itself').
+:- if(\+current_setting(http:prefix)).
 :- setting(http:prefix, atom, '',
 	   'Prefix to rebase the server').
+:- endif.
 
 
 		 /*******************************
@@ -177,6 +188,8 @@ http_settings:input_item(uri, Value, Name) -->
 
 :- setting(cliopatria:user_data, atom, 'users.db',
 	   'File holding account information').
+:- setting(cliopatria:enable_self_register, boolean, false,
+	   'Set to true to allow users to self register'). % using cpa_admin:add_user/1
 :- setting(cliopatria:default_entailment, atom, rdfs,
 	   'Default entailment rules applied').
 :- setting(cliopatria:optimise_query, boolean, true,

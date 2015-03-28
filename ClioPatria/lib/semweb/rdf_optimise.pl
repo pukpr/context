@@ -1,11 +1,10 @@
-/*  $Id$
-
-    Part of SWI-Prolog
+/*  Part of SWI-Prolog
 
     Author:        Jan Wielemaker
-    E-mail:        jan@swi.psy.uva.nl
+    E-mail:        J.Wielemaker@vu.nl
     WWW:           http://www.swi-prolog.org
-    Copyright (C): 1985-2004, University of Amsterdam
+    Copyright (C): 1985-2012, University of Amsterdam
+			      VU University Amsterdam
 
     This program is free software; you can redistribute it and/or
     modify it under the terms of the GNU General Public License
@@ -30,16 +29,21 @@
 */
 
 :- module(rdf_optimise,
-	  [ rdf_optimise/2,		% +Query, -Optimised
+	  [ rdf_optimise/1,		% :Query
+	    rdf_optimise/2,		% +Query, -Optimised
 	    rdf_optimise/4,		% +Query, -Optimised, -Space, -Time
 	    rdf_complexity/3,		% :Goal, -SpaceEstimate, -TimeEstimate
 	    serql_select_bind_null/2	% +Goal, -WithBind
 	  ]).
-:- use_module(library('semweb/rdf_db')).
+:- use_module(library(semweb/rdf_db)).
 :- use_module(library(debug)).
 :- use_module(library(lists)).
-:- use_module(library(assoc)).
+:- use_module(library(pairs)).
 :- use_module(library(ordsets)).
+:- use_module(library(ugraphs)).
+
+:- meta_predicate
+	rdf_optimise(0).
 
 /* - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
 Queries  as  returned  by  serql_compile_path/2    consists  of  a  path
@@ -83,8 +87,8 @@ http://hcs.science.uva.nl/projects/SWI-Prolog/articles/ICLP05-SeRQL.pdf
 
 NOTES:
 
-	* LIKE works on resources *and* literals.  Do we want this?
-	  See http://www.openrdf.org/forum/mvnforum/viewthread?thread=275
+	* SeRQL LIKE works on resources *and* literals.  Do we want this?
+	  See http://rdf4j.org/forum/mvnforum/viewthread?thread=275
 - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - */
 
 :- multifile
@@ -109,8 +113,19 @@ Plan (conjunctions)
 
 complexity/2 needs to update the order of clauses inside meta calls
 (notably optional path expressions).
-
 - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - */
+
+%%	rdf_optimise(:Goal) is nondet.
+%
+%	Optimise Goal and execute the result. Semantically equivalent to
+%	call/1.
+%
+%	@tbd	Module handling is not correct.
+
+rdf_optimise(Module:Goal) :-
+	rdf_optimise(Goal, Optimised),
+	call(Module:Optimised).
+
 
 %%	rdf_optimise(+Goal, -Optimized) is det.
 %
@@ -123,11 +138,7 @@ complexity/2 needs to update the order of clauses inside meta calls
 rdf_optimise(Conj, Optimised) :-
 	rdf_optimise(Conj, Optimised, _, _).
 
-rdf_optimise(Conj, Optimised, SpaceEstimate, TimeEstimate) :-
-	optimise_order(Conj, Ordered, SpaceEstimate, TimeEstimate),
-	carthesian(Ordered, Optimised).
-
-optimise_order(Conj, Optimised, Space, Estimate) :-
+rdf_optimise(Conj, Optimised, Space, Time) :-
 	debug(rdf_optimise, '*** OPTIMIZING ***~n', []),
 	dbg_portray_body(Conj),
 	term_variables(Conj, Vars),
@@ -135,7 +146,12 @@ optimise_order(Conj, Optimised, Space, Estimate) :-
 	State = state(Vars-Conj, S0, E0, 1),
 	debug(rdf_optimise, 'C0 = ~w~n', [E0]),
 	(   reorder(Conj, Perm),
+	    (	debugging(rdf_optimise(all))
+	    ->	dbg_portray_body(Perm)
+	    ;	true
+	    ),
 	    rdf_complexity(Perm, Perm1, S, C),
+	    debug(rdf_optimise(all), '--> space=~w, time=~w~n', [S, C]),
 
 	    arg(4, State, N),
 	    N2 is N + 1,
@@ -154,9 +170,9 @@ optimise_order(Conj, Optimised, Space, Estimate) :-
 	    fail
 	;   arg(1, State, Vars-Optimised),
 	    arg(2, State, Space),
-	    arg(3, State, Estimate),
+	    arg(3, State, Time),
 	    debug(rdf_optimise, '  --> optimised: s/t = ~w/~w --> ~w/~w~n',
-		  [S0, E0, Space, Estimate]),
+		  [S0, E0, Space, Time]),
 	    dbg_portray_body(Optimised)
 	), !.
 optimise_order(Conj, Conj, -1, -1) :-
@@ -180,7 +196,6 @@ reorder(Goal, Reordered) :-
 	State = bindings([]),
 	conj_to_list(Goal, Conj0),
 	reorder_conj(Conj0, State, Conj1),
-%%	permutation(Conj0, Conj1),		% Alternatively :-)
 	list_to_conj(Conj1, Reordered),
 	arg(1, State, Bindings),
 	unbind(Bindings).
@@ -198,17 +213,19 @@ reorder_conj(List, State, Perm) :-
 	bind_args(Normal, State),		% this part is done
 	reorder_conj(Optional, State, PermOptional),
 	append(PermNormal, PermOptional, Perm).
-reorder_conj(List, State, Result) :-
+reorder_conj(List, State, [goal(_,independent(SubPerms),_)]) :-
 	make_subgraphs(List, SubGraphs),
 	SubGraphs \= [_], !,
-	reorder_subgraph_conjs(SubGraphs, State, RestPerm),
-	flatten(RestPerm, Result).
+	reorder_subgraph_conjs(SubGraphs, State, SubPerms).
 reorder_conj(List, State, [Prefix|Perm]) :-
 	select(Prefix, List, Rest),
 	bind_args(Prefix, State),
 	make_subgraphs(Rest, SubGraphs),
-	reorder_subgraph_conjs(SubGraphs, State, RestPerm),
-	flatten(RestPerm, Perm).
+	(   SubGraphs = [SubGraph]
+	->  reorder_conj2(SubGraph, State, Perm)
+	;   Perm = [goal(_,independent(SubPerms),_)],
+	    reorder_subgraph_conjs(SubGraphs, State, SubPerms)
+	).
 
 
 %%	reorder_subgraph_conjs(SubGraphs, -ReorderedSubGraphs)
@@ -221,7 +238,8 @@ reorder_conj(List, State, [Prefix|Perm]) :-
 
 reorder_subgraph_conjs([], _, []).
 reorder_subgraph_conjs([H0|T0], State, [H|T]) :-
-	reorder_conj2(H0, State, H),
+	reorder_conj2(H0, State, H1),
+	list_to_conj(H1, H),
 	reorder_subgraph_conjs(T0, State, T).
 
 reorder_conj2([One], _, [One]) :- !.
@@ -229,9 +247,11 @@ reorder_conj2(List, State, [Prefix|Perm]) :-
 	select(Prefix, List, Rest),
 	bind_args(Prefix, State),
 	make_subgraphs(Rest, SubGraphs),
-	reorder_subgraph_conjs(SubGraphs, State, RestPerm),
-	flatten(RestPerm, Perm).
-
+	(   SubGraphs = [SubGraph]
+	->  reorder_conj2(SubGraph, State, Perm)
+	;   Perm = [goal(_,independent(SubPerms),_)],
+	    reorder_subgraph_conjs(SubGraphs, State, SubPerms)
+	).
 
 %%	group_by_cut(+List, -BeforeCut, -Cut, -AfterCut)
 %
@@ -269,7 +289,7 @@ optional(G) :-
 %
 %	Bind all arguments in  Goal  or   list  of  goals.  Assumes that
 %	executing a goal grounds all its arguments.   Only  the goal A =
-%%	literal(B), generated by optimising where constraints is handled
+%	literal(B), generated by optimising where constraints is handled
 %	special.
 %
 %	State is a term bindings(List)  that is destructively maintained
@@ -302,47 +322,57 @@ ground_vars([H|T], State) :-
 
 %%	make_subgraphs(+Goals, -SubGraphs)
 %
-%	Create a list of connected subgraphs from Goals, assuming the
+%	Create a list of connected subgraphs   from  Goals, assuming the
 %	variables in the assoc Grounded have been bound.
+%
+%	@param Goals is a list goal(Id, Goal, Vars).
 
-make_subgraphs([], []).
-make_subgraphs([G0|GT], [S0|ST]) :-
-	empty_assoc(Visited0),
-	put_assoc(G0, Visited0, t, Visited1),
-	unbound_vars(G0, Vars),
-	empty_assoc(VV0),
-	vars_visited(Vars, VV0, VV, _, []),
-	select_subgraph(Vars, VV, GT, GR, Visited1, Visited),
-	assoc_keys(Visited, S0),
-	make_subgraphs(GR, ST).
+make_subgraphs([Goal], [[Goal]]) :- !.
+make_subgraphs([G1,G2], Graphs) :- !,
+	unbound_vars(G1, V1),
+	unbound_vars(G2, V2),
+	(   ord_intersect(V1, V2)
+	->  Graphs = [[G1,G2]]
+	;   Graphs = [[G1],[G2]]
+	).
+make_subgraphs(Goals, SubGraphs) :-
+	map_list_to_pairs(unbound_vars, Goals, UnBoundKeyed),
+	connected_pairs(UnBoundKeyed, Edges),
+	vertices_edges_to_ugraph(Goals, Edges, UGraph),
+	connected_vertices(UGraph, SubGraphs).
 
-select_subgraph([], _, Rest, Rest, Visited, Visited).
-select_subgraph([V0|VT], VV0, Goals, Rest, Visited0, Visited) :-
-	select_related(Goals, V0, NewA, RG, VV0, VV1, Visited0, Visited1),
-	append(NewA, VT, Agenda),
-	select_subgraph(Agenda, VV1, RG, Rest, Visited1, Visited).
+connected_pairs([], []).
+connected_pairs([H|T], Edges) :-
+	connected_pairs(T, H, Edges, EdgeTail),
+	connected_pairs(T, EdgeTail).
+
+connected_pairs([], _, Edges, Edges).
+connected_pairs([H|T], To, Edges, EdgeTail) :-
+	(   connected(H, To, GH, GT)
+	->  Edges = [GH-GT,GT-GH|Edges1],
+	    connected_pairs(T, To, Edges1, EdgeTail)
+	;   connected_pairs(T, To, Edges, EdgeTail)
+	).
+
+connected(V1-G1, V2-G2, G1, G2) :-
+	ord_intersect(V1, V2).
+
+connected_vertices([], []) :- !.
+connected_vertices(UGraph, [Set1|Sets]) :-
+	UGraph = [V1-_|_],
+	reachable(V1, UGraph, Set1),
+	del_vertices(UGraph, Set1, UGraph2),
+	connected_vertices(UGraph2, Sets).
 
 
-%	select_related(+Goals, +Var, -NewVars, -RestGoals,
-%		       +VisVar0, -VisVar, +Vis0, -Vis)
-
-select_related([], _, [], [], VV, VV, V, V).
-select_related([G0|GT], Var, NewA, Rest, VV0, VV, V0, V) :-
-	get_assoc(G0, V0, _), !,
-	select_related(GT, Var, NewA, Rest, VV0, VV, V0, V).
-select_related([G0|GT], Var, Agenda, Rest, VV0, VV, V0, V) :-
-	unbound_vars(G0, VG0),
-	member(VG1, VG0), VG1 == Var, !,
-	vars_visited(VG0, VV0, VV1, Agenda, AT),
-	put_assoc(G0, V0, t, V1),
-	select_related(GT, Var, AT, Rest, VV1, VV, V1, V).
-select_related([G0|GT], Var, NewA, [G0|Rest], VV0, VV, V0, V) :-
-	select_related(GT, Var, NewA, Rest, VV0, VV, V0, V).
-
+%%	unbound_vars(+Goal, -Vars) is det.
+%
+%	True when Vars is an ordered set of unbound variables in Goal.
 
 unbound_vars(Goal, Vars) :-
 	vars(Goal, AllVars),
-	unbound(AllVars, Vars).
+	unbound(AllVars, Vars0),
+	sort(Vars0, Vars).
 
 unbound([], []).
 unbound([H|T0], [H|T]) :-
@@ -350,25 +380,6 @@ unbound([H|T0], [H|T]) :-
 	unbound(T0, T).
 unbound([_|T0], T) :-
 	unbound(T0, T).
-
-vars_visited([], VV, VV, A, A).
-vars_visited([H|T], VV0, VV, [H|L0], L) :-
-	put_assoc(H, VV0, t, VV1),
-	vars_visited(T, VV1, VV, L0, L).
-
-
-%%	assoc_keys(+Assoc, -Keys)
-%
-%	Return the keys of an assoc as a list. Can be optimised further.
-
-assoc_keys(Assoc, Keys) :-
-	assoc_to_list(Assoc, List),
-	keys(List, Keys).
-
-keys([], []).
-keys([K-_|T0], [K|T]) :-
-	keys(T0, T).
-
 
 %%	conj_to_list(+Conj, -List)
 %
@@ -415,71 +426,6 @@ list_to_conj([goal(_,G,_)|T0], (G,T)) :-
 %id(goal(Id, _, _),     Id).
 goal(goal(_, Goal, _), Goal).
 vars(goal(_, _, Vars), Vars).
-
-
-		 /*******************************
-		 *      CARTHESIAN PRODUCT	*
-		 *******************************/
-
-/* - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
-If the cost is high, it can be   worthwhile  to see whether we can split
-the conjunction into independent  parts,   execute  these seperately and
-determine the carthesian product.
-
-To  indicate  carthesian  execution  is  profitable,  a  conjunction  is
-transformed into a call to
-
-	rdfql_carthesian(ListOfSubGoals)
-
-where each SubGoal is of the form
-
-	bag(Vars, Goal)
-
-where Vars are the variables in Goal and Goal is a subgoal that is fully
-independent from the others.
-- - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - */
-
-carthesian(Goal, Carthesian) :-
-	State = bindings([]),
-	conj_to_list(Goal, Conj0),
-	carthesian_conj(Conj0, State, Carthesian), !,
-	arg(1, State, Bindings),
-	unbind(Bindings).
-carthesian(Goal, Goal).
-
-carthesian_conj(List, State, Carthesian) :-
-	group_by_cut(List, Before, _Cut, After), !,
-	carthesian_conj(Before, State, B),
-	carthesian_conj(After, State, A),
-	Carthesian = (B, !, A).
-carthesian_conj(List, State, Carthesian) :-
-	append(Before, After, List),
-	bind_args(Before, State),
-	make_subgraphs(After, SubGraphs),
-	SubGraphs = [_,_|_], !,
-	list_to_conj(Before, B),
-	mk_carthesian(SubGraphs, Bags),
-	carthesian_final(Bags, CarthGoal),
-	Carthesian = (B, CarthGoal).
-
-mk_carthesian([], []).
-mk_carthesian([G0|T0], [bag(Vars, Goal)|T]) :-
-	list_to_conj(G0, Goal),
-	term_variables(Goal, Vars0),
-	delete_instantiated(Vars0, Vars),
-	mk_carthesian(T0, T).
-
-%%	carthesian_final(+Bags, -Final)
-%
-%	Remove some common results that  are   not  useful. Notably bags
-%	with empty variable-set are interesting. They are basically sets
-%	of goals called with  ground  variables   and  therefore  can be
-%	merged with the bag in front of it.
-%
-%	This needs some more though!
-
-carthesian_final([bag(_, G0), bag([],G1)], (G0, G1)) :- !.
-carthesian_final(Bags, rdfql_carthesian(Bags)).
 
 
 		 /*******************************
@@ -544,6 +490,23 @@ uninstantiate(Term, How) :-
 	->  del_attr(Term, instantiated)
 	;   true
 	).
+
+%%	instantiate_unify(A, B, State) is det.
+%
+%	We encounter a plain unification. Ideally, we determine the most
+%	specific binding and propagate this and execute the unification.
+%	The latter however must be undone  if we evaluate a disjunction.
+%	For now, the code is somewhat   simplified  and we merely decide
+%	that if one  side  is  instantiated,   the  other  will  be too,
+%	disregarding the actual value we might know.
+
+instantiate_unify(A, B, State) :-
+	instantiated(B, +(_)), !,
+	instantiate(A, _, b, State).
+instantiate_unify(A, B, State) :-
+	instantiated(A, +(_)), !,
+	instantiate(B, _, b, State).
+instantiate_unify(_, _, _).
 
 
 %%	attr_unify_hook(+Attribute, +Value)
@@ -628,7 +591,7 @@ delete_instantiated([H|T0], L) :-
 %
 %		E = 1 + B0 + B0*B1 + B0*B1*B2, ...
 %
-%	Non-RDF calls are supposed  to  be   boolean  tests  that cam be
+%	Non-RDF calls are supposed  to  be   boolean  tests  that can be
 %	executed at the first opportunity all arguments are bound by RDF
 %	calls. They have a probability of   failure, reducing the search
 %	space. Using the above formula, any   number  lower than 1 moves
@@ -694,7 +657,7 @@ complexity((If0->Then0;Else0),		% dubious
 	).
 complexity((A0;B0), (A;B), State, Sz0, Sz, C0, C) :- !,
 	(   var(A)
-	->  optimise_order(A0, A, _, _),
+	->  optimise_order(A0, A, _, _),	% First try the cheap one?
 	    optimise_order(B0, B, _, _)
 	;   A = A0,
 	    B = B0
@@ -703,15 +666,37 @@ complexity((A0;B0), (A;B), State, Sz0, Sz, C0, C) :- !,
 	complexity(B, B, State, Sz0, SzB, C0, CB),
 	Sz is SzA + SzB,
 	C is CA + CB.
+complexity(sparql_group(G0), sparql_group(G), State, Sz0, Sz, C0, C) :- !,
+	(   var(G)
+	->  rdf_optimise(G0, G, Sz1, C1),
+	    Sz is Sz0 * Sz1,
+	    C is C0+Sz0*C1
+	;   complexity(G, G, State, Sz0, Sz, C0, C)
+	).
+complexity(sparql_group(G0, OV, IV),
+	   sparql_group(G, OV, IV),
+	   State, Sz0, Sz, C0, C) :- !,
+	(   var(G)
+	->  rdf_optimise(G0, G, Sz1, C1),
+	    Sz is Sz0 * Sz1,
+	    C is C0+Sz0*C1
+	;   complexity(G, G, State, Sz0, Sz, C0, C)
+	).
 complexity(rdfql_carthesian(Bags),
 	   rdfql_carthesian(Bags), State, Sz0, Sz, C0, C) :- !,
 	carth_complexity(Bags, State, Sz0, Sz, C0, 0, C).
+complexity(independent(Goals0), Goal, State, Sz0, Sz, C0, C) :- !,
+	independent_complexity(Goals0, Goal, State, Sz0, Sz, C0, 0, C).
 complexity(Goal, Goal, State, Sz0, Sz, C0, C) :-
 	Goal = member(Var, List), !,	% List is list of resources
 	instantiate(Var, _, b, State),
 	length(List, Branch),
 	Sz is Sz0 * Branch,
 	C is C0 + Sz0*0.2 + Sz*0.2.
+complexity(Goal, Goal, State, Sz, Sz, C0, C) :-
+	Goal = (A=B), !,
+	instantiate_unify(A, B, State),
+	C is C0 + 0.2.
 complexity(Goal, Goal, State, Sz, Sz, C0, C) :-
 	Goal = (Var=literal(V)), !,
 	instantiated(V, +(_)),
@@ -730,27 +715,27 @@ complexity(Goal, Goal, State, Sz0, Sz, C0, C) :-
 complexity(sparql_eval(E,V), sparql_eval(E,V), _, Sz0, Sz, C0, C) :- !,
 	term_variables(E, Vars),
 	all_bound(Vars),
-	Sz0 is Sz,			% probability of failure
+	Sz is Sz0,			% probability of failure
 	C is C0 + Sz*20.		% Sz * CostOfEval
 complexity(sparql_true(E), sparql_true(E), _, Sz0, Sz, C0, C) :- !,
 	term_variables(E, Vars),
 	all_bound(Vars),
-	Sz is Sz0,			% probability of failure
-	C is C0 + Sz*20.		% Sz * CostOfEval
+	Sz is Sz0 * 0.5,		% probability of failure
+	C is C0 + Sz0*20.		% Sz * CostOfEval
 complexity(G, G, _, Sz0, Sz, C0, C) :-	% non-rdf tests
 	term_variables(G, Vars),
 	all_bound(Vars),
 	Sz is Sz0 * 0.5,		% probability of failure
-	C is C0 + Sz.			% Sz * CostOfTest
+	C is C0 + Sz0.			% Sz * CostOfTest
 
 all_bound([]).
 all_bound([H|T]) :-
 	instantiated(H, +(_)),
 	all_bound(T).
 
-%	carth_complexity(+Bags, +State,
-%			 +Size0, -Size,
-%			 +Time0, +TimeSum0, -TimeSum)
+%%	carth_complexity(+Bags, +State,
+%%			 +Size0, -Size,
+%%			 +Time0, +TimeSum0, -TimeSum) is det.
 %
 %	Compute the time and space efficiency of the carthesian product.
 %	the total cost in time is the sum  of the costs of all branches,
@@ -763,6 +748,60 @@ carth_complexity([bag(_,G)|T], State,
 	complexity(G, G, State, Sz0, Sz1, C0, C1),
 	Csum1 is Csum0 + C1,
 	carth_complexity(T, State, Sz1, Sz, C0, Csum1, Csumz).
+
+
+%%	independent_complexity(+GoalsIn, -Goals, +State,
+%%			       +Size0, -Size,
+%%			       +Time0, +TimeSum0, -TimeSum) is det.
+%
+%	Compute the complexity of an independent conjunction.
+%
+%	@param Goals is a list of g(Goal, Branch, Cost), where Branch is
+%	the number of solutions expected fromGoal and Cost is the
+%	estimated CPU time.
+
+independent_complexity(GoalsIn, Goal, State,
+		       Size0, Size,
+		       Time0, TimeSum0, TimeSum) :-
+	indep_complexity(GoalsIn, Goals1, State,
+			 Size0, Size,
+			 Time0, TimeSum0, TimeSum),
+	keysort(Goals1, ByCost),
+	pairs_values(ByCost, Goals2),
+	simplify_carthesian(Goals2, Goal).
+
+indep_complexity([], [], _, Sz, Sz, _, C, C).
+indep_complexity([G0|GT0], [SzG-bag(Vars,G,SzG,CG)|GT], State,
+		       Sz0, Sz,
+		       C0, Csum0, Csumz) :-
+	complexity(G0, G, State, Sz0, Sz1, C0, C1),
+	term_variables(G, VList),
+	Vars =.. [v|VList],
+	(   Sz0 =:= 0
+	->  SzG = 0,
+	    CG = 0
+	;   SzG is Sz1/Sz0,
+	    CG is (C1-C0)/Sz0
+	),
+	Csum1 is Csum0 + C1,
+	indep_complexity(GT0, GT, State, Sz1, Sz, C0, Csum1, Csumz).
+
+%%	simplify_carthesian(+Bags, -Goal) is det.
+%
+%	Peer of the leading little branching   goals from the carthesian
+%	handler. If there is a bag of one   left,  turn it into a normal
+%	goal.
+
+simplify_carthesian([], true).
+simplify_carthesian([bag(_,Goal,_Branch,_Cost)], Goal) :- !.
+simplify_carthesian([bag(_,Goal,Branch,_Cost)|Bags], Final) :-
+	(   Branch < 1.5
+	->  !, Final = (Goal, Final1),
+	    simplify_carthesian(Bags, Final1)
+	;   Bags == []
+	->  !, Final = Goal
+	).
+simplify_carthesian(Bags, rdfql_carthesian(Bags)).
 
 
 %%	complexity0(+SI, +PI, +OI, +P, +G, -Setup, -PerAlt, -Branch).
@@ -791,8 +830,11 @@ complexity0(-,+(+),+(b), P, G, 1, 1, B) :- !,
 	rdf_predicate_property(P, Prop).
 complexity0(+(b), -, -, _, _, 1, 1, B) :- !,
 	rdf_statistics(triples(Total)),
-	rdf_statistics(subjects(Subjs)),
-	B is Total/Subjs.
+	subject_count(Subjs),
+	(   Total == 0
+	->  B = 0
+	;   B is Total/Subjs
+	).
 complexity0(_,_,+(like(Pat)),_, G, Factor, Factor, B) :- !,
 	rdf_estimate_complexity(G, B0),
 	pattern_filter(Pat, Factor0),
@@ -800,6 +842,14 @@ complexity0(_,_,+(like(Pat)),_, G, Factor, Factor, B) :- !,
 	B is B0/Factor.
 complexity0(_,_,_, _, G, 1, 1, B) :-
 	rdf_estimate_complexity(G, B).
+
+:- if(rdf_statistics(subjects(_))).
+subject_count(Count) :-				% RDF-DB 2.x
+	rdf_statistics(subjects(Count)).
+:- else.
+subject_count(Count) :-				% RDF-DB 3.x
+	rdf_statistics(resources(Count)).
+:- endif.
 
 :- multifile
         subj_branch_factor/3,
@@ -826,7 +876,7 @@ obj_branch_factor(rdf_reachable(_,_,_),  X, rdfs_object_branch_factor(X)).
 :- multifile
 	rdf_db_goal/4.
 
-rdf_db_goal(rdf(S,P,O), 		S,P,O).
+rdf_db_goal(rdf(S,P,O),			S,P,O).
 rdf_db_goal(rdf_has(S,P,O),		S,P,O).
 rdf_db_goal(rdf_reachable(S,P,O),	S,P,O).
 rdf_db_goal(rdf(S,P,O, _DB),		S,P,O). % TBD: less hits
@@ -947,6 +997,14 @@ select_bind_null((G0 *-> true; true),
 select_bind_null(rdfql_carthesian(List0),
 		 rdfql_carthesian(List), State) :- !,
 	select_carth_bind_null(List0, List, State).
+select_bind_null(sparql_group(A0), sparql_group(A), State) :- !,
+	select_bind_null(A0, A, State).
+select_bind_null(sparql_group(A0,Outer,Inner),
+		 sparql_group(A, Outer,Inner),
+		 State) :- !,
+	select_bind_null(A0, A, State),
+	term_variables(Outer, Vars),
+	c_bind(Vars, State).
 select_bind_null(Goal, Goal, State) :-
 	term_variables(Goal, Vars),
 	c_bind(Vars, State).
@@ -1024,7 +1082,9 @@ dbg_portray_body(_).
 
 portray_body(G) :-
 	(   pp_instantiate_term(G),
-	    debug(_, '~@', [portray_clause((<> :- G))]),
+	    debug(_, '~@',
+		  [ portray_clause(current_output, (<> :- G), [module(sparql_runtime)])
+		  ]),
 	    fail
 	;   true
 	).
@@ -1048,3 +1108,10 @@ pp_instantiate_args(N, Term) :-
 	pp_instantiate_args(N2, Term).
 
 
+		 /*******************************
+		 *	      SANDBOX		*
+		 *******************************/
+
+:- multifile sandbox:safe_meta_predicate/1.
+
+sandbox:safe_meta_predicate(rdf_optimise:rdf_optimise/1).

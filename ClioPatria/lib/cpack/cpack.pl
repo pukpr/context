@@ -188,11 +188,11 @@ package_status(cpack(Package, Options),
 	       cpack(Package, Options, Status)) :-
 	cpack_package_dir(Package, Dir, false),
 	directory_file_path(Dir, '.git', GitRepo),
-	(   exists_directory(GitRepo)
+	(   access_file(GitRepo, read)
 	->  option(branch(Branch), Options, master),
 	    atom_concat('origin/', Branch, Commit),
 	    git_describe(OldVersion, [directory(Dir)]),
-	    git([fetch], [ directory(Dir) ]),
+	    git([fetch, origin], [ directory(Dir) ]),
 	    git_describe(NewVersion, [directory(Dir),commit(Commit)]),
 	    (	OldVersion == NewVersion
 	    ->	Status = no_change(OldVersion)
@@ -246,9 +246,8 @@ cpack_download(_Package, Dir) :-
 	    ]).				% Too simplistic
 cpack_download(git(GitURL, Options), Dir) :-
 	findall(O, git_clone_option(O, Options), LOL),
-	append(LOL, OL),
 	append([ [clone, GitURL, Dir]
-	       | OL
+	       | LOL
 	       ], GitOptions),
 	git(GitOptions, []),
 	setup_push_for_download(Dir).
@@ -630,7 +629,7 @@ cpack_create(Name, Title, Options) :-
 	cpack_load_profile,
 	option(type(Type), Options, package),
 	option(description(Descr), Options,
-	       'Package description goes here.  You can use PlDoc markup.'),
+	       'Package description goes here.  You can use markdown.'),
 	package_class_id(Type, PkgClass),
 	default_bindings(default, Name, DefaultBindings),
 	merge_options(Options,
@@ -693,21 +692,43 @@ git_setup_push(Dir, Vars) :-
 	git([remote, add, origin, PushURL], [directory(Dir)]),
 	directory_file_path(Dir, '.git/config', Config),
 	setup_call_cleanup(open(Config, append, Out),
-			   format(Out, '[branch "master"]\n
-					\tremote = origin\n
+			   format(Out, '[branch "master"]\n\c
+					\tremote = origin\n\c
 					\tmerge = refs/heads/master\n', []),
 			   close(Out)),
-	catch(git_create_origin(PushURL, Title), E,
-	      print_message(error, E)).
+	catch(git_create_origin(Dir, PushURL, Title), E, true),
+	(   var(E)
+	->  true
+	;   subsumes_term(error(existence_error(source_sink, path(Exe)), _), E)
+	->  print_message(error, cpack(missing_program(Exe)))
+	;   print_message(error, E)
+	).
 git_setup_push(_,_).
 
-%%	git_create_origin(+PushURL, +Title) is det.
+%%	git_create_origin(+Dir, +PushURL, +Title) is det.
 %
 %	Try to create the repository origin. As the user has setup push,
 %	we hope he setup SSH appropriately. Note that this only works if
 %	the remote user has a real shell and not a git-shell.
+%
+%	When using GitHub, PushURL is
+%
+%	  ==
+%	  git@github.com:<user>/@CPACK@.git
+%	  https://github.com/<user>/@CPACK@.git
+%	  ==
 
-git_create_origin(PushURL, Title) :-
+git_create_origin(Dir, PushURL, Title) :-
+	(   atom_concat('git@github.com:', UserPath, PushURL)
+	->  true
+	;   atom_concat('https://github.com/', UserPath, PushURL)
+	),
+	atomic_list_concat([_User, RepoGit], /, UserPath),
+	file_name_extension(Repo, git, RepoGit), !,
+	process_create(path(hub), [create, Repo, '-d', Title],
+		       [ cwd(Dir)
+		       ]).
+git_create_origin(_Dir, PushURL, Title) :-
 	uri_components(PushURL, Components),
 	uri_data(scheme, Components, Scheme),
 	(   Scheme == ssh
@@ -718,8 +739,8 @@ git_create_origin(PushURL, Title) :-
 	file_directory_name(Path, Parent),
 	file_base_name(Path, Repo),
 	format(atom(Command),
-	       'cd "~w" && mkdir "~w" && cd "~w" && 
-	       git init --bare && echo "~w" > description && 
+	       'cd "~w" && mkdir "~w" && cd "~w" && \c
+	       git init --bare && echo "~w" > description && \c
 	       touch git-daemon-export-ok',
 	       [Parent, Repo, Repo, Title]),
 	process_create(path(ssh), [ Authority, Command ], []).
@@ -773,6 +794,8 @@ cpack_template(library('cpack/DEFAULTS.in'),
 	       'config-available/DEFAULTS').
 cpack_template(library('cpack/pack.ttl.in'),
 	       'rdf/cpack/@NAME@.ttl').
+cpack_template(library('cpack/README.md.in'),
+	       'README.md').
 
 
 		 /*******************************
@@ -819,7 +842,7 @@ cpack_package_dir(Name, Dir, Create) :-
 	    ;	exists_directory(Dir)
 	    )
 	->  true
-	;   make_directory(Dir)
+	;   make_directory_path(Dir)
 	).
 
 :- multifile
@@ -854,7 +877,12 @@ message(add_remote(Name, URL)) -->
 	[ 'Running "git remote add ~w ~w ..."'-[Name, URL] ].
 message(action(G)) -->
 	[ '~q'-[G] ].
-
+message(missing_program(hub)) --> !,
+	[ 'Cannot find the GitHub command line utility "hub".'-[], nl,
+	  'See https://hub.github.com/ for installation instructions'-[]
+	].
+message(missing_program(Prog)) -->
+	[ 'Cannot find helper program "~w".'-[Prog] ].
 sub_packages([]) --> [].
 sub_packages([H|T]) --> sub_package(H), sub_packages(T).
 
