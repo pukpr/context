@@ -3,7 +3,7 @@
     Author:        Jan Wielemaker
     E-mail:        J.Wielemaker@cs.vu.nl
     WWW:           http://www.swi-prolog.org
-    Copyright (C): 2009-2010, VU University Amsterdam
+    Copyright (C): 2009-2015, VU University Amsterdam
 
     This program is free software; you can redistribute it and/or
     modify it under the terms of the GNU General Public License
@@ -35,23 +35,22 @@
 	    context_graph//2		% +URI, +Options
 	  ]).
 :- use_module(library(http/http_dispatch)).
-:- use_module(library(http/http_path)).
 :- use_module(library(http/http_parameters)).
 :- use_module(library(http/html_write)).
+:- use_module(library(http/js_write)).
 :- use_module(library(http/html_head)).
-:- use_module(library(http/http_json)).
 :- use_module(library(http/http_wrapper)).
 :- use_module(library(http/yui_resources)).
+:- use_module(library(http/http_path)).
+:- use_module(library(http/jquery)).
 
-:- use_module(library(semweb/rdf_turtle_write)).
 :- use_module(library(semweb/rdf_db)).
 :- use_module(library(semweb/rdfs)).
 :- use_module(library(semweb/rdf_litindex)).
+:- use_module(library(semweb/rdf_persistency)).
 
 :- use_module(library(aggregate)).
 :- use_module(library(lists)).
-:- use_module(library(error)).
-:- use_module(library(uri)).
 :- use_module(library(pairs)).
 :- use_module(library(debug)).
 :- use_module(library(option)).
@@ -62,6 +61,7 @@
 :- use_module(components(graphviz)).
 :- use_module(components(basics)).
 :- use_module(api(lod_crawler)).
+:- use_module(api(sesame)).
 :- use_module(library(semweb/rdf_abstract)).
 :- use_module(library(semweb/rdf_label)).
 
@@ -106,6 +106,8 @@ that allow back-office applications to reuse this infrastructure.
 
 :- http_handler(rdf_browser(list_prefixes),   list_prefixes,   []).
 :- http_handler(rdf_browser(search),          search,	       []).
+:- http_handler(rdf_browser(multigraph_action), multigraph_action,
+		[ time_limit(infinite) ]).
 
 
 :- meta_predicate
@@ -134,44 +136,183 @@ list_graphs(_Request) :-
 			  \graph_table(Rows, [])
 			]).
 
-graph_triples(Graph, Count) :-			% RDF-DB < 3.0
-	rdf_statistics(triples_by_file(Graph, Count)).
+:- if((rdf_version(V),V>=30000)).
 graph_triples(Graph, Count) :-
 	rdf_statistics(triples_by_graph(Graph, Count)).
+:- else.
+graph_triples(Graph, Count) :-			% RDF-DB < 3.0
+	rdf_statistics(triples_by_file(Graph, Count)).
+:- endif.
 
 graph_table(Graphs, Options) -->
 	{ option(top_max(TopMax), Options, 500),
-	  option(top_max(BottomMax), Options, 500)
+	  option(top_max(BottomMax), Options, 500),
+	  http_link_to_id(multigraph_action, [], Action),
+	  graph_actions(Options, ActionOptions)
 	},
 	html_requires(css('rdf.css')),
-	html(table(class(block),
-		   [ \graph_table_header
-		   | \table_rows_top_bottom(graph_row, Graphs,
-					    TopMax, BottomMax)
-		   ])).
+	html(form([ action(Action),
+		    class('graph-table')
+		  ],
+		  [ table(class(block),
+			  [ \graph_table_header
+			  | \table_rows_top_bottom(
+				 graph_row(ActionOptions), Graphs,
+				 TopMax, BottomMax)
+			  ]),
+		    \multigraph_actions(ActionOptions)
+		  ])),
+	mgraph_action_script.
 
 graph_table_header -->
 	html(tr([ th('RDF Graph'),
-		  th('Triples')
+		  th('Triples'),
+		  th('Persistency')
 		])).
 
-graph_row(virtual(total)) --> !,
+graph_row(_, virtual(total)) --> !,
 	{ rdf_statistics(triples(Count))
 	},
 	html([ th(class(total), 'Total #triples:'),
 	       \nc('~D', Count, [class(total)])
 	     ]).
-graph_row(Graph) -->
+graph_row(Options, Graph) -->
 	{ graph_triples(Graph, Count)
 	},
 	html([ td(\graph_link(Graph)),
-	       \nc('~D', Count)
+	       \nc('~D', Count),
+	       td(style('text-align:center'), \persistency(Graph)),
+	       \graph_checkbox(Graph, Options)
 	     ]).
+
+
 
 graph_link(Graph) -->
 	{ http_link_to_id(list_graph, [graph=Graph], URI)
 	},
 	html(a(href(URI), Graph)).
+
+persistency(Graph) -->
+	{ rdf_graph_property(Graph, persistent(true)) }, !,
+	snapshot(Graph),
+	journal(Graph).
+persistency(_) -->
+	{ http_absolute_location(icons('volatile.png'), Img, [])
+	},
+	html(img([ class('in-text'),
+		   title('Graph is not persistent'),
+		   src(Img)
+		 ])).
+
+snapshot(Graph) -->
+	{ rdf_snapshot_file(Graph, _),
+	  http_absolute_location(icons('snapshot.png'), Img, [])
+	},
+	html(img([ class('in-text'),
+		   title('Graph has persistent snapshot'),
+		   src(Img)
+		 ])).
+snapshot(_) --> [].
+
+journal(Graph) -->
+	{ rdf_journal_file(Graph, _),
+	  http_absolute_location(icons('journal.png'), Img, [])
+	},
+	html(img([ class('in-text'),
+		   title('Graph has a journal'),
+		   src(Img)
+		 ])).
+journal(_) --> [].
+
+%%	graph_actions(+Options0, -Options).
+%%	multigraph_actions(+Options)
+%
+%	Deal with actions on multiple graphs.
+
+graph_actions(Options, [show_actions(true)|Options]) :-
+	logged_on(User), !,
+	catch(check_permission(User, write(_, unload(user))), _, fail), !.
+graph_actions(Options, Options).
+
+graph_checkbox(Graph, Options) -->
+	{ option(show_actions(true), Options) }, !,
+	html(td(class('no-border'),
+		input([type(checkbox),name(graph),value(Graph),
+		       class('graph-select')]))).
+graph_checkbox(_, _) --> [].
+
+multigraph_actions(Options) -->
+	{ option(show_actions(true), Options), !,
+	  findall(Action-Format,
+		  clause(graph_action(Action,Format,_), _),
+		  Pairs)
+	},
+	html([ ul([ class('multi-graph-actions')
+		  ],
+		  \li_graph_actions(Pairs))
+	     ]).
+multigraph_actions(_) --> [].
+
+li_graph_actions([]) --> [].
+li_graph_actions([H|T]) --> li_graph_action(H), li_graph_actions(T).
+
+li_graph_action(Action-Format) -->
+	{ atomic_list_concat([Pre,Post], '~w', Format) },
+	html(li([ Pre,
+		  input([ type(submit), name(action), value(Action) ]),
+		  Post
+		])).
+
+mgraph_action_script -->
+	html_requires(jquery),
+	js_script({|javascript||
+function showActions(time) {
+  if ( time === undefined ) time = 400;
+  var val = [];
+  $('.graph-table :checkbox:checked').each(function(i) {
+    val[i] = $(this).val();
+  });
+  if ( val.length == 0 )
+    $(".multi-graph-actions").hide(time);
+  else
+    $(".multi-graph-actions").show(time);
+}
+
+$(function() {
+  showActions(0);
+  $(".graph-table .graph-select").on('click', showActions);
+});
+		   |}).
+
+%%	multigraph_action(Request)
+%
+%	HTTP Handler for user actions on multiple graphs.
+
+multigraph_action(Request) :-
+	findall(Action, clause(graph_action(Action,_,_), _), Actions),
+	http_parameters(Request,
+			[ graph(Graphs, [list(atom)]),
+			  action(Action, [oneof(Actions)])
+			]),
+	clause(graph_action(Action,Format,_), _),
+	api_action(Request, multigraph_action(Action, Graphs), html,
+		   Format-[Action]).
+
+multigraph_action(Action, Graphs) :-
+	forall(member(Graph, Graphs),
+	       ( print_message(informational,
+			       format('Processing ~w ...', [Graph])),
+		 graph_action(Action, _, Graph))).
+
+graph_action('Delete', '~w selected graphs', Graph) :-
+	rdf_unload_graph(Graph).
+graph_action(volatile, 'Make selected graphs ~w', Graph) :-
+	rdf_persistency(Graph, false).
+graph_action(persistent, 'Make selected graphs ~w', Graph) :-
+	rdf_persistency(Graph, true).
+graph_action('Merge journals', '~w for selected graphs', Graph) :-
+	rdf_flush_journals([graph(Graph)]).
+
 
 %%	list_graph(+Request)
 %
@@ -185,7 +326,7 @@ list_graph(Request) :-
 			]),
 	(   rdf_graph(Graph)
 	->  true
-	;   existence_error(graph, Graph)
+	;   http_404([], Request)
 	),
 	reply_html_page(cliopatria(default),
 			title('RDF Graph ~w'-[Graph]),
@@ -196,6 +337,7 @@ list_graph(Request) :-
 					      ]),
 			  \graph_info(Graph),
 			  \graph_as_resource(Graph, []),
+			  \graph_persistency(Graph),
 			  \graph_actions(Graph)
 			]).
 
@@ -227,7 +369,7 @@ graph_property(Graph, P, V) :-
 graph_property_nc(Graph, source, Source) :-
 	rdf_source(Graph, Source).
 graph_property_nc(Graph, triples, int(Triples)) :-
-	rdf_statistics(triples_by_file(Graph, Triples)).
+	graph_triples(Graph, Triples).
 graph_property_nc(Graph, predicate_count, int(Count)) :-
 	aggregate_all(count, predicate_in_graph(Graph, _P), Count).
 graph_property_nc(Graph, subject_count, int(Count)) :-
@@ -249,7 +391,7 @@ predicate_in_graph(Graph, P) :-
 %	that we get distinct subjects for free.
 
 subject_in_graph(Graph, S) :-
-	rdf_statistics(triples_by_file(Graph, Count)),
+	graph_triples(Graph, Count),
 	rdf_statistics(triples(Total)),
 	Count * 10 > Total, !,		% Graph has more than 10% of triples
 	rdf_subject(S),
@@ -260,7 +402,7 @@ subject_in_graph(Graph, S) :-
 	member(S, Subjects).
 
 bnode_in_graph(Graph, S) :-
-	rdf_statistics(triples_by_file(Graph, Count)),
+	graph_triples(Graph, Count),
 	rdf_statistics(triples(Total)),
 	Count * 10 > Total, !,
 	rdf_subject(S),
@@ -296,21 +438,92 @@ type_in_graph2(Graph, Class) :-
 	).
 
 
+%%	graph_persistency(+Graph)//
+%
+%	Show information about the persistency of the graph
+
+graph_persistency(Graph) -->
+	{ rdf_graph_property(Graph, persistent(true)),
+	  (   rdf_journal_file(Graph, _)
+	  ;   rdf_snapshot_file(Graph, _)
+	  )
+	}, !,
+	html([ h1('Persistency information'),
+	       table(class(block),
+		     [ tr([ td(class('no-border'),[]),
+			    th('File'), th('Size'),th('Modified'),
+			    td(class('no-border'),[])
+			  ]),
+		       \graph_shapshot(Graph),
+		       \graph_journal(Graph)
+		     ])
+	     ]).
+graph_persistency(Graph) -->
+	{ rdf_graph_property(Graph, persistent(true))
+	}, !,
+	html([ h1('Persistency information'),
+	       p('The graph has no associated persistency files')
+	     ]).
+graph_persistency(_Graph) -->
+	[].
+
+graph_shapshot(Graph) -->
+	{ rdf_snapshot_file(Graph, File)
+	},
+	html(tr([ th(class('file-role'), 'Snapshot'),
+		  \file_info(File)
+		])).
+graph_shapshot(_) --> [].
+
+
+graph_journal(Graph) -->
+	{ rdf_journal_file(Graph, File)
+	},
+	html(tr([ th(class('file-role'), 'Journal'),
+		  \file_info(File),
+		  \flush_journal_button(Graph)
+		])).
+graph_journal(_) --> [].
+
+flush_journal_button(Graph) -->
+	{ http_link_to_id(flush_journal, [], HREF)
+	},
+	html(td(class('no-border'),
+		form(action(HREF),
+		     [ input([type(hidden), name(graph), value(Graph)]),
+		       input([type(hidden), name(resultFormat), value(html)]),
+		       input([type(submit), value('Merge journal')])
+		     ]))).
+
+
+file_info(File) -->
+	{ size_file(File, Size),
+	  time_file(File, Time),
+	  format_time(string(Modified), '%+', Time)
+	},
+	html([ td(class('file-name'), File),
+	       td(class('int'), \n(human, Size)),
+	       td(class('file-time'), Modified)
+	     ]).
+
+
 %%	graph_actions(+Graph)// is det.
 %
 %	Provide a form for basic actions on the graph
 
 graph_actions(Graph) -->
-	html(ul(class(graph_actions),
-		[ \li_export_graph(Graph, show),
-		  \li_export_graph(Graph, download),
-		  \li_schema_graph(Graph),
-		  \li_delete_graph(Graph)
-		])).
+	html([ h2('Actions'),
+	       ul(class(graph_actions),
+		  [ \li_export_graph(Graph, show),
+		    \li_export_graph(Graph, download),
+		    \li_schema_graph(Graph),
+		    \li_delete_graph(Graph),
+		    \li_persistent_graph(Graph)
+		  ])
+	     ]).
 
 li_delete_graph(Graph) -->
-	{ logged_on(User, X),
-	  X \== User,
+	{ logged_on(User),
 	  catch(check_permission(User, write(_, unload(Graph))), _, fail), !,
 	  http_link_to_id(unload_graph, [], Action)
 	},
@@ -321,6 +534,24 @@ li_delete_graph(Graph) -->
 		       ' this graph'
 		     ]))).
 li_delete_graph(_) --> [].
+
+li_persistent_graph(Graph) -->
+	{ logged_on(User),
+	  catch(check_permission(User, write(_, persistent(Graph))), _, fail), !,
+	  http_link_to_id(modify_persistency, [], Action),
+	  (   rdf_graph_property(Graph, persistent(true))
+	  ->  Op = (volatile),   Value = off
+	  ;   Op = (persistent), Value = on
+	  )
+	}, !,
+	html(li(form(action(Action),
+		     [ input([type(hidden), name(graph), value(Graph)]),
+		       input([type(hidden), name(resultFormat), value(html)]),
+		       input([type(hidden), name(persistent), value(Value)]),
+		       'Make this graph ',
+		       input([class(gaction), type(submit), value(Op)])
+		     ]))).
+li_persistent_graph(_) --> [].
 
 li_schema_graph(Graph) -->
 	{ http_link_to_id(export_graph_schema, [], Action),
@@ -352,10 +583,10 @@ li_export_graph(Graph, How) -->
 		     ]))).
 
 download_options(show,     'Show',     'text/plain',
-		 'Returns graph with MIME-type text/plain, \n
+		 'Returns graph with MIME-type text/plain, \n\c
 		  so it will be displayed in your browser').
 download_options(download, 'Download', default,
-		 'Return graph with its RDF MIME-type, \n
+		 'Return graph with its RDF MIME-type, \n\c
 		  so most browsers will save it').
 
 dl_format_menu -->
@@ -452,6 +683,9 @@ type_of(Subject, Type) :-
 	;   rdf_equal(Type, rdfs:'Resource')
 	).
 
+:- meta_predicate
+	call_det(0, -).
+
 call_det(G, Det) :-
 	call(G),
 	deterministic(Det).
@@ -502,7 +736,7 @@ graph_as_resource(Graph, Options) -->
 	  ;   rdf(_, _, Graph)
 	  ), !
 	},
-	html([ h1([ 'Local view for "',
+	html([ h2([ 'Local view for "',
 		    \location(Graph, _), '"'
 		  ]),
 	       \local_view(Graph, _, Options)
@@ -526,7 +760,7 @@ list_instances(Request) :-
 				]),
 			  graph(Graph,
 				[ optional(true),
-				  description('Limit to have at least 
+				  description('Limit to have at least \c
 					       one property in graph')
 				]),
 			  type(Type,
@@ -553,7 +787,7 @@ list_instances(Request) :-
 	reply_html_page(cliopatria(default),
 			title(\instance_table_title(Graph, Class, Sort)),
 			[ h1(\html_instance_table_title(Graph, Class, Sort)),
-			  \instance_table(Table, [])
+			  \instance_table(Table, [resource_format(nslabel)])
 			]).
 
 instance_table_title(Graph, Class, Sort) -->
@@ -593,7 +827,7 @@ instance_table(Pairs, Options) -->
 	html_requires(css('rdf.css')),
 	html(table(class(block),
 		   [ \instance_table_header
-		   | \table_rows_top_bottom(instance_row, Pairs,
+		   | \table_rows_top_bottom(instance_row(Options), Pairs,
 					    TopMax, BottomMax)
 		   ])).
 
@@ -602,8 +836,8 @@ instance_table_header -->
 		  th('#Properties')
 		])).
 
-instance_row(R-C) -->
-	html([ td(\rdf_link(R)),
+instance_row(Options, R-C) -->
+	html([ td(\rdf_link(R, Options)),
 	       td(class(int), C)
 	     ]).
 
@@ -1048,12 +1282,21 @@ list_resource(Request) :-
 %	    * sorted(Sorted)
 %	    One of =default= or =none=.
 %
+%	Calls the hook cliopatria:list_resource//2.  For compatibility
+%	reasons, it also tries the hook cliopatria:list_resource//1.
+%
 %	@see	list_resource/1 is the corresponding HTTP handler.  The
 %		component rdf_link//1 creates a link to list_resource/1.
 
+:- multifile
+	cliopatria:list_resource//1.
+
 list_resource(URI, Options) -->
 	{ \+ option(raw(true), Options) },
-	cliopatria:list_resource(URI), !.
+	(   cliopatria:list_resource(URI, Options)
+	->  []
+	;   cliopatria:list_resource(URI) % deprecated
+	).
 list_resource(URI, Options) -->
 	{ option(graph(Graph), Options, _)
 	},
@@ -1534,7 +1777,7 @@ list_triples(Request) :-
 	reply_html_page(cliopatria(default),
 			title(Title),
 			[ h1(\triple_header(Count, P, Dom, Range, Graph)),
-			  \triple_table(Sorted, P, [])
+			  \triple_table(Sorted, P, [resource_format(nslabel)])
 			]).
 
 rdf_in_domain(S,P,O,Dom,Graph) :-
@@ -1583,7 +1826,7 @@ triple_table(Triples, Pred, Options) -->
 	},
 	html(table(class(block),
 		   [ \spo_header(Pred)
-		   | \table_rows_top_bottom(spo_row(Pred), Triples,
+		   | \table_rows_top_bottom(spo_row(Options, Pred), Triples,
 					    TopMax, BottomMax)
 		   ])).
 
@@ -1598,15 +1841,15 @@ spo_header(_) -->
 		  th('Object')
 		])).
 
-spo_row(Pred, rdf(S,_,O)) -->
+spo_row(Options, Pred, rdf(S,_,O)) -->
 	{ nonvar(Pred) }, !,
-	html([ td(class(subject), \rdf_link(S)),
-	       td(class(object),  \rdf_link(O))
+	html([ td(class(subject), \rdf_link(S, Options)),
+	       td(class(object),  \rdf_link(O, Options))
 	     ]).
-spo_row(_, rdf(S,P,O)) -->
-	html([ td(class(subject),   \rdf_link(S)),
-	       td(class(predicate), \rdf_link(P)),
-	       td(class(object),    \rdf_link(O))
+spo_row(Options, _, rdf(S,P,O)) -->
+	html([ td(class(subject),   \rdf_link(S, Options)),
+	       td(class(predicate), \rdf_link(P, Options)),
+	       td(class(object),    \rdf_link(O, Options))
 	     ]).
 
 
@@ -1668,7 +1911,7 @@ list_triples_with_object(Object, P, Graph) :-
 	reply_html_page(cliopatria(default),
 			title('Triples with object ~w'-[OLabel]),
 			[ h1(\otriple_header(Count, Object, P, Graph)),
-			  \otriple_table(Sorted, Object, [])
+			  \otriple_table(Sorted, Object, [resource_format(nslabel)])
 			]).
 
 otriple_header(Count, Object, Pred, Graph) -->
@@ -1695,7 +1938,7 @@ otriple_table(SPList, Object, Options) -->
 	},
 	html(table(class(block),
 		   [ \sp_header(Object)
-		   | \table_rows_top_bottom(sp_row(Object), SPList,
+		   | \table_rows_top_bottom(sp_row(Options,Object), SPList,
 					    TopMax, BottomMax)
 		   ])).
 
@@ -1704,9 +1947,9 @@ sp_header(_) -->
 		  th('Predicate')
 		])).
 
-sp_row(_O, S-P) -->
-	html([ td(class(subject),   \rdf_link(S)),
-	       td(class(predicate), \rdf_link(P, []))
+sp_row(Options, _O, S-P) -->
+	html([ td(class(subject),   \rdf_link(S, Options)),
+	       td(class(predicate), \rdf_link(P, Options))
 	     ]).
 
 

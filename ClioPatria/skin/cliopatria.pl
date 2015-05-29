@@ -36,6 +36,7 @@
 :- use_module(library(http/html_head)).
 :- use_module(library(http/http_wrapper)).
 :- use_module(library(http/http_dispatch)).
+:- use_module(library(http/http_path)).
 :- use_module(library(version)).
 :- use_module(components(menu)).
 :- use_module(components(simple_search)).
@@ -81,6 +82,11 @@ ClioPatria skin.
 		http_reply_file(icons('favicon.ico'), []),
 		[]).
 
+:- html_resource(plain,
+		 [ virtual(true),
+		   requires([ css('plain.css')
+			    ])
+		 ]).
 :- html_resource(cliopatria,
 		 [ virtual(true),
 		   requires([ css('cliopatria.css')
@@ -99,17 +105,43 @@ user:body(cliopatria(Style), Body) -->
 	cliopatria:page_body(cliopatria(Style), Body), !.
 user:body(cliopatria(_), Body) -->
 	cliopatria:page_body(Body), !.
+user:body(cliopatria(plain), Body) -->
+	html_requires(plain),
+	html(body(class(['yui-skin-sam', cliopatria]),
+		  [ div([id('cp-menu'), class(menu)], \cp_logo_and_menu),
+		    \simple_search_form([value(p(q))]),
+		    br(clear(all)),
+		    div([id('cp-content'), class(content)], Body),
+		    br(clear(all)),
+		    div([id('cp-footer'), class(footer)], \address)
+		  ])).
 user:body(cliopatria(_), Body) -->
 	html_requires(cliopatria),
 	html(body(class(['yui-skin-sam', cliopatria]),
-		  [ div(class(menu), \cp_menu),a([href('/'),title(home)],img([src('/html/images/dcs.gif'), height(30)])),
+		  [ div([id('cp-menu'), class(menu)], \cp_logo_and_menu),
 		    \simple_search_form([value(p(q))]),
 		    br(clear(all)),
-		    div(class(content), Body),
+		    div([id('cp-content'), class(content)], Body),
 		    br(clear(all)),
-		    div(class(footer), \address)
+		    div([id('cp-footer'), class(footer)], \address)
 		  ])).
 
+cp_logo_and_menu -->
+	cp_logo,
+	cp_menu.
+
+cp_logo -->
+	cliopatria:logo, !.
+cp_logo -->
+	{ File = 'cliopatria-logo.png',
+          absolute_file_name(icons(File), _Logo,
+			     [access(read), file_errors(fail)]),
+	  http_absolute_location(icons(File), Src, []),
+	  http_link_to_id(home, [], Home)
+	},
+	html(a([class(logo), href(Home), style('float:left')
+	       ],
+	       img([src(Src)]))).
 
 %%	address//
 %

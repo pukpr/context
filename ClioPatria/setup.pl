@@ -53,9 +53,8 @@ cliopatria_dir(Dir) :-
 install_dir(Dir) :-
 	current_prolog_flag(windows, true), !,
 	working_directory(CWD, CWD),
-	(   Dir = CWD
-            %get(@display, win_directory,
-	    %	'Create ClioPatria project in', CWD, Dir)
+	(   get(@(display), win_directory,
+		'Create ClioPatria project in', CWD, Dir)
 	->  true
 	;   halt(1)
 	).
@@ -66,12 +65,22 @@ install_dir(DIR) :-
 setup:substitutions([ 'SWIPL'=PL,		% Prolog executable (for #!...)
 		      'CLIOPATRIA'=ClioDir,	% ClioPatria directory
 		      'CWD'=CWD,		% This directory
-		      'PARENTDIR'=Parent	% Parent of CWD
+		      'PARENTDIR'=Parent,	% Parent of CWD
+		      'HASHBANG'=HashBang,	% #! (or not)
+		      'LOADOPTIONS'=LoadOptions % -s (or not)
 		    ]) :-
 	cliopatria_dir(ClioDir),
 	working_directory(CWD, CWD),
 	file_directory_name(CWD, Parent),
-	setup_prolog_executable(PL).
+	setup_prolog_executable(PL),
+	hashbang(HashBang),
+	load_options(LoadOptions).
+
+hashbang('%!') :- current_prolog_flag(windows, true), !.
+hashbang('#!').
+
+load_options('') :- current_prolog_flag(os_argv, _), !.
+load_options('-s').
 
 
 %%	options(-Options) is det.

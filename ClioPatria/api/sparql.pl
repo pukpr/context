@@ -29,28 +29,41 @@
 */
 
 :- module(api_sparql,
-	  [ sparql_reply/1
+	  [
 	  ]).
 :- use_module(user(user_db)).
 :- use_module(library(lists)).
+:- use_module(library(option)).
+:- use_module(library(uri)).
 :- use_module(library(rdf_write)).
 :- use_module(library(http/http_parameters)).
+:- use_module(library(http/http_client)).
 :- use_module(library(http/http_dispatch)).
 :- use_module(library(http/http_request_value)).
 :- use_module(library(http/http_cors)).
+:- use_module(library(http/html_write)).
 :- use_module(rdfql(sparql)).
 :- use_module(rdfql(sparql_xml_result)).
 :- use_module(rdfql(sparql_json_result)).
+:- use_module(rdfql(sparql_csv_result)).
+:- use_module(library(settings)).
+:- if(exists_source(applications(yasgui))).
+:- use_module(applications(yasgui)).
+:- endif.
 
-:- http_handler(sparql(.), sparql_reply, [spawn(sparql_query)]).
+:- http_handler(sparql(.),      sparql_query,  [spawn(sparql_query), id(sparql_query)]).
+:- http_handler(sparql(update), sparql_update, [spawn(sparql_query), id(sparql_update)]).
 
-%%	sparql_reply(+Request)
+%%	sparql_query(+Request)
 %
 %	HTTP  handler  for  SPARQL  requests.    Mounted  the  http-path
 %	sparql(.)       (by       default        =|/sparql/|=,       see
 %	library(http/http_path)).
 
-sparql_reply(Request) :-
+sparql_query(Request) :-
+	empty_get_request(Request), !,
+	redirect_human_form(Request).
+sparql_query(Request) :-
 	http_parameters(Request,
 			[ query(Query),
 			  'default-graph-uri'(DefaultGraphs),
@@ -60,8 +73,104 @@ sparql_reply(Request) :-
 			],
 			[ attribute_declarations(sparql_decl)
 			]),
-	append(DefaultGraphs, NamedGraphs, AllGraphs),
-	authorized(read(AllGraphs, query)),
+	append(DefaultGraphs, NamedGraphs, Graphs),
+	authorized(read(Graphs, sparql)),
+	sparql_reply(Request, Query, Graphs, ReqFormat, Entailment).
+
+%%	empty_get_request(+Request) is semidet.
+%
+%	True if Request is an HTTP GET request without any parameters.
+
+empty_get_request(Request) :-
+	option(request_uri(URI), Request),
+	uri_components(URI, Components),
+	uri_data(search, Components, Search),
+	var(Search),
+	option(method(get), Request).
+
+:- if(current_predicate(has_yasgui/0)).
+human_form_location(HREF) :-
+	has_yasgui, !,
+	http_link_to_id(yasgui, [], HREF).
+:- endif.
+human_form_location(HREF) :-
+	http_link_to_id(sparql_query_form, [], HREF).
+
+redirect_human_form(Request) :-
+	human_form_location(HREF),
+	reply_html_page(cliopatria(default),
+			[ title('Redirect to SPARQL editor'),
+			  meta([ 'http-equiv'(refresh),
+				 content('5; url='+HREF)
+			       ])
+			], \sparql_redirect_explanation(Request, HREF)).
+
+sparql_redirect_explanation(Request, EditorHREF) -->
+	{ option(request_uri(URI), Request) },
+	html({|html(URI, EditorHREF)||
+<h4>Redirecting to SPARQL editor ...</h4>
+
+<div class="warning" style="width:80%;margin:auto;border:1px solid #888;padding: 10px 5px">
+You have landed in the SPARQL access location <a href=URI>URI</a> of this server.
+<b>This URI is intended for machines</b>.  Because your request contains no parameters,
+you will be redirected to the SPARQL editor at <a href=EditorHREF>EditorHREF</a>
+in 5 seconds.
+</div>
+	     |}).
+
+
+
+%%	sparql_update(+Request)
+%
+%	HTTP handler for SPARQL update  requests.   This  is the same as
+%	query requests, but the takes the   query  in the =update= field
+%	rather than in the =query= field.
+
+% Browser pointed here
+sparql_update(Request) :-
+	empty_get_request(Request), !,
+	redirect_human_form(Request).
+% Perform a SPARQL update via POST directly.
+% @compat SPARQL 1.1 Protocol recommendation, section 2.2.2.
+sparql_update(Request) :-
+	memberchk(content_type(ContentType), Request),
+	sub_atom(ContentType, 0, _, _, 'application/sparql-update'), !,
+	http_parameters(Request,
+			[ 'using-graph-uri'(DefaultGraphs),
+			  'using-named-graph-uri'(NamedGraphs),
+			  format(ReqFormat),
+			  entailment(Entailment)
+			],
+			[attribute_declarations(sparql_decl)
+			]),
+	append(DefaultGraphs, NamedGraphs, Graphs),
+	http_read_data(Request, Query, []),
+	authorized(write(Graphs, sparql)),
+	sparql_reply(Request, Query, Graphs, ReqFormat, Entailment).
+% Perform a SPARQL update via POST with URL-encoded parameters.
+% @compat SPARQL 1.1 Protocol recommendation, section 2.2.1.
+sparql_update(Request) :-
+	http_parameters(Request,
+			[ update(Query),
+			  'using-graph-uri'(DefaultGraphs),
+			  'using-named-graph-uri'(NamedGraphs),
+			  format(ReqFormat),
+			  entailment(Entailment)
+			],
+			[ attribute_declarations(sparql_decl)
+			]),
+	append(DefaultGraphs, NamedGraphs, Graphs),
+	authorized(write(Graphs, sparql)),
+	sparql_reply(Request, Query, Graphs, ReqFormat, Entailment).
+
+
+%%	sparql_reply(+Request, +Query, +_Graphs, +ReqFormat, +Entailment)
+%
+%	HTTP  handler  for  SPARQL  requests.    Mounted  the  http-path
+%	sparql(.)       (by       default        =|/sparql/|=,       see
+%	library(http/http_path)).
+
+sparql_reply(Request, Query, Graphs, ReqFormat, Entailment) :-
 	statistics(cputime, CPU0),
 	sparql_compile(Query, Compiled,
 		       [ type(Type),
@@ -69,6 +178,10 @@ sparql_reply(Request) :-
 			 distinct(Distinct),
 			 entailment(Entailment)
 		       ]),
+	(   Compiled = sparql_query(update(_), _, _)
+	->  authorized(write(Graphs, sparql))
+	;   true
+	),
 	findall(R, sparql_run(Compiled, R), Rows),
 	statistics(cputime, CPU1),
 	CPU is CPU1 - CPU0,
@@ -84,6 +197,7 @@ output_format(ReqFormat, Request, Format) :-
 	accept_output_format(Request, Format).
 output_format('rdf+xml', _, xml) :- !.
 output_format(json, _, json) :- !.
+output_format(csv, _, csv) :- !.
 output_format(Mime, _, Format) :-
 	atomic_list_concat([Major,Minor], /, Mime),
 	sparql_media(Major/Minor, Format), !.
@@ -106,6 +220,7 @@ find_media([media(Type, _, _, _)|T], Format) :-
 
 sparql_media(application/'sparql-results+xml',   xml).
 sparql_media(application/'sparql-results+json', json).
+sparql_media(text/'tab-separated-values',	 csv).
 
 write_result(xml, Type, Rows, Options) :-
 	cors_enable,
@@ -113,10 +228,16 @@ write_result(xml, Type, Rows, Options) :-
 write_result(json, Type, Rows, Options) :-
 	cors_enable,
 	write_json_result(Type, Rows, Options).
+write_result(csv, Type, Rows, Options) :-
+	cors_enable,
+	write_csv_result(Type, Rows, Options).
 
 write_xml_result(ask, [True], Options) :- !,
 	format('Content-type: application/sparql-results+xml; charset=UTF-8~n~n'),
 	sparql_write_xml_result(current_output, ask(True), Options).
+write_xml_result(update, [True], Options) :- !,
+	format('Content-type: application/sparql-results+xml; charset=UTF-8~n~n'),
+	sparql_write_xml_result(current_output, update(True), Options).
 write_xml_result(select(VarNames), Rows, Options) :- !,
 	format('Transfer-encoding: chunked~n'),
 	format('Content-type: application/sparql-results+xml; charset=UTF-8~n~n'),
@@ -131,8 +252,15 @@ write_json_result(select(VarNames), Rows, Options) :- !,
 	format('Transfer-encoding: chunked~n'),
 	sparql_write_json_result(current_output, select(VarNames, Rows), Options).
 write_json_result(_, _RDF, _Options) :-
-	throw(http_reply(bad_request(format('JSON output is only supported for 
+	throw(http_reply(bad_request(format('JSON output is only supported for \c
 					     ASK and SELECT queries', [])))).
+
+write_csv_result(select(VarNames), Rows, Options) :- !,
+	format('Transfer-encoding: chunked~n'),
+	sparql_write_csv_result(current_output, select(VarNames, Rows), Options).
+write_csv_result(_, _RDF, _Options) :-
+	throw(http_reply(bad_request(format('CSV output is only supported for \c
+					     SELECT queries', [])))).
 
 
 %%	sparql_decl(+OptionName, -Options)
@@ -143,6 +271,9 @@ write_json_result(_, _RDF, _Options) :-
 sparql_decl(query,
 	    [ description('The SPARQL query to execute')
 	    ]).
+sparql_decl(update,
+	    [ description('The SPARQL update query to execute')
+	    ]).
 sparql_decl('default-graph-uri',
 	    [ list(atom),
 	      description('The default graph(s) to query (not supported)')
@@ -151,21 +282,31 @@ sparql_decl('named-graph-uri',
 	    [ list(atom),
 	      description('Additional named graph(s) to query (not supported)')
 	    ]).
+sparql_decl('using-graph-uri',
+	    [ list(atom),
+	      description('The default graph(s) to update (not supported)')
+	    ]).
+sparql_decl('using-named-graph-uri',
+	    [ list(atom),
+	      description('Additional named graph(s) to update (not supported)')
+	    ]).
 sparql_decl(format,
 	    [ optional(true),
 	      oneof([ 'rdf+xml',
 		      json,
+		      csv,
 		      'application/sparql-results+xml',
 		      'application/sparql-results+json'
 		    ]),
-	      description('Result format.  If not specified, the 
+	      description('Result format.  If not specified, the \c
 			  HTTP Accept header is used')
 	    ]).
 sparql_decl(entailment,
 	    [ optional(true),
-	      default(rdf),
+	      default(Default),
 	      oneof(Es),
 	      description('Entailment used')
 	    ]) :-
+	setting(sparql:entailment, Default),
 	findall(E, cliopatria:entailment(E, _), Es).
 

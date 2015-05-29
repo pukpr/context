@@ -108,14 +108,15 @@ terms as a graph.
 :- dynamic
 	closure/4.				% Hash, Closure, Options, Time
 
-graphviz_graph(_Closure, Options) -->
+graphviz_graph(_Closure, _:Options) -->
 	{ option(render(Renderer), Options, dot),
 	  \+ has_graphviz_renderer(Renderer)
 	}, !,
 	no_graph_viz(Renderer).
 graphviz_graph(Closure, Options) -->
 	{ setting(graphviz:format, DefFormat),
-	  option(format(Format), Options, DefFormat),
+	  Options = _:PlainOptions,
+	  option(format(Format), PlainOptions, DefFormat),
 	  meta_options(is_meta, Options, QOptions),
 	  variant_sha1(Closure+QOptions, Hash),
 	  get_time(Now),
@@ -251,7 +252,7 @@ graph_mime_type(xdot, 'text/plain; charset=UTF-8') :- !.
 graph_mime_type(svg,  'image/svg+xml; charset=UTF-8') :- !.
 graph_mime_type(Lang, 'text/plain; charset=UTF-8') :-
 	print_message(warning,
-		      format('Do not know content-type for grapviz 
+		      format('Do not know content-type for grapviz \c
 		             language ~w.  Please extend graph_mime_type/2',
 			     Lang)).
 
@@ -261,8 +262,8 @@ send_to_dot(Graph, Options, Out) :-
 	    assert(user:graphviz(Graph, Options))
 	;   true
 	),
-	gviz_write_rdf(Out, Graph, Options),
-	close(Out).
+	call_cleanup(gviz_write_rdf(Out, Graph, Options),
+		     close(Out)), !.
 
 copy_graph_data(Out) :-
 	debugging(graphviz), !,

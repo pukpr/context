@@ -1,11 +1,9 @@
-/*  $Id$
-
-    Part of SWI-Prolog
+/*  Part of ClioPatria
 
     Author:        Jan Wielemaker
-    E-mail:        J.Wielemaker@cs.vu.nl
-    WWW:           http://www.swi-prolog.org
-    Copyright (C): 2004-2010, University of Amsterdam
+    E-mail:        J.Wielemaker@vu.nl
+    WWW:           http://cliopatria.swi-prolog.org
+    Copyright (C): 2004-2015, University of Amsterdam
 			      VU University Amsterdam
 
     This program is free software; you can redistribute it and/or
@@ -43,17 +41,18 @@ This module loads the ClioPatria  server   as  a  library, providing the
 public predicates defined in the header.   Before loading this file, the
 user should set up a the search path =cliopatria=. For example:
 
-==
-:- dynamic
-	user:file_search_path/2.
-:- multifile
-	user:file_search_path/2.
+  ==
+  :- dynamic
+	  user:file_search_path/2.
+  :- multifile
+	  user:file_search_path/2.
 
-user:file_search_path(cliopatria, '/usr/local/cliopatria').
+  user:file_search_path(cliopatria, '/usr/local/cliopatria').
 
-:- use_module(cliopatria(load)).
-==
+  :- use_module(cliopatria(cliopatria)).
+  ==
 
+@see http://cliopatria.swi-prolog.org
 */
 
 :- dynamic
@@ -70,7 +69,7 @@ user:file_search_path(cliopatria, '/usr/local/cliopatria').
 user:file_search_path(library, cliopatria(lib)).
 
 :- load_files(library(version), [silent(true), if(not_loaded)]).
-:- check_prolog_version(or(51004,51109)). % Demand >= 5.11.9
+:- check_prolog_version(or(60200,60300)). % Demand >= 6.2.x, 6.3.x
 :- register_git_module('ClioPatria',
 		       [ home_url('http://cliopatria.swi-prolog.org/')
 		       ]).
@@ -91,6 +90,7 @@ user:file_search_path(library, cliopatria(lib)).
 		library(semweb/rdf_litindex),
 
 		library(http/http_session),
+		library(http/http_server_files),
 		library(http/http_dispatch),
 		library(http/thread_httpd),
 
@@ -105,11 +105,24 @@ user:file_search_path(library, cliopatria(lib)).
 
 		applications(admin),
 		applications(user),
-		applications(browse)
+		applications(browse),
+		applications(yasgui),
+
+		library(conf_d),
+		user:library(cpack/cpack)
 	      ],
 	      [ silent(true),
 		if(not_loaded)
 	      ]).
+
+:- if(exists_source(library(semweb/rdf_ntriples))).
+:- load_files([ library(semweb/rdf_ntriples) ],
+	      [ silent(true),
+		if(not_loaded)
+	      ]).
+:- endif.
+
+:- http_handler(web(.), serve_files_in_directory(web), [prefix]).
 
 :- dynamic
 	after_load_goal/1.
@@ -132,10 +145,24 @@ user:file_search_path(library, cliopatria(lib)).
 %	    * port(Port)
 %	    Attach to Port instead of the port specified in the
 %	    configuration file settings.db.
+%	    * workers(+Count)
+%	    Number of worker threads to use.  Default is the setting
+%	    =|http:workers|=
+%	    * prefix(+Prefix)
+%	    Rebase the server.  See also the setting =|http:prefix|=.
+%	    * store(+Store)
+%	    Directory to use as persistent store. See also the
+%	    setting =|cliopatria:persistent_store|=.
+%	    * settings(+Settings)
+%	    Settings file.  Default is =settings.db=.
 
 :- meta_predicate
 	cp_server(:).
 
+:- if(current_predicate(http_unix_daemon:http_daemon/0)).
+cp_server :-
+	http_unix_daemon:http_daemon.
+:- else.
 cp_server :-
 	process_argv(Options),
 	catch(cp_server(Options), E, true),
@@ -147,6 +174,7 @@ cp_server :-
 	    ;	true
 	    )
 	).
+:- endif.
 
 cp_server(_Options) :-
 	setting(http:port, DefPort),
@@ -155,9 +183,13 @@ cp_server(_Options) :-
 		      cliopatria(server_already_running(DefPort))).
 cp_server(Options) :-
 	meta_options(is_meta, Options, QOptions),
-	load_settings('settings.db'),
+	load_application(QOptions),
+	option(settings(SettingsFile), QOptions, 'settings.db'),
+	load_settings(SettingsFile),
+	set_prefix(QOptions),
 	attach_account_info,
 	set_session_options,
+	create_log_directory,
 	setting(http:port, DefPort),
 	setting(http:workers, DefWorkers),
 	setting(http:worker_options, Settings),
@@ -172,16 +204,23 @@ cp_server(Options) :-
 		    ]),
 	option(after_load(AfterLoad), QOptions, true),
 	print_message(informational, cliopatria(server_started(Port))),
-	setup_call_cleanup(http_handler(root(.), busy_loading,
-					[ priority(1000),
-					  hide_children(true),
-					  id(busy_loading),
-					  prefix
-					]),
-			   rdf_attach_store(QOptions, AfterLoad),
-			   http_delete_handler(id(busy_loading))).
+	setup_call_cleanup(
+	    http_handler(root(.), busy_loading,
+			 [ priority(1000),
+			   hide_children(true),
+			   id(busy_loading),
+			   prefix
+			 ]),
+	    rdf_attach_store(QOptions, AfterLoad),
+	    http_delete_handler(id(busy_loading))).
 
 is_meta(after_load).
+
+set_prefix(Options) :-
+	option(prefix(Prefix), Options),
+	\+ setting(http:prefix, Prefix), !,
+	set_setting_default(http:prefix, Prefix).
+set_prefix(_).
 
 %%	update_public_port(+Port, +DefPort)
 %
@@ -197,6 +236,25 @@ update_public_port(Port, DefPort) :-
 update_public_port(_, _).
 
 
+%%	load_application(+Options)
+%
+%	Load cpack and local configuration.
+
+load_application(Options) :-
+	current_prolog_flag(verbose, Verbose),
+	setup_call_cleanup(
+	    set_prolog_flag(verbose, silent),
+	    load_application2(Options),
+	    set_prolog_flag(verbose, Verbose)).
+
+load_application2(_Options) :-
+	load_conf_d([ 'config-enabled' ], []),
+	(   exists_source(local)
+	->  ensure_loaded(local)
+	;   true
+	).
+
+
 %%	rdf_attach_store(+Options, :AfterLoad) is det.
 %
 %	Attach     the     RDF     store       using     the     setting
@@ -204,11 +262,20 @@ update_public_port(_, _).
 %
 %	@see cp_after_load/1 for registering after-load goals.
 
+:- meta_predicate
+	rdf_attach_store(+, 0),
+	call_warn(0).
+
 rdf_attach_store(Options, AfterLoad) :-
-	setting(cliopatria:persistent_store, Directory),
-	Directory \== '', !,
+	(   option(store(Directory), Options)
+	->  true
+	;   setting(cliopatria:persistent_store, Directory)
+	),
 	setup_indices,
-        rdf_attach_db(Directory, Options),
+	(   Directory \== ''
+	->  rdf_attach_db(Directory, Options)
+	;   true
+	),
 	forall(after_load_goal(Goal),
 	       call_warn(Goal)),
 	call_warn(AfterLoad).
@@ -302,6 +369,19 @@ set_session_options :-
 	setting(http:max_idle_time, Idle),
 	http_set_session_options([timeout(Idle)]).
 
+%%	create_log_directory
+%
+%	Create the directory in which the log files reside.
+
+create_log_directory :-
+	current_setting(http:logfile),
+	setting(http:logfile, File), File \== '',
+	file_directory_name(File, DirName),
+	DirName \== '.', !,
+	catch(make_directory_path(DirName), E,
+	      print_message(warning, E)).
+create_log_directory.
+
 
 		 /*******************************
 		 *	 UPDATE SETTINGS	*
@@ -350,7 +430,8 @@ process_argument(File) :-
 	file_name_extension(_Base, Ext, File),
 	process_argument(Ext, File).
 
-process_argument(pl, File) :- !,
+process_argument(Ext, File) :-
+	user:prolog_file_type(Ext, prolog), !,
 	ensure_loaded(user:File).
 process_argument(gz, File) :-
 	file_name_extension(Plain, gz, File),
@@ -365,16 +446,33 @@ rdf_extension(rdf).
 rdf_extension(owl).
 rdf_extension(ttl).
 rdf_extension(nt).
+rdf_extension(ntriples).
 
 cmd_option(p, port,    positive_integer, 'Port to connect to').
 cmd_option(w, workers, positive_integer, 'Number of workers to start').
 cmd_option(-, prefix,  atom,	         'Rebase the server to prefix/').
+cmd_option(-, store,   atom,		 'Directory for persistent store').
+% dummy to stop list_trivial_fail from warning about long_option/2.
+cmd_option(-, -, boolean, 'Dummy') :- fail.
 
 usage(Program) :-
-	format('Usage: ~w [options] arguments~n', [Program]),
+	ansi_format([bold], 'Usage: ~w [options] arguments~n', [Program]),
+	flush_output,
 	forall(cmd_option(Short, Long, Type, Comment),
 	       describe_option(Short, Long, Type, Comment)),
-	halt(1).
+	current_prolog_flag(argv, Argv),
+	ansi_format([fg(red)], 'Program argv: ~q~n', [Argv]),
+	(   current_prolog_flag(hwnd, _)	% swipl-win.exe console
+	->  ansi_format([bold,hfg(red)],
+			'~nPress \'b\' for break, any other key to exit > ', []),
+	    get_single_char(Key),
+	    (	Key == 0'b
+	    ->  nl, nl, break
+	    ;   true
+	    ),
+	    halt
+	;   halt(1)
+	).
 
 describe_option(-, Long, -, Comment) :- !,
 	format(user_error, '    --~w~t~40|~w~n', [Long, Comment]).
@@ -397,7 +495,8 @@ parse_options([H|T], [Opt|OT], Rest) :-
 	    sub_atom(H, 2, B2, _, Name),
 	    sub_atom(H, _, A,  0, Value),
 	    long_option(Name, Value, Opt)
-	;   long_option(Name, Opt)
+	;   sub_atom(H, 2, _, 0, Name),
+	    long_option(Name, Opt)
 	),
 	parse_options(T, OT, Rest).
 parse_options([H|T], Opts, Rest) :-
@@ -407,11 +506,10 @@ parse_options(Rest, [], Rest).
 
 short_options([], Av, Opts, Rest) :-
 	parse_options(Av, Opts, Rest).
-short_options([H|T], Av, Opts, Rest) :-
+short_options([H|T], Av, [Opt|OptT], Rest) :-
 	cmd_option(H, Name, Type, _),
 	(   Type == (-)
 	->  Opt =.. [Name,true],
-	    Opts = [Opt|OptT],
 	    short_options(T, Av, OptT, Rest)
 	;   Av = [Av0|AvT],
 	    text_to_value(Type, Av0, Value),
@@ -423,6 +521,11 @@ long_option(Name, Text, Opt) :-
 	cmd_option(_, Name, Type, _),
 	text_to_value(Type, Text, Value),
 	Opt =.. [Name,Value].
+
+long_option(Name, Opt) :-
+	atom_concat('no-', OptName, Name),
+	cmd_option(_, OptName, boolean, _), !,
+	Opt =.. [Name,false].
 long_option(Name, Opt) :-
 	cmd_option(_, Name, boolean, _),
 	Opt =.. [Name,true].
@@ -451,16 +554,26 @@ boolean(false, false).
 boolean(no,    false).
 boolean(off,   false).
 
-argv(Program, Av) :-
-	current_prolog_flag(argv, Argv),
-	Argv = [Prog|Av0],
-	file_base_name(Prog, Program),
-	(   append(_, [--|Av], Av0)
+%%	argv(-ProgramBaseName, -UserArgs)
+
+argv(ProgName, Argv) :-
+	current_prolog_flag(executable, Executable),
+	file_base_name(Executable, ProgName),
+	user_argv(Argv).
+
+:- if(current_prolog_flag(os_argv,_)).
+user_argv(Argv) :-
+	current_prolog_flag(argv, Argv).
+:- else.
+user_argv(Av) :-
+	current_prolog_flag(argv, [_Prog|Argv]),
+	(   append(_, [--|Av], Argv)
 	->  true
 	;   current_prolog_flag(windows, true)
-	->  Av = Av0
+	->  Av = Argv
 	;   Av = []
 	).
+:- endif.
 
 		 /*******************************
 		 *	      BANNER		*
@@ -484,9 +597,13 @@ cp_welcome :-
 
 :- setting(cliopatria:max_clients, integer, 50,
 	   'Max number of concurrent requests in ClioPatria pool').
-:- setting(cliopatria:stack_size, integer, 256,
+:- if(current_prolog_flag(address_bits, 32)).
+:- setting(cliopatria:stack_size, integer, 128,
 	   'Stack limit in MB for ClioPatria pool').
-
+:- else.
+:- setting(cliopatria:stack_size, integer, 1024,
+	   'Stack limit in MB for ClioPatria pool').
+:- endif.
 
 %%	http:create_pool(+Pool) is semidet.
 %
@@ -576,3 +693,9 @@ user:message_hook(rdf(restore(_, done(_DB, _T, _Count, Nth, Total))),
 	retractall(loading_done(_,_)),
 	assert(loading_done(Nth, Total)),
 	fail.
+
+:- multifile
+	http_unix_daemon:http_server_hook/1. % +Options
+
+http_unix_daemon:http_server_hook(Options) :-
+	cp_server(Options).

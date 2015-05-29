@@ -38,6 +38,7 @@
 :- use_module(library(apply)).
 :- use_module(library(filesex)).
 :- use_module(library(conf_d)).
+:- use_module(library(apply_macros), []).
 
 
 /** <module> Configuration (setup) of ClioPatria
@@ -71,7 +72,8 @@ setup_scripts(SrcDir, DstDir) :-
 install_file(Vars, Dest, InFile) :-
 	(   exists_directory(Dest)
 	->  file_name_extension(File, in, InFile),
-	    file_base_name(File, Base),
+	    file_base_name(File, Base0),
+	    rename_script(Base0, Base),
 	    directory_file_path(Dest, Base, DstFile)
 	;   DstFile = Dest
 	),
@@ -79,15 +81,26 @@ install_file(Vars, Dest, InFile) :-
 	make_runnable(DstFile),
 	print_message(informational, setup(install_file(DstFile))).
 
+%%	rename_script(+ScriptIn, -Script)
+%
+%	Rename scripts to satisfy the target file name association.
+
+rename_script(Run, Script) :-
+	current_prolog_flag(associate, Ext),
+	file_name_extension(run, _, Run),
+	file_name_extension(run, Ext, Script), !.
+rename_script(Script, Script).
+
 %%	make_runnable(+File)
 %
 %	Make a file executable if it starts with #!
 
 make_runnable(File) :-
-	open(File, read, In),
-	read_line_to_codes(In, Line),
-	close(In),
-	append("#!", _, Line), !,
+	setup_call_cleanup(
+	    open(File, read, In),
+	    read_line_to_codes(In, Line),
+	    close(In)),
+	phrase("#!", Line, _), !,
 	'$mark_executable'(File).
 make_runnable(_).
 

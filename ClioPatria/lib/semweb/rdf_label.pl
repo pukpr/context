@@ -116,9 +116,9 @@ rdf_display_label(R, Label) :-
 rdf_display_label(R, Lang, Label) :-
 	rdf_real_label(R, Lang, Label), !.
 rdf_display_label(Resource, url, Label) :-
-	(   after_char(Resource, '#', Local)
+	(   after_char(Resource, '#', Local), Local \= ''
 	->  Label = Local
-	;   after_char(Resource, '/', Local)
+	;   after_char(Resource, '/', Local), Local \= ''
 	->  Label = Local
 	;   Label = Resource
 	).
@@ -128,12 +128,20 @@ rdf_real_label(R, Lang, Label) :-
 	display_label_hook(R, Lang, Label), !.
 rdf_real_label(R, Lang, Label) :-
 	rdf_is_resource(R),
-	(   nonvar(Lang)
-	->  rdf_label(R, Literal),
+	(   nonvar(Lang), % try fast option first:
+	    rdf_label(R, literal(lang(Lang, Literal)))
+	->  true
+	;   nonvar(Lang),
+	    % warning: BT over next call is quite expensive when R has labels in many languages:
+	    rdf_label(R, Literal),
 	    Literal = literal(lang(L, _)),
 	    lang_matches(L, Lang)
 	->  true
+	;   user_preference(user:lang, literal(Lang)), % try fast option first:
+	    rdf_label(R, literal(lang(Lang, Literal)))
+	->  true
 	;   user_preference(user:lang, literal(Lang)),
+	    % warning: BT over next call is quite expensive when R has labels in many languages:
 	    rdf_label(R, Literal),
 	    Literal = literal(lang(L, _)),
 	    lang_matches(L, Lang)

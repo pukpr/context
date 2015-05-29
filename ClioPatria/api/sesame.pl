@@ -3,7 +3,7 @@
     Author:        Jan Wielemaker
     E-mail:        J.Wielemaker@cs.vu.nl
     WWW:           http://www.swi-prolog.org
-    Copyright (C): 2004-2010, University of Amsterdam,
+    Copyright (C): 2004-2015, University of Amsterdam,
 			      VU University Amsterdam
 
     This program is free software; you can redistribute it and/or
@@ -33,33 +33,40 @@
 	  ]).
 :- use_module(rdfql(serql)).
 :- use_module(rdfql(sparql)).
-:- use_module(rdfql(serql_xml_result)).
 :- use_module(rdfql(rdf_io)).
 :- use_module(rdfql(rdf_html)).
 :- use_module(library(http/http_parameters)).
 :- use_module(user(user_db)).
-:- use_module(library(semweb/rdf_edit)).
 :- use_module(library(semweb/rdfs)).
 :- use_module(library(semweb/rdf_db)).
-:- use_module(library(semweb/rdf_turtle)).
 :- use_module(library(semweb/rdf_http_plugin)).
 :- use_module(library(semweb/rdf_file_type)).
+:- use_module(library(semweb/rdf_persistency)).
 :- use_module(library(http/html_write)).
-:- use_module(library(http/html_head)).
-:- use_module(library(http/http_open)).
+:- use_module(library(http/http_request_value)).
 :- use_module(library(http/http_dispatch)).
+:- use_module(library(http/http_client)).
+:- use_module(library(http/http_open)).
 :- use_module(library(memfile)).
-:- use_module(library(rdf_ntriples)).
 :- use_module(library(debug)).
+:- use_module(library(lists)).
+:- use_module(library(option)).
+:- use_module(library(apply)).
 :- use_module(library(settings)).
 :- use_module(components(query)).
 :- use_module(components(basics)).
+:- use_module(components(messages)).
+
+:- meta_predicate(api_action2(+,0,+,+)).
 
 :- http_handler(sesame('login'),	      http_login,	    []).
 :- http_handler(sesame('logout'),	      http_logout,	    []).
-:- http_handler(sesame('evaluateQuery'),      evaluate_query,	    [spawn(sparql_query)]).
-:- http_handler(sesame('evaluateGraphQuery'), evaluate_graph_query, [spawn(sparql_query)]).
-:- http_handler(sesame('evaluateTableQuery'), evaluate_table_query, [spawn(sparql_query)]).
+:- http_handler(sesame('evaluateQuery'),      evaluate_query,
+		[spawn(sparql_query)]).
+:- http_handler(sesame('evaluateGraphQuery'), evaluate_graph_query,
+		[spawn(sparql_query)]).
+:- http_handler(sesame('evaluateTableQuery'), evaluate_table_query,
+		[spawn(sparql_query)]).
 :- http_handler(sesame('extractRDF'),	      extract_rdf,	    []).
 :- http_handler(sesame('listRepositories'),   list_repositories,    []).
 :- http_handler(sesame('clearRepository'),    clear_repository,	    []).
@@ -73,6 +80,10 @@
 		[ time_limit(infinite) ]).
 :- http_handler(sesame('removeStatements'),   remove_statements,
 		[ time_limit(infinite) ]).
+:- http_handler(sesame('flushJournal'),	      flush_journal,
+		[ time_limit(infinite) ]).
+:- http_handler(sesame('modifyPersistency'),  modify_persistency,
+		[ time_limit(infinite) ]).
 
 :- html_meta
 	api_action(+, 0, +, html).
@@ -80,6 +91,10 @@
 %%	http_login(+Request)
 %
 %	HTTP handler to associate the current session with a local user.
+%	If the login succeeds a 200  reply according to the resultFormat
+%	parameters  is  sent.  If  the  result  fails  due  to  a  wrong
+%	user/password,  the  server  responds  with  a  403  (forbidden)
+%	message.  Other failures result in a 500 (server error).
 %
 %	@see	help('howto/ClientAuth.txt') for additional information on
 %		authetication.
@@ -92,12 +107,20 @@ http_login(Request) :-
 			],
 			[ attribute_declarations(attribute_decl)
 			]),
+	result_format(Request, ResultFormat),
 	api_action(Request,
-		   (   validate_password(User, Password),
+		   (   validate_login(Request, User, Password),
 		       login(User)
 		   ),
 		   ResultFormat,
 		   'Login ~w'-[User]).
+
+validate_login(_, User, Password) :-
+	validate_password(User, Password), !.
+validate_login(Request, _, _) :-
+	memberchk(path(Path), Request),
+	throw(http_reply(forbidden(Path))).
+
 
 %%      http_logout(+Request)
 %
@@ -109,6 +132,7 @@ http_logout(Request) :-
 			],
 			[ attribute_declarations(attribute_decl)
 			]),
+	result_format(Request, ResultFormat),
 	api_action(Request,
 		   logout_user(Message),
 		   ResultFormat,
@@ -140,13 +164,14 @@ evaluate_query(Request) :-
 			],
 			[ attribute_declarations(attribute_decl)
 			]),
-	authorized(read(Repository, query)),
+	result_format(Request, ResultFormat),
 	statistics(cputime, CPU0),
 	downcase_atom(QueryLanguage, QLang),
 	compile(QLang, Query, Compiled,
 		[ entailment(Entailment),
 		  type(Type)
 		]),
+	authorized_query(Type, Repository, ResultFormat),
 	findall(Reply, run(QLang, Compiled, Reply), Result),
 	statistics(cputime, CPU1),
 	CPU is CPU1 - CPU0,
@@ -172,8 +197,19 @@ evaluate_query(Request) :-
 			    [ h4('ASK query completed'),
 			      p(['Answer = ', Reply])
 			    ])
+	;   Type == update, Result = [Reply]
+	->  reply_html_page(cliopatria(default),
+			    title('Update Result'),
+			    [ h4('Update query completed'),
+			      p(['Answer = ', Reply])
+			    ])
 	).
 
+
+authorized_query(update, Repository, ResultFormat) :- !,
+	authorized_api(write(Repository, sparql(update)), ResultFormat).
+authorized_query(_, Repository, ResultFormat) :-
+	authorized_api(read(Repository, query), ResultFormat).
 
 %%	evaluate_graph_query(+Request)
 %
@@ -192,7 +228,8 @@ evaluate_graph_query(Request) :-
 			],
 			[ attribute_declarations(attribute_decl)
 			]),
-	authorized(read(Repository, query)),
+	result_format(Request, ResultFormat),
+	authorized_api(read(Repository, query), ResultFormat),
 	statistics(cputime, CPU0),
 	downcase_atom(QueryLanguage, QLang),
 	compile(QLang, Query, Compiled,
@@ -234,7 +271,8 @@ evaluate_table_query(Request) :-
 			],
 			[ attribute_declarations(attribute_decl)
 			]),
-	authorized(read(Repository, query)),
+	result_format(Request, ResultFormat),
+	authorized_api(read(Repository, query), ResultFormat),
 	statistics(cputime, CPU0),
 	downcase_atom(QueryLanguage, QLang),
 	compile(QLang, Query, Compiled,
@@ -354,15 +392,16 @@ list_repositories(_Request) :-
 clear_repository(Request) :-
 	http_parameters(Request,
 			[ repository(Repository),
-			  resultFormat(Format)
+			  resultFormat(ResultFormat)
 			],
 			[ attribute_declarations(attribute_decl)
 			]),
-	authorized(write(Repository, clear)),
+	result_format(Request, ResultFormat),
+	authorized_api(write(Repository, clear), ResultFormat),
 	api_action(Request,
 		   rdf_reset_db,
-		   Format,
-		   'Cleared database'-[]).
+		   ResultFormat,
+		   'Clear database'-[]).
 
 %%	unload_source(+Request)
 %
@@ -372,14 +411,15 @@ unload_source(Request) :-
 	http_parameters(Request,
 			[ repository(Repository),
 			  source(Source),
-			  resultFormat(Format)
+			  resultFormat(ResultFormat)
 			],
 			[ attribute_declarations(attribute_decl)
 			]),
-	authorized(write(Repository, unload(Source))),
+	result_format(Request, ResultFormat),
+	authorized_api(write(Repository, unload(Source)), ResultFormat),
 	api_action(Request, rdf_unload(Source),
-		   Format,
-		   'Unloaded triples from ~w'-[Source]).
+		   ResultFormat,
+		   'Unload triples from ~w'-[Source]).
 
 
 %%	unload_graph(+Request)
@@ -390,14 +430,58 @@ unload_graph(Request) :-
 	http_parameters(Request,
 			[ repository(Repository),
 			  graph(Graph, []),
-			  resultFormat(Format)
+			  resultFormat(ResultFormat)
 			],
 			[ attribute_declarations(attribute_decl)
 			]),
-	authorized(write(Repository, unload(Graph))),
-	api_action(Request, rdf_unload(Graph),
-		   Format,
-		   'Unloaded triples from ~w'-[Graph]).
+	result_format(Request, ResultFormat),
+	authorized_api(write(Repository, unload(Graph)), ResultFormat),
+	api_action(Request, rdf_unload_graph(Graph),
+		   ResultFormat,
+		   'Unload triples from ~w'-[Graph]).
+
+
+%%	flush_journal(+Request)
+%
+%	Flush the journal of the requested graph
+
+flush_journal(Request) :-
+	http_parameters(Request,
+			[ repository(Repository),
+			  graph(Graph, []),
+			  resultFormat(ResultFormat)
+			],
+			[ attribute_declarations(attribute_decl)
+			]),
+	result_format(Request, ResultFormat),
+	authorized_api(write(Repository, unload(Graph)), ResultFormat),
+	api_action(Request, rdf_flush_journals([graph(Graph)]),
+		   ResultFormat,
+		   'Flushed journals for graph ~w'-[Graph]).
+
+
+%%	modify_persistency(+Request)
+%
+%	Change the persistent properties for the requested graph
+
+modify_persistency(Request) :-
+	http_parameters(Request,
+			[ repository(Repository),
+			  graph(Graph, []),
+			  resultFormat(ResultFormat),
+			  persistent(Persistent)
+			],
+			[ attribute_declarations(attribute_decl)
+			]),
+	persistency(Persistent, PVal, Action),
+	result_format(Request, ResultFormat),
+	authorized_api(write(Repository, persistent(Graph)), ResultFormat),
+	api_action(Request, rdf_persistency(Graph, PVal),
+		   ResultFormat,
+		   '~w persistency for graph ~w'-[Action, Graph]).
+
+persistency(on,  true,  'Set').
+persistency(off, false, 'Cleared').
 
 
 %%	upload_data(Request).
@@ -409,7 +493,78 @@ unload_graph(Request) :-
 %	Currently, this possitively identifies valid RDF/XML and assumes
 %	that anything else is Turtle.
 
-upload_data(Request) :- !,
+:- if(current_predicate(http_convert_parameters/3)).
+%%	create_tmp_file(+Stream, -Out, +Options) is det.
+%
+%	Called  from  library(http/http_multipart_plugin)    to  process
+%	uploaded file from a form.
+%
+%	@arg Stream is the input stream. It signals EOF at the end of
+%	the part, but must *not* be closed.
+%	@arg Options provides information about the part.  Typically,
+%	this contains filename(FileName) and optionally media(Type,
+%	MediaParams).
+
+:- public create_tmp_file/3.
+create_tmp_file(Stream, file(File, Options), Options) :-
+	setup_call_catcher_cleanup(
+	    tmp_file_stream(binary, File, Out),
+	    copy_stream_data(Stream, Out),
+	    Why,
+	    cleanup(Why, File, Out)).
+
+cleanup(Why, File, Out) :-
+	close(Out),
+	(   Why == exit
+	->  true
+	;   catch(delete_file(File), _, true)
+	).
+
+%%	upload_data_file(+Request, +FormData, +TempFile, +FileOptions)
+%
+%	Load RDF from TempFile with  additional   form  data provided in
+%	FormData. Options are the options passed  from the uploaded file
+%	and include filename(Name) and optionally media(Type, Params).
+
+upload_data_file(Request, Data, TmpFile, FileOptions) :-
+	http_convert_parameters(Data,
+				[ repository(Repository),
+				  dataFormat(DataFormat),
+				  baseURI(BaseURI),
+				  verifyData(_Verify),
+				  resultFormat(ResultFormat)
+				],
+				attribute_decl),
+	result_format(Request, ResultFormat),
+	authorized_api(write(Repository, load(posted)), ResultFormat),
+	phrase(load_option(DataFormat, BaseURI), LoadOptions),
+	append(LoadOptions, FileOptions, Options),
+	api_action(Request,
+		   setup_call_cleanup(
+		       open(TmpFile, read, Stream),
+		       rdf_guess_format_and_load(Stream, Options),
+		       close(Stream)),
+		   ResultFormat,
+		   'Load data from POST'-[]).
+
+upload_option(_=_) :- !.
+upload_option(Term) :- functor(Term, _, 1).
+
+upload_data(Request) :-
+	option(method(post), Request), !,
+	http_read_data(Request, Data,
+		       [ on_filename(create_tmp_file)
+		       ]),
+	(   option(data(file(TmpFile, FileOptions)), Data)
+	->  true
+	;   existence_error(attribute_declaration, data)
+	),
+	include(upload_option, FileOptions, Options),
+	call_cleanup(upload_data_file(Request, Data, TmpFile, Options),
+		     catch(delete_file(TmpFile), _, true)).
+
+:- endif.
+upload_data(Request) :-
 	http_parameters(Request,
 			[ repository(Repository),
 			  data(Data,
@@ -422,7 +577,8 @@ upload_data(Request) :- !,
 			],
 			[ attribute_declarations(attribute_decl)
 			]),
-	authorized(write(Repository, load(posted))),
+	result_format(Request, ResultFormat),
+	authorized_api(write(Repository, load(posted)), ResultFormat),
 	phrase(load_option(DataFormat, BaseURI), Options),
 	atom_to_memory_file(Data, MemFile),
 	api_action(Request,
@@ -432,8 +588,7 @@ upload_data(Request) :- !,
 					free_memory_file(MemFile)
 				      )),
 		   ResultFormat,
-		   'Loaded data from POST'-[]).
-
+		   'Load data from POST'-[]).
 
 %%	upload_url(+Request)
 %
@@ -451,7 +606,7 @@ upload_url(Request) :-
 			[ url(URL, []),
 			  dataFormat(DataFormat),
 			  baseURI(BaseURI,
-				  [ optional(true)
+				  [ default(URL)
 				  ]),
 			  resultFormat(ResultFormat),
 			  verifyData(_Verify),
@@ -459,12 +614,32 @@ upload_url(Request) :-
 			],
 			[ attribute_declarations(attribute_decl)
 			]),
-	authorized(write(Repository, load(url(URL)))),
+	result_format(Request, ResultFormat),
+	authorized_api(write(Repository, load(url(URL))), ResultFormat),
 	phrase(load_option(DataFormat, BaseURI), Options),
 	api_action(Request,
-		   rdf_load(URL, Options),
+		   load_from_url(URL, Options),
 		   ResultFormat,
-		   'Loaded data from ~w'-[URL]).
+		   'Load data from ~w'-[URL]).
+
+load_from_url(URL, Options) :-
+	http_open(URL, In,
+		  [ cert_verify_hook(ssl_verify)
+		  ]),
+	call_cleanup(rdf_guess_format_and_load(In, Options),
+		     close(In)).
+
+:- public ssl_verify/5.
+
+%%	ssl_verify(+SSL, +ProblemCert, +AllCerts, +FirstCert, +Error)
+%
+%	Currently we accept  all  certificates.   We  organise  our  own
+%	security using SHA1 signatures, so  we   do  not  care about the
+%	source of the data.
+
+ssl_verify(_SSL,
+	   _ProblemCertificate, _AllCertificates, _FirstCertificate,
+	   _Error).
 
 load_option(DataFormat, BaseURI) -->
 	data_format_option(DataFormat),
@@ -498,10 +673,12 @@ remove_statements(Request) :-
 			],
 			[ attribute_declarations(attribute_decl)
 			]),
+	result_format(Request, ResultFormat),
 	instantiated(Subject, SI),
 	instantiated(Predicate, PI),
 	instantiated(Object, OI),
-	authorized(write(Repository, remove_statements(SI, PI, OI))),
+	authorized_api(write(Repository, remove_statements(SI, PI, OI)),
+		       ResultFormat),
 
 	(   nonvar(Data)
 	->  setup_call_cleanup(( atom_to_memory_file(Data, MemFile),
@@ -522,7 +699,7 @@ remove_statements(Request) :-
 	    api_action(Request,
 		       remove_triples(Triples),
 		       ResultFormat,
-		       'Removed ~D triples'-[NTriples])
+		       'Remove ~D triples'-[NTriples])
 	;   debug(removeStatements, 'removeStatements = ~w',
 		  [rdf(Subject, Predicate, Object)]),
 
@@ -534,7 +711,7 @@ remove_statements(Request) :-
 	    api_action(Request,
 		       rdf_retractall(S,P,O),
 		       ResultFormat,
-		       'Removed statements from ~p'-[rdf(S,P,O)])
+		       'Remove statements from ~k'-[rdf(S,P,O)])
 	).
 
 %%	remove_triples(+List)
@@ -564,6 +741,219 @@ ntriple_part(Text, Field, _) :-
 			    'Field must be in N-triples notation'))).
 
 
+%%	rdf_ntriple_part(+Type, -Value)//
+%
+%	Parse one of the fields of  an   ntriple.  This  is used for the
+%	SWI-Prolog Sesame (rdf4j.org) implementation   to  realise
+%	/servlets/removeStatements. I do not think   public  use of this
+%	predicate should be stimulated.
+
+rdf_ntriple_part(subject, Subject) -->
+	subject(Subject).
+rdf_ntriple_part(predicate, Predicate) -->
+	predicate(Predicate).
+rdf_ntriple_part(object, Object) -->
+	object(Object).
+
+subject(Subject) -->
+	uniref(Subject), !.
+subject(Subject) -->
+	node_id(Subject).
+
+predicate(Predicate) -->
+	uniref(Predicate).
+
+object(Object) -->
+	uniref(Object), !.
+object(Object) -->
+	node_id(Object).
+object(Object) -->
+	literal(Object).
+
+
+uniref(URI) -->
+	"<",
+	escaped_uri_codes(Codes),
+	">", !,
+	{ atom_codes(URI, Codes)
+	}.
+
+node_id(node(Id)) -->			% anonymous nodes
+	"_:",
+	name_start(C0),
+	name_codes(Codes),
+	{ atom_codes(Id, [C0|Codes])
+	}.
+
+literal(Literal) -->
+	lang_string(Literal), !.
+literal(Literal) -->
+	xml_string(Literal).
+
+
+%	name_start(-Code)
+%	name_codes(-ListfCodes)
+%
+%	Parse identifier names
+
+name_start(C) -->
+	[C],
+	{ code_type(C, alpha)
+	}.
+
+name_codes([C|T]) -->
+	[C],
+	{ code_type(C, alnum)
+	}, !,
+	name_codes(T).
+name_codes([]) -->
+	[].
+
+
+%	escaped_uri_codes(-CodeList)
+%
+%	Decode string holding %xx escaped characters.
+
+escaped_uri_codes([]) -->
+	[].
+escaped_uri_codes([C|T]) -->
+	"%", [D0,D1], !,
+	{ code_type(D0, xdigit(V0)),
+	  code_type(D1, xdigit(V1)),
+	  C is V0<<4 + V1
+	},
+	escaped_uri_codes(T).
+escaped_uri_codes([C|T]) -->
+	"\\u", [D0,D1,D2,D3], !,
+	{ code_type(D0, xdigit(V0)),
+	  code_type(D1, xdigit(V1)),
+	  code_type(D2, xdigit(V2)),
+	  code_type(D3, xdigit(V3)),
+	  C is V0<<12 + V1<<8 + V2<<4 + V3
+	},
+	escaped_uri_codes(T).
+escaped_uri_codes([C|T]) -->
+	"\\U", [D0,D1,D2,D3,D4,D5,D6,D7], !,
+	{ code_type(D0, xdigit(V0)),
+	  code_type(D1, xdigit(V1)),
+	  code_type(D2, xdigit(V2)),
+	  code_type(D3, xdigit(V3)),
+	  code_type(D4, xdigit(V4)),
+	  code_type(D5, xdigit(V5)),
+	  code_type(D6, xdigit(V6)),
+	  code_type(D7, xdigit(V7)),
+	  C is V0<<28 + V1<<24 + V2<<20 + V3<<16 +
+	       V4<<12 + V5<<8 + V6<<4 + V7
+	},
+	escaped_uri_codes(T).
+escaped_uri_codes([C|T]) -->
+	[C],
+	escaped_uri_codes(T).
+
+%	lang_string()
+%
+%	Process a language string
+
+lang_string(String) -->
+	"\"",
+	string(Codes),
+	"\"", !,
+	{ atom_codes(Atom, Codes)
+	},
+	(   langsep
+	->  language(Lang),
+	    { String = literal(lang(Lang, Atom))
+	    }
+	;   "^^"
+	->  uniref(Type),
+	    { String = literal(type(Type, Atom))
+	    }
+	;   { String = literal(Atom)
+	    }
+	).
+
+langsep -->
+	"-".
+langsep -->
+	"@".
+
+%	xml_string(String)
+%
+%	Handle xml"..."
+
+xml_string(xml(String)) -->
+	"xml\"",			% really no whitespace?
+	string(Codes),
+	"\"",
+	{ atom_codes(String, Codes)
+	}.
+
+string([]) -->
+	[].
+string([C0|T]) -->
+	string_char(C0),
+	string(T).
+
+string_char(0'\\) -->
+	"\\\\".
+string_char(0'") -->
+	"\\\"".
+string_char(10) -->
+	"\\n".
+string_char(13) -->
+	"\\r".
+string_char(9) -->
+	"\\t".
+string_char(C) -->
+	"\\u",
+	'4xdigits'(C).
+string_char(C) -->
+	"\\U",
+	'4xdigits'(C0),
+	'4xdigits'(C1),
+	{ C is C0<<16 + C1
+	}.
+string_char(C) -->
+	[C].
+
+'4xdigits'(C) -->
+	[C0,C1,C2,C3],
+	{ code_type(C0, xdigit(V0)),
+	  code_type(C1, xdigit(V1)),
+	  code_type(C2, xdigit(V2)),
+	  code_type(C3, xdigit(V3)),
+
+	  C is V0<<12 + V1<<8 + V2<<4 + V3
+	}.
+
+%	language(-Lang)
+%
+%	Return xml:lang language identifier.
+
+language(Lang) -->
+	lang_code(C0),
+	lang_codes(Codes),
+	{ atom_codes(Lang, [C0|Codes])
+	}.
+
+lang_code(C) -->
+	[C],
+	{ C \== 0'.,
+	  \+ code_type(C, white)
+	}.
+
+lang_codes([C|T]) -->
+	lang_code(C), !,
+	lang_codes(T).
+lang_codes([]) -->
+	[].
+
+
+
+		 /*******************************
+		 *	 HTTP ATTRIBUTES	*
+		 *******************************/
+
 %%	attribute_decl(+OptionName, -Options)
 %
 %	Default   options   for   specified     attribute   names.   See
@@ -590,11 +980,13 @@ attribute_decl(serialization,
 		 description('Serialization for graph-data')
 	       ]).
 attribute_decl(resultFormat,
-	       [ default(xml),
-		 type(oneof([ xml,
-			      html,
-			      rdf
-			    ])),
+	       [ optional(true),
+		 oneof([ xml,
+			 html,
+			 rdf,
+			 json,
+			 csv
+		       ]),
 		 description('Serialization format of the result')
 	       ]).
 attribute_decl(resourceFormat,
@@ -661,12 +1053,45 @@ attribute_decl(storeAs,
 	       [ default(''),
 		 description('Store query under this name')
 	       ]).
+attribute_decl(persistent,
+	       [ description('Modify persistency of a graph'),
+		 oneof([on, off])
+	       ]).
 
 bool(Def,
      [ default(Def),
        oneof([on, off])
      ]).
 
+
+%%	result_format(+Request, ?Format) is det.
+
+result_format(_Request, Format) :-
+	atom(Format), !.
+result_format(Request, _Format) :-
+	memberchk(accept(Accept), Request),
+	debug(sparql(result), 'Got accept = ~q', [Accept]),
+	fail.
+result_format(_Request, xml).
+
+
+accept_output_format(Request, Format) :-
+	memberchk(accept(Accept), Request),
+	(   atom(Accept)
+	->  http_parse_header_value(accept, Accept, Media)
+	;   Media = Accept
+	),
+	find_media(Media, Format), !.
+accept_output_format(_, xml).
+
+find_media([media(Type, _, _, _)|T], Format) :-
+	(   sparql_media(Type, Format)
+	->  true
+	;   find_media(T, Format)
+	).
+
+sparql_media(application/'sparql-results+xml',   xml).
+sparql_media(application/'sparql-results+json', json).
 
 %%	api_action(+Request, :Goal, +Format, +Message)
 %
@@ -677,7 +1102,16 @@ bool(Def,
 %		=xml= or =rdf=.
 %	@param	Message is passed to html_write//1.
 
-api_action(_Request, G, Format, Message) :-
+api_action(Request, G, html, Message) :- !,
+	call_showing_messages(
+	    api_action2(Request, G, html, Message),
+	    [ header(h4(Message)),
+	      footer([])
+	    ]).
+api_action(Request, G, Format, Message) :-
+	api_action2(Request, G, Format, Message).
+
+api_action2(_Request, G, Format, Message) :-
 	logged_on(User, anonymous),
 	get_time(T0), T is integer(T0),
 	statistics(cputime, CPU0),
@@ -700,18 +1134,27 @@ subjects(Count) :- rdf_statistics(resources(Count)).
 subj_label --> html('Resources').
 :- endif.
 
+:- meta_predicate
+	run(0, +).
 
-run((A,B), Log) :- !,
-	run(A, Log),
-	run(B, Log).
+run(M:(A,B), Log) :- !,
+	run(M:A, Log),
+	run(M:B, Log).
+run(Goal, _) :-
+	no_transaction(Goal), !,
+	call(Goal).
 run(A, Log) :-
 	rdf_transaction(A, Log).
 
+no_transaction(_:rdf_reset_db).
+no_transaction(_:rdf_unload_graph(_)).
+no_transaction(_:rdf_flush_journals(_)).
 
-done(html, Message, CPU, Subjects, Triples) :-
-	reply_html_page(cliopatria(default),
-			title('Success'),
-			\result_table(Message, CPU, Subjects, Triples)).
+done(html, _Message, CPU, Subjects, Triples) :-
+	after_messages([ \result_table(CPU, Subjects, Triples)
+		       ]).
+done(Format, _:Message, CPU, Subjects, Triples) :- !,
+	done(Format, Message, CPU, Subjects, Triples).
 done(xml, Fmt-Args, _CPU, _Subjects, _Triples) :-
 	format(string(Message), Fmt, Args),
 	format('Content-type: text/xml~n~n'),
@@ -722,21 +1165,19 @@ done(xml, Fmt-Args, _CPU, _Subjects, _Triples) :-
 	format('</transaction>~n').
 done(rdf, Fmt-Args, _CPU, _Subjects, _Triples) :-
 	format('Content-type: text/plain~n~n'),
-	format('resultFormat=~w not yet supported~n~n'),
+	format('resultFormat=rdf not yet supported~n~n'),
 	format(Fmt, Args).
 
 
-%%	result_table(+Message, +CPU, +SubDiff, +TripleDiff)// is det.
+%%	result_table(+CPU, +SubDiff, +TripleDiff)// is det.
 %
 %	HTML component that summarises the result of an operation.
 
-result_table(Message, CPU, Subjects, Triples) -->
+result_table(CPU, Subjects, Triples) -->
 	{ rdf_statistics(triples(TriplesNow)),
 	  subjects(SubjectsNow)
 	},
 	html([ h4('Operation completed'),
-	       p(class(msg_informational), Message),
-	       h4('Statistics'),
 	       table([ id('result'),
 		       class(block)
 		     ],
@@ -749,3 +1190,15 @@ result_table(Message, CPU, Subjects, Triples) -->
 			   \nc('~D', Triples), \nc('~D', TriplesNow)])
 		     ])
 	     ]).
+
+
+%%	authorized_api(+Action, +ResultFormat) is det.
+%
+%	@error permission_error(http_location, access, Path)
+
+authorized_api(Action, ResultFormat) :-
+	ResultFormat == html, !,	% do not bind
+	authorized(Action).
+authorized_api(Action, _) :-
+	logged_on(User, anonymous),
+	check_permission(User, Action).

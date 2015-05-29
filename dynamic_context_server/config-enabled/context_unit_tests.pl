@@ -284,7 +284,7 @@ test(rdf) :-
 test(context_ontology_not_loaded) :-
         rdf(_Subject, dc:title, _Object),
         !.
-
+/*
 test(dbpedia) :-
     context_temperature:strip_numbers([literal(type(xsd:int, '29')),
                                        literal(type(xsd:int, '31'))], [], [29,31]),
@@ -302,6 +302,25 @@ test(dbpedia) :-
     DayHot = 195,
     Name = 'Baltimore'.
 
+
+test(dbpedia) :-
+    context_temperature:strip_numbers([literal(type(xsd:int, '29')),
+                                       literal(type(xsd:int, '31'))], [], [29,31]),
+    context_temperature:process_location('Zomba',
+                                         cold(MinCold, MaxCold, DayCold),
+                                         hot(MinHot, MaxHot, DayHot),
+                                         _Lows,
+                                         _Highs,
+                                         Name),
+    MinCold = 35.3,
+    MaxCold = 55.6,
+    DayCold = 350,
+    MinHot = 60.5,
+    MaxHot = 94.2,
+    DayHot = 195,
+    Name = 'Chico, California'.
+
+*/
 
 test(stats) :-
     corrcoeff([1,2.92,3,4],[1,2,3.93,4],R),

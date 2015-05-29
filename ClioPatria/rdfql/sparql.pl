@@ -1,11 +1,10 @@
-/*  $Id$
-
-    Part of SWI-Prolog
+/*  Part of SWI-Prolog
 
     Author:        Jan Wielemaker
-    E-mail:        wielemak@science.uva.nl
+    E-mail:        J.Wielemaker@vu.nl
     WWW:           http://www.swi-prolog.org
-    Copyright (C): 1985-2005, University of Amsterdam
+    Copyright (C): 2005-2012, University of Amsterdam
+			      VU University Amsterdam
 
     This program is free software; you can redistribute it and/or
     modify it under the terms of the GNU General Public License
@@ -37,16 +36,21 @@
 	  ]).
 :- use_module(library(option)).
 :- use_module(library(assoc)).
+:- use_module(library(apply)).
 :- use_module(library(semweb/rdf_db), [rdf_is_bnode/1]).
 :- use_module(library(semweb/rdf_optimise)).
 :- use_module(library(settings)).
 :- use_module(sparql_grammar).
 :- use_module(sparql_runtime).
 :- use_module(rdfql_util).
+:- use_module(library(settings)).
 :- include(entailment(load)).
 
 :- multifile
 	function/2.			% user-defined functions
+
+:- setting(entailment, atom, rdf,
+	   'Default entailment used for SPARQL queries').
 
 %%	sparql_query(+Query, -Reply, +Options)
 %
@@ -61,7 +65,8 @@
 %	Options are:
 %
 %		* entailment(Entailment)
-%		Specify the entailment module used (default: rdf)
+%		Specify the entailment module used.  The default is
+%		controlled by the setting =|sparql:entailment|=.
 %
 %		* base_uri(Base)
 %		Specify the base IRI to use for parsing the query
@@ -91,7 +96,10 @@ sparql_query(Query, Reply, Options) :-
 sparql_compile(Query, sparql_query(Optimised, ReplyTemplate, Module), Options) :-
 	sparql_parse(Query, Parsed, Options),
 	optimise(Parsed, Optimised, Options),
-	option(entailment(Entailment), Options, rdf),
+	(   option(entailment(Entailment), Options)
+	->  true
+	;   setting(entailment, Entailment)
+	),
 	option(type(Type), Options, _),
 	option(ordered(Order), Options, _),
 	option(distinct(Distinct), Options, _),
@@ -103,9 +111,11 @@ prepare(select(Vars, _, _, S), select(Names), O, D, Reply) :- !,
 	solutions(S, O, D).
 prepare(construct(_,_,_,S), construct, O, D, _) :- !,
 	solutions(S, O, D).
-prepare(ask(_,_), ask, false, false, _) :- !.
+prepare(ask(_,_,S), ask, O, D, _) :- !,
+	solutions(S, O, D).
 prepare(describe(_,_,_,S), describe, O, D, _) :- !,
 	solutions(S, O, D).
+prepare(update(_), update, false, false, _) :- !.
 prepare(Query, Type, _, _, _) :-
 	nonvar(Type),
 	functor(Type, Expected, _),
@@ -117,37 +127,152 @@ solutions(distinct(S), O, true) :- !,
 solutions(S, O, false) :-
 	solutions(S, O).
 
-solutions(solutions(unsorted, _, _), O) :- !,
+solutions(solutions(_Group, _Having, _Aggregate, unsorted, _, _), O) :- !,
 	O = false.
 solutions(_, true).
 
 
 %%	optimise(+Parsed, -Optimised, +Options) is det.
 %
-%	Perform sparql query optimization using rdf_optimise/2.
+%	Perform  sparql  query   optimization    using   rdf_optimise/2.
+%	Currently,  UPDATE  requests  are  not   optimized.
+%
+%	@tbd The UPDATE modify requests involve a query and must be
+%	optimized.
 
+optimise(update(Updates), update(Updates), _) :- !.
 optimise(Parsed, Optimised, Options) :-
-	setting(cliopatria:optimise_query, Def),
-	option(optimise(true), Options, Def), !,
+	(   option(optimise(Optimise), Options)
+	->  Optimise == true
+	;   setting(cliopatria:optimise_query, true)
+	),
 	prolog_goal(Parsed, Goal0),
-	rdf_optimise(Goal0, Goal),
+	simplify_group(Goal0, Goal1),
+	optimise_eval(Goal1, Goal2),
+	rdf_optimise(Goal2, Goal3), !,
+	bind_null(Goal3, Goal, Options),
 	set_prolog_goal(Parsed, Goal, Optimised).
-optimise(Parsed, Parsed, _).
+optimise(Parsed, Optimised, Options) :-
+	prolog_goal(Parsed, Goal0),
+	simplify_group(Goal0, Goal1),
+	bind_null(Goal1, Goal, Options),
+	set_prolog_goal(Parsed, Goal, Optimised).
+
+% remove the outer SPARQL group. It has no meaning and reduces
+% readability.
+
+simplify_group(sparql_group(G), G) :- !.
+simplify_group(sparql_group(G, VIn, VOut), G) :-
+	VIn = VOut, !.
+simplify_group(Goal, Goal).
+
+bind_null(Goal0, Goal, Options) :-
+	option(bind_null(true), Options), !,
+	serql_select_bind_null(Goal0, Goal).
+bind_null(Goal, Goal, _).
 
 
 prolog_goal(select(_Proj, _DataSets, Goal, _Solutions), Goal).
 prolog_goal(construct(_Templ, _DataSets, Goal, _Solutions), Goal).
-prolog_goal(ask(_DataSets, Goal), Goal).
+prolog_goal(ask(_DataSets, Goal, _Solutions), Goal).
 prolog_goal(describe(_Proj, _DataSets, Goal, _Solutions), Goal).
+prolog_goal(sparql_group(Goal), Goal).
+prolog_goal(sparql_group(Goal,_VA,_VZ), Goal).
 
 set_prolog_goal(select(Proj, DataSets, _Goal, Solutions), Goal,
 		select(Proj, DataSets, Goal, Solutions)).
 set_prolog_goal(construct(Templ, DataSets, _Goal, Solutions), Goal,
 		construct(Templ, DataSets, Goal, Solutions)).
-set_prolog_goal(ask(DataSets, _Goal), Goal,
-		ask(DataSets, Goal)).
+set_prolog_goal(ask(DataSets, _Goal, Solutions), Goal,
+		ask(DataSets, Goal, Solutions)).
 set_prolog_goal(describe(Proj, DataSets, _Goal, Solutions), Goal,
 		describe(Proj, DataSets, Goal, Solutions)).
+set_prolog_goal(sparql_group(_Goal), Goal, Goal).
+set_prolog_goal(sparql_group(_Goal,VA,VZ), Goal, (Goal,VA=VZ)).
+
+
+%%	optimise_eval(+Goal0, -Goal) is det.
+%
+%	Perform partial evaluation on   sparql_true/1  and sparql_eval/2
+%	goals.
+
+optimise_eval(GoalIn, GoalOut) :-
+	annotate_variables(GoalIn, Vars),
+	optimise_annotated(GoalIn, GoalOut),
+	unbind_variables(Vars).
+
+%%	annotate_variables(+Goal, -Vars) is det.
+%
+%	Annotate variables that appear in  Goal.   The  annotation  is a
+%	variable attribute named =annotations=  and   the  value of this
+%	attribute is a list of annotations.
+
+annotate_variables(Goal, Vars) :-
+	empty_assoc(Vars0),
+	annotate_vars(Goal, Vars0, Vars).
+
+annotate_vars(Var, _, _) :-
+	var(Var), !,
+	instantiation_error(Var).
+annotate_vars((A,B), Vars0, Vars) :- !,
+	annotate_vars(A, Vars0, Vars1),
+	annotate_vars(B, Vars1, Vars).
+annotate_vars((A;B), Vars0, Vars) :- !,
+	annotate_vars(A, Vars0, Vars1),
+	annotate_vars(B, Vars1, Vars).
+annotate_vars((A*->B), Vars0, Vars) :- !,
+	annotate_vars(A, Vars0, Vars1),
+	annotate_vars(B, Vars1, Vars).
+annotate_vars(sparql_group(G), Vars0, Vars) :- !,
+	annotate_vars(G, Vars0, Vars).
+annotate_vars(sparql_group(G, _, _), Vars0, Vars) :- !,
+	annotate_vars(G, Vars0, Vars).
+annotate_vars(rdf(S,P,_), Vars0, Vars) :- !,
+	annotate_var(S, resource, Vars0, Vars1),
+	annotate_var(P, resource, Vars1, Vars).
+annotate_vars(rdf(S,P,_,G), Vars0, Vars) :- !,
+	annotate_var(S, resource, Vars0, Vars1),
+	annotate_var(P, resource, Vars1, Vars2),
+	annotate_var(G, resource, Vars2, Vars).
+annotate_vars(_, Vars, Vars).
+
+annotate_var(V, Type, Vars0, Vars) :-
+	var(V),
+	(   get_attr(V, annotations, A0)
+	->  \+ memberchk(Type, A0)
+	;   A0 = []
+	), !,
+	put_attr(V, annotations, [Type|A0]),
+	put_assoc(V, Vars0, true, Vars).
+annotate_var(_, _, Vars, Vars).
+
+unbind_variables(VarAssoc) :-
+	assoc_to_keys(VarAssoc, VarList),
+	maplist(unbind_var, VarList).
+
+unbind_var(V) :-
+	del_attr(V, annotations).
+
+%%	optimise_eval(+GoalIn, -GoalOut)
+
+optimise_annotated((A0,B0), (A,B)) :- !,
+	optimise_annotated(A0, A),
+	optimise_annotated(B0, B).
+optimise_annotated((A0;B0), (A;B)) :- !,
+	optimise_annotated(A0, A),
+	optimise_annotated(B0, B).
+optimise_annotated((A0*->B0), (A*->B)) :- !,
+	optimise_annotated(A0, A),
+	optimise_annotated(B0, B).
+optimise_annotated(sparql_group(G0), sparql_group(G)) :- !,
+	optimise_annotated(G0, G).
+optimise_annotated(sparql_group(G0, OV, IV), sparql_group(G, OV, IV)) :- !,
+	optimise_annotated(G0, G).
+optimise_annotated(sparql_true(E), G) :- !,
+	sparql_simplify(sparql_true(E), G).
+optimise_annotated(sparql_eval(E,V), G) :- !,
+	sparql_simplify(sparql_eval(E,V), G).
+optimise_annotated(G, G).
 
 
 %%	sparql_run(+Compiled, -Reply) is nondet.
@@ -158,16 +283,17 @@ set_prolog_goal(describe(Proj, DataSets, _Goal, Solutions), Goal,
 %	resource-related errors.
 
 sparql_run(sparql_query(Parsed, Reply, Module), Reply) :-
-	   sparql_run(Parsed, Reply, Module).
+	sparql_reset_bnodes,
+	sparql_run(Parsed, Reply, Module).
 
 sparql_run(select(_Vars, _DataSets, Query, Solutions), Reply, Module) :-
 	select_results(Solutions, Reply, Module:Query).
 sparql_run(construct(Triples, _DataSets, Query, Solutions), Reply, Module) :-
 	select_results(Solutions, Reply,
-		       (   Module:Query,
-			   member(Reply, Triples)
-		       )).
-sparql_run(ask(_DataSets, Query), Result, Module) :-
+		       Module:( Query,
+				rdfql_triple_in(Reply, Triples)
+			      )).
+sparql_run(ask(_DataSets, Query, _Solutions), Result, Module) :-
 	(   Module:Query
 	->  Result = true
 	;   Result = false
@@ -178,16 +304,32 @@ sparql_run(describe(IRIs, _DataSets, Query, Solutions), Reply, Module) :-
 			   member(IRI, IRIs)
 		       )),
 	sparql_describe(IRI, Module, Reply).
-
+sparql_run(update(Updates), Result, Module) :-
+	(   Module:sparql_update(Updates)
+	->  Result = true
+	;   Result = false
+	).
 
 %%	select_results(+Spec, -Reply, :Goal)
 %
 %	Apply ordering and limits on result-set.
+%
+%	@tbd	Handle =reduced=
 
-select_results(distinct(solutions(Order, Limit, Offset)), Reply, Goal) :- !,
-	select_results(distinct, Offset, Limit, Order, Reply, Goal).
-select_results(solutions(Order, Limit, Offset), Reply, Goal) :-
-	select_results(all, Offset, Limit, Order, Reply, Goal).
+:- meta_predicate select_results(+,+,0).
+:- public select_results/3.		% used on sparql_subquery/4
+
+select_results(distinct(solutions(Group, Having, Agg, Order, Limit, Offset)),
+	       Reply, Goal) :- !,
+	select_results(distinct, Group, Having, Agg, Offset, Limit,
+		       Order, Reply, Goal).
+select_results(reduced(Solutions),
+	       Reply, Goal) :- !,
+	select_results(Solutions, Reply, Goal).
+select_results(solutions(Group, Having, Agg, Order, Limit, Offset),
+	       Reply, Goal) :-
+	select_results(all, Group, Having, Agg, Offset, Limit,
+		       Order, Reply, Goal).
 
 
 %%	select_result(+Bindings, -Row, -Names) is det.

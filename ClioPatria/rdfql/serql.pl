@@ -44,6 +44,9 @@
 :- use_module(rdfql_util).
 :- include(entailment(load)).
 
+:- meta_predicate
+	select_results(+,-,0).
+
 /* - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
 A Prolog path expression is a conjunction of rdf/3 statements. Parts may
 be wrapped in opt/1 to indicate they are   optional  and nodes may be of
@@ -433,7 +436,7 @@ constrain(_, _) -->
 join_alt_annots(LoL, Annotated) :-
 	smallest_var(LoL, Var), !,
 	var_annotations(Var, LoL, LoL1, Annotations0),
-	sort(Annotations0, Annotations), 	% remove duplicates
+	sort(Annotations0, Annotations),	% remove duplicates
 	(   empty_annotations(Annotations)
 	->  join_alt_annots(LoL1, Annotated)
 	;   put_annotations(Annotations, Var),
@@ -691,7 +694,7 @@ serql_ns(rdf,  'http://www.w3.org/1999/02/22-rdf-syntax-ns#').
 serql_ns(rdfs, 'http://www.w3.org/2000/01/rdf-schema#').
 serql_ns(owl,  'http://www.w3.org/2002/7/owl#').
 serql_ns(xsd,  'http://www.w3.org/2001/XMLSchema#'). % Wrong in SeRQL docs!
-serql_ns(serql,'http://www.openrdf.org/schema/serql#').
+serql_ns(serql,'http://rdf4j.org/schema/serql#').
 
 
 		 /*******************************

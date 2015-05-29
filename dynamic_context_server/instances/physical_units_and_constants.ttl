@@ -4,11 +4,11 @@
 
 # Named toplevel resources (56)
 
-<terms#All Units>
+<terms#All_Units>
         ent:name "All Units" ;
-	ent:units <terms#units category> .
+	ent:units <terms#units_category> .
 
-<terms#units category>
+<terms#units_category>
 	ent:unit "symbolic" .
 
 
