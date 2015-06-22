@@ -6,7 +6,7 @@
 */
 
 :- use_module(context_complex).
-:- use_module(library('R')).
+:- use_module(library(real)).
 :- use_module(context_math).
 
 :- op(400, xfx, ~).
@@ -42,17 +42,21 @@ xyz(Triples, X, Y, Z) :-
 r_open_session :-
     % getenv('OS', 'Windows_NT'),
     current_prolog_flag(windows, true),
-    r_open([]), !.
+    true. % r_open([]), !.
 r_open_session :-
-    r_open([with(non_interactive)]).
+    true. % r_open([with(non_interactive)]).
 
 %%   open_mat(N, Lat, Lon)
 %
 %    Open Matlab file in R
 open_mat(N, Lat, Lon) :-
      r_open_session,
-     r_in( library('R.matlab') ),
-     r_in( library('R.utils') ),
+     % r_in(
+	 <- library('R.matlab'),
+     % ),
+     % r_in(
+	 <- library('R.utils'),
+     % ),
      data <- readMat('"./Rough_Track_Rock_Bed.mat"'),
      y <- 'data$Y[0:1024]',
      z <- 'data$Z[0:1024]',
@@ -74,20 +78,26 @@ open_mat(N, Lat, Lon) :-
 rtest :-
      r_open_session,
      y <- rnorm(50),
-     r_print( y ),
+     %REAL r_print( y ),
      x <- rnorm(y),
-     r_in( x11(width=5,height=3.5) ),
-     r_in( plot(x,y) ),
+     %r_in(
+       <- x11(width=5,height=3.5),
+     %),
+     % r_in(
+       <- plot(x,y),
+     %),
      write( 'Press Return to continue...' ), nl,
      read_line_to_codes( user_input, _ ),
-     r_print( 'dev.off()' ),
+     r_devoff, % r_print( 'dev.off()' ),
      Y <- y,
      write( y(Y) ), nl,
      findall( Zx, between(1,9,Zx), Z ),
      z <- Z,
-     r_print( z ),
+     % r_print( z ),
      cars <- c(1, 3, 6, 4, 9),
-     r_in(pie(cars)),
+     % r_in(
+	 <- pie(cars),
+     % ),
      write( 'Press Return to continue...' ), nl,
      read_line_to_codes( user_input, _ ),
      r_close.
@@ -174,9 +184,15 @@ r_complex(FileName) :-
     y <- Result,
     !,
     dquote(FileName, FN),
-    r_in( bmp(filename=FN)),
-    r_in( plot(x,y) ),
-    r_in( 'dev.off()'),
+    %r_in(
+       <- bmp(filename=FN),
+    %),
+    % r_in(
+       <- plot(x,y),
+    % ),
+    % r_in(
+       r_devoff, % <- 'dev.off()',
+    %),
     r_close.
 
 %%   r_app(+Request)

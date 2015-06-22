@@ -7,7 +7,7 @@
 
 :- use_module(context_math).
 :- use_module(library(clpfd)).
-:- use_module(library('R')).
+:- use_module(library(real)).
 
 :- context:register(context_autocorr:navigate).
 :- context:register(context_autocorr:contour).
@@ -480,7 +480,7 @@ pair_sum(List, Sum) :-
 %
 %    Calculate average
 calc_avg(URI, Theta, Diffusion) :-
-   r_open([]),
+   %REAL r_open([]),
    findall([T,D], find_avg(URI,T,D), Pairs),
    r_close,
    % print(user_error, Pairs),
@@ -523,6 +523,9 @@ model_options([F|R], URI, Opt, Contour)  -->
        ),
    model_options(R, URI, Opt, Contour).
 
+
+id_image([A,B,C|_],A,B,C).
+
 %%   rcontour(+Image, +X,+Y,+Z, +Contour)//
 %
 %    Display a contour or color image from R
@@ -530,22 +533,36 @@ rcontour(Image, X,Y,Z, Contour) -->
      {
      Vector range [3.0,6.0]/0.1,
      r_open_session,
+     id_image(Z, A,B,C),
+     atomic_list_concat([Image,'?xxx=',A,B,C],Image2),
+     print(user_error,Image2),
      y <- Y,
      x <- X,
      z <- Z,
      at <- Vector,
-     r_in( library(lattice) ),
+     %r_in(
+	<- library(lattice),
+     %),
      dquote(Image, FN),
-     r_in( bmp(filename=FN)),
+     % r_in(
+	<- bmp(filename=FN),
+     % ),
      (   Contour = true,
-         r_in( 'contourplot(z~x*y, cuts=10)' )
+         % r_in(
+	<- 'contourplot(z~x*y, cuts=10)'
+	 %)
      ;
-         r_in( 'levelplot(z~x*y, col.regions=terrain.colors, at=at)' )
+         % r_in(
+	<- 'levelplot(z~x*y, col.regions=terrain.colors, at=at)'
+	 %)
      ),
-     r_print( 'dev.off()' ),
+     %r_print(
+	 r_devoff, % <- 'dev.off()',
+     % ),
      r_close
      },
-     html(img(src(Image))).
+     % html(p('hello')).
+     html(img(src(Image2))).
 
 
 %%   contour(+Request)
@@ -737,7 +754,8 @@ variance(Request) :-
                               df(Df, [float]),
                               flat(Flat, [float]),
                               lf(Lf, [float])]),
-    context_ou:rms_data(URI, Vars),
+    atom_string(U,URI),
+    context_ou:rms_data(U, Vars),
     context_ou:xrange(X0,X1),
     % X1_scale is X1*100,
     X range [X0,X1]/1,
@@ -765,7 +783,8 @@ mean(Request) :-
                               df(Df, [float]),
                               flat(Flat, [float]),
                               lf(Lf, [float])]),
-    context_ou:mean_data(URI, Means),
+    atom_string(U,URI),
+    context_ou:mean_data(U, Means),
     context_ou:xrange(X0,X1),
     X range [X0,X1]/1,
     OU mapdot maxent_ou_mean(Df,Lf,Flat) ~> X,
@@ -791,20 +810,24 @@ contour(Request) :-
 			      opt(Opt, [string, default('MaxEnt')]),
                               lat(Lat, [float, optional(true)]),
                               lon(Lon, [float, optional(true)])]),
-    (   var(URI),
+    (   var(URI) ->
         (
         context_geo:find_dem_section(Lat, Lon, URI) ->
            context_geo:find_dem_section(_, _, URI, Info),
            print(user_error, [URI]),
            Contour = false, % assumes unbound
+	    print(user_error, [Opt,Lat,Lon,URI,Info]),
            contour_display(Opt, URI, Contour, Lat, Lon, Info)
         ;
             reply_html_page([title('DEM data sets')], [p('section likely not found')])
         )
     ;
-        (   Contour = variance ->
-            context_geo:find_dem_section(Lat, Lon, URI, Info),
-	    context_ou:rms_data(URI, Vars),
+	    print(user_error, [Contour,URI]),
+	 atom_string(U,URI),
+	 atom_string(ME, Opt),
+        (   Contour = "variance" ->
+            context_geo:find_dem_section(Lat, Lon, U, _Info),
+	    context_ou:rms_data(U, Vars),
 	    context_ou:xrange(X0,X1),
 	    X range [X0,X1]/1,
             Profile tuple X + Vars,
@@ -815,19 +838,23 @@ contour(Request) :-
 				       log,
 				       ['Post', 'Variance'],
 				       'x (post)', 'var (m^2)',
-				       ['Variance ', URI],
+				       ['Variance ', U],
 				       Profile))
 		 ]
 			   )
 
 	;
-	    Contour = contour ->
-            context_geo:find_dem_section(Lat, Lon, URI, Info),
-            contour_display(Opt, URI, true, Lat, Lon, Info)
+		Contour = "contour" ->
+            context_geo:find_dem_section(Lat, Lon, U, Info),
+            contour_display(ME, U, true, Lat, Lon, Info)
 	;
-	    Contour = color ->
-            context_geo:find_dem_section(Lat, Lon, URI, Info),
-            contour_display(Opt, URI, false, Lat, Lon, Info)
+		Contour = "color" ->
+	    print(user_error, ' dem '),
+            context_geo:find_dem_section(Lat, Lon, U, Info),
+	    print(user_error, [Opt,Lat,Lon,U,Info]),
+            contour_display(ME, U, false, Lat, Lon, Info)
+        ;
+            reply_html_page([title('DEM data sets')], [p('hmmm')])
 	)
     ).
 

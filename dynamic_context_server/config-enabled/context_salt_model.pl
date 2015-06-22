@@ -417,7 +417,7 @@ get_fit(StartDate, EndDate, [Temperature, CO2, SOI, TSI, Volc, LOD, AAM, Arctic,
    % fitxy <- lm('y[1:1601]~c[1:1601]+s[1:1601]+a[1:1601]+l[1:1601]+t[1:1601]+m[1:1601]+z[1:1601]+n[1:1601]+v[1:1601]+w[1:1601]+p[1:1601]+q[1:1601]+e[1:1601]+f[1:1601]+g[1:1601]+h[1:1601]+d[1:1601]+i[1:1601]+r[1:1601]+u[1:1601]+a1[1:1601]+b1[1:1601]+c1[1:1601]+d1[1:1601]+e1[1:1601]+f1[1:1601]+g1[1:1601]+h1[1:1601]+i1[1:1601]+j1[1:1601]+k1[1:1601]+l1[1:1601]+m1[1:1601]+n1[1:1601]+o1[1:1601]+p1[1:1601]+q1[1:1601]+r1[1:1601]+s1[1:1601]+t1[1:1601]+u1[1:1601]+v1[1:1601]+w1[1:1601]+x1[1:1601]+j[1:1601]+k[1:1601]'),
 
    %   Add the variables here !!! don't forget
-   r_print(fitxy),
+   %REAL r_print(fitxy),
    Int <- 'as.double(fitxy$coefficients[1])',
    C <- 'as.double(fitxy$coefficients[2])',
    S <- 'as.double(fitxy$coefficients[3])',
@@ -468,7 +468,7 @@ get_fit(StartDate, EndDate, [Temperature, CO2, SOI, TSI, Volc, LOD, AAM, Arctic,
    DY <- 'as.double(fitxy$coefficients[48])',
    LM <- 'as.double(fitxy$coefficients[49])',
    summary <- summary(fitxy),
-   r_print(summary),
+   %REAL r_print(summary),
    R2 <- 'as.double(summary$r.squared)',
    r_close, !.
 

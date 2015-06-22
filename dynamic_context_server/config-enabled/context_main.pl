@@ -9,6 +9,8 @@
 :- use_module(library(http/html_head)).
 :- use_module(cliopatria(hooks)).
 :- use_module(components(messages)).
+:- use_module(library(real)).
+
 
 % %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 % %%%%%% Server rules for web processing %%%%%%%
@@ -29,6 +31,7 @@
 %
 %    Instancing server for Cliopatria
 server(Port) :-
+   r_start_server,
    http_server(http_dispatch, [port(Port)]).
 
 cliopatria:server_address -->
@@ -225,9 +228,7 @@ blog_feed(_Request) :-
 
 
 
-
-
-
+% :- r_start_server.
 
 
 

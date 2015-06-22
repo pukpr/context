@@ -78,9 +78,10 @@ read_rdf(URI, UX, UY, [DataX, DataY, DataY], 'X,Z1,Z2') :-
 
 read_rdf_data(Request) :-
    http_parameters(Request, [plot_scaling(LL),
-                             data_set(URI)
+                             data_set(U)
                              ],
                              [attribute_declarations(param)]),
+    atom_string(URI,U),
    read_rdf(URI, X_Units, Z_Units, Data, Header),
    context_graphing:axis_label('x', X_Units, UX),
    context_graphing:axis_label('z', Z_Units, UZ),
@@ -160,8 +161,9 @@ read_rdf_data(Request) :-
 %
 %    Download obstacle profile as a text file
 download(Request) :-
-    http_parameters(Request, [uri(URI, [string]),
+    http_parameters(Request, [uri(U, [string]),
                               dl(DL, [boolean])]),
+    atom_string(URI,U),
     read_rdf(URI, _X_Units, _Z_Units, [X,Y,Z], _Header),
     (
     DL=true,
@@ -186,8 +188,10 @@ download(Request) :-
 %
 %    Plot FFT of obstacle profile
 plot_fft(Request) :-
-   http_parameters(Request, [uri(URI, [string]),
-                              ll(LL, [string])]),
+   http_parameters(Request, [uri(U, [string]),
+                              ll(LLS, [string])]),
+   atom_string(URI,U),
+   atom_string(LL,LLS),
    read_rdf(URI, _X_Units, _Z_Units, [X,Y,_Z], _Header),
 /*  reciprocal units
    context_graphing:axis_label('x', X_Units, UX),

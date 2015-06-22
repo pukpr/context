@@ -29,7 +29,7 @@
     *
 */
 :- use_module(context_math).
-:- use_module(library('R')).
+:- use_module(library(real)).
 
 %%   complement(+X, -Y)
 %

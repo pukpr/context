@@ -11,7 +11,7 @@
 :- use_module(library(http/http_path)).
 :- use_module(library(http/js_write)).
 :- use_module(library(uri)).
-:- use_module(library('R')).
+:- use_module(library(real)).
 :- use_module(library(charsio)).
 :- use_module(library(clpfd)).
 
@@ -83,6 +83,7 @@
 :- use_module(context_autocorr).
 :- use_module(context_elements).
 :- use_module(context_xml).
+:- use_module(context_esker).
 
 
 

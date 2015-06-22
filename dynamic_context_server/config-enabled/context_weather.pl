@@ -169,8 +169,10 @@ navigate -->
         ).
 
 measure(Request) :-
-   http_parameters(Request, [site(Site, [string]),
-			     measure(Measure, [string])]),
+   http_parameters(Request, [site(SiteS, [string]),
+			     measure(MeasureS, [string])]),
+   atom_string(Site, SiteS),
+   atom_string(Measure, MeasureS),
    process_location(Site,  Measure, Min, MinDay, Max, MaxDay, Values, Name),
    context_dbpedia:get_lat_lon(Site,Lat, Lon),
    context_dbpedia:get_depiction(Site, Image),

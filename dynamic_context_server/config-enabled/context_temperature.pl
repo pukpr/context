@@ -77,7 +77,8 @@ generate_c_code(Site, Code) :-
 %
 %    Plot temperature page
 temperature(Request) :-
-   http_parameters(Request, [site(Site, [string])]),
+   http_parameters(Request, [site(SiteS, [string])]),
+   atom_string(Site,SiteS),
    ( generate_yearly_temperature_profile(Site, TS, Profile)
    ->
      generate_c_code(Site, Code),

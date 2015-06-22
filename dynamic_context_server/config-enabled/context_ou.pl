@@ -9,7 +9,7 @@
 */
 
 :- use_module(library(clpfd)).
-:- use_module(library('R')).
+:- use_module(library(real)).
 :- use_module(context_math).
 
 :- dynamic

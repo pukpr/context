@@ -53,7 +53,8 @@ process_xyz(MX, MY, [X1|XR],[Y1|YR],[Z1|ZR], Input, Final) :-
 %
 %    Create a 3D representation according to a specific deterministic profile geometry
 create(Request) :-
-    http_parameters(Request, [uri(URI, [string])]),
+    http_parameters(Request, [uri(U, [string])]),
+    atom_string(URI,U),
     read_rdf(URI, _X_Units, _Z_Units, [DX,DY,DZ], _Header),
     context:max_min(DX, Max_X, Min_X),
     context:max_min(DY, Max_Y, Min_Y),
@@ -68,7 +69,8 @@ create(Request) :-
 %
 %    Create a surface representation
 surface(Request) :-
-    http_parameters(Request, [uri(URI, [string])]),
+    http_parameters(Request, [uri(U, [string])]),
+    atom_string(URI,U),
     findall([X,Y,Z],
 	    (	diffElev(URI,X,Y,Z),
 	        Z > 0

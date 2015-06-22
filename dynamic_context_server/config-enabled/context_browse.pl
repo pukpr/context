@@ -124,11 +124,12 @@ view_tree(Request, Subject) -->
          ]
         ).
 
-%%   navigate(+Request) 
+%%   navigate(+Request)
 %
 %    Dynamic page to feature browser
 navigate(Request) :-
-    http_parameters(Request, [term(Term, [string, default(context)])]),
+    http_parameters(Request, [term(TermS, [string, default(context)])]),
+    atom_string(Term,TermS),
     reply_html_page(
         cliopatria(default),
         [title('Context Browse Models')],

@@ -6,7 +6,7 @@
 
 :- use_module(context).
 :- use_module(context_math).
-:- use_module(library('R')).
+:- use_module(library(real)).
 :- use_module(library(http/http_wrapper)).
 :- use_module(context_r).
 

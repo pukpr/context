@@ -10,7 +10,7 @@
 */
 
 :- use_module(context_math).
-:- use_module(library('R')).
+:- use_module(library(real)).
 
 :- context:register(context_diffusive_decline:navigate).
 :- context:register(context_diffusive_decline:plot).
@@ -71,7 +71,7 @@ get_line(X, Y, Slope, Int, R2) :-
    x <- X,
    y <- Y,
    fitxy <- lm('y~x'),
-   r_print(fitxy),
+   %REAL r_print(fitxy),
    Slope <- 'as.double(fitxy$coefficients[2])',
    Int <- 'as.double(fitxy$coefficients[1])',
    % r_in(summary(fitxy)),

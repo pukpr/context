@@ -92,9 +92,10 @@ available_location(Locale, Title, Model, Feature) :-
 %
 %    Dynamic page to geospatial location search
 navigate_locale(Request) :-
-   http_parameters(Request, [locale(Locale_or_Title, [string]),
+   http_parameters(Request, [locale(Locale_or_TitleS, [string]),
 			     action(Action, [])
 			    ]),
+   atom_string(Locale_or_Title,Locale_or_TitleS),
    Action = 'Map',
    (
     available_location(Locale_or_Title, _Title, _Model, _Feature) ->
@@ -116,9 +117,11 @@ navigate_locale(Request) :-
 
 
 navigate_locale(Request) :-
-   http_parameters(Request, [locale(Locale_or_Title, [string]),
-			     action(Action, [])
+   http_parameters(Request, [locale(Locale_or_TitleS, [string]),
+			     action(ActionS, [])
 			    ]),
+   atom_string(Locale_or_Title,Locale_or_TitleS),
+   atom_string(Action,ActionS),
    Action = 'Available',
    (
     available_location(Locale_or_Title, Title, _, _) ->
