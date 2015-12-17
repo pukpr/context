@@ -295,10 +295,10 @@ navigate(Request) :-
 				     p([' ...... ']),
 				     div([style([ type('text/css'), scoped ],
 					 '@import url("/html/css/context.css")'),
-					  input([type('text'), size(2), name('wave'), value('0')]),
+					  input([type('text'), size(2), name('wave'), value('30')]),
 					  % \(con_text:check_box(wave, 'true', 'cycles On ')),
-					  \(con_text:check_box(fit_res, 1, 'fit res')),
-					  \(con_text:check_box(high_res, 1, 'high res')),
+					  \(con_text:check_box(fit_res, 1, 'fit res', checked)),
+					  \(con_text:check_box(high_res, 1, 'high res', checked)),
 					  \(con_text:table_multiple_entries(
 						  [[cycle, 'period description', year]],
 						  CycleData
