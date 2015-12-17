@@ -72,7 +72,9 @@
 		       lag/2,
 		       delay/2,
 		       invert/2,
-		       reciprocal/2
+		       reciprocal/2,
+	               extract/4,
+	               exclude/4
                      ]).
 
 /** <module>  Math operations for array manipulations
@@ -1135,3 +1137,40 @@ reciprocal([A|Rest], Ix, Xc) :-
 [] reciprocal [].
 X reciprocal Y :-
    reciprocal(Y, [], X), !.
+
+%%   extract(+X,+From,+To,-Y)
+%
+%    Extract a section from a list.
+
+extract_sub([], _, _, _, L, List) :- reverse(L, List).
+extract_sub([A|Rest], N, From, To, L, List ) :-
+    N > From-1,
+    N < To+1,
+    M is N+1,!,
+    extract_sub(Rest, M, From, To, [A|L], List).
+extract_sub([_A|Rest], N, From, To, L, List ) :-
+    M is N+1,!,
+    extract_sub(Rest, M, From, To, L, List).
+
+extract(List, From, To,Result ) :-
+    extract_sub(List, 1, From, To, [], Result).
+
+%%   exclude(+X,+From,+To,-Y)
+%
+%    Exclude a section from a list.
+
+exclude_sub([], _, _, _, L, List) :- reverse(L, List).
+exclude_sub([A|Rest], N, From, To, L, List ) :-
+    (
+      N < From
+    ;
+      N > To
+    ),
+    M is N+1,!,
+    exclude_sub(Rest, M, From, To, [A|L], List).
+exclude_sub([_A|Rest], N, From, To, L, List ) :-
+    M is N+1,!,
+    exclude_sub(Rest, M, From, To, L, List).
+
+exclude(List, From, To,Result ) :-
+    exclude_sub(List, 1, From, To, [], Result).
