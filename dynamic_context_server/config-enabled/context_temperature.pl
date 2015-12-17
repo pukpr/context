@@ -258,7 +258,7 @@ get_month(Day, Month) :-
 %    Format temperature measure query
 temperature_spread(Month, Q) :-
    format(atom(Q),
-          'dbpprop:~wHighF ?~wHighF; dbpprop:~wLowF ?~wLowF; ',
+          'dbp:~wHighF ?~wHighF; dbp:~wLowF ?~wLowF; ',  % dbpprop
           [Month, Month, Month, Month]).
 
 %%   format_temperature_query(+Text)
@@ -340,7 +340,7 @@ get_temperature_spread(Location, Lows, Highs, Name) :-
     format_temperature_query(Text),
     atomic_list_concat(Text, Temps),
     % Format = 'select * where {dbpedia:~w ~w dbpprop:location ?L.}',
-    Format = 'select * where {<~w> ~w dbpprop:location ?L.}',
+    Format = 'select * where {<~w> ~w dbp:location ?L.}',  % dbpprop
     % Format = 'select * where {dbpedia:~w ~w rdfs:label ?L.}',
     format(atom(Q), Format, [Local, Temps]),
     sparql_query(
