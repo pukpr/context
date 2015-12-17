@@ -1,4 +1,4 @@
-#!/usr/bin/swipl -g cp_server -s
+#!/usr/bin/swipl -g 'cp_server([])' -s
 
 /* - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
 This file provides a skeleton startup file.  It can be localized by running
@@ -17,7 +17,7 @@ file_search_path(cliopatria, '../ClioPatria').
 
 % Make loading files silent. Comment if you want verbose loading.
 
-:- set_prolog_flag(verbose, silent).
+:- set_prolog_flag(verbose, normal).
 
 		 /*******************************
 		 *	      LOAD CODE		*
@@ -46,5 +46,7 @@ file_search_path(cliopatria, '../ClioPatria').
 % Get back normal verbosity of the toplevel.
 
 :- set_prolog_flag(verbose, normal).
+
+:- cp_server([]).
 
 
