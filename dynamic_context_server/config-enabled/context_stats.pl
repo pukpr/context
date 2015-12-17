@@ -9,6 +9,8 @@
                        rms/2,
 		       variance/2,
                        corrcoeff/3,
+                       excursion/3,
+                       inflection/3,
 		       sum_of_squares/3,
 		       median_filter/2,
 		       peak_detector/2
@@ -212,3 +214,44 @@ peak_detector(F,[M,L], In, Y) :-
 peak_detector(F, [M,L,R|Rest], In, Y) :-
     peak_value([F,M,L],V),
     peak_detector(M,[L,R|Rest], [V|In], Y).
+
+%%   excursion(+X, +Y, -R)
+%
+%    Excursion match of two arrays
+%
+excursion(X, Y, R) :-
+    mean(X, XM), XOff is -XM,
+    mean(Y, YM), YOff is -YM,
+    DXM mapdot XOff .+ X,
+    DYM mapdot YOff .+ Y,
+    DXE mapdot sign ~> DXM,
+    DYE mapdot sign ~> DYM,
+    Num dot DXE*DYE,
+    length(X, N),
+    R is ( 1 + Num/N)/2.
+
+%%   inflection(+X, +Y, -R)
+%
+%    Inflection match of two arrays
+%
+
+inflection_map([B0,C0], [B1,C1], Total, Total) :- !.
+inflection_map([A0,B0,C0|R0], [A1,B1,C1|R1], Sum, Total) :-
+   T0 is A0 - 2*B0 + C0,
+   T1 is A1 - 2*B1 + C1,
+   X0 is abs(A0 - 2*B0 + C0) + 0.00000001,
+   X1 is abs(A1 - 2*B1 + C1) + 0.00000001,
+   T is Sum + T0*T1/(X0*X1), !,
+   inflection_map([B0,C0|R0], [B1,C1|R1], T, Total).
+
+inflection(X, Y, R) :-
+    mean(X, XM), XOff is -XM,
+    mean(Y, YM), YOff is -YM,
+    DXM mapdot XOff .+ X,
+    DYM mapdot YOff .+ Y,
+    inflection_map(DXM, DYM, 0, R0),
+    length(X,N),
+    R is R0/(N-2).
+
+
+
