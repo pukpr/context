@@ -559,6 +559,10 @@ check_box(Name, Value, Description) -->
     html(
 	input([type('checkbox'), name(Name), value(Value)], Description)
         ).
+check_box(Name, Value, Description,Checked) -->
+    html(
+	input([type('checkbox'), name(Name), value(Value), Checked], Description)
+        ).
 
 
 %%   table_with_iframe_target(+Request, +Left_Content)//
@@ -590,9 +594,9 @@ table_with_iframe_target(Request, Left_Content) -->
 	       [
 		td( [valign(top)],
                     Image ),
-	        td( [width('40%'),valign(top)],
+	        td( [width('25%'),valign(top)], %40
                     Left_Content ),
-                td([width('60%'),valign(top)],
+                td([width('75%'),valign(top)],	%60
                    [iframe([name(IName),
                             width('100%'),
                             height('800'),
