@@ -263,7 +263,7 @@ pad_header([F|R], In, Out) :-
 %%   dygraph_error_bars(+LogScale, +Headings, +Xaxis, +Yaxis, +Title, +Data)//
 %
 %    Dygraph error bar prototype, still under development
-dygraph_error_bars(LogScale, Headings, Xaxis, Yaxis, Title, Data, Bars) -->
+dygraph_error_bars_base(LogScale, Headings, Xaxis, Yaxis, Title, Data, Bars, Length) -->
    {
     % pad_header(Headings, [], Headers),
     is_log(LogScale,Log),
@@ -278,9 +278,12 @@ dygraph_error_bars(LogScale, Headings, Xaxis, Yaxis, Title, Data, Bars) -->
          div([id('graphdiv'), style('display:block')], []),
          script([type('text/javascript')],
          [
-          \js_call('handleDygraphListErrorBars'(Log,Xaxis,Yaxis,Text,Headings,Data,CustomBars, 1200, 400))
+          \js_call('handleDygraphListErrorBars'(Log,Xaxis,Yaxis,Text,Headings,Data,CustomBars, Length, 400))
          ])
         ]).
+
+dygraph_error_bars(LogScale, Headings, Xaxis, Yaxis, Title, Data, Bars) -->
+    dygraph_error_bars_base(LogScale, Headings, Xaxis, Yaxis, Title, Data, Bars, 1200).
 
 
 % list of xy pairs
