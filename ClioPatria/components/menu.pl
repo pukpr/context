@@ -89,8 +89,8 @@ menu_items([H|T]) --> menu_item(H), menu_items(T).
 menu_item(item(_Rank, Spec, Label)) -->
 	{ atom(Spec) }, !,
 	{ (   \+ sub_atom(Spec, 0, _, _, 'http://'),
-	      catch(http_location_by_id(Spec, Location), E,
-		    (   print_message(informational, E),
+	      catch(http_location_by_id(Spec, Location), _E,
+		    (   % print_message(informational, E),
 			fail))
 	  ->  true
 	  ;   Location = Spec
