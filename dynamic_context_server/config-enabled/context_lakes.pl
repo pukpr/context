@@ -25,7 +25,7 @@ navigate(Request) :-
                Request,
                [
                 h2('Lake query examples'),
-		                \(con_text:table_form('Clear and load data ', 'set_yearly_range',
+		\(con_text:table_form('Clear and load data ', 'set_yearly_range',
 				      [[from,1843],
 				       [to, 2012]])),
 
@@ -61,6 +61,8 @@ plot_chart(Request) :-
                      img(src(FN))
                    ]).
 
+
+
 %%   set_yearly_range(+Request)
 %
 %    Set yearly range for collecting data
@@ -71,7 +73,9 @@ set_yearly_range(Request) :-
    call_showing_messages(
        (
        print_message(informational, format('Years ~d to ~d', [From, To])),
-       get_all_records(From, To),
+       (   To == 2014 ->
+           get_all_records(From, To),
+	   true),
        reply_html_page(title('Configuration'),
                    [
                      p(['Configured from ', From, ' to ', To]),
