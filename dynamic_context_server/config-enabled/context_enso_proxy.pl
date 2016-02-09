@@ -641,7 +641,7 @@ navigate(Request) :-
                                   onclick('subm(this.form,"target_iframe");')]),
 			  input([type('submit'), name(kind), value('volcanos'),
                                  onclick('subm(this.form,"render");')]),
-			  \(con_text:check_box(eq, 'true', 'CC on interval')),
+			  \(con_text:check_box(eq, 'true', 'alt eq on')),
 			  \(con_text:check_box(sign, 'true', 'sign metric')),
 			  \(con_text:check_box(fft, 'true', 'FFT of residual')),
 			  br([]),
@@ -1141,8 +1141,8 @@ show_equation([[0.0,0.0,0.0]|R], In, Out) :-
     show_equation(R,In, Out).
 show_equation([[Period,S,C]|R], In, Out) :-
     Val is sqrt(S*S+C*C),
-    Phase is atan(S,C),
-    format(atom(Value), '+ ~5g * sin(2*pi()*$a1/~5g+~5g) ', [Val,Period,Phase]),
+    Phase is atan(C,S),
+    format(atom(Value), '+ ~7g * sin(2*pi()*$a1/~7g+~7g) ', [Val,Period,Phase]),
     concat(In, Value, Eq),
     show_equation(R,Eq, Out).
 
@@ -1166,11 +1166,6 @@ html_rms(RMS, Periodic, Equation) -->
 	    [
 	    p(Equation),
 	    \(con_text:multi_columns([
-		     div([
-			 p(i('Temperature variance as RMS values in milliKelvin, baseline=1960')),
-			 \(con_text:table_multiple_entries([[factor,rms]],RMS))
-			 % \(con_text:paragraphs(RMS))
-		       ]),
 		     div([
 			 p(i('Individual periodic cycles in years')),
 			 \(con_text:table_multiple_entries([[period,rms]],Periodic))
@@ -1279,22 +1274,22 @@ plot(Request) :-
     E = Add,
 
 (   EQ_ON ->
-    Period is E*7.28*12,  %Hale/3 * 12 *Q, % precession cycle with the time for Spring tides to realign with the same day each year
-    Period2 is 9.22 * 12,   % 9.03 9.015 Sun-Moon-Earth tidal configuration 8.715
+    Period is E*7.29*12,  %Hale/3 * 12 *Q, % precession cycle with the time for Spring tides to realign with the same day each year
+    Period2 is 9.2 * 12,   % 9.03 9.015 Sun-Moon-Earth tidal configuration 8.715
     Period3 is Q*18.2* 12,  % 18.63 Lunar precessional
-    Period4 is Q*4.03 * 12,   % 4.06 8.848 Lunar apsidal precession
-    Period5 is Q*2.2*12, % 2.245 Add*11.86* 12 *Q,   % 11.86 Tidal sidereal period of Jupiter
-    Period6 is Q*6.48*12, % 1.7655 Others*Hale/7 * 1.026* 12 *Q,       % Soros cycle tide -------
+    Period4 is Q*4.032 * 12,   % 4.06 8.848 Lunar apsidal precession
+    Period5 is Q*2.192*12, % 2.245 Add*11.86* 12 *Q,   % 11.86 Tidal sidereal period of Jupiter
+    Period6 is Q*6.46*12, % 1.7655 Others*Hale/7 * 1.026* 12 *Q,       % Soros cycle tide -------
     Period7 is E*5.73*12,  % 5.77 Add*Period5/2,       % Period5/2 24*Q,
-    Period8 is 6.09*12, % 6.48 Period3/3,       % 20.5
-    Period9 is Q*8.848 * 12/2,
-    PeriodA is Q*2.72*12,   % 2.755 2.763 Add*Hale/4 *0.955*12 *Q,
-    PeriodB is 2.895*12, %2.898  Others*Hale/5 *0.955*12 *Q, % -------
-    PeriodC is Q*2.107*12, % 2.0799 2.09 Hale/6 *12 *Q,
-    PeriodD is E*13.9*12, % 13.52 0*Hale/2 *12,
-    PeriodE is Q*3.526*12, % 3.523  3.53 Add*Hale/1 *12 *Q,
-    PeriodF is 2.334*12, %  2.329 3.35 Random_F*12*20, % 2*12 *Q, % ------
-    PeriodH is Q*2.672*12, %1.93 1.583 0*7.944*12, % 7.944 2.54  Venus 9.315*12*Q,  %
+    Period8 is 6.08*12, % 6.48 Period3/3,       % 20.5
+    Period9 is Q*8.85 * 12/2,
+    PeriodA is Q*2.76*12,   % 2.755 2.763 Add*Hale/4 *0.955*12 *Q,
+    PeriodB is 2.894*12, %2.898  Others*Hale/5 *0.955*12 *Q, % -------
+    PeriodC is Q*2.108*12, % 2.0799 2.09 Hale/6 *12 *Q,
+    PeriodD is E*13.87*12, % 13.52 0*Hale/2 *12,
+    PeriodE is Q*3.522*12, % 3.523  3.53 Add*Hale/1 *12 *Q,
+    PeriodF is 2.3333*12, %  2.329 3.35 Random_F*12*20, % 2*12 *Q, % ------
+    PeriodH is Q*8.848*12, %1.93 1.583 0*7.944*12, % 7.944 2.54  Venus 9.315*12*Q,  %
     Sin0 mapdot mod_sin_period(PeriodH,14,WL) ~> Months,
     Cos0 mapdot mod_cos_period(PeriodH,14,WL) ~> Months,
     Sin mapdot mod_sin_period(Period,10,WL) ~> Months,
@@ -1328,16 +1323,16 @@ plot(Request) :-
     SinF mapdot mod_sin_period(PeriodF,1 ,WL) ~> Months,
     CosF mapdot mod_cos_period(PeriodF,1 ,WL) ~> Months,
 
-    Evection is  12*21.9, %  31.854/365.25,
+    Evection is  12*21.95, %  31.854/365.25,
     % Evection is 12*1.0,
     LogCO2 mapdot mod_sin_period(Evection,16,WL) ~> Months,
     S2 mapdot mod_cos_period(Evection,16,WL) ~> Months,
 
-    CWobble is 27.7*12, % 1.595*12,  % 1.595 1.185*12,
+    CWobble is 27.8*12, % 1.595*12,  % 1.595 1.185*12,
     TSI_F mapdot mod_sin_period(CWobble,17,WL) ~> Months,
     V1 mapdot mod_cos_period(CWobble,17,WL) ~> Months,
 
-    LongW is 2.368*12, % 0*512/26.6*12,
+    LongW is 2.37*12, % 0*512/26.6*12,
     AAM mapdot mod_sin_period(LongW,0,WL) ~> Months,
     LOD_F mapdot mod_cos_period(LongW,0,WL) ~> Months
     %AAM mapdot 1*sin_biennial_period ~> Months,
@@ -1345,23 +1340,23 @@ plot(Request) :-
     % LOD_F mapdot eph_period(-18) ~> Months
 
 ;
-
-    Period is E*7.3*12,  %Hale/3 * 12 *Q, % precession cycle with the time for Spring tides to realign with the same day each year
-    Period2 is 9.08 * 12,   % 9.03 9.015 Sun-Moon-Earth tidal configuration 8.715
-    Period3 is Q*18.63* 12,  % 18.613 Lunar precessional
-    Period4 is Q*4.06 * 12,   % 8.848 Lunar apsidal precession
-    Period5 is Q*2.245*12, % Add*11.86* 12 *Q,   % 11.86 Tidal sidereal period of Jupiter
-    Period6 is Q*1.7655*12, % 1.7405 Others*Hale/7 * 1.026* 12 *Q,       % Soros cycle tide -------
-    Period7 is E*5.77*12,  % 5.77 Add*Period5/2,       % Period5/2 24*Q,
-    Period8 is 6.48*12, % Period3/3,       % 20.5
-    Period9 is Q*8.848 * 12/2,
+    %  2.3 2.1 3.5 3.73 4.03 11.1
+    Period is E*7.4*12,  %# Hale/3 * 12 *Q, % precession cycle with the time for Spring tides to realign with the same day each year
+    Period2 is 9.3 * 12,   %# 9.03 9.015 Sun-Moon-Earth tidal configuration 8.715
+    Period3 is Q*18.6* 12,  %# 18.613 Lunar precessional
+    Period4 is Q*4.04 * 12,   %# 8.848 Lunar apsidal precession
+    Period5 is Q*2.24096*12, %# Add*11.86* 12 *Q,   % 11.86 Tidal sidereal period of Jupiter
+    Period6 is Q*6.47*12, %# 1.7405 Others*Hale/7 * 1.026* 12 *Q,       % Soros cycle tide -------
+    Period7 is E*5.75*12,  %# 5.77 Add*Period5/2,       % Period5/2 24*Q,
+    Period8 is 6.08*12, %# Period3/3,       % 5.6 20.5
+    Period9 is Q*4.424 * 12, %/#
     PeriodA is Q*2.763*12,   % Add*Hale/4 *0.955*12 *Q,
-    PeriodB is 2.898*12, %2.898  Others*Hale/5 *0.955*12 *Q, % -------
-    PeriodC is Q*2.09*12, % Hale/6 *12 *Q,
-    PeriodD is E*13.52*12, % 0*Hale/2 *12,
-    PeriodE is Q*3.53*12, % 3.53 Add*Hale/1 *12 *Q,
-    PeriodF is 2.329*12, % 2.3378 2.329 3.35 Random_F*12*20, % 2*12 *Q, % ------
-    PeriodH is Q*1.93*12, %1.93 1.583 0*7.944*12, % 7.944 2.54  Venus 9.315*12*Q,  %
+    PeriodB is 2.89485*12, %# 2.898  Others*Hale/5 *0.955*12 *Q, % -------
+    PeriodC is Q*2.108*12, %# 2.078 Hale/6 *12 *Q,
+    PeriodD is E*13.87*12, %# 14.35 0*Hale/2 *12,
+    PeriodE is Q*3.5743*12, %# 3.53 Add*Hale/1 *12 *Q,
+    PeriodF is 2.323885*12, %# 2.3378 2.329 3.35 Random_F*12*20, % 2*12 *Q, % ------
+    PeriodH is Q*8.83*12, %# 1.93 1.583 0*7.944*12, % 7.944 2.54  Venus 9.315*12*Q,  %
 
     Sin0 mapdot mod_sin_period(PeriodH,18,WL) ~> Months,
     Cos0 mapdot mod_cos_period(PeriodH,18,WL) ~> Months,
@@ -1396,16 +1391,16 @@ plot(Request) :-
     SinF mapdot mod_sin_period(PeriodF,1 ,WL) ~> Months,
     CosF mapdot mod_cos_period(PeriodF,1 ,WL) ~> Months,
 
-    Evection is 12*31.854/365.25,
+    Evection is 12*21.95,
     % Evection is 12*1.0,
     LogCO2 mapdot mod_sin_period(Evection,16,WL) ~> Months,
     S2 mapdot mod_cos_period(Evection,16,WL) ~> Months,
 
-    CWobble is 1.595*12,  % 1.595 1.185*12,
+    CWobble is 27.8*12,  % 1.595 1.185*12,
     TSI_F mapdot mod_sin_period(CWobble,17,WL) ~> Months,
     V1 mapdot mod_cos_period(CWobble,17,WL) ~> Months,
 
-    LongW is 512/26*12,
+    LongW is 2.37*12, % 6.095
     AAM mapdot mod_sin_period(LongW,0,WL) ~> Months,
     LOD_F mapdot mod_cos_period(LongW,0,WL) ~> Months
     %AAM mapdot sin_biennial_period ~> Months,
@@ -1535,7 +1530,7 @@ plot(Request) :-
 	 % Data group Year + T_lag + T_R_lag, % + Corrections,
 	 Data tuple Year + T_lag + T_R_lag, % + Corrections,
          Header = [XLabel, DataSet, model], % , correction]
-         RMS = 1.0,
+         RMS = 1.0 ,
 	 show_periods([[Evection,C, SO],
 		       [CWobble, TS, VC],
 		       [LongW, LO, AA],

@@ -18,8 +18,8 @@
 test_period(_,P,P).
 %diup(-0.16,-1.5,W) :- W is 2*pi/(17.8*12).
 %yp(0.0,1.0).
-diup(0,0,0).
- diup(1.9,-1.4,W) :- W is 2*pi/(32.8*12).
+diup(0.0,0.0,0.0).
+ diup(0.4,-0.4,W) :- W is 2*pi/(18.6*12).
 % diup(0.0,-0.4,W) :- W is 2*pi/(16.0*12).
 %diup(0.5,2.1,W) :- W is 2*pi/(18.6*12).
 % yp(0.0,-2.5).
@@ -33,13 +33,15 @@ yp(0.4,-1.8).
 
 mod_sin_period(0.0,N,M,_,0) :- N =< M.
 mod_sin_period(Period,N,M,X,Y) :-
-	 N =< M,diup(A,T,W), yp(AY,TY), test_period(N,Period,P), Y is sin(2*pi*1.000*X/P+A*sin(W*X+T)+AY*sin(2*pi/12*X+TY)).
+	 N =< M, test_period(N,Period,P), Y is sin(2*pi*X/P).
+	 % N =< M,diup(A,T,W), yp(AY,TY), test_period(N,Period,P), Y is sin(2*pi*1.000*X/P+A*sin(W*X+T)+AY*sin(2*pi/12*X+TY)).
 mod_sin_period(_,N,M,_,0.0) :- N > M.
 % mod_sin_period(Period,N,M,X,Y) :- P is 1.0*Period, Y is sin(2*pi*X/P).
 
 mod_cos_period(0.0,N,M,_,0) :- N =< M.
 mod_cos_period(Period,N,M,X,Y) :-
-	N =< M,diup(A,T,W), yp(AY,TY), test_period(N,Period,P), Y is cos(2*pi*1.000*X/P+A*sin(W*X+T)+AY*sin(2*pi/12*X+TY)).
+	N =< M, test_period(N,Period,P), Y is cos(2*pi*X/P).
+	% N =< M,diup(A,T,W), yp(AY,TY), test_period(N,Period,P), Y is cos(2*pi*1.000*X/P+A*sin(W*X+T)+AY*sin(2*pi/12*X+TY)).
 mod_cos_period(_,N,M,_,0.0) :- N > M.
 % mod_cos_period(Period,N,M,X,Y) :- P is 1.0*Period, Y is cos(2*pi*X/P).
 
