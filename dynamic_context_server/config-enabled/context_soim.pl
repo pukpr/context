@@ -272,7 +272,7 @@ get_fit(StartDate, EndDate, [Temperature, CO2, SOI, Volc, LOD, TSI, AAM, Arctic,
 		                                G1, H1, I1, J1, K1, L1,
 		                                M1, N1, O1, P1, Q1, R1,
 		                                S1, T1, U1, V1, W1, X1, J, K, DY], Int, R2) :-
-   r_open_session,
+   % r_open_session,
    y <- Temperature,
    r1s <- CO2,
    r1c <- SOI,
@@ -384,10 +384,10 @@ get_fit(StartDate, EndDate, [Temperature, CO2, SOI, Volc, LOD, TSI, AAM, Arctic,
    K <- 'as.double(fitxy$coefficients[47])',
    DY <- 'as.double(fitxy$coefficients[48])',
    % LM <- 'as.double(fitxy$coefficients[48])',
-   summary <- summary(fitxy),
-   r_print(summary),
-   R2 <- 'as.double(summary$r.squared)',
-   r_close, !.
+   % summary <- summary(fitxy),
+   % r_print(summary),
+   R2 <- 'as.double(summary$r.squared)'.
+   % r_close, !.
 
 
 
@@ -603,21 +603,21 @@ save_fluct(Fluct) :-
 */
 
 diffEq_solve(_Params, TS) :-
-   r_open_session,
-   r_in(library(deSolve)),
+   % r_open_session,
+   <- library(deSolve),
    yini    <- 'c(y1=0.0006,y2=-0.0078)',
    mathieu <- 'function(t,y,p){list(c(y[2],-0.05*sin(5.003*(t-0.141))-0.0004-0.000065*t-0.0145*cos(.9961*(t-0.68)+ifelse(t<52.0,p[2],p[3]))-0.021*(sin(2.9286*(t+0.22+ifelse(t<52.0,p[2],p[3])))+1.32*sin(2.597*(t-0.76+ifelse(t<52.0,p[2],p[3]))))-(p[1]+1.208*sin(0.755*(t-0.3)+ifelse(t<52.0,-0.501,0.0))-1.24*cos(2*pi*t-1.9))*y[1]))}',
    soln    <- 'ode(y = yini, func = mathieu, times=seq(0.0, 135.0, by=0.083333333), parms=c(2.106,1.34,0.0065))',
-   r_in('ts1<-soln[1:400,2]'),
-   r_in('ts2<-soln[401:800,2]'),
-   r_in('ts3<-soln[801:1200,2]'),
-   r_in('ts4<-soln[1201:1605,2]'),
+   ts1<-'soln[1:400,2]',
+   ts2<-'soln[401:800,2]',
+   ts3<-'soln[801:1200,2]',
+   ts4<-'soln[1201:1605,2]',
    TS1 <- ts1,
    TS2 <- ts2,
    TS3 <- ts3,
    TS4 <- ts4,
-   TS cat[TS1,TS2,TS3,TS4],
-   r_close.
+   TS cat[TS1,TS2,TS3,TS4].
+   % r_close.
    %length(TS, N),
    % print(user_error, [length,N]).
 
@@ -692,7 +692,7 @@ plot(Request) :-
 
 plot(Request) :-
     garbage_collect,
-    http_parameters(Request, [kind(Kind, []),
+    http_parameters(Request, [kind(graph, []),
 			      fft(FFT, [boolean, default(false)]),
 			      window(Window, [boolean, default(false)]),
 			      triple(Triple, [boolean, default(false)]),

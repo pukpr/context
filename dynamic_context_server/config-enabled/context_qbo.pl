@@ -9,6 +9,7 @@
 :- context:register(context_qbo:navigate).
 :- context:register(context_qbo:plot).
 
+% qqqq(X):-qbo_40(X).
 
 % test_period(N,_,Period) :- Period is N*N/20*12+N*2.134.
 test_period(_,P,P).
@@ -32,7 +33,7 @@ mod_cos_period(Period,N,M,X,Y) :-
 mod_cos_period(_,N,M,_,0.0) :- N > M.
 % mod_cos_period(Period,N,M,X,Y) :- P is 1.0*Period, Y is cos(2*pi*X/P).
 
-yearly_qmod(X,Y) :- Y is 1.0 - 0.0*cos(2*pi*X/12/2.3334+4.2).
+yearly_qmod(X,Y) :- Y is 1.0 - 0.0*cos(2*pi*X/24/60+2.3).
 
 %biamp(X,Amp) :- Amp is (1-0.2*cos(2*pi/(10.1*12)*X - 0.7)).
 %bimod(X,Mod) :- Mod is 0.7*cos(2*pi/(17.9*12)*X + 0.9).
@@ -2545,6 +2546,31 @@ qbo70([
 
 ]).
 
+temp_data('QBO singapore 10', '10').
+temp_data('QBO singapore 12', '12').
+temp_data('QBO singapore 15', '15').
+temp_data('QBO singapore 20', '20').
+temp_data('QBO singapore 25', '25').
+temp_data('QBO singapore 30', '30').
+temp_data('QBO singapore 35', '35').
+temp_data('QBO singapore 40', '40').
+temp_data('QBO singapore 45', '45').
+temp_data('QBO singapore 50', '50').
+temp_data('QBO singapore 60', '60').
+temp_data('QBO singapore 70', '70').
+temp_data('QBO singapore 80', '80').
+temp_data('QBO singapore 90', '90').
+
+temp_data('QBO 200', qbo_200).
+
+temp_data('QBO_70', qbo_70).
+temp_data('QBO_50', qbo_50).
+temp_data('QBO_40', qbo_40).
+temp_data('QBO_30', qbo_30).
+temp_data('QBO_20', qbo_20).
+temp_data('QBO_15', qbo_15).
+temp_data('QBO_10', qbo_10).
+
 temp_data('QBO70', qbo70).
 temp_data('QBO30', qbo30).
 temp_data('QBO15', qbo15).
@@ -2589,6 +2615,31 @@ orbital_period('lunar harmonic',   6.2,   'one third of the lunar standstill, Ko
 orbital_period('absidal harmonic', 4.42,    'one half lunar absidal').
 orbital_period('jupiter harmonic', 5.93,    'one half jupiter sidereal').
 % extra
+
+
+add_not_zero(_,[],Initial,Final) :-
+   reverse(Initial, Final).
+add_not_zero(A,[0|ZR],Initial,Final) :-
+   add_not_zero(A,ZR,[0|Initial],Final).
+add_not_zero(A,[ZF|ZR],Initial,Final) :-
+   Value is A+ZF,
+   add_not_zero(A,ZR,[Value|Initial],Final).
+
+list_length(Xs,L) :- list_length(Xs,0,L) .
+
+list_length( []     , L , L ) .
+list_length( [0|Xs] , T , L ) :-
+  list_length(Xs,T,L).
+list_length( [_|Xs] , T , L ) :-
+  T1 is T+1 ,
+  list_length(Xs,T1,L).
+
+unbias_series(Y, R) :-
+   sumlist(Y,N),
+   list_length(Y,L),
+   Offset is -N/L,
+   add_not_zero(Offset, Y, [], R), !.
+
 
 dataset(ou_rw, RW) :-
     qbo30(L),
@@ -2669,44 +2720,93 @@ dataset(dt, L) :-
 	% L4 mapdot L2 * L3,
 	L unbias L0.
 
-add_not_zero(_,[],Initial,Final) :-
-   reverse(Initial, Final).
-add_not_zero(A,[0|ZR],Initial,Final) :-
-   add_not_zero(A,ZR,[0|Initial],Final).
-add_not_zero(A,[ZF|ZR],Initial,Final) :-
-   Value is A+ZF,
-   add_not_zero(A,ZR,[Value|Initial],Final).
+qbo_padding(L1, L) :-
+	N is (1953-1880)*12,
+	constants(N, 0.0, L0),
+	L cat [L0,L1].
+qbo_padding_1979(L1, L) :-
+	N is (1979-1880)*12,
+	constants(N, 0.0, L0),
+	L cat [L0,L1].
+qbo_padding_1987(L1, L) :-
+	N is (1987-1880)*12,
+	constants(N, 0.0, L0),
+	L cat [L0,L1].
 
-list_length(Xs,L) :- list_length(Xs,0,L) .
 
-list_length( []     , L , L ) .
-list_length( [0|Xs] , T , L ) :-
-  list_length(Xs,T,L).
-list_length( [_|Xs] , T , L ) :-
-  T1 is T+1 ,
-  list_length(Xs,T1,L).
+qbo_offset(10, 80).
+qbo_offset(12, 80).
+qbo_offset(15, 80).
+qbo_offset(20, 80).
+qbo_offset(25, 95).
+qbo_offset(30, 100).
+qbo_offset(35, 105).
+qbo_offset(40, 95).
+qbo_offset(45, 95).
+qbo_offset(50, 80).
+qbo_offset(60, 60).
+qbo_offset(70, 50).
+qbo_offset(80, 60).
+qbo_offset(90, 75).
 
-unbias_series(Y, R) :-
-   sumlist(Y,N),
-   list_length(Y,L),
-   Offset is -N/L,
-   add_not_zero(Offset, Y, [], R), !.
+dataset(Num, L) :-
+	atom_number(Num,N),
+	% member(N, [10,12,15,20,25,30,35,40,45,50,60,70,80,90]),
+	context_qbo_singapore_data:qbo_from_1987(N, L0),
+	qbo_padding_1987(L0, L1),
+	qbo_offset(N, Offset),
+	L mapdot Offset .+ L1.
+
+dataset(qbo_10, L) :-
+        context_qbo_data:qbo_10(L0),
+	qbo_padding(L0, L1),
+	L mapdot 75 .+ L1.
+dataset(qbo_15, L) :-
+        context_qbo_data:qbo_15(L0),
+	qbo_padding(L0, L1),
+	L mapdot 85 .+ L1.
+dataset(qbo_20, L) :-
+        context_qbo_data:qbo_20(L0),
+	qbo_padding(L0, L1),
+	L mapdot 85 .+ L1.
+dataset(qbo_30, L) :-
+        context_qbo_data:qbo_30(L0),
+	qbo_padding(L0, L1),
+	L mapdot 105 .+ L1.
+dataset(qbo_40, L) :-
+        context_qbo_data:qbo_40(L0),
+	qbo_padding(L0, L1),
+	L mapdot 85 .+ L1.
+dataset(qbo_50, L) :-
+        context_qbo_data:qbo_50(L0),
+	qbo_padding(L0, L1),
+	L mapdot 68 .+ L1.
+dataset(qbo_70, L) :-
+        context_qbo_data:qbo_70(L0),
+	qbo_padding(L0, L1),
+	L mapdot 30 .+ L1.
+dataset(qbo_200, L) :-
+        context_qbo_data:qbo_200(L0),
+	qbo_padding_1979(L0, L1),
+	L mapdot -10 .+ L1.
 
 
 dataset(qbo15, L) :-
-        qbo15(L).
+        qbo15(L0),
+	L mapdot 80 .+ L0.
 	% L unbias L0.
 dataset(qbo30, L) :-
-        qbo30(L).
+        qbo30(L0),
 	%      unbias_series(L0,L1),
 	%      L accumulate L1.
 	%L1 mapdot abs ~> L0,
 	%L2 mapdot sign ~> L1,
 	%L3 mapdot sqrt ~> L2,
-	%L mapdot L0 - 200 .* L3.
-	% L unbias L0.
+	L mapdot 105 .+ L0.
+        % L unbias L0.
 dataset(qbo70, L) :-
-        qbo70(L).
+        qbo70(L0),
+	L mapdot 30 .+ L0.
 	% L1 mapdot abs ~> L0,
 	% L2 mapdot sign ~> L0,
 	% L3 mapdot sqrt ~> L1,
@@ -3076,29 +3176,47 @@ temperature_series(false, DataSet, T) :-
     dataset(DataSet, T).
 */
 
-get_fit(1, -1.0).
-get_fit(0, 1.0).
+get_fit(false, 1.0).
+get_fit(true, 0.0).
 
 % mathieu_modulate(X,Y) :- Y is 1.0-0.5*cos(2*pi*X/17.56-3.0).
-mathieu_modulater(Z,X,Y) :- Y is 1.0+Z*0.1*cos(2*pi*X-0.5).
+% mathieu_modulater(Z,X,Y) :- Y is 1.0+Z*0.1*cos(2*pi*X-0.5).
+mathieu_modulater(Fit,X,Y) :-
+	F is sign(X),
+%	Y is X/(1+Fit*0.013*(1+0.06*F)*abs(X)).
+%	Y is X/(1+Fit*(0.002+0.000*F)*(X)).
+	Y is X/(1+Fit*(0.01+0.000*F)*abs(X)).
+% mathieu_modulater(_Fit,X,Y) :- Y is -sign(X)*(abs(X)*abs(X)^(0.04)).
 % mathieu_modulater(Z,X,Y) :- Y is
 % 1.0+0.4*cos(2*pi*X/6.51-2.0)+0.7*cos(2*pi*X/9.07-1.8).
+
+second_derivative(Input, Output) :-
+   get_years_from_1880(Input, Year, _),
+   TT1 derivative Input / Year,
+   TT2 derivative TT1 / Year,
+   TT3 offset TT2 - 1,
+   Output cat [TT3, [0]].
+
+
 
 temperature_series(Second, Window, Triple, DataSet, T, Fit, Offset) :-
    temperature_series(Window, Triple, DataSet, TTT),
    % get_fit(Fit, Flip),
+   % TTT mapdot mathieu_modulater(Fit) ~> TTT0,
    get_years_from_1880(TTT, Year, _),
-   TT1 derivative TTT / Year,
-   TT2 derivative TT1 / Year,
-   TT3 offset TT2 - 1,
-   TT4 cat [TT3, [0]],
+   second_derivative(TTT, TT4),
+   %TT1 derivative TTT / Year,
+   %TT2 derivative TT1 / Year,
+   %TT3 offset TT2 - 1,
+   %TT4 cat [TT3, [0]],
    TT5 derivative TT4 / Year,
    TT6 derivative TT5 / Year,
    TT7 offset TT6 - 1,
    TT8 cat [TT7, [0]],
-   % Omega2 is 1.0,
-   Omega2 mapdot -1*mathieu_modulater(Fit) ~> Year, % 0.8
-   Scaled0 mapdot Omega2 * TTT,
+   Omega2 is -1.0,
+   % Omega2 mapdot -1*mathieu_modulater(Fit) ~> Year, % 0.8
+   Scaled0 mapdot Omega2 .* TTT,
+   % Scaled0 mapdot mathieu_modulater(Fit) ~> TTT,
        % Offset invert Clip,
 
    %TTa mapdot TT4 - 0.0 .* TTT, % TT5  %0.041
@@ -3106,12 +3224,12 @@ temperature_series(Second, Window, Triple, DataSet, T, Fit, Offset) :-
    %TT mapdot TTa + TTb,
    % Scaled mapdot Scaled0 + 0*Scal*0.065 .* TT,
    (  Second ->
-      TDD mapdot TT4 - 0.036 .* TT5,
-      T mapdot TDD + 0.0006 .* TT8
+      TDD mapdot TT4 - 0*0.036 .* TT5,
+      T mapdot TDD + 0*0.0006 .* TT8
       % T = TT4
    ;
-      TDD mapdot TT4 - 0.042 .* TT5,
-      T mapdot Scaled0 - 0*0.004 .* TDD
+      TDD mapdot TT4 - 0*0.011 .* TT5,
+      T mapdot Scaled0 - Fit*0.0025 .* TDD
       % T = Scaled0
    ),
    Offset mapdot 0 .* TT.
@@ -3355,8 +3473,7 @@ plot(Request) :-
     YearThird is 121.749/Days,
     % YearThird is Drac/3,
     % PeriodE is Sc*121.749/Days*12, % 23.918 18.6 0.73085554 13.52 0*Hale/2 *12,
-    select_period(Long, YearThird, 1.810, PeriodE,0*Add), % YearThird
-
+    select_period(Long, YearThird, 1.810, PeriodE,0*Add), % YearThird 0.454 0.542304705
     (	Fit = 1 ->
         true % PeriodE is Drac5*12 %0.1825 1.35777 2*pi/1.266993*12, %27.67 weak
 	;
@@ -3367,7 +3484,7 @@ plot(Request) :-
     % Period7 is Sc*2*pi/1.94405*12, %  27.44
     %PeriodH is Add*Synod*12, % 0.222 1.583, 9.3 2*pi/1.6055*12 %  27.55 weak
     %PeriodH is 0.2428*12, % 0.2427 0.222 1.583, 9.3 2*pi/1.6055*12 %  27.55 weak
-    select_period(Long, 0.6666666, 0.666666, PeriodH,0*Add), % 0.528 0.2428 5.695
+    select_period(Long, 1.81, 0.666666, PeriodH,0*Add), % 0.528 0.2428 5.695
 
     Sin mapdot mod_sin_period(Period,1,WL) ~> Months,
     Cos mapdot mod_cos_period(Period,1,WL) ~> Months,
@@ -3485,8 +3602,10 @@ plot(Request) :-
     % T_lag lag T / Lag,
     T_lag = T,
     Lag1 is 0*Lag,   %%%%%%%%%%%%%%%%%%%%%%%%%%  Lag is smaller on model
-    T_R_lag1 lag T_R / Lag1,
+    T_R_lagX lag T_R / Lag1,
     T_R_mod mapdot Boost*yearly_qmod ~> Months,
+    get_fit(Second, De),
+    T_R_lag1 mapdot mathieu_modulater(De) ~> T_R_lagX,
     T_R_lag mapdot T_R_mod * T_R_lag1,
     (   EQ_ON ->
         T_lag0 = T_lag,

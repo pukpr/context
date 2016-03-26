@@ -167,6 +167,7 @@ handleDygraphListErrorBars = function(logselector, Xlabel, Ylabel, Title, Labels
 		      height: height, // 400,
 		      yAxisLabelWidth: 70,
 		      labels: Labels,
+		      colors: ["blue", "red", "green", "black", "gray", "magenta", "cyan", "orange", "maroon", "chartreuse", "teal", "salmon"],
                       labelsSeparateLines: true,
                       labelsDivWidth: 150,
                       labelsDivStyles: {'textAlign': 'right'}
