@@ -5463,7 +5463,7 @@ show_periods([[0.0,0.0,0.0]|R], In, Out) :-
 show_periods([[Period,S,C]|R], In, Out) :-
     RMS is sqrt(S*S+C*C),
     format(atom(Value), '~3f', [RMS]),
-    Year is Period / 20,
+    Year is Period / 10,
     % format(atom(Name), '~dyears', [Year]),
     show_periods(R, [[Year,Value]|In], Out).
 
@@ -5647,7 +5647,8 @@ plot(Request) :-
     % YearThird is 1.182, % 121.749/Days,
     YearThird is 121.749/Days,
     % PeriodE is Sc*121.749/Days*12, % 23.918 18.6 0.73085554 13.52 0*Hale/2 *12,
-    select_period(Long, 1.077, 1.810, PeriodE,0*Add), % YearThird
+    FCN is 1.14*2,
+    select_period(Long, FCN, 1.810, PeriodE,0*Add), % YearThird
 
     (	Fit = 1 ->
         true % PeriodE is Drac5*12 %0.1825 1.35777 2*pi/1.266993*12, %27.67 weak

@@ -3181,6 +3181,7 @@ get_fit(true, 0.0).
 
 % mathieu_modulate(X,Y) :- Y is 1.0-0.5*cos(2*pi*X/17.56-3.0).
 % mathieu_modulater(Z,X,Y) :- Y is 1.0+Z*0.1*cos(2*pi*X-0.5).
+% mathieu_modulater(_Fit,X,X).
 mathieu_modulater(Fit,X,Y) :-
 	F is sign(X),
 %	Y is X/(1+Fit*0.013*(1+0.06*F)*abs(X)).
@@ -3224,8 +3225,9 @@ temperature_series(Second, Window, Triple, DataSet, T, Fit, Offset) :-
    %TT mapdot TTa + TTb,
    % Scaled mapdot Scaled0 + 0*Scal*0.065 .* TT,
    (  Second ->
-      TDD mapdot TT4 - 0*0.036 .* TT5,
-      T mapdot TDD + 0*0.0006 .* TT8
+      TDD mapdot TT4 - 0.03 .* TT5,  % TDD mapdot TT4 - 0.036 .* TT5,
+      T2 mapdot TDD + 0.001 .* TT8,  % T2 mapdot TDD + 0.0006 .* TT8,
+      T mapdot T2 + 1.1 .* TTT
       % T = TT4
    ;
       TDD mapdot TT4 - 0*0.011 .* TT5,
@@ -3276,7 +3278,7 @@ show_equation([[0.0,0.0,0.0]|R], In, Out) :-
     show_equation(R,In, Out).
 show_equation([[Period,S,C]|R], In, Out) :-
     Val is sqrt(S*S+C*C),
-    Phase is atan(S,C),
+    Phase is atan(C,S),
     Per is Period/12.0,
     format(atom(Value), '+ ~14g * sin(2*pi()*$a1/~14g+~14g) ', [Val,Per,Phase]),
     concat(In, Value, Eq),
@@ -3325,7 +3327,12 @@ zero_range([Delta|Tr], [_TD|TDr], Res, U) :-
 zero_range([_T|Tr], [TD|TDr], Res, U) :-
     !,zero_range(Tr, TDr, [TD|Res], U).
 
+
 select_period(false,QBO,_,R,_Add) :- R is QBO*12.
+select_period(true,QBO,ENSO,R,_Add) :- QBO<1.0, R is ENSO*12.
+select_period(true,QBO,_ENSO,R,_Add) :- QBO>=1.0, R is QBO*12.
+
+% select_period(false,QBO,_,R,_Add) :- R is QBO*12.
 select_period(true,_,ENSO,R,1*_) :- R is ENSO*12, !.
 select_period(true,_,ENSO,R,0*1) :- R is ENSO*12, !.
 select_period(true,_,ENSO,0.0,0*0).
@@ -3427,11 +3434,11 @@ plot(Request) :-
     % Period2 is Sc*Trop*12, %2*pi/2.3157*12, %  27.32 tropical
     select_period(Long, Trop, Trop, Period2,1*Add),
     % Period3 is Sc*Drac1*12, % 0.701 4.15 3.0243*12, %  27.093 also  31.81 evection
-    select_period(Long, Drac1, Drac1, Period3,1*Add),
+    select_period(Long, Drac1, 6.44, Period3,1*Add),
     % Period4 is Sc*Drac2*12, % 0.4129 1.73 3.53 Add*Hale/1 *12 *Q,
-    select_period(Long, Drac2, Drac2, Period4,1*Add), % 18.613
+    select_period(Long, Drac2, 9.3, Period4,1*Add), % 18.613
     % Period5 is Sc*Drac3*12, % 0.317 18.6 0.717 2.505 1.93 1.583 0*7.944*12, % 7.944 2.54  Venus 9.315*12*Q,  %
-    select_period(Long, 0.8237, 0.824, Period5,0*Add), % Drac3 4.06
+    select_period(Long, 0.8237, 4.424, Period5,0*Add), % Drac3 4.06
 /*
     A1 is 2*pi/2.701,
     A2 is 2*pi/2.592,
@@ -3447,10 +3454,10 @@ plot(Request) :-
 */
 
     % Period6 is Sc*Drac4*12, % 0.222 1.583 9.3 2*pi/1.6055*12, %  27.55 weak
-    select_period(Long, Anom2, 2.634, Period6,1*Add), % Anom2 6.65
+    select_period(Long, Anom2, 8.848, Period6,1*Add), % Anom2 6.65
     % Period7 is Sc*Drac5*12,  % 0.1825 1.35777 18.6 2*pi/1.266993*12, %  27.67 weak
     Short_Year is 354.3671/Days,
-    select_period(Long, MfP2, MfP2, Period7,1*Add), % 9.3067
+    select_period(Long, MfP2, 15.0, Period7,1*Add), % 9.3067
 
     % Period8 is -Anom*12, % 1.344  2*pi/2.475*12 27.555 anomalistic
     select_period(Long, -Anom, -Anom, Period8,1*Add), %3.64
@@ -3458,7 +3465,7 @@ plot(Request) :-
     select_period(Long, Evec, Evec, Period9,1*Add), %3.64
 
     %PeriodA is 2.975*12, % Hale/6 *12 *Q,
-    ThreeSyn is Synodical*3.0/Days,
+    ThreeSyn is 0.66666, % Synodical*3.0/Days,
     select_period(Long, ThreeSyn, 2.96, PeriodA,1*Add), % 1.818 2.975 0.4032 0.711   0.24253
     % PeriodB is AnomHalf*12, % 1.954 12*31.786/365.242, 1.965*12, 2*pi/3.0255*12, %  31.81 evection
     select_period(Long, AnomHalf, AnomHalf, PeriodB,1*Add), % AnomHalf 42.66, 8.8512
@@ -3473,7 +3480,7 @@ plot(Request) :-
     YearThird is 121.749/Days,
     % YearThird is Drac/3,
     % PeriodE is Sc*121.749/Days*12, % 23.918 18.6 0.73085554 13.52 0*Hale/2 *12,
-    select_period(Long, YearThird, 1.810, PeriodE,0*Add), % YearThird 0.454 0.542304705
+    select_period(Long, YearThird, 18.6, PeriodE,0*Add), % YearThird 0.454 0.542304705
     (	Fit = 1 ->
         true % PeriodE is Drac5*12 %0.1825 1.35777 2*pi/1.266993*12, %27.67 weak
 	;

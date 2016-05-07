@@ -2,6 +2,7 @@
 			  soi_model_2/2,
 			  soi_model_3/2,
 			  soi_model_4/2,
+		          seasonal_modulation/2,
 			  sinm/3,
 			  cosm/3
 			      ]).
@@ -13,12 +14,16 @@
 :- context:register(context_soim:plot).
 :- context:register(context_soim:data).
 
+soi_data('SOI+NINO34', soi_nino34).
+soi_data('SOI+NINO3', soi_nino3).
+soi_data('soi bom', soi_bom).
 soi_data('SOI', soi).
 soi_data('SOI detrend', soi_detrend).
 soi_data('SOI Aus', soi_aus).
 soi_data('SOI avg', soi_avg).
 soi_data('Darwin', darwin).
 soi_data('Tahiti', tahiti).
+soi_data('Nino3', nino3).
 soi_data('OU Random Walk', ou_rw).
 soi_data('Tahiti-Darwin', combined).
 soi_data('MEI', mei).
@@ -28,6 +33,7 @@ soi_data('SOI+AAM', soi_aam).
 soi_data('SST Integral', nino_3_4_integral).
 soi_data('SST Nino 3.4', nino_3_4).
 
+seasonal_modulation(X,Y) :- Y is 1.0 + 1.0*(0.7*cos(pi*X/12+0.26)^2+ 1.4*cos(pi*X/24+0.23)^6 - 0.4*cos(2*pi*X/12+0.3)^2 +0.3*cos(2*pi*X/12/13.5/2+2.0)^6) .
 
 
 
@@ -79,6 +85,67 @@ cosm(W,T,Z) :-
    Y is T/12,
    Z is cos(W*Y).
 
+dataset(1,soi_bom, L) :-
+	context_soi_biennial:dataset(soi_bom, L0),
+        % context_soi_biennial:soi_bom(L0),
+	L unbias L0.
+
+dataset(dt, L) :-
+        darwin(D),
+        tahiti(T),
+	L0 mapdot 1.1 .* D -  T,  %1.5
+	L unbias L0.
+
+dataset(1, soi_nino34, L) :-
+	D is 0.42, % 0.41 0.89
+	N is 1.0 - D,
+	dataset(dt, L1),
+	dataset(1,soi,L0),
+        Lt shrink L1 / L0,
+	% dataset(1,nino3,L2),
+	dataset(1,nino_3_4,L2),
+	% nino3(L2),
+        % nino_3_4(L2),
+	L3 mapdot -D .* Lt + N .* L2,
+        % L3 shrink Ls / L0,
+        F window L3*750,
+        L4 mapdot L3 - F,
+	L unbias L4.
+
+dataset(1, soi_nino3, L) :-
+	D is 0.41, % 0.41 0.89
+	N is 1.0 - D,
+	dataset(dt, L1),
+	dataset(1,soi,L0),
+        Lt shrink L1 / L0,
+	dataset(1,nino3,L2),
+	% dataset(1,nino_3_4,L2),
+	% nino3(L2),
+        % nino_3_4(L2),
+	L3 mapdot -D .* Lt + N .* L2,
+        % L3 shrink Ls / L0,
+        F window L3*750,
+        L4 mapdot L3 - F,
+	L unbias L4.
+
+
+	/*
+	 *
+dataset(1, soi_nino, L) :-
+	D is 0.41, % 0.41 0.89
+	N is 1.0 - D,
+	dataset(dt, L1),
+	dataset(1,soi,L0),
+	% dataset(1,nino3,L2),
+	nino3(L2),
+        % nino_3_4(L2),
+	Ls mapdot -D .* L1 - N .* L2,
+        L3 shrink Ls / L0,
+        F window L3*750,
+        L4 mapdot L3 - F,
+	L unbias L4.
+*/
+
 dataset(1, aam, L) :-
     Extra range [1, 60]/1,
     Zeros mapdot 0 .* Extra,
@@ -87,6 +154,12 @@ dataset(1, aam, L) :-
     Years mapdot 1880 .+ Y,
     context_salt_model:get_aam(Years, 0.0, L).
     % L cat [L1,Zeros].
+dataset(1, nino3, L) :-
+    nino3(L0),
+    dataset(1,soi,L3),
+    L2 shrink L0/L3,
+    L1 mapdot -1 .* L2,
+    L unbias L1.
 dataset(1, soi, L) :-
     Start range [1, 480]/1, % 168 is 1866
     Extra range [1, 60]/1,
@@ -121,17 +194,21 @@ dataset(1, soi_aam, L) :-
     dataset(1, soi, L1),
     L mapdot L1 - L0.
 dataset(2, darwin, L) :-
-    Extra range [1, 60]/1,
-    Zeros mapdot 0 .* Extra,
+    % Extra range [1, 60]/1,
+    % Zeros mapdot 0 .* Extra,
+    dataset(1,soi,L3),
     darwin(L0),
-    L1 mapdot -1 .* L0,
+    L2 shrink L0/L3,
+    L1 mapdot -1 .* L2,
     L unbias L1.
     % L cat [L1,Zeros].
 dataset(1, tahiti, L) :-
-    Extra range [1, 60]/1,
-    Zeros mapdot 0 .* Extra,
+    % Extra range [1, 60]/1,
+    % Zeros mapdot 0 .* Extra,
+    dataset(1,soi,L3),
     tahiti(L0),
-    L unbias L0.
+    L2 shrink L0/L3,
+    L unbias L2.
     % L cat [L1,Zeros].
 dataset(1, combined, L) :-
     dataset(1, tahiti, LT),
@@ -203,28 +280,30 @@ navigate(Request) :-
 					  ['Cycles', cycles]
                                          ])),
                           br([]),
-			  input([type('submit'), name(kind), value('graph'),
+			  % input([type('submit'), name(kind), value('graph'),
+                          %        onclick('subm(this.form,"target_iframe");')]),
+			  % input([type('submit'), name(kind), value('table'),
+                          %        onclick('subm(this.form,"target_iframe");')]),
+			  input([type('submit'), name(kind), value('diffEq'),
                                   onclick('subm(this.form,"target_iframe");')]),
 			  input([type('submit'), name(kind), value('table'),
-                                  onclick('subm(this.form,"target_iframe");')]),
-			  input([type('submit'), name(kind), value('diffEq'),
                                   onclick('subm(this.form,"target_iframe");')]),
 			  \(con_text:check_box(fft, 'true', 'FFT of residual')),
 			  br([]),
 			  \(con_text:check_box(window, 'true', 'Apply 12 month window')),
 			  \(con_text:check_box(triple, 'true', 'Pratt filter')),
 			  % \(con_text:check_box(mathieu, 'true', 'Mathieu functions')),
-			  \(con_text:check_box(harmonics, 'true', 'Only Mathieu')),
+			  \(con_text:check_box(harmonics, 'true', 'harmonics')),
 			  input([type('text'),
 				 size(2),
-				 name('longCycle'),
-				 value('1.775')]),  %0.16
+				 name('cc'),
+				 value('0')]),  %0.16
 			  br([]),
 			  i('#'),
 			  input([type('text'),
 				 size(2),
 				 name('numberComps'),
-				 value('10')]),
+				 value('1')]),
 			  br([]),
 
 			  i('lag'),
@@ -399,13 +478,14 @@ scale(true, log, spectrum, 'Wavenumber', '2048/Month', 'Power Spectral', 'densit
 scale(_, lin, _, 'Time', 'year', 'Index', 'hPa', false).
 
 single_filter(In, Out) :-
-    % median_filter(In, In0),
-    Out window In*13.
-triple_filter(In, Out) :-
     median_filter(In, In0),
-    A window In0*13,
-    B window A*9, % 9
-    Out window B*7. % 7
+    B window In0*5, % 9
+    Out window B*3.
+triple_filter(In, Out) :-
+    % median_filter(In, In0),
+    A window In*7,
+    B window A*5, % 9
+    Out window B*3. % 7
 
 temperature_series(N, _, true, DataSet, T) :-
     dataset(N, DataSet, T0),
@@ -415,12 +495,22 @@ temperature_series(N, true, false, DataSet, T) :-
     single_filter(T0, T).
 temperature_series(N, false, false, DataSet, T) :-
     dataset(N, DataSet, T0),
-    median_filter(T0, T).
+    T window T0*3.
+    % median_filter(T0, T).
 
 
-temperature_series(N, Window, Triple, DataSet, T, Offset) :-
+temperature_series(Flip, N, Window, Triple, DataSet, T, Offset) :-
    temperature_series(N, Window, Triple, DataSet, TT),
-   T = TT,
+   A = 1215,
+   Front range 1*[1,A],  % 1188 1215
+   B is A+1,
+   C = 1405,
+   Middle range Flip*[B,C],  % 1384 1395 1386
+   D is C+1,
+   Back range 1*[D,1605],  % 1605 1385 1396 1387
+   Clip cat [Front,Middle,Back],
+   % T = TT,
+   T mapdot TT * Clip,
    Offset mapdot 0 .* TT
    .
 
@@ -602,12 +692,285 @@ save_fluct(Fluct) :-
    mathieu <- 'function(t,y,p){list(c(y[2],0.0145*cos(.9961*(t-0.68))+0.021*(sin(2.9286*(t+0.22))+1.32*sin(2.597*(t-0.76)))-(p[1]+1.208*sin(0.755*(t-0.3)+ifelse(t<52.0,-0.501,0.0))-1.24*cos(2*3.14159*t-1.9))*y[1]))}',
 */
 
-diffEq_solve(_Params, TS) :-
+diffEq_solve0(_Params, TS) :-
    % r_open_session,
    <- library(deSolve),
    yini    <- 'c(y1=0.0006,y2=-0.0078)',
    mathieu <- 'function(t,y,p){list(c(y[2],-0.05*sin(5.003*(t-0.141))-0.0004-0.000065*t-0.0145*cos(.9961*(t-0.68)+ifelse(t<52.0,p[2],p[3]))-0.021*(sin(2.9286*(t+0.22+ifelse(t<52.0,p[2],p[3])))+1.32*sin(2.597*(t-0.76+ifelse(t<52.0,p[2],p[3]))))-(p[1]+1.208*sin(0.755*(t-0.3)+ifelse(t<52.0,-0.501,0.0))-1.24*cos(2*pi*t-1.9))*y[1]))}',
    soln    <- 'ode(y = yini, func = mathieu, times=seq(0.0, 135.0, by=0.083333333), parms=c(2.106,1.34,0.0065))',
+   ts<-'soln[1:1605,2]',
+   TS <- ts,
+   true.
+
+diffEq_solve1(_Params, TS) :-
+   % r_open_session,
+   <- library(deSolve),
+   yini    <- 'c(y1=0.0017,y2=-0.005)',
+   mathieu <- 'function(t,y,p){list( c(y[2],(-0.07+0.38*cos(pi*t-0.56))*(0.04*cos(2*pi/p[1]*t+1.4)+0.053*cos(2*pi/p[2]*t+1.4)-0.012*cos(2*pi/p[3]*t+3.1))-2.22*y[1] ))}',
+   soln    <- 'ode(y = yini, func = mathieu, times=seq(0.0, 135.0, by=0.083333333), parms=c(6.43,14.44,18.6))',
+   ts<-'soln[1:1605,2]',
+   TS <- ts,
+   true.
+
+
+diffEq_solve2(_Params, TS) :-
+   <- library(deSolve),
+   yini    <- 'c(y1=0.0012,y2=-0.0038)',
+   mathieu <-
+   'function(t,y,p){list( c(y[2], 0.98*(-0.0048*cos(2*pi/p[1]*t+1.42)+ 0.91*(-0.01+0.42*cos(pi*t-0.4))*(0.042*cos(2*pi/p[1]*t+1.6)
+				  +0.083*cos(2*pi/p[2]*t+1.53)-0.027*cos(2*pi/p[3]*t+2.7)))-(2.22-0*0.11*cos(pi*t+0.5))*y[1] ))}',
+   soln    <- 'ode(y = yini, func = mathieu, times=seq(0.0, 135.0, by=0.083333333), parms=c(6.435,14.345,18.57))',
+   ts<-'soln[1:1605,2]',
+   TS <- ts.
+
+diffEq_solve_mathieu(_Params, TS) :-
+   <- library(deSolve),
+   yini    <- 'c(y1=-0.005,y2=-0.01)',
+   mathieu <-
+   'function(t,y,p){list( c(y[2], -0.0008*t+12.0*
+			          (-0.0029*cos(2*pi/p[1]*t+1.35)+0.004*cos(4*pi/p[3]*t+1.95)+0.9*(-0.04+0.48*cos(pi*t-0.31))*(0.037*cos(2*pi/p[1]*t+1.6)
+				  +0.074*cos(2*pi/p[2]*t+1.6)-0.028*cos(2*pi/p[3]*t+2.9)))-1.0*(2.211-0.3*cos(pi*t+0.5)+0.1*cos(pi*t/2+0.5))*y[1] ))}',
+   soln    <- 'ode(y = yini, func = mathieu, times=seq(0.0, 135.0, by=0.083333333), parms=c(6.44,14.34,18.57))',
+   ts<-'soln[1:1605,2]',
+   TS <- ts.
+
+diffEq_solve_opt(_Params, TS) :-  % SOI
+   <- library(deSolve),
+   yini    <- 'c(y1=-0.016,y2=-0.036)',
+   mathieu <-
+   'function(t,y,p){list( c(y[2],
+			  -0.0006*t - 1*0.0051*cos(2*pi*t/p[5]-1.6) + 1*10.2*
+			  (-0.0029*cos(2*pi/p[1]*t+1.4)+0.0045*cos(4*pi/p[3]*t+2.35)+0.96*(-0.018+0.4*cos(pi*t-0.16))*(0.038*cos(2*pi/p[1]*t+1.74)
+			  -0.038*cos(2*pi/p[3]*t+3.0))) + 1*0.3*cos(pi*t+0.3)*cos(2*pi/p[2]*t+1.92)
+			  -0.998*(2.205+1*(-0.305*cos(pi*t+p[4])+0.315*cos(pi*t/2+p[4])-0.315*cos(pi*t/3+p[4])+0.014*cos(pi*t/4+p[4])+0.305*cos(2*pi*t+p[4])))*y[1] ))}',
+   soln    <- 'ode(y = yini, func = mathieu, times=seq(0.0, 145.0, by=0.083333333), parms=c(6.44,14.26,18.6,0.59, 4.424))',
+   ts<-'-soln[1:1605,2]',                     % 0.12*cos((pi-2*pi/p[2])*t-1.87) +0.14*cos((pi+2*pi/p[2])*t+2.1)
+   TS <- ts.
+
+diffEq_solve_good(_Params, TS) :-  % SOI
+   <- library(deSolve),
+   yini    <- 'c(y1=-0.016,y2=-0.0355)',
+   mathieu <-
+   'function(t,y,p){list( c(y[2],
+			  -0*0.00001*t - 1*0.0054*cos(2*pi*t/p[5]-1.6) - 0*0.0004*cos(2*pi*t/3.918-0.4) + 1*9.2*
+			  (-0.0037*cos(2*pi/p[1]*t+1.4)+0.0044*cos(4*pi/p[3]*t+2.35)+0.8*(-0.02+0.43*cos(pi*t-0.15))*(0.034*cos(2*pi/p[1]*t+1.74)
+			  -0.037*cos(2*pi/p[3]*t+3.0) + 0*0.072*cos(2*pi/p[2]*t+1.79) ) ) + 1*0.28*cos(pi*t+0.3)*cos(2*pi/p[2]*t+1.93)
+			  -0.998*(2.398+1.0*(-0.16*cos(pi*t+p[4])+0.02*cos(pi*t/2+p[4])-0.02*cos(pi*t/3+p[4])+0.0*cos(pi*t/4+p[4])+0.0*cos(2*pi*t+p[4])))*y[1] ))}',
+   soln    <- 'ode(y = yini, func = mathieu, times=seq(0.0, 145.0, by=0.083333333), parms=c(6.43,14.26,18.6,0.34, 4.424))',
+   ts<-'-soln[1:1605,2]',                     % 0.12*cos((pi-2*pi/p[2])*t-1.87) +0.14*cos((pi+2*pi/p[2])*t+2.1)
+   TS <- ts.
+
+diffEq_solve1(_Params, TS) :-  % SOI
+   <- library(deSolve),
+   yini    <- 'c(y1=-0.016,y2=-0.0355)',
+   mathieu <-
+   'function(t,y,p){list( c(y[2],
+			  - 1*0.0054*cos(2*pi*t/p[5]-1.6)+ 1*9.2*
+			  (-0.0037*cos(2*pi/p[1]*t+1.4)+0.0044*cos(4*pi/p[3]*t+2.35)+0.8*(-0.02+0.43*cos(pi*t-0.15))*(0.034*cos(2*pi/p[1]*t+1.74)
+			  -0.037*cos(2*pi/p[3]*t+3.0) ) ) + 1*0.28*cos(pi*t+0.3)*cos(2*pi/p[2]*t+1.93)
+			  -0.998*(2.396+1.0*(-0.16*cos(pi*t+p[4])))*y[1] ))}',
+
+   soln    <- 'ode(y = yini, func = mathieu, times=seq(0.0, 145.0, by=0.083333333), parms=c(6.43,14.26,18.6,0.34, 4.424))',
+   ts<-'soln[1:1605,2]',                     % 0.12*cos((pi-2*pi/p[2])*t-1.87) +0.14*cos((pi+2*pi/p[2])*t+2.1)
+   TS <- ts.
+
+diffEq_solve_soi(_Params, TS) :-  % SOI 67.12
+   <- library(deSolve),
+   yini    <- 'c(y1=-0.0168,y2=-0.034)',
+   forcing <- 'function(t,p){ -0*0.00022*t + 0.00*sin(2*pi/p[3]*t+1.7) -
+	      0.0061*cos(2*pi*t/p[4]-1.64) -
+	      0.0345*cos(2*pi/p[1]*t+1.4)-0.013*cos(2*pi/p[2]*t+1.4)+0.048*cos(4*pi/p[3]*t+2.50)+
+	      (cos(pi*t-0.091)-0.0*cos(2*pi*t+0.091))*
+		 (0.109*cos(2*pi/p[1]*t+1.74)+0.094*cos(2*pi/p[2]*t+2.18)-0.116*cos(2*pi/p[3]*t+3.0)+0.0*sin(2*pi/70*t-2.1) )}',
+   mathieu <- 'function(t,y,p){list( c(y[2], forcing(t,p) - (2.375-0.16*cos(pi*t+0.28) )*y[1] ))}',
+   soln    <- 'ode(y = yini, func = mathieu, times=seq(0.0,145.0, by=0.083333333), parms=c(6.439,14.54,18.6,4.4242))',
+   ts<-'-soln[1:1605,2]',
+   TS <- ts.
+
+diffEq_solve_nino(_Params, TS) :-  % NINO34
+   <- library(deSolve),
+   yini    <- 'c(y1=-0.017,y2=-0.034)',
+   forcing <- 'function(t,p){ -0.015*sin(2*pi/1.185*t-2.3) - 0.00*sin(2*pi/6.3*t+2.0) -0.0002*t -
+	      0.006*cos(2*pi*t/p[4]-1.64) -
+	      0.0345*cos(2*pi/p[1]*t+1.4)-0.013*cos(2*pi/p[2]*t+1.4)+0.045*cos(4*pi/p[3]*t+2.49)+
+	      (cos(pi*t-0.091)-1.0*sin(4*pi*t+2.0)+0.0*sin(2*pi*t+.0))*
+	        (0.109*cos(2*pi/p[1]*t+1.74)+0.11*cos(2*pi/p[2]*t+2.18)-0.13*cos(2*pi/p[3]*t+3.0)+0.0008*sin(2*pi/p[4]*t-2.9) )}',
+   mathieu <- 'function(t,y,p){list( c(y[2], forcing(t-0.02*sin(4*pi/p[3]*t-0.8),p) - (2.378-0.16*cos(pi*t+0.23))*y[1]))}',
+   soln    <- 'ode(y = yini, func = mathieu, times=seq(0.0,145.0, by=0.083333333), parms=c(6.439,14.54,18.6,4.4242))',
+   ts<-'-soln[1:1605,2]',
+   TS <- ts.
+
+diffEq_solve_noFlip(_Params, TS) :-  % NINO34
+   <- library(deSolve),
+   yini    <- 'c(y1=-0.016,y2=-0.012)',
+   flip    <- 'function(t,p){ifelse(t>100.91 && t<114.91,-1.01*cos(pi*t-p),0.93*cos(pi*t-p+0.58))}',  %114.9
+   forcing <- 'function(t,p){ -0.014*sin(2*pi/1.1853*t-2.4)  -0.00000*t -
+	      0.081*0.006*cos(2*pi*t/p[4]-1.64) -
+	      0.21*0.0345*cos(2*pi/p[1]*t+1.4)-0.12*0.013*cos(2*pi/p[2]*t+1.4)+0.033*0.045*cos(4*pi/p[3]*t+2.6)+
+	      1.29*flip(t,0.28)*
+	        (0.067*cos(2*pi/p[1]*t+1.575)+0.12*cos(2*pi/p[2]*t+2.13)-0.13*cos(2*pi/p[3]*t+3.2)+0.0014*sin(2*pi/p[4]*t-4.0) )}',
+   mathieu <- 'function(t,y,p){list( c(y[2], forcing(t-0.023*sin(4*pi/p[3]*t+0.7),p) - (2.373-0.17*cos(pi*t+0.22))*y[1]))}',
+   soln    <- 'ode(y = yini, func = mathieu, times=seq(0.0,145.0, by=0.083333333), parms=c(6.439,14.249,18.6,4.424))',
+   ts<-'soln[1:1605,2]',
+   TS <- ts.
+
+
+diffEq_solve_SAVE(_Params, TS) :-  % NINO34
+   <- library(deSolve),
+   yini    <- 'c(y1=-0.016,y2=-0.012)',
+   % flip    <- 'function(t,p){ifelse(t>100.91 && t<114.91,-1.01*cos(pi*t-p),0.93*cos(pi*t-p+0*0.58))}',  %114.9
+   flip    <- 'function(t,p){ifelse(t>100.9 && t<114.5,-0.7*cos(pi*t-p),0.9*cos(pi*t-p))}',  %114.9
+   forcing <- 'function(t,p){ -0.014*sin(2*pi/1.1852*t-2.4)  -0.00000*t -
+	      0*0.08*0.006*cos(2*pi*t/p[4]-1.64) + 0.0*sin(pi*t/2.895+0.5) -
+	      0.22*0.0345*cos(2*pi/p[1]*t+1.4)-0*0.12*0.013*cos(2*pi/p[2]*t+1.4)+0*0.033*0.045*cos(4*pi/p[3]*t+2.6)+
+	      2.2*flip(t,-0.02)*
+	        (0.068*cos(2*pi/p[1]*t+1.575)+0.12*cos(2*pi/p[2]*t+2.13)-0.13*cos(2*pi/p[3]*t+3.2)+0.0013*sin(2*pi/p[4]*t-4.0) )}',
+   mathieu <- 'function(t,y,p){list( c(y[2], forcing(t-0.022*sin(4*pi/p[3]*t+0.6),p) -(2.371-0.17*cos(pi*t+0.22))*y[1] - 0.007*y[2]))}',
+   soln    <- 'ode(y = yini, func = mathieu, times=seq(0.0,145.0, by=0.083333333), parms=c(6.439,14.249,18.6,4.424))',
+   ts<-'soln[1:1605,2]',
+   TS <- ts.
+
+diffEq_solve(_Params, TS) :-  % SOI + NINO34   0.742  3.555 5.689 5.17 13.12
+   <- library(deSolve),
+   yini    <- 'c(y1=0.016,y2=0.0117)',
+   flip    <- 'function(t,p){+2.2*ifelse(t>100.9 && t<114.5,-0.69*cos(pi*t-p),0.9*cos(pi*t-p))}',  %114.9   1.1852
+   stretch <- 'function(t,p){0.022*sin(4*pi/p*t+0.6)- 0.0*sin(2*pi/p*t+0.0)}',
+   forcing <- 'function(t,p){ -0*0.014*sin(2*pi/1.1838*t-2.4) - 0.00759*cos(2*pi/p[1]*t+1.5) - 0.009*cos(2*pi/p[2]*t+1.4) +
+			      0.0065*cos(2*pi/5.69*t+1.5) + 0.0065*cos(2*pi/3.555*t+1.4) +  0.3*cos(2*pi/0.742*t+2.2) + 0*0.05*cos(2*pi/0.7501*t-1.4) +
+	      1.0*flip(t,-0.02)*(0.068*cos(2*pi/p[1]*t+1.575)+0.12*cos(2*pi/p[2]*t+2.13)-0.13*cos(2*pi/p[3]*t+3.2)+0*0.002*sin(pi/p[4]*t-4.1) )}',
+   mathieu <- 'function(t,y,p){list( c(y[2], -forcing(t-stretch(t,p[3])+0.004,p) -(2.371-0.170*cos(pi*t+0.22))*y[1] - 0.0071*y[2] ))}',
+   soln    <- 'ode(y = yini, func = mathieu, times=seq(0.0,145.0, by=0.083333333), parms=c(6.41,14.24,18.6,4.424))',
+   ts<-'soln[1:1605,2]',
+   TS <- ts.
+
+diffEq_solve_clarke(_Params, TS) :-  % SOI + NINO34
+   <- library(deSolve),
+   yini    <- 'c(y1=0.005,y2=-0.003)',
+   flip    <- 'function(t,p){2.23*ifelse(t>100.9 && t<114.5,-0.8*cos(pi*t-p),0.89*cos(pi*t-p))}',  %114.9   1.1852
+   stretch <- 'function(t,p){0*0.022*sin(4*pi/p*t+0.6)- 0.0*sin(2*pi/p*t+0.0)}',
+   forcing <- 'function(t,p){ -0.014*sin(2*pi/1.1838*t-1.0) - 0.018*cos(2*pi/p[1]*t+1.55) - 0.008*cos(2*pi/p[2]*t+1.4) + 0.007*cos(2*pi/3.55*t+2.5) +
+	      flip(t,-0.2)*(0.083*cos(2*pi/p[1]*t+1.65)+0.13*cos(2*pi/p[2]*t+2.1)-0.14*cos(2*pi/p[3]*t+3.2)+0.0018*sin(2*pi/p[4]*t-4.0) )}',
+   mathieu <- 'function(t,y,p){list( c(y[2], -0.99*forcing(t-stretch(t,p[3])+0.022,p) -(2.175-0.157*cos(pi*t+0.23))*y[1] - 0.0071*y[2] ))}',
+   soln    <- 'ode(y = yini, func = mathieu, times=seq(0.0,145.0, by=0.083333333), parms=c(6.445,14.26,18.6,4.424))',
+   ts<-'soln[1:1605,2]',
+   TS <- ts.
+
+diffEq_solve_bare(_Params, TS) :-  % SOI + NINO34
+   <- library(deSolve),
+   yini    <- 'c(y1=0.016,y2=0.0117)',
+   flip    <- 'function(t,p){2.2*ifelse(t>100.9 && t<114.5,-0.69*cos(pi*t-p),0.9*cos(pi*t-p))}',
+   forcing <- 'function(t,p){ - 0.00759*cos(2*pi/p[1]*t+1.5) - 0.009*cos(2*pi/p[2]*t+1.4) +
+	      flip(t,-0.02)*(0.068*cos(2*pi/p[1]*t+1.575)+0.12*cos(2*pi/p[2]*t+2.13)-0.13*cos(2*pi/p[3]*t+3.2)+0.0013*sin(2*pi/p[4]*t-4.0) )}',
+   mathieu <- 'function(t,y,p){list( c(y[2], -forcing(t+0.0058,p) -(2.371-0.17*cos(pi*t+0.22))*y[1] - 0.0071*y[2] ))}',
+   soln    <- 'ode(y = yini, func = mathieu, times=seq(0.0,145.0, by=0.083333333), parms=c(6.439,14.249,18.6,4.424))',
+   ts<-'soln[1:1605,2]',
+   TS <- ts.
+
+diffEq_solve_nino34(_Params, TS) :-  % SOI + NINO34
+   <- library(deSolve),
+   yini    <- 'c(y1=0.016,y2=0.0117)',
+   flip    <- 'function(t,p){2.2*ifelse(t>100.9 && t<114.5,-0.68*cos(pi*t-p),0.9*cos(pi*t-p))}',  %114.9   1.1852
+   stretch <- 'function(t,p){0.022*sin(4*pi/p*t+0.6)- 0.0*sin(2*pi/p*t+0.0)}',
+   forcing <- 'function(t,p){ -0.014*sin(2*pi/1.1838*t-2.4) - 0.00759*cos(2*pi/p[1]*t+1.5) - 0.009*cos(2*pi/p[2]*t+1.4) +
+	      flip(t,-0.02)*(0.068*cos(2*pi/p[1]*t+1.575)+0.12*cos(2*pi/p[2]*t+2.13)-0.13*cos(2*pi/p[3]*t+3.2)+0.0013*sin(2*pi/p[4]*t-4.0) )}',
+   mathieu <- 'function(t,y,p){list( c(y[2], -forcing(t-stretch(t,p[3])+0.005,p) -(2.371-0.17*cos(pi*t+0.22))*y[1] - 0.0071*y[2] ))}',
+   soln    <- 'ode(y = yini, func = mathieu, times=seq(0.0,145.0, by=0.083333333), parms=c(6.439,14.249,18.6,4.424))',
+   ts<-'soln[1:1605,2]',
+   TS <- ts.
+
+diffEq_solve_bare(_Params, TS) :-  % SOI + NINO34
+   <- library(deSolve),
+   yini    <- 'c(y1=-0.016,y2=-0.0117)',
+   flip    <- 'function(t,p){2.2*ifelse(t>100.9 && t<114.5,-0.7*cos(pi*t-p),0.9*cos(pi*t-p))}',
+   forcing <- 'function(t,p){ -0.00759*cos(2*pi/p[1]*t+1.4) +
+	      flip(t,-0.021)*(0.068*cos(2*pi/p[1]*t+1.575)+0.12*cos(2*pi/p[2]*t+2.13)-0.13*cos(2*pi/p[3]*t+3.2)+0.0013*sin(2*pi/p[4]*t-4.0) )}',
+   mathieu <- 'function(t,y,p){list( c(y[2], forcing(t,p) -(2.371-0.17*cos(pi*t+0.22))*y[1] - 0.0071*y[2] ))}',
+   soln    <- 'ode(y = yini, func = mathieu, times=seq(0.0,145.0, by=0.083333333), parms=c(6.44,14.25,18.6,4.424))',
+   ts<-'soln[1:1605,2]',
+   TS <- ts.
+
+diffEq_solve_alone(_Params, TS) :-  %
+   <- library(deSolve),
+   yini    <- 'c(y1=-0.017,y2=-0.034)',
+   flip    <- 'function(p){1/(1/2-1/p)}',
+   forcing <- 'function(t,p){ -0.0002*t -
+	      0.006*cos(2*pi*t/p[4]-1.64) -
+	      0.05*cos(2*pi/p[1]*t+1.5)-0.013*cos(2*pi/p[2]*t+1.4)+0.045*cos(4*pi/p[3]*t+2.49)+
+	      0.031*cos(2*pi/flip(p[1])*t+2.2)+0.0*cos(2*pi/flip(p[2])*t+2.0)-0.09*cos(2*pi/flip(p[3])*t+2.2)+0.0008*sin(2*pi/flip(p[4])*t-2.9) }',
+   mathieu <- 'function(t,y,p){list( c(y[2], forcing(t-0*0.02*sin(4*pi/p[3]*t-0.8),p) - (2.378-0*0.16*cos(pi*t+0.23))*y[1]))}',
+   soln    <- 'ode(y = yini, func = mathieu, times=seq(0.0,145.0, by=0.083333333), parms=c(6.439,14.54,18.6,4.4242))',
+   ts<-'soln[1:1605,2]',
+   TS <- ts.
+
+
+diffEq_solve_one(_Params, TS) :-  % NINO34
+   <- library(deSolve),
+   yini    <- 'c(y1=-0.017,y2=-0.034)',     %%%% Has the extra 2.333
+   forcing <- 'function(t,p){  - 0.068*sin(2*pi/2.333*t-2.8) -0.0002*t -
+	      0.0061*cos(2*pi*t/p[4]-1.64) -
+	      0.0345*cos(2*pi/p[1]*t+1.4)-0.013*cos(2*pi/p[2]*t+1.4)+0.045*cos(4*pi/p[3]*t+2.49)+
+	      1.0*(1.27*cos(pi*t-0.093)-2.9*cos(2*pi*t-1.2)-3.1*cos(4*pi*t-2.1))*
+	        (0.109*cos(2*pi/p[1]*t+1.74)+0.11*cos(2*pi/p[2]*t+2.18)-0.13*cos(2*pi/p[3]*t+3.0)+0.0008*sin(2*pi/p[4]*t-2.9) )}',
+   mathieu <- 'function(t,y,p){list( c(y[2], forcing(t-0.022*sin(4*pi/p[3]*t-1.2),p) - (2.371-0.16*cos(pi*t+0.23)-0.2*cos(2*pi*t+2.3))*y[1]))}',
+   soln    <- 'ode(y = yini, func = mathieu, times=seq(0.0,145.0, by=0.083333333), parms=c(6.439,14.54,18.6,4.424))',
+   ts<-'soln[1:1605,2]',
+   TS <- ts.
+
+
+diffEq_solve_hmm(_Params, TS) :-  % SOI
+   <- library(deSolve),
+   yini    <- 'c(y1=0.014,y2=0.0865)',
+   mathieu <-
+   'function(t,y,p){list( c(y[2],
+			  -0*0.00001*t - 0.0054*cos(2*pi*t/p[5]-1.6) - 0*0.0004*cos(2*pi*t/3.918-0.4) + 1*90.2*
+			  (-0.0037*cos(2*pi/p[1]*t+1.4)+0.0044*cos(4*pi/p[3]*t+2.35)+0.8*(-0.02+0.43*cos(pi*t-0.15))*(0.034*cos(2*pi/p[1]*t+1.74)
+			  -0.037*cos(2*pi/p[3]*t+3.0) + 0*0.072*cos(2*pi/p[2]*t+1.79) ) ) + 0.28*cos(pi*t+0.3)*cos(2*pi/p[2]*t+1.93)
+			  -0.998*(2.398+1.0*(-0.14*cos(pi*t+p[4])+0.02*cos(pi*t/2+p[4])-0.02*cos(pi*t/3+p[4])+0.0*cos(pi*t/4+p[4])+0.0*cos(2*pi*t+p[4])))*y[1] ))}',
+   soln    <- 'ode(y = yini, func = mathieu, times=seq(0.0, 145.0, by=0.083333333), parms=c(6.43,14.26,18.6,-1.2, 4.424))',
+   ts<-'soln[1:1605,2]',                     % 0.12*cos((pi-2*pi/p[2])*t-1.87) +0.14*cos((pi+2*pi/p[2])*t+2.1)
+   TS <- ts.
+
+
+diffEq_solve_no_ramp(_Params, TS) :-  % SOI
+   <- library(deSolve),
+   yini    <- 'c(y1=-0.01,y2=-0.036)',
+   mathieu <-
+   'function(t,y,p){list( c(y[2],
+			  -0*0.0007*t - 0.0045*cos(2*pi*t/p[5]-1.6) + 10.2*
+			  (-0.0029*cos(2*pi/p[1]*t+1.4)+0.0045*cos(4*pi/p[3]*t+2.35)+0.96*(-0.018+0.4*cos(pi*t-0.16))*(0.038*cos(2*pi/p[1]*t+1.74)
+			  -0.038*cos(2*pi/p[3]*t+3.0))) +0.3*cos(pi*t+0.3)*cos(2*pi/p[2]*t+1.92)
+			  -0.998*(2.205+1*(-0.305*cos(pi*t+p[4])+0.1*cos(pi*t/2+p[4])-0.3*cos(pi*t/3+p[4])+0.05*cos(pi*t/4+p[4])+0.3*cos(2*pi*t+p[4])))*y[1] ))}',
+   soln    <- 'ode(y = yini, func = mathieu, times=seq(0.0, 145.0, by=0.083333333), parms=c(6.44,14.26,18.6,0.6, 4.424))',
+   ts<-'soln[1:1605,2]',                     % 0.12*cos((pi-2*pi/p[2])*t-1.87) +0.14*cos((pi+2*pi/p[2])*t+2.1)
+   TS <- ts.
+
+diffEq_solve_attempt(_Params, TS) :-  % SOI
+   <- library(deSolve),
+   yini    <- 'c(y1=-0.012,y2=-0.027)',
+   mathieu <-
+   'function(t,y,p){list( c(y[2], -0.0008*t - 0*0.03*cos(2*pi*t/1.761+1.8) + 0*0.2*cos(4*pi*t+0.1) - 0.0054*cos(2*pi*t/p[5]-1.6) + 11.0*
+			          (-0.0029*cos(2*pi/p[1]*t+1.4)+0.0045*cos(4*pi/p[3]*t+2.35)+0.8*(-0.016+0.41*cos(pi*t-0.22))*(0.043*cos(2*pi/p[1]*t+1.7)
+				  +0.0*cos(2*pi/p[2]*t+1.7)-0.035*cos(2*pi/p[3]*t+2.92))) + 0.09*cos((pi-2*pi/p[2])*t-2.3) + 0.08*cos((pi+2*pi/p[2])*t+2.0)
+				  -0.998*(2.205-0.31*cos(pi*t+p[4])+0.31*cos(pi*t/2+p[4])-0.163*cos(pi*t/3+p[4])+0.3*cos(2*pi*t+p[4]))*y[1] ))}',
+   soln    <- 'ode(y = yini, func = mathieu, times=seq(0.0, 145.0, by=0.083333333), parms=c(6.44,14.6,18.6,0.61, 4.424))',
+   ts<-'soln[1:1605,2]',
+   TS <- ts.
+
+
+diffEq_solve_nino(_Params, TS) :-  % SOI
+   <- library(deSolve),
+   yini    <- 'c(y1=-0.02,y2=-0.02)',
+   mathieu <-
+   'function(t,y,p){list( c(y[2], -0.0009*t+12.0*
+			          (-0.003*cos(2*pi/p[1]*t+1.35)+0.006*cos(4*pi/p[3]*t+2.3)+0.8*(-0.03+0.6*cos(pi*t-0.2))*(0.04*cos(2*pi/p[1]*t+1.6)
+				  +0.072*cos(2*pi/p[2]*t+1.59)-0.03*cos(2*pi/p[3]*t+2.9)))
+				  -1.0*(2.198+0.3*cos(2*pi*t+p[4])-0.28*cos(pi*t+p[4])+0.34*cos(pi*t/2+p[4])-0.05*cos(pi*t/3+p[4]))*y[1] ))}',
+   soln    <- 'ode(y = yini, func = mathieu, times=seq(0.0, 135.0, by=0.083333333), parms=c(6.44,14.38,18.6,0.71))',
+   ts<-'soln[1:1605,2]',
+   TS <- ts.
+
+
+   /*
    ts1<-'soln[1:400,2]',
    ts2<-'soln[401:800,2]',
    ts3<-'soln[801:1200,2]',
@@ -617,6 +980,7 @@ diffEq_solve(_Params, TS) :-
    TS3 <- ts3,
    TS4 <- ts4,
    TS cat[TS1,TS2,TS3,TS4].
+   */
    % r_close.
    %length(TS, N),
    % print(user_error, [length,N]).
@@ -628,12 +992,12 @@ diffEq_solve(_Params, TS) :-
 
 plot(Request) :-
     garbage_collect,
-    http_parameters(Request, [kind(diffEq, []),
+    http_parameters(Request, [kind(Kind, []),
 			      fft(FFT, [boolean, default(false)]),
 			      window(Window, [boolean, default(false)]),
 			      triple(Triple, [boolean, default(false)]),
 			      % mathieu(Mathieu, [boolean, default(false)]),
-			      wave(_WL, [integer, default(0)]),
+			      cc(WL, [integer, default(0)]),
 			      t_units(Cal, []),
 			      startYear(StartYear, [integer]),
 			      fitYear(FitYear, [integer]),
@@ -643,19 +1007,42 @@ plot(Request) :-
 
     scale(FFT, LogLin, Characteristic, XLabel, XUnits, YLabel, YUnits, Show_Error_Bars),
     scaling(Cal, month, _Scale),
-    temperature_series(_, Window, Triple, DataSet, T, _Correction),
+    temperature_series(NComps, _, Window, Triple, DataSet, T, _Correction),
     soi_data(NameData, DataSet),
 
     get_years_from_1880(T, Year, Zeros),
-    diffEq_solve(_Params, TS),
+    diffEq_solve(_Params, TS0),
+    get_months_from_start(T, Months),
+    TS1 mapdot 1.0*seasonal_modulation ~> Months,
+    TS mapdot TS1 * TS0,
 
-    % get_months_from_start(T, Months),
-    T1 mapdot -0.012 .* T,
+
+/*
+    variance(TS, TS_var),
+    variance(T, T_var),
+    RatioVar is sqrt(TS_var/T_var), % /sqrt(abs(R2C2c)),
+    T1 mapdot RatioVar .* T, % 0.06
+*/
+    Covar dot TS * T,
+    Var dot TS * TS,
+    RatioVar is Var/Covar,
+    T1 mapdot RatioVar .* T,
+
+
     (
        Characteristic = residual ->
-          T_Diff mapdot T1 - TS,
-          Data tuple Year + T_Diff,
-          Header = [year, residual]
+          T_Diff mapdot T1 - 1.0 .* TS,
+          % Data tuple Year + T_Diff,
+          Header = [year, residual],
+
+         % zero_range(T, T_Diff, [], T_Diff2),
+	 R_FFT fft T_Diff,
+	 Range ordinal R_FFT,
+	 Data tuple Range + R_FFT,
+    corrcoeff(T, TS, R2C2c),
+    excursion(T1, TS, R2C2e),
+    R2C2 is 100*((1-WL)*R2C2e+(1+WL)*R2C2c)/2
+
     ;
        Characteristic = spectrum ->
          Model_FFT fft TS,
@@ -664,16 +1051,30 @@ plot(Request) :-
 	 Data tuple Range + Data_FFT + Model_FFT,
          Header = [XLabel, data, model]
     ;
+       Characteristic = diff ->
+	 context_qbo:second_derivative(T1,T1S),
+	 context_qbo:second_derivative(TS,TSS),
+         Data tuple Year + T1S  +  TSS,
+         Header = [year, DataSet, model],
+    corrcoeff(T1S, TSS, R2C2c),
+    excursion(T1S, TSS, R2C2e),
+    R2C2 is 100*((1-WL)*R2C2e+(1+WL)*R2C2c)/2
+    ;
          Data tuple Year + T1  +  TS,
-         Header = [year, DataSet, model]
+         Header = [year, DataSet, model],
+    corrcoeff(T, TS, R2C2c),
+    excursion(T1, TS, R2C2e),
+    R2C2 is 100*((1-WL)*R2C2e+(1+WL)*R2C2c)/2
     ),
-    corrcoeff(T1, TS, R2C2),
+    %corrcoeff(T1, TS, R2C2_0),
+    %R2C2 is 100.0*R2C2_0,
 
+    (	Kind = diffEq ->
     reply_html_page([title(Characteristic),
                        \(con_text:style)],
                       [
-		     table([tr([th('R=cc'),th('start fit'),th('end fit')]),
-			    tr([td(b('~5f'-R2C2)),td(b('~d'-StartYear)), td(b('~d'-FitYear))])
+		     table([tr([th('R=avg'),th('excursion'),th('cc')]),
+			    tr([td(b('~5f'-R2C2)),td(b('~5f'-R2C2e)), td(b('~5f'-R2C2c))])
 			   ]),
 		     br([]),
 		     table( % [class('fixed')],
@@ -687,6 +1088,17 @@ plot(Request) :-
 			       ])])
                     ]
                      )
+    ;
+      reply_html_page([title(Characteristic),
+                       \(con_text:style)],
+                      [
+                       \(con_text:table_multiple_entries(
+                                      [Header],
+                                      Data
+                                                        ))
+                      ]
+                     )
+    )
      .
 
 

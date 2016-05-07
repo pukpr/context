@@ -197,8 +197,8 @@ uep([
 -0.031	,
 -0.397	,
 -0.526	,
--0.402	,  % 0.402
--0.31	,  % 0.741
+0.402	,  % 0.402
+0.741	,  % 0.741
 -0.274	,
 -0.526	,
 -0.037	,
@@ -392,6 +392,347 @@ uep([
 -0.208	,
 -0.367	,
 0.317
+%  ,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0
+%
+%
+]).
+
+tsi_yearly_since_1653([
+%1365.0449
+%1365.0443
+%1365.0424
+%1365.0399
+%1365.0389
+% 1365.0383,
+1365.0657,
+1365.0439	,
+1365.0358	,
+1365.026	,
+1365.0249	,
+1365.0199	,
+1365.0145	,
+1365.0125	,
+1365.0259	,
+1365.0178	,
+1365.0125	,
+1365.0125	,
+1365.0126	,
+1365.0127	,
+1365.0127	,
+1365.0125	,
+1365.0122	,
+1365.0122	,
+1365.0122	,
+1365.0183	,
+1365.0148	,
+1365.0122	,
+1365.0135	,
+1365.012	,
+1365.0239	,
+1365.0134	,
+1365.0128	,
+1365.0115	,
+1365.017	,
+1365.0115	,
+1365.0115	,
+1365.0115	,
+1365.0211	,
+1365.0117	,
+1365.0159	,
+1365.0126	,
+1365.0159	,
+1365.0146	,
+1365.0143	,
+1365.0157	,
+1365.0172	,
+1365.0177	,
+1365.0179	,
+1365.0186	,
+1365.0178	,
+1365.0178	,
+1365.0179	,
+1365.0184	,
+1365.0216	,
+1365.0236	,
+1365.0266	,
+1365.0444	,
+1365.0594	,
+1365.0752	,
+1365.0637	,
+1365.0802	,
+1365.0658	,
+1365.0614	,
+1365.0634	,
+1365.0739	,
+1365.0798	,
+1365.0863	,
+1365.1023	,
+1365.1294	,
+1365.1694	,
+1365.2294	,
+1365.1707	,
+1365.3429	,
+1365.2859	,
+1365.288	,
+1365.2209	,
+1365.1837	,
+1365.2681	,
+1365.2574	,
+1365.4274	,
+1365.4327	,
+1365.6237	,
+1365.3479	,
+1365.6605	,
+1365.1812	,
+1365.309	,
+1365.1984	,
+1365.2086	,
+1365.3386	,
+1365.5486	,
+1365.3827	,
+1365.337	,
+1365.5795	,
+1365.2811	,
+1365.6107	,
+1365.3247	,
+1365.2698	,
+1365.2137	,
+1365.2164	,
+1365.2223	,
+1365.2305	,
+1365.6548	,
+1365.6749	,
+1365.6385	,
+1365.468	,
+1365.4402	,
+1365.422	,
+1365.3351	,
+1365.322	,
+1365.3501	,
+1365.4734	,
+1365.5867	,
+1365.6501	,
+1365.6254	,
+1365.7898	,
+1365.6514	,
+1365.5811	,
+1365.5573	,
+1365.4065	,
+1365.3759	,
+1365.5817	,
+1365.8346	,
+1366.0194	,
+1366.022	,
+1365.9155	,
+1365.8433	,
+1365.6243	,
+1365.5862	,
+1365.4493	,
+1365.5039	,
+1365.6656	,
+1365.8955	,
+1365.9534	,
+1365.7753	,
+1365.8868	,
+1365.6217	,
+1365.5284	,
+1365.3966	,
+1365.4558	,
+1365.7682	,
+1365.9337	,
+1365.8801	,
+1365.8595	,
+1365.7604	,
+1365.6101	,
+1365.5961	,
+1365.5756	,
+1365.4816	,
+1365.3645	,
+1365.3348	,
+1365.2817	,
+1365.2567	,
+1365.2629	,
+1365.3035	,
+1365.5757	,
+1365.4541	,
+1365.3218	,
+1365.3257	,
+1365.3361	,
+1365.2385	,
+1365.171	,
+1365.1458	,
+1365.118	,
+1365.1094	,
+1365.1222	,
+1365.1631	,
+1365.2117	,
+1365.2355	,
+1365.2906	,
+1365.3866	,
+1365.36	,
+1365.3119	,
+1365.2968	,
+1365.241	,
+1365.2194	,
+1365.2432	,
+1365.2483	,
+1365.2893	,
+1365.3627	,
+1365.4659	,
+1365.5771	,
+1365.6646	,
+1365.6825	,
+1365.7235	,
+1365.5585	,
+1365.4565	,
+1365.3612	,
+1365.3966	,
+1365.6577	,
+1366.0393	,
+1366.1127	,
+1365.8997	,
+1365.8174	,
+1365.7007	,
+1365.549	,
+1365.494	,
+1365.4237	,
+1365.4543	,
+1365.582	,
+1365.6803	,
+1365.7816	,
+1365.9781	,
+1365.9691	,
+1365.7698	,
+1365.7744	,
+1365.6947	,
+1365.5848	,
+1365.4614	,
+1365.3828	,
+1365.3853	,
+1365.4946	,
+1365.6875	,
+1365.9054	,
+1365.9718	,
+1365.8623	,
+1365.712	,
+1365.6283	,
+1365.566	,
+1365.4755	,
+1365.4119	,
+1365.3597	,
+1365.5194	,
+1365.7557	,
+1365.9944	,
+1365.9343	,
+1365.8876	,
+1365.6866	,
+1365.5582	,
+1365.4095	,
+1365.3593	,
+1365.3596	,
+1365.3309	,
+1365.3533	,
+1365.5	,
+1365.6443	,
+1365.6676	,
+1365.7147	,
+1365.6166	,
+1365.507	,
+1365.3417	,
+1365.2982	,
+1365.2628	,
+1365.2344	,
+1365.269	,
+1365.5204	,
+1365.619	,
+1365.76	,
+1365.8553	,
+1365.739	,
+1365.5581	,
+1365.4126	,
+1365.3899	,
+1365.3381	,
+1365.3074	,
+1365.2292	,
+1365.2378	,
+1365.4479	,
+1365.718	,
+1365.5291	,
+1365.7255	,
+1365.6097	,
+1365.6748	,
+1365.5642	,
+1365.4309	,
+1365.3473	,
+1365.301	,
+1365.3175	,
+1365.3844	,
+1365.689	,
+1365.899	,
+1366.048	,
+1366.0096	,
+1365.7802	,
+1365.6178	,
+1365.5127	,
+1365.3948	,
+1365.4265	,
+1365.4581	,
+1365.6622	,
+1365.7633	,
+1365.9468	,
+1365.8245	,
+1365.7833	,
+1365.7655	,
+1365.6436	,
+1365.5364	,
+1365.4156	,
+1365.5275	,
+1365.7439	,
+1366.1333	,
+1366.0676	,
+1366.0031	,
+1365.9868	,
+1365.9242	,
+1365.8451	,
+1365.7419	,
+1365.5841	,
+1365.614	,
+1365.881	,
+1365.9791	,
+1366.2185	,
+1366.349	,
+1366.2555	,
+1366.0131	,
+1365.7765	,
+1365.7676	,
+1365.6284	,
+1365.6564	,
+1365.7773	,
+1366.3109	,
+1366.6681	,
+1366.6328	,
+1366.3828	,
+1366.2767	,
+1365.9199	,
+1365.7484	,
+1365.6963	,
+1365.6976	,
+1365.7341	,
+1365.9178	,
+1366.1143	,
+1366.1644	,
+1366.2476	,
+1366.2426	,
+1365.958	,
+1366.0525	,
+1365.7991	,
+1365.7271	,
+1365.5345	,
+1365.6453	,
+1365.8331	,
+1366.2747	,
+1366.6348
+% , 1366.6482
 ]).
 
 
@@ -547,7 +888,7 @@ dataset(sydney_flip, L) :-
 
 
 dataset(nino3, L) :-
-        nino3(L0),
+        nino_3_4(L0),
 	L unbias L0.
 
 dataset(nao, L) :-
@@ -584,8 +925,22 @@ dataset(uep_adjusted, Final) :-
 	% reverse(H, HR),
         Y mapdot H * L0,
 	Y1 mapdot -0.002 .* Y,
-	Final mapdot Lbase + Y1.
+	F mapdot Lbase + Y1,
+	Win window F / 20,
+	Final mapdot F - Win.
 
+
+tsi_list(L) :-
+        tsi_yearly_since_1653(L0),
+	L unbias L0.
+
+tsi_dir_list(L) :-
+        tsi_yearly_since_1653(L0),
+        length(L0,N),
+	Year range [1,N]/1,
+        L1 derivative L0 / Year,
+        L2 offset L1 - 1,
+        L cat [L2, [0]].
 
 navigate(Request) :-
    collect_unit_options(calendar, Calendar),
@@ -607,12 +962,12 @@ navigate(Request) :-
 			      input([type('text'),
 				 size(4),
 				 name('startYear'),
-				 value('1880')]),
+				 value('1653')]),
 			      ' : ',
 			      input([type('text'),
 				 size(4),
 				 name('fitYear'),
-				 value('2013')])
+				 value('1980')])
 			     ]),
 
 			  select([name('dataset')], DataSet),
@@ -647,7 +1002,7 @@ navigate(Request) :-
 			  br([]),
 			  \(con_text:check_box(window, 'true', 'Apply 12 month window')),
 			  \(con_text:check_box(triple, 'true', 'Pratt filter')),
-                          \(con_text:check_box(wwii_adjust, 'true', 'Second Deriv')),
+                          \(con_text:check_box(second_der, 'true', 'Second Deriv')),
 			  % \(con_text:check_box(lunar, 'true', 'lunar')),
 
 			  br([]),
@@ -668,13 +1023,13 @@ navigate(Request) :-
 					   img([src('/html/images/magnify-clip.png'),
 						title('if negative value entered, factor is zeroed')
 					       ])]),
-					\(con_text:input_cells([[co2_lag,-1,2],
-						      [soi_lag,-6,2],
-						      [aero_lag,-15,2],
-						      [lod_lag,-48.0,2],
-						      [tsi_lag,-6,2],
-                                                      [aam_lag,-6,2],
-                                                      [bary_lag,-6,2]
+					\(con_text:input_cells([[co2_lag, 18.6,2],
+						      [soi_lag, 6,2],
+						      [aero_lag, 8.85,2],
+						      [lod_lag, 22.0,2],
+						      [tsi_lag,133.0,2],
+                                                      [aam_lag,2.34,2],
+                                                      [bary_lag,15.0,2]
                                                       % [amo_win,-120,2],
 						      % [arctic_win, -120,2]
 						     ]))
@@ -886,12 +1241,15 @@ temperature_series(false, DataSet, T) :-
     dataset(DataSet, T).
 */
 
-get_fit(1, -1.0).
-get_fit(0, 1.0).
+get_fit(true, 1.0).
+get_fit(false, 0.0).
 
 temperature_series(Second, Window, Triple, DataSet, TTT, _Fit, Offset) :-
-   temperature_series(Window, Triple, DataSet, TTT),
-   get_years_from_1880(TTT, Year, _),
+   temperature_series(Window, Triple, DataSet, T0),
+   % get_years_from_1880(TTT, Year, _),
+   get_fit(Second, Sec),
+   context_qbo:second_derivative(T0, T),
+   TTT mapdot T0 + Sec*0.0029 .* T, % 0.0018
    Offset mapdot 0 .* TTT.
 
 
@@ -1142,7 +1500,8 @@ show_equation([[0.0,0.0,0.0]|R], In, Out) :-
 show_equation([[Period,S,C]|R], In, Out) :-
     Val is sqrt(S*S+C*C),
     Phase is atan(C,S),
-    format(atom(Value), '+ ~7g * sin(2*pi()*$a1/~7g+~7g) ', [Val,Period,Phase]),
+    P is Period/12,
+    format(atom(Value), '+ ~7g * sin(2*pi()*$a1/~7g+~7g) ', [Val,P,Phase]),
     concat(In, Value, Eq),
     show_equation(R,Eq, Out).
 
@@ -1150,7 +1509,7 @@ show_periods([], Out, Out).
 show_periods([[0.0,0.0,0.0]|R], In, Out) :-
     show_periods(R, In, Out).
 show_periods([[Period,S,C]|R], In, Out) :-
-    RMS is sqrt(S*S+C*C),
+    RMS is 100.0*sqrt(S*S+C*C),
     format(atom(Value), '~3f', [RMS]),
     Year is Period / 12,
     % format(atom(Name), '~dyears', [Year]),
@@ -1214,6 +1573,8 @@ excursion_all(X,Y,CC) :-
     % inflection(X1,Y1,CC).
     % excursion(X1,Y1,CC).
 
+select_period(_,QBO,_,R,_Add) :- R is QBO*12.
+
 
 plot(Request) :-
     http_parameters(Request, [kind(volcanos, [])]),
@@ -1236,7 +1597,7 @@ plot(Request) :-
 			      triple(Triple, [boolean, default(false)]),
 			      volc(Sato, [boolean, default(false)]),
 			      eq(EQ_ON, [boolean, default(false)]),
-			      wwii_adjust(WWII_Adjust, [boolean, default(false)]),
+			      second_der(Second_Deriv, [boolean, default(false)]),
 			      sign(SignMetric, [boolean, default(false)]),
 			      wave(WL, [integer, default(0)]),
 			      fit_res(Fit, [integer, default(0)]),
@@ -1262,7 +1623,7 @@ plot(Request) :-
 
 
     % Get the temperature series
-    temperature_series(WWII_Adjust, Window, Triple, DataSet, T, Fit, Correction),
+    temperature_series(Second_Deriv, Window, Triple, DataSet, T, Fit, Correction),
 
     get_years_from_1880(T, Year, Zeros),
 
@@ -1272,79 +1633,66 @@ plot(Request) :-
 
     Q is 1.0,
     E = Add,
+    Anom is VL,
+    Drac is AL,
+    Trop is SL,
+    LongMod is TL,
+    SixPlus is 1/(1/Trop-1/LongMod),
+    SixMinus is 1/(1/Trop+1/LongMod),
+    TSI is 1*LL, %22.2
+    TriAxial is OL, % 15.0,
 
 (   EQ_ON ->
-    Period is E*7.29*12,  %Hale/3 * 12 *Q, % precession cycle with the time for Spring tides to realign with the same day each year
-    Period2 is 9.2 * 12,   % 9.03 9.015 Sun-Moon-Earth tidal configuration 8.715
-    Period3 is Q*18.2* 12,  % 18.63 Lunar precessional
-    Period4 is Q*4.032 * 12,   % 4.06 8.848 Lunar apsidal precession
-    Period5 is Q*2.192*12, % 2.245 Add*11.86* 12 *Q,   % 11.86 Tidal sidereal period of Jupiter
-    Period6 is Q*6.46*12, % 1.7655 Others*Hale/7 * 1.026* 12 *Q,       % Soros cycle tide -------
-    Period7 is E*5.73*12,  % 5.77 Add*Period5/2,       % Period5/2 24*Q,
-    Period8 is 6.08*12, % 6.48 Period3/3,       % 20.5
-    Period9 is Q*8.85 * 12/2,
-    PeriodA is Q*2.76*12,   % 2.755 2.763 Add*Hale/4 *0.955*12 *Q,
-    PeriodB is 2.894*12, %2.898  Others*Hale/5 *0.955*12 *Q, % -------
-    PeriodC is Q*2.108*12, % 2.0799 2.09 Hale/6 *12 *Q,
-    PeriodD is E*13.87*12, % 13.52 0*Hale/2 *12,
-    PeriodE is Q*3.522*12, % 3.523  3.53 Add*Hale/1 *12 *Q,
-    PeriodF is 2.3333*12, %  2.329 3.35 Random_F*12*20, % 2*12 *Q, % ------
-    PeriodH is Q*8.848*12, %1.93 1.583 0*7.944*12, % 7.944 2.54  Venus 9.315*12*Q,  %
-    Sin0 mapdot mod_sin_period(PeriodH,14,WL) ~> Months,
-    Cos0 mapdot mod_cos_period(PeriodH,14,WL) ~> Months,
-    Sin mapdot mod_sin_period(Period,10,WL) ~> Months,
-    Cos mapdot mod_cos_period(Period,10,WL) ~> Months,
-    Sin2 mapdot mod_sin_period(Period2,8,WL) ~> Months,
-    Cos2 mapdot mod_cos_period(Period2,8,WL) ~> Months,
-    Sin3 mapdot mod_sin_period(Period3,9,WL) ~> Months,
-    Cos3 mapdot mod_cos_period(Period3,9,WL) ~> Months,
-    Sin4 mapdot mod_sin_period(Period4,13,WL) ~> Months,
-    Cos4 mapdot mod_cos_period(Period4,13,WL) ~> Months,
-    Sin5 mapdot mod_sin_period(Period5,5,WL) ~> Months,
-    Cos5 mapdot mod_cos_period(Period5,5,WL) ~> Months,
-    Sin6 mapdot mod_sin_period(Period6,14,WL) ~> Months,
-    Cos6 mapdot mod_cos_period(Period6,14,WL) ~> Months,
-    Sin7 mapdot mod_sin_period(Period7,15,WL) ~> Months,
-    Cos7 mapdot mod_cos_period(Period7,15,WL) ~> Months,
-    Sin8 mapdot mod_sin_period(Period8,4 ,WL) ~> Months,
-    Cos8 mapdot mod_cos_period(Period8,4 ,WL) ~> Months,
-    Sin9 mapdot mod_sin_period(Period9,7 ,WL) ~> Months,
-    Cos9 mapdot mod_cos_period(Period9,7 ,WL) ~> Months,
-    SinA mapdot mod_sin_period(PeriodA,2,WL) ~> Months,
-    CosA mapdot mod_cos_period(PeriodA,2,WL) ~> Months,
-    SinB mapdot mod_sin_period(PeriodB,3 ,WL) ~> Months,
-    CosB mapdot mod_cos_period(PeriodB,3 ,WL) ~> Months,
-    SinC mapdot mod_sin_period(PeriodC,11 ,WL) ~> Months,
-    CosC mapdot mod_cos_period(PeriodC,11 ,WL) ~> Months,
-    SinD mapdot mod_sin_period(PeriodD,12,WL) ~> Months,
-    CosD mapdot mod_cos_period(PeriodD,12,WL) ~> Months,
-    SinE mapdot mod_sin_period(PeriodE,6,WL) ~> Months,
-    CosE mapdot mod_cos_period(PeriodE,6,WL) ~> Months,
-    SinF mapdot mod_sin_period(PeriodF,1 ,WL) ~> Months,
-    CosF mapdot mod_cos_period(PeriodF,1 ,WL) ~> Months,
-
-    Evection is  12*21.95, %  31.854/365.25,
-    % Evection is 12*1.0,
-    LogCO2 mapdot mod_sin_period(Evection,16,WL) ~> Months,
-    S2 mapdot mod_cos_period(Evection,16,WL) ~> Months,
-
-    CWobble is 27.8*12, % 1.595*12,  % 1.595 1.185*12,
-    TSI_F mapdot mod_sin_period(CWobble,17,WL) ~> Months,
-    V1 mapdot mod_cos_period(CWobble,17,WL) ~> Months,
-
-    LongW is 2.37*12, % 0*512/26.6*12,
-    AAM mapdot mod_sin_period(LongW,0,WL) ~> Months,
-    LOD_F mapdot mod_cos_period(LongW,0,WL) ~> Months
-    %AAM mapdot 1*sin_biennial_period ~> Months,
-    %LOD_F mapdot 1*cos_biennial_period ~> Months
-    % LOD_F mapdot eph_period(-18) ~> Months
+    Period is E*TriAxial/2*12,  %Hale/3 * 12 *Q, % precession cycle Spring tides to realign with the same day each year
+    Period2 is Drac * 12/2,   % 9.2 9.03 9.015 Sun-Moon-Earth tidal configuration 8.715
+    Period3 is Q*Drac* 12,  % 18.63 Lunar precessional
+    Period4 is Q*Drac/2*3 * 12,   % 4.032 4.06 8.848 Lunar apsidal precession
+    Period5 is Q* 2.175*12, % 2.175 2.154 2.245 Add*11.86* 12 *Q,   % 11.86 Tidal sidereal period of Jupiter
+    Period6 is Q*SixPlus*12, % 1.7655 Others*Hale/7 * 1.026* 12 *Q,       % Soros cycle tide -------
+    Period7 is E*SixMinus*12,  % 5.77 Add*Period5/2,       % Period5/2 24*Q,
+    Period8 is 0*6.45*12, % 6.48 Period3/3,       % 20.5
+    Period9 is Q*Anom * 12/2,
+    PeriodA is Q*TriAxial*12,   % 2.76 2.755 2.763 Add*Hale/4 *0.955*12 *Q,
+    PeriodB is 2.895*12, %2.898  Others*Hale/5 *0.955*12 *Q, % -------
+    PeriodC is Q*TSI/2*12, % 2.0799 2.09 Hale/6 *12 *Q,
+    PeriodD is E*TSI/4*12, % 13.52 0*Hale/2 *12,
+    PeriodE is Q*2.594*12, % 2.594 3.565 3.523  3.53 Add*Hale/1 *12 *Q,
+    PeriodF is ML*12, %  2.333 2.329 3.35 Random_F*12*20, % 2*12 *Q, % ------
+    PeriodH is Q*Anom*12, %1.93 1.583 0*7.944*12, % 7.944 2.54  Venus 9.315*12*Q,  %
+    Evection is  TSI*12, %  31.854/365.25,
+    CWobble is Drac*2*12, % 1.595*12,  % 1.595 1.185*12,
+    LongW is 2.106*12 % 2.369 0*512/26.6*12
 
 ;
+    Long =1,
+    select_period(Long, 27.8, 2.888, Period,1*Add), % AnomMinus --Drac1 2.888
+    select_period(Long, 22.3, 1.759450172, Period2,1*Add), % 18.613
+    select_period(Long, 18.1, 1.939393939, Period3,1*Add), % 6.65
+    select_period(Long, 10.8, 2.081300813, Period4,1*Add), % 1.757 4.09
+    select_period(Long, 9.2, 2.0, Period5,1*Add), % 1.53 9.3067
+    select_period(Long, 8.848, 1.805996473, Period6,1*Add), % 0.5748 3.9, 2.086389568
+    select_period(Long, 7.53, 1.53,      Period7,1*Add), % Third MfPrime
+    select_period(Long, 6.28, 1.3333,   Period8,1*Add), % 4.424 Synodical
+    select_period(Long, 6.09, 1.0, Period9,1*Add), % 1.182 0.576 3.9 1.333 3.89 0.6014
+    select_period(Long, 5.75, 2.898, PeriodA,1*Add), % 1.343 4.03 4.13
+    select_period(Long, 5.5, 42.66,      PeriodB,1*Add), % 4.0
+    select_period(Long, 4.424, 1.1,       PeriodC,1*Add), % 3.9
+    select_period(Long,  4.11, 7.37, PeriodD,0*Add), % 1.323 5.6 0.5791 5.935 1.77 7.42
+    select_period(Long, 2.33, 13.51, PeriodE,0*Add), %1.96
+    select_period(Long, 2.107, 9.07, PeriodF,1*Add), % 6.42, 1.591 3.53
+    select_period(Long, 2.19, 5.65, PeriodH,0*Add), % 1.0 3.63 5.695
+    % select_period(Long, 7.4, 5.65, PeriodG,0*Add), % 5.65 1.438 3.82
+    select_period(Long, 2.89, 2.274, LongW,0*Add), % 0.08721149897330595
+    select_period(Long, 0.0, 1.0, Evection,1*Add),
+    select_period(Long, 6.45, 1.0, CWobble,1*Add) % DracMinus
+
+
+/*
     %  2.3 2.1 3.5 3.73 4.03 11.1
-    Period is E*7.4*12,  %# Hale/3 * 12 *Q, % precession cycle with the time for Spring tides to realign with the same day each year
+    Period is E*7.4*12,  %# Hale/3 * 12 *Q, % precession cycle for Spring tides to realign with the same day each year
     Period2 is 9.3 * 12,   %# 9.03 9.015 Sun-Moon-Earth tidal configuration 8.715
     Period3 is Q*18.6* 12,  %# 18.613 Lunar precessional
-    Period4 is Q*4.04 * 12,   %# 8.848 Lunar apsidal precession
+    Period4 is Q*4.1 * 12,   %#4.04  8.848 Lunar apsidal precession
     Period5 is Q*2.24096*12, %# Add*11.86* 12 *Q,   % 11.86 Tidal sidereal period of Jupiter
     Period6 is Q*6.47*12, %# 1.7405 Others*Hale/7 * 1.026* 12 *Q,       % Soros cycle tide -------
     Period7 is E*5.75*12,  %# 5.77 Add*Period5/2,       % Period5/2 24*Q,
@@ -1355,7 +1703,7 @@ plot(Request) :-
     PeriodC is Q*2.108*12, %# 2.078 Hale/6 *12 *Q,
     PeriodD is E*13.87*12, %# 14.35 0*Hale/2 *12,
     PeriodE is Q*3.5743*12, %# 3.53 Add*Hale/1 *12 *Q,
-    PeriodF is 2.323885*12, %# 2.3378 2.329 3.35 Random_F*12*20, % 2*12 *Q, % ------
+    PeriodF is 2.3333*12, %# 2.323885 2.3378 2.329 3.35 Random_F*12*20, % 2*12 *Q, % ------
     PeriodH is Q*8.83*12, %# 1.93 1.583 0*7.944*12, % 7.944 2.54  Venus 9.315*12*Q,  %
 
     Sin0 mapdot mod_sin_period(PeriodH,18,WL) ~> Months,
@@ -1405,7 +1753,51 @@ plot(Request) :-
     LOD_F mapdot mod_cos_period(LongW,0,WL) ~> Months
     %AAM mapdot sin_biennial_period ~> Months,
     %LOD_F mapdot cos_biennial_period ~> Months
+*/
+
 ),
+    Sin mapdot mod_sin_period(Period,1,WL) ~> Months,
+    Cos mapdot mod_cos_period(Period,1,WL) ~> Months,
+    Sin2 mapdot mod_sin_period(Period2,2,WL) ~> Months,
+    Cos2 mapdot mod_cos_period(Period2,2,WL) ~> Months,
+    Sin3 mapdot mod_sin_period(Period3,3,WL) ~> Months,
+    Cos3 mapdot mod_cos_period(Period3,3,WL) ~> Months,
+    Sin4 mapdot mod_sin_period(Period4,4,WL) ~> Months,
+    Cos4 mapdot mod_cos_period(Period4,4,WL) ~> Months,
+    Sin5 mapdot mod_sin_period(Period5,5,WL) ~> Months,
+    Cos5 mapdot mod_cos_period(Period5,5,WL) ~> Months,
+    Sin6 mapdot mod_sin_period(Period6,6,WL) ~> Months,
+    Cos6 mapdot mod_cos_period(Period6,6,WL) ~> Months,
+    Sin7 mapdot mod_sin_period(Period7,7,WL) ~> Months,
+    Cos7 mapdot mod_cos_period(Period7,7,WL) ~> Months,
+    Sin8 mapdot mod_sin_period(Period8,8 ,WL) ~> Months,
+    Cos8 mapdot mod_cos_period(Period8,8 ,WL) ~> Months,
+    Sin9 mapdot mod_sin_period(Period9,9 ,WL) ~> Months,
+    Cos9 mapdot mod_cos_period(Period9,9 ,WL) ~> Months,
+    SinA mapdot mod_sin_period(PeriodA,10,WL) ~> Months,
+    CosA mapdot mod_cos_period(PeriodA,10,WL) ~> Months,
+    SinB mapdot mod_sin_period(PeriodB,11 ,WL) ~> Months,
+    CosB mapdot mod_cos_period(PeriodB,11 ,WL) ~> Months,
+    SinC mapdot mod_sin_period(PeriodC,12 ,WL) ~> Months,
+    CosC mapdot mod_cos_period(PeriodC,12 ,WL) ~> Months,
+    SinD mapdot mod_sin_period(PeriodD,13,WL) ~> Months,
+    CosD mapdot mod_cos_period(PeriodD,13,WL) ~> Months,
+    SinE mapdot mod_sin_period(PeriodE,14,WL) ~> Months,
+    CosE mapdot mod_cos_period(PeriodE,14,WL) ~> Months,
+    SinF mapdot mod_sin_period(PeriodF,15,WL) ~> Months,
+    CosF mapdot mod_cos_period(PeriodF,15 ,WL) ~> Months,
+    Sin0 mapdot mod_sin_period(PeriodH,16,WL) ~> Months,
+    Cos0 mapdot mod_cos_period(PeriodH,16,WL) ~> Months,
+    LogCO2 mapdot mod_sin_period(Evection,17,WL) ~> Months,
+    S2 mapdot mod_cos_period(Evection,17,WL) ~> Months,
+    TSI_F mapdot mod_sin_period(LongW,18,WL) ~> Months,
+    AAM mapdot mod_cos_period(LongW,18,WL) ~> Months,
+    V1 mapdot mod_sin_period(CWobble,0,WL) ~> Months,
+    LOD_F mapdot mod_cos_period(CWobble,0,WL) ~> Months,
+
+    %tsi_list(TSI_F),
+    %tsi_dir_list(AAM),
+
 
     print(user_error, ['yyyy']),
 
@@ -1530,7 +1922,7 @@ plot(Request) :-
 	 % Data group Year + T_lag + T_R_lag, % + Corrections,
 	 Data tuple Year + T_lag + T_R_lag, % + Corrections,
          Header = [XLabel, DataSet, model], % , correction]
-         RMS = 1.0 ,
+         RMS = 1.0,
 	 show_periods([[Evection,C, SO],
 		       [CWobble, TS, VC],
 		       [LongW, LO, AA],
@@ -1688,7 +2080,7 @@ plot(Request) :-
 				td(
 		       \(context_graphing:dygraph_error_bars(LogLin, Header,
 						       [XLabel,XUnits], [YLabel, YUnits],
-						       [NameData, FitYear, ' - ENSO:', Characteristic, ' 2nd:', WWII_Adjust ], Data, Show_Error_Bars))
+						       [NameData, FitYear, ' - ENSO:', Characteristic, ' 2nd:', Second_Deriv ], Data, Show_Error_Bars))
 		     % \(context_graphing:dygraph_native(LogLin, Header,
 		%				       [XLabel,XUnits], [YLabel, YUnits],
 		%				       [NameData, FitYear, ' - ENSO:', Characteristic], Data))

@@ -123,6 +123,8 @@ temp_data('HADCRUT4_CW', hadcrut4_cw).
 temp_data('OU Random Walk', ou_rw).
 temp_data('ER SST', er).
 temp_data('CET', cet).
+temp_data('Sydney Tide', sydney_tide).
+temp_data('Sydney Tide Raw', sydney_tide_raw).
 
 orbital_period('tide precession',  7.3,   'spring tides to realign with calendar date').
 orbital_period('tidal cycle',      9.015, 'sun-moon-earth configuration induced oscillation').
@@ -199,6 +201,9 @@ dataset(cet, L) :-
         cet(L0),
 	L unbias L0.
 
+dataset(sydney_tide, L) :-
+	sydney_tide_raw(L0),
+	L unbias L0.
 
 navigate(Request) :-
    collect_unit_options(calendar, Calendar),
@@ -1093,8 +1098,10 @@ plot(Request) :-
     PeriodG is 9.015 * 12 *Q*3,  % 27
     % PeriodG is 4*12*Q,
     PeriodH is Add*7.944*12*Q, % 7.944 2.54  Venus 9.315*12*Q,  %
-    PeriodI is Add*PeriodH/4,  % 1.986
-    PeriodJ is 9.015 * 12 *Q/3,
+    % PeriodI is Add*PeriodH/4,  % 1.986
+    % PeriodJ is 9.015 * 12 *Q/3,
+    PeriodI is 12.0,  % 1.986
+    PeriodJ is 6.0,
 
     Sin mapdot yearly_sin_period(Period,1,WL) ~> Months,
     Cos mapdot yearly_cos_period(Period,1,WL) ~> Months,
