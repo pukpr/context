@@ -300,6 +300,11 @@ X range W*[Y,Z] :-    % range specifier
    Z >= Y,
    Y1 is Z-Y+1,
    constants(Y1, W, X), !.
+X range _W*[Y,Z] :-
+   integer(Y),
+   integer(Z),
+   Z < Y,
+   X = [],!.
 
 %%   dot(+X,+Y)
 %

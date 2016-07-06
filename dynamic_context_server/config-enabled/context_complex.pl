@@ -379,3 +379,61 @@ Y fft X :-  % assumes a real array coming in
 % xy(4.0,0.0)], Sx, Sy).
 
 
+%%   cc(+Input, -Output)
+%
+%    Return complex conjugate
+conjugate([],Final, F) :- reverse(Final, F).
+conjugate([Real&Im|Rest], Initial, Final) :-
+   CC isx Real&(-Im),
+   conjugate(Rest, [CC|Initial], Final).
+
+cc(Input,Output) :-
+   conjugate(Input,[],Output).
+
+%%   prod(+A,+B,-F)
+%
+%    Return complex product of two lists
+prod([],[],Final, F) :- reverse(Final, F).
+prod([X|RestX], [Y|RestY], Init, Final) :-
+   P isx X*Y,
+   prod(RestX, RestY, [P|Init], Final).
+
+prod(X,Y,F) :-
+   prod(X,Y,[],F).
+
+%%   conv_pad(+Input, -Padded)
+%
+%    Pad an array to return a size large enough for convolution
+conv_pad(Input, Padded) :-
+    length(Input, L),
+    Extra is L*1,
+    context_math:constants(Extra, 0.0, Zeros),
+    append(Input, Zeros, Padded).
+
+
+%%   absolute(List,Final, F)
+%
+%    Calculate absolute valute
+real_part([],Final, F) :- reverse(Final, F).
+real_part([Real&_|Rest], Initial, Final) :-
+   real_part(Rest, [Real|Initial], Final).
+
+
+%%   conv(+Input, -Padded)
+%
+%    Fast FFT-based convolution
+conv(A,B,Z) :-
+   conv_pad(A, A0), fft_pad(A0,A1),
+   conv_pad(B, B0), fft_pad(B0,B1),
+   fft_length(A1,L),
+   scale_down(A1, L, [], A1r),
+   A2 mapx A1r,
+   B2 mapx B1,
+   fft(L, A2, YA),
+   fft(L, B2, YB),
+   prod(YA,YB,Y),
+   cc(Y,Y1),
+   fft(L, Y1,Z0),
+   real_part(Z0, [], Z1),
+   Z shrink Z1/A.
+

@@ -1,4 +1,6 @@
 :- module(context_qbo, [
+			       qbo_sin_period/5,
+			       qbo_cos_period/5,
 			       mathieu_modulater/3,
 			       yearly_qmod/2
 	  ]).
@@ -8,6 +10,23 @@
 
 :- context:register(context_qbo:navigate).
 :- context:register(context_qbo:plot).
+
+mod_q(P, -0.3, 0.000) :- P is 6.0.
+biennial(0.0000,2.0).
+% sinmod(0.8).
+
+qbo_sin_period(0.0,N,M,_,0) :- N =< M.
+qbo_sin_period(Period,N,M,X,Y) :- mod_q(W,C,K), biennial(A,B),
+    N =< M, test_period(N,Period,P), Y is (1+A*cos(pi/24*X+B))*
+    sin(X*(2*pi/P*(1 + K*sin(2*pi/W*X+C)))).
+qbo_sin_period(_,N,M,_,0.0) :- N > M.
+
+qbo_cos_period(0.0,N,M,_,0) :- N =< M.
+qbo_cos_period(Period,N,M,X,Y) :- mod_q(W,C,K),  biennial(A,B),
+    N =< M, test_period(N,Period,P), Y is (1+A*cos(pi/24*X+B))*
+    cos(X*(2*pi/P*(1 + K*sin(2*pi/W*X+C)))).
+qbo_cos_period(_,N,M,_,0.0) :- N > M.
+
 
 % qqqq(X):-qbo_40(X).
 
@@ -2723,7 +2742,8 @@ dataset(dt, L) :-
 qbo_padding(L1, L) :-
 	N is (1953-1880)*12,
 	constants(N, 0.0, L0),
-	L cat [L0,L1].
+	constants(36, 0.0, L2),
+	L cat [L0,L1,L2].
 qbo_padding_1979(L1, L) :-
 	N is (1979-1880)*12,
 	constants(N, 0.0, L0),
@@ -2772,7 +2792,7 @@ dataset(qbo_20, L) :-
 dataset(qbo_30, L) :-
         context_qbo_data:qbo_30(L0),
 	qbo_padding(L0, L1),
-	L mapdot 105 .+ L1.
+	L mapdot 90 .+ L1. % 105 90
 dataset(qbo_40, L) :-
         context_qbo_data:qbo_40(L0),
 	qbo_padding(L0, L1),
@@ -2780,7 +2800,7 @@ dataset(qbo_40, L) :-
 dataset(qbo_50, L) :-
         context_qbo_data:qbo_50(L0),
 	qbo_padding(L0, L1),
-	L mapdot 68 .+ L1.
+	L mapdot 60 .+ L1.
 dataset(qbo_70, L) :-
         context_qbo_data:qbo_70(L0),
 	qbo_padding(L0, L1),
@@ -2802,7 +2822,7 @@ dataset(qbo30, L) :-
 	%L1 mapdot abs ~> L0,
 	%L2 mapdot sign ~> L1,
 	%L3 mapdot sqrt ~> L2,
-	L mapdot 105 .+ L0.
+	L mapdot 105 .+ L0. %105
         % L unbias L0.
 dataset(qbo70, L) :-
         qbo70(L0),
@@ -2819,7 +2839,7 @@ dataset(qbo, L) :-
 dataset(sydney, L) :-
 	sydney_tides2(L0),
 	L1 unbias L0,
-        F window L1*134,
+        F window L1*138,
         L mapdot L1 - F.
 
 dataset(sydney2, L) :-
@@ -3126,8 +3146,8 @@ scale(_, lin, model, 'Time', 'year', 'Index', '#', false) :- !.
 scale(_, lin, _, 'Time', 'year', 'Temperature', 'C', false).
 
 single_filter(In, Out) :-
-    median_filter(In, In0),
-    Out window In0*3.
+    % median_filter(In, In0),
+    Out window In*3.
 triple_filter(In, Out) :-
     %median_filter(In, In0),
     % A window In*7, %7 13
@@ -3164,8 +3184,8 @@ temperature_series(true, false, DataSet, T) :-
 %    uniform(12,Win),
 %    T window T0*Win.
 temperature_series(false, false, DataSet, T) :-
-    dataset(DataSet, T0),
-    median_filter(T0, T).
+    dataset(DataSet, T),
+    median_filter(T0, T1).
 
 /*
 temperature_series(true, DataSet, T) :-
@@ -3178,6 +3198,15 @@ temperature_series(false, DataSet, T) :-
 
 get_fit(false, 1.0).
 get_fit(true, 0.0).
+
+
+mathieu_modulater(Fit,X,Y) :-
+	Ph = -0.1, % 0.5,
+	K is 3000,
+	%Y is 0.6*cos(X/K - Ph) - sin(X/K - Ph).  % + cos(Ph).
+        % Y = X.
+	Y is -sin(X/105 - Ph) - sin(Ph).
+	% Y is X/(1+Fit*(0.01+0.000*F)*abs(X)).
 
 % mathieu_modulate(X,Y) :- Y is 1.0-0.5*cos(2*pi*X/17.56-3.0).
 % mathieu_modulater(Z,X,Y) :- Y is 1.0+Z*0.1*cos(2*pi*X-0.5).
@@ -3196,8 +3225,15 @@ second_derivative(Input, Output) :-
    TT1 derivative Input / Year,
    TT2 derivative TT1 / Year,
    TT3 offset TT2 - 1,
+%   First = TT1,
    Output cat [TT3, [0]].
 
+first_derivative(Input, Output) :-
+   get_years_from_1880(Input, Year, _),
+   TT1 derivative Input / Year,
+   TT2 offset Input - 1,
+   TT3 cat [TT2, [0]],
+   Output mapdot TT1 + TT3.
 
 
 temperature_series(Second, Window, Triple, DataSet, T, Fit, Offset) :-
@@ -3206,6 +3242,7 @@ temperature_series(Second, Window, Triple, DataSet, T, Fit, Offset) :-
    % TTT mapdot mathieu_modulater(Fit) ~> TTT0,
    get_years_from_1880(TTT, Year, _),
    second_derivative(TTT, TT4),
+   first_derivative(TTT, TT3),
    %TT1 derivative TTT / Year,
    %TT2 derivative TT1 / Year,
    %TT3 offset TT2 - 1,
@@ -3225,13 +3262,17 @@ temperature_series(Second, Window, Triple, DataSet, T, Fit, Offset) :-
    %TT mapdot TTa + TTb,
    % Scaled mapdot Scaled0 + 0*Scal*0.065 .* TT,
    (  Second ->
-      TDD mapdot TT4 - 0.03 .* TT5,  % TDD mapdot TT4 - 0.036 .* TT5,
-      T2 mapdot TDD + 0.001 .* TT8,  % T2 mapdot TDD + 0.0006 .* TT8,
-      T mapdot T2 + 1.1 .* TTT
-      % T = TT4
+
+      TDD mapdot TT4 - 0.03 .* TT5,  % 0.03 TDD mapdot TT4 - 0.036 .* TT5,
+      T2 mapdot TDD + 0.001 .* TT8,  % 0.001 T2 mapdot TDD + 0.0006 .* TT8,
+      T mapdot T2 + 1.1 .* TTT  % 1.1
+
+      % T = TT3
+      %Ta mapdot 0.00001 .* TT3,
+      %T mapdot 1000* asin ~> Ta
    ;
       TDD mapdot TT4 - 0*0.011 .* TT5,
-      T mapdot Scaled0 - Fit*0.0025 .* TDD
+      T mapdot Scaled0 - Fit*0.003 .* TDD
       % T = Scaled0
    ),
    Offset mapdot 0 .* TT.
@@ -3329,13 +3370,13 @@ zero_range([_T|Tr], [TD|TDr], Res, U) :-
 
 
 select_period(false,QBO,_,R,_Add) :- R is QBO*12.
-select_period(true,QBO,ENSO,R,_Add) :- QBO<1.0, R is ENSO*12.
-select_period(true,QBO,_ENSO,R,_Add) :- QBO>=1.0, R is QBO*12.
+select_period(true,_,ENSO,R,_Add) :- R is ENSO*12.
+%select_period(true,QBO,_ENSO,R,_Add) :- QBO>=1.0, R is QBO*12.
 
 % select_period(false,QBO,_,R,_Add) :- R is QBO*12.
-select_period(true,_,ENSO,R,1*_) :- R is ENSO*12, !.
-select_period(true,_,ENSO,R,0*1) :- R is ENSO*12, !.
-select_period(true,_,ENSO,0.0,0*0).
+%select_period(true,_,ENSO,R,1*_) :- R is ENSO*12, !.
+%select_period(true,_,ENSO,R,0*1) :- R is ENSO*12, !.
+%select_period(true,_,ENSO,0.0,0*0).
 
 abcd :- mod_cos_period(1,2,3,4,5).
 
@@ -3410,6 +3451,7 @@ plot(Request) :-
 */
     Drac is 1/(1/Draconic*Days - 13),
     % Drac is 2.359097,  % 2.37
+    Drac0 is -1/(1/Drac - 1),  % 0.7
     Drac1 is 1/(1/Drac + 1),  % 0.7
     Drac2 is 1/(1/Drac + 2),  % 0.41
     Drac3 is 1/(1/Drac + 3),  % 0.29
@@ -3432,13 +3474,13 @@ plot(Request) :-
     Drac_F is Draconic/Days,
     select_period(Long, Drac, Drac, Period,1*Add),
     % Period2 is Sc*Trop*12, %2*pi/2.3157*12, %  27.32 tropical
-    select_period(Long, Trop, Trop, Period2,1*Add),
+    select_period(Long, Trop, 1.21, Period2,1*Add),
     % Period3 is Sc*Drac1*12, % 0.701 4.15 3.0243*12, %  27.093 also  31.81 evection
-    select_period(Long, Drac1, 6.44, Period3,1*Add),
+    select_period(Long, Drac1, Drac1, Period3,1*Add),
     % Period4 is Sc*Drac2*12, % 0.4129 1.73 3.53 Add*Hale/1 *12 *Q,
-    select_period(Long, Drac2, 9.3, Period4,1*Add), % 18.613
+    select_period(Long, Drac2, Drac2, Period4,1*Add), % 18.613
     % Period5 is Sc*Drac3*12, % 0.317 18.6 0.717 2.505 1.93 1.583 0*7.944*12, % 7.944 2.54  Venus 9.315*12*Q,  %
-    select_period(Long, 0.8237, 4.424, Period5,0*Add), % Drac3 4.06
+    select_period(Long, 0.292228, 0.8237, Period5,1*Add), % 0.816 0.8237 Drac3 4.06
 /*
     A1 is 2*pi/2.701,
     A2 is 2*pi/2.592,
@@ -3454,77 +3496,73 @@ plot(Request) :-
 */
 
     % Period6 is Sc*Drac4*12, % 0.222 1.583 9.3 2*pi/1.6055*12, %  27.55 weak
-    select_period(Long, Anom2, 8.848, Period6,1*Add), % Anom2 6.65
+    select_period(Long, Anom2, Anom2, Period6,1*Add), % Anom2 6.65
     % Period7 is Sc*Drac5*12,  % 0.1825 1.35777 18.6 2*pi/1.266993*12, %  27.67 weak
     Short_Year is 354.3671/Days,
-    select_period(Long, MfP2, 15.0, Period7,1*Add), % 9.3067
+    select_period(Long, MfP2, 0.7111, Period7,1*Add), % 9.3067
 
     % Period8 is -Anom*12, % 1.344  2*pi/2.475*12 27.555 anomalistic
     select_period(Long, -Anom, -Anom, Period8,1*Add), %3.64
     % Period9 is Evec*12,       % 2.094 14.77 spin-orbit
-    select_period(Long, Evec, Evec, Period9,1*Add), %3.64
+    select_period(Long, Evec, 0.56, Period9,1*Add), %3.64
 
     %PeriodA is 2.975*12, % Hale/6 *12 *Q,
-    ThreeSyn is 0.66666, % Synodical*3.0/Days,
-    select_period(Long, ThreeSyn, 2.96, PeriodA,1*Add), % 1.818 2.975 0.4032 0.711   0.24253
+    ThreeSyn is 0.6321, % Synodical*3.0/Days,
+    % HalfDrac is Drac/2,
+    select_period(Long, 0.666666, ThreeSyn, PeriodA,1*Add), % 1.654 ThreeSyn 1.818 2.975 0.4032 0.711   0.24253
     % PeriodB is AnomHalf*12, % 1.954 12*31.786/365.242, 1.965*12, 2*pi/3.0255*12, %  31.81 evection
     select_period(Long, AnomHalf, AnomHalf, PeriodB,1*Add), % AnomHalf 42.66, 8.8512
     % PeriodC is MfP*12, % 2.528 Sc*8.848*12/2, % 1.7579*12, %  1305.48  somewhat weak
-    select_period(Long, MfP, MfP, PeriodC,1*Add),
+    select_period(Long, MfP, 1.264166585, PeriodC,1*Add),
 
     Year1 is 365.259/Days,
     % PeriodD is Sc*365.259/Days*12, % 1.009  2*pi/2.5054 13.63
-    select_period(Long, Year1, Year1, PeriodD,0*Add), % 7.42
+    select_period(Long, Year1, 1.0, PeriodD,1*Add), % 7.42
 
     % YearThird is 1.182, % 121.749/Days,
     YearThird is 121.749/Days,
     % YearThird is Drac/3,
     % PeriodE is Sc*121.749/Days*12, % 23.918 18.6 0.73085554 13.52 0*Hale/2 *12,
-    select_period(Long, YearThird, 18.6, PeriodE,0*Add), % YearThird 0.454 0.542304705
-    (	Fit = 1 ->
-        true % PeriodE is Drac5*12 %0.1825 1.35777 2*pi/1.266993*12, %27.67 weak
-	;
-        true % PeriodE is SynodHalf*12 % 1.35777 0.1825
-    ),
+    select_period(Long, Drac0, 0.573, PeriodE,1*Add), % YearThird 0.454 0.542304705
     % PeriodF is Add*Trop1*12, % 0.8245 Trop1 18.6 2*pi/1.266993*12, %  27.67 weak
-    select_period(Long, Trop1, 2.11, PeriodF,1*Add), %3.53
+    select_period(Long, Trop1, 0.33333, PeriodF,1*Add), %3.53
     % Period7 is Sc*2*pi/1.94405*12, %  27.44
     %PeriodH is Add*Synod*12, % 0.222 1.583, 9.3 2*pi/1.6055*12 %  27.55 weak
     %PeriodH is 0.2428*12, % 0.2427 0.222 1.583, 9.3 2*pi/1.6055*12 %  27.55 weak
-    select_period(Long, 1.81, 0.666666, PeriodH,0*Add), % 0.528 0.2428 5.695
+    select_period(Long, 1.83, 1.81, PeriodH,1*Add), % 1.528 1.81 0.528 0.2428 5.695
 
-    Sin mapdot mod_sin_period(Period,1,WL) ~> Months,
-    Cos mapdot mod_cos_period(Period,1,WL) ~> Months,
-    Sin2 mapdot mod_sin_period(Period2,2,WL) ~> Months,
-    Cos2 mapdot mod_cos_period(Period2,2,WL) ~> Months,
-    Sin3 mapdot mod_sin_period(Period3,3,WL) ~> Months,
-    Cos3 mapdot mod_cos_period(Period3,3,WL) ~> Months,
-    Sin4 mapdot mod_sin_period(Period4,4,WL) ~> Months,
-    Cos4 mapdot mod_cos_period(Period4,4,WL) ~> Months,
-    Sin5 mapdot mod_sin_period(Period5,5,WL) ~> Months,
-    Cos5 mapdot mod_cos_period(Period5,5,WL) ~> Months,
-    Sin6 mapdot mod_sin_period(Period6,6,WL) ~> Months,
-    Cos6 mapdot mod_cos_period(Period6,6,WL) ~> Months,
-    Sin7 mapdot mod_sin_period(Period7,7,WL) ~> Months,
-    Cos7 mapdot mod_cos_period(Period7,7,WL) ~> Months,
-    Sin8 mapdot mod_sin_period(Period8,8 ,WL) ~> Months,
-    Cos8 mapdot mod_cos_period(Period8,8 ,WL) ~> Months,
-    Sin9 mapdot mod_sin_period(Period9,9 ,WL) ~> Months,
-    Cos9 mapdot mod_cos_period(Period9,9 ,WL) ~> Months,
-    SinA mapdot mod_sin_period(PeriodA,10,WL) ~> Months,
-    CosA mapdot mod_cos_period(PeriodA,10,WL) ~> Months,
-    SinB mapdot mod_sin_period(PeriodB,11 ,WL) ~> Months,
-    CosB mapdot mod_cos_period(PeriodB,11 ,WL) ~> Months,
-    SinC mapdot mod_sin_period(PeriodC,12 ,WL) ~> Months,
-    CosC mapdot mod_cos_period(PeriodC,12 ,WL) ~> Months,
-    SinD mapdot mod_sin_period(PeriodD,13,WL) ~> Months,
-    CosD mapdot mod_cos_period(PeriodD,13,WL) ~> Months,
-    SinE mapdot mod_sin_period(PeriodE,14,WL) ~> Months,
-    CosE mapdot mod_cos_period(PeriodE,14,WL) ~> Months,
-    SinF mapdot mod_sin_period(PeriodF,15,WL) ~> Months,
-    CosF mapdot mod_cos_period(PeriodF,15 ,WL) ~> Months,
-    Sin0 mapdot mod_sin_period(PeriodH,16,WL) ~> Months,
-    Cos0 mapdot mod_cos_period(PeriodH,16,WL) ~> Months,
+    Sin mapdot qbo_sin_period(Period,1,WL) ~> Months,
+    Cos mapdot qbo_cos_period(Period,1,WL) ~> Months,
+    Sin2 mapdot qbo_sin_period(Period2,2,WL) ~> Months,
+    Cos2 mapdot qbo_cos_period(Period2,2,WL) ~> Months,
+    Sin3 mapdot qbo_sin_period(Period3,3,WL) ~> Months,
+    Cos3 mapdot qbo_cos_period(Period3,3,WL) ~> Months,
+    Sin4 mapdot qbo_sin_period(Period4,4,WL) ~> Months,
+    Cos4 mapdot qbo_cos_period(Period4,4,WL) ~> Months,
+    Sin5 mapdot qbo_sin_period(Period5,5,WL) ~> Months,
+    Cos5 mapdot qbo_cos_period(Period5,5,WL) ~> Months,
+    Sin6 mapdot qbo_sin_period(Period6,6,WL) ~> Months,
+    Cos6 mapdot qbo_cos_period(Period6,6,WL) ~> Months,
+    Sin7 mapdot qbo_sin_period(Period7,7,WL) ~> Months,
+    Cos7 mapdot qbo_cos_period(Period7,7,WL) ~> Months,
+    Sin8 mapdot qbo_sin_period(Period8,8 ,WL) ~> Months,
+    Cos8 mapdot qbo_cos_period(Period8,8 ,WL) ~> Months,
+    Sin9 mapdot qbo_sin_period(Period9,9 ,WL) ~> Months,
+    Cos9 mapdot qbo_cos_period(Period9,9 ,WL) ~> Months,
+    SinA mapdot qbo_sin_period(PeriodA,10,WL) ~> Months,
+    CosA mapdot qbo_cos_period(PeriodA,10,WL) ~> Months,
+    SinB mapdot qbo_sin_period(PeriodB,11 ,WL) ~> Months,
+    CosB mapdot qbo_cos_period(PeriodB,11 ,WL) ~> Months,
+    SinC mapdot qbo_sin_period(PeriodC,12 ,WL) ~> Months,
+    CosC mapdot qbo_cos_period(PeriodC,12 ,WL) ~> Months,
+    SinD mapdot qbo_sin_period(PeriodD,13,WL) ~> Months,
+    CosD mapdot qbo_cos_period(PeriodD,13,WL) ~> Months,
+    SinE mapdot qbo_sin_period(PeriodE,14,WL) ~> Months,
+    CosE mapdot qbo_cos_period(PeriodE,14,WL) ~> Months,
+    SinF mapdot qbo_sin_period(PeriodF,15,WL) ~> Months,
+    CosF mapdot qbo_cos_period(PeriodF,15 ,WL) ~> Months,
+    Sin0 mapdot qbo_sin_period(PeriodH,16,WL) ~> Months,
+    Cos0 mapdot qbo_cos_period(PeriodH,16,WL) ~> Months,
 
     Beat_Node is 1/(1/Draconic-1/Tropical)/Days,
     Beat_Anom is 1/(1/Tropical-1/Anomalistic)/Days,
@@ -3533,24 +3571,25 @@ plot(Request) :-
     % Evection is 12*1.0,
     BA4 is   Beat_Anom/4, % 2.25
     select_period(Long, BA4, BA4, Evection,1*Add),
-    LogCO2 mapdot mod_sin_period(Evection,17,WL) ~> Months,
-    S2 mapdot mod_cos_period(Evection,17,WL) ~> Months,
+    LogCO2 mapdot qbo_sin_period(Evection,17,WL) ~> Months,
+    S2 mapdot qbo_cos_period(Evection,17,WL) ~> Months,
 
     % CWobble is Beat_Node/8*12,  % 2.32667 1.7579 1.595 1.185*12,
     BN4 is  Beat_Node/8,
-    select_period(Long, 0.53,6.01, CWobble,1*Add),  % 0.56372 0.58 0.531
-    V1 mapdot mod_sin_period(CWobble,18,WL) ~> Months,
-    LOD_F mapdot mod_cos_period(CWobble,18,WL) ~> Months,
+    Drac_One_Third is Drac /3,  % 1.2641
+    select_period(Long, 1.2641,0.836, CWobble,1*Add),  % 0.836 ThreeSyn 0.53 0.56372 0.58 0.531
+    V1 mapdot qbo_sin_period(CWobble,18,WL) ~> Months,
+    LOD_F mapdot qbo_cos_period(CWobble,18,WL) ~> Months,
 
     YearHalf is 182.621/Days,
     % K1 is 182.621/Days*12, % 2.3347*12, % 5.9935 12*3.79,
     %select_period(Long, YearHalf, 4.2667, K1,0*Add), % 0.08721149897330595
-    select_period(Long, YearHalf, YearHalf, K1,0*Add), % 0.08721149897330595
+    select_period(Long, YearHalf, YearHalf, K1,0*Add), % YearHalf 0.08721149897330595
     % select_period(Long, YearHalf, Evec, K1), %3.64
     % select_period(Long, YearHalf, 100.0, K1),
 
-    TSI_F mapdot mod_sin_period(K1,0,WL) ~> Months,
-    AAM mapdot mod_cos_period(K1,0,WL) ~> Months,
+    TSI_F mapdot qbo_sin_period(K1,0,WL) ~> Months,
+    AAM mapdot qbo_cos_period(K1,0,WL) ~> Months,
     %AAM mapdot sin_biennial_period ~> Months,
     %LOD_F mapdot cos_biennial_period ~> Months,
 
@@ -3625,8 +3664,12 @@ plot(Request) :-
 	% offset
         T_lag00 offset T_lag - SY,
         T_R_lag00 offset T_R_lag - SY,
+
         T_lag0 shrink T_lag00 / RC,
+	%first_derivative(T_lag0a,T_lag0),
         T_R_lag0 shrink T_R_lag00 / RC
+	%first_derivative(T_R_lag0a,T_R_lag0)
+
     ),
     % corrcoeff(T_lag0, T_R_lag0, R2C20),
     (	SignMetric ->
@@ -3652,7 +3695,14 @@ plot(Request) :-
          %T_R_lags tuple T_R_lag + T_R_lag + T_R_lag,
          %Corrections tuple Correction + Correction + Correction,
 	 % Data group Year + T_lag + T_R_lag, % + Corrections,
-	 Data tuple Year + T_lag + T_R_lag, % + Corrections,
+
+    Covar dot T_R_lag0 * T_lag0,
+    Var dot T_R_lag0 * T_R_lag0,
+    RatioVar is Var/Covar,
+    T1_lag mapdot RatioVar .* T_lag,
+
+
+	 Data tuple Year + T1_lag + T_R_lag, % + Corrections,
          Header = [XLabel, DataSet, model], % , correction]
          RMS = 1.0,
 	 show_periods([[Evection,C, SO],
@@ -3762,11 +3812,12 @@ plot(Request) :-
          Header = [XLabel, residual, soi_t, soi_d] % , fluctuation]
      ;
        Characteristic = signal ->
-         CO2_Signal mapdot Int .+ C .* LogCO2,
-         Signal mapdot CO2_Signal + T_Diff,
-         % median_filter(Sig, Signal),
-         Data tuple Year + Signal + CO2_Signal + Fluct,
-         Header = [XLabel, signal,  co2,         fluctuation]
+         T1_lag mapdot 2.0 .* T_lag,
+	 R_FFT fft T1_lag,
+	 R_FFT2 fft T_R_lag,
+	 Range ordinal R_FFT,
+	 Data tuple Range + R_FFT + R_FFT2,
+         Header = [XLabel, data, model] % , fluctuation]
      ;
        Characteristic = correlate ->
          CO2_Signal mapdot Int .+ C .* LogCO2,
