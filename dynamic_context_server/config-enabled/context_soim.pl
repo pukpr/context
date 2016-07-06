@@ -33,7 +33,7 @@ soi_data('SOI+AAM', soi_aam).
 soi_data('SST Integral', nino_3_4_integral).
 soi_data('SST Nino 3.4', nino_3_4).
 
-seasonal_modulation(X,Y) :- Y is 1.0 + 1.0*(0.7*cos(pi*X/12+0.26)^2+ 1.4*cos(pi*X/24+0.23)^6 - 0.4*cos(2*pi*X/12+0.3)^2 +0.3*cos(2*pi*X/12/13.5/2+2.0)^6) .
+seasonal_modulation(X,Y) :- Y is 1.0 + 0.9*(0.8*cos(pi*X/12-0.5)^2+ 0.9*cos(pi*X/24+0.4)^6 - 0.0*cos(2*pi*X/12+0.1)^2 +0.0*cos(2*pi*X/12/13.5/2+2.0)^6) .
 
 
 
@@ -830,7 +830,7 @@ diffEq_solve_SAVE(_Params, TS) :-  % NINO34
    ts<-'soln[1:1605,2]',
    TS <- ts.
 
-diffEq_solve(_Params, TS) :-  % SOI + NINO34   0.742  3.555 5.689 5.17 13.12
+diffEq_solve_nino(_Params, TS) :-  % SOI + NINO34   0.742  3.555 5.689 5.17 13.12
    <- library(deSolve),
    yini    <- 'c(y1=0.016,y2=0.0117)',
    flip    <- 'function(t,p){+2.2*ifelse(t>100.9 && t<114.5,-0.69*cos(pi*t-p),0.9*cos(pi*t-p))}',  %114.9   1.1852
@@ -840,6 +840,30 @@ diffEq_solve(_Params, TS) :-  % SOI + NINO34   0.742  3.555 5.689 5.17 13.12
 	      1.0*flip(t,-0.02)*(0.068*cos(2*pi/p[1]*t+1.575)+0.12*cos(2*pi/p[2]*t+2.13)-0.13*cos(2*pi/p[3]*t+3.2)+0*0.002*sin(pi/p[4]*t-4.1) )}',
    mathieu <- 'function(t,y,p){list( c(y[2], -forcing(t-stretch(t,p[3])+0.004,p) -(2.371-0.170*cos(pi*t+0.22))*y[1] - 0.0071*y[2] ))}',
    soln    <- 'ode(y = yini, func = mathieu, times=seq(0.0,145.0, by=0.083333333), parms=c(6.41,14.24,18.6,4.424))',
+   ts<-'soln[1:1605,2]',
+   TS <- ts.
+
+diffEq_solve(_Params, TS) :-  % SOI + NINO34   0.742  3.555 5.689 5.17 13.12
+   <- library(deSolve),
+   yini    <- 'c(y1=0.016,y2=0.008)',
+   flip    <- 'function(t,p){+0.4*cos(2*pi*t-0.25)+2.1*ifelse(t>100.9 && t<114.6,-0.8*(cos(pi*t-p)),0.89*(cos(pi*t-p)))}',  %114.9   1.1852
+   forcing <- 'function(t,p){ - 0.005*cos(2*pi/p[1]*t+1.5) - 0.005*cos(2*pi/p[2]*t+1.4) - 0.009*cos(4*pi/p[3]*t-1.9) + 0.005*sin(pi/p[4]*t-1.3) -
+			      0.018*cos(2*pi/2.891*t-1.4) + 0.019*cos(2*pi/5.688*t+1.2) +  0.18*cos(2*pi/0.742*t+1.8) - 0.024*cos(2*pi/9*t-2.0) +
+	      1.0*flip(t,0.0)*(0.071*cos(2*pi/p[1]*t+2.1)+0.14*cos(2*pi/p[2]*t+1.8)-0.15*cos(2*pi/p[3]*t+3.2) )}',
+   mathieu <- 'function(t,y,p){list( c(y[2], -1.1*forcing(t+0.26,p) -(2.381-0.175*cos(pi*t+0.22))*y[1] - 0.007*y[2] ))}',
+   soln    <- 'ode(y = yini, func = mathieu, times=seq(0.0,145.0, by=0.083333333), parms=c(6.481,14.11,18.63,3.88))',
+   ts<-'soln[1:1605,2]',
+   TS <- ts.
+
+diffEq_solve_Super_mod(_Params, TS) :-  % SOI + NINO34   0.742  3.555 5.689 5.17 13.12
+   <- library(deSolve),
+   yini    <- 'c(y1=0.016,y2=0.0117)',
+   flip    <- 'function(t,p){+2.2*ifelse(t>100.9 && t<114.5,-0.69*cos(pi*t-p),0.9*cos(pi*t-p))}',  %114.9   1.1852
+   forcing <- 'function(t,p){ - 0.00759*cos(2*pi/p[1]*t+1.5) - 0.009*cos(2*pi/p[2]*t+1.4) +
+			      +  0.3*cos(2*pi/0.742*t+2.2)+
+	      0.9*flip(t,-0.02)*(0.068*cos(2*pi/p[1]*t+1.575)+0.12*cos(2*pi/p[2]*t+2.13)-0.13*cos(2*pi/p[3]*t+3.2)-0.0*cos(2*pi/p[4]*t+3.2) )}',
+   mathieu <- 'function(t,y,p){list( c(y[2], -forcing(t+0.004,p) -(1.2-1.0*cos(pi*t+0.2))*y[1] - 0.0071*y[2] ))}',
+   soln    <- 'ode(y = yini, func = mathieu, times=seq(0.0,145.0, by=0.083333333), parms=c(6.48,14.0,18.8,4.06))',
    ts<-'soln[1:1605,2]',
    TS <- ts.
 

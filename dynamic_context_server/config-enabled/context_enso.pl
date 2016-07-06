@@ -283,7 +283,11 @@ navigate(Request) :-
 
 			  select([name('dataset')], DataSet),
 			  % \(con_text:check_box(anthro, 'true', 'anthro aerosols')),
-			  \(con_text:check_box(volc, 'true', 'GISS aerosol model')),
+			  % \(con_text:check_box(volc, 'true', 'GISS aerosol model')),
+			      input([type('text'),
+				 size(4),
+				 name('volc'),
+				 value('1')]),
 			  br([]),
 			  \(con_text:radio_toggles(
 					 'evaluate',
@@ -890,7 +894,7 @@ plot(Request) :-
 			      fft(FFT, [boolean, default(false)]),
 			      window(Window, [boolean, default(false)]),
 			      triple(Triple, [boolean, default(false)]),
-			      volc(Sato, [boolean, default(false)]),
+			      volc(Sato, [float, default(1.0)]),
 			      eq(EQ_ON, [boolean, default(false)]),
 			      wwii_adjust(WWII_Adjust, [boolean, default(false)]),
 			      sign(SignMetric, [boolean, default(false)]),
@@ -928,21 +932,21 @@ plot(Request) :-
     Q is 1.0,
     E = Add,
 
-    Period is E*7.46*12,  %Hale/3 * 12 *Q, % precession cycle with the time for Spring tides to realign with the same day each year
-    Period2 is 9.08 * 12,   % 9.03 9.015 Sun-Moon-Earth tidal configuration 8.715
-    Period3 is Q*18.63* 12,  % 18.613 Lunar precessional
-    Period4 is Q*4.06 * 12,   % 4.06 8.848 Lunar apsidal precession
-    Period5 is Q*2.245*12, % Add*11.86* 12 *Q,   % 11.86 Tidal sidereal period of Jupiter
-    Period6 is Q*1.765*12, % 1.7655 1.7405 Others*Hale/7 * 1.026* 12 *Q, % Soros cycle tide --
-    Period7 is E*5.77*12,  % 5.77 Add*Period5/2,       % Period5/2 24*Q,
+    Period is E*7.53*12,  %7.46 Hale/3 * 12 *Q, % precession cycle with the time for Spring tides to realign with the same day each year
+    Period2 is 8.9 * 12,   % 9.08 9.015 Sun-Moon-Earth tidal configuration 8.715
+    Period3 is Q*18.63* 12,  % 18.63 Lunar precessional
+    Period4 is Q*4.08 * 12,   % 4.06 8.848 Lunar apsidal precession
+    Period5 is Q*2.18*12, % 2.245 Add*11.86* 12 *Q,   % 11.86 Tidal sidereal period of Jupiter
+    Period6 is Q*11.86*12, % 1.765 1.7655 1.7405 Others*Hale/7 * 1.026* 12 *Q, % Soros cycle tide --
+    Period7 is E*5.63*12,  % 5.77 Add*Period5/2,       % Period5/2 24*Q,
     Period8 is 6.48*12, % Period3/3,       % 20.5
     Period9 is Q*8.848 * 12/2,
-    PeriodA is Q*2.72*12,   % 2.763 Add*Hale/4 *0.955*12 *Q,
-    PeriodB is 2.898*12, %2.898  Others*Hale/5 *0.955*12 *Q, % -------
+    PeriodA is Q*2.66*12,   % 2.72 2.763 Add*Hale/4 *0.955*12 *Q,
+    PeriodB is 2.89*12, %2.898  Others*Hale/5 *0.955*12 *Q, % -------
     PeriodC is Q*2.09*12, % Hale/6 *12 *Q,
-    PeriodD is E*13.52*12, % 0*Hale/2 *12,
-    PeriodE is Q*3.53*12, % 3.53 Add*Hale/1 *12 *Q,
-    PeriodF is 2.334*12, % 2.3378 2.329 3.35 Random_F*12*20, % 2*12 *Q, % ------
+    PeriodD is E*12.9*12, % 13.52 0*Hale/2 *12,
+    PeriodE is Q*3.62*12, % 3.53 Add*Hale/1 *12 *Q,
+    PeriodF is 2.334*12, % 2.334 2.329 3.35 Random_F*12*20, % 2*12 *Q, % ------
     PeriodH is Q*1.93*12, %1.93 1.583 0*7.944*12, % 7.944 2.54  Venus 9.315*12*Q,  %
 
     Sin0 mapdot mod_sin_period(PeriodH,18,WL) ~> Months,
@@ -978,16 +982,16 @@ plot(Request) :-
     SinF mapdot mod_sin_period(PeriodF,1 ,WL) ~> Months,
     CosF mapdot mod_cos_period(PeriodF,1 ,WL) ~> Months,
 
-    Evection is 12*31.854/365.25,
+    Evection is 19.1*12, %12*31.854/365.25,
     % Evection is 12*1.0,
     LogCO2 mapdot mod_sin_period(Evection,16,WL) ~> Months,
     S2 mapdot mod_cos_period(Evection,16,WL) ~> Months,
 
-    CWobble is 1.599*12,  % 1.595 1.185*12,
+    CWobble is 50.0*12,  % 1.599 1.185*12,
     TSI_F mapdot mod_sin_period(CWobble,17,WL) ~> Months,
     V1 mapdot mod_cos_period(CWobble,17,WL) ~> Months,
 
-    K1 is 12*2.3697, % 12*3.73,
+    K1 is 12*2.49, % 2.3697 12*3.73,
     AAM mapdot mod_sin_period(K1,0,WL) ~> Months,
     LOD_F mapdot mod_cos_period(K1,0,WL) ~> Months,
     %AAM mapdot sin_biennial_period ~> Months,
@@ -1100,6 +1104,10 @@ plot(Request) :-
 		                           + SWE .* SinE + CWE .* CosE
 		                           + SWF .* SinF + CWF .* CosF,
 
+   % LaMod mapdot laplace_mod ~> Months,
+   % context_complex:conv(Fluct0, LaMod, Fluct1),
+   % Fluct shrink Fluct1/Fluct0,
+
     T_CO2_R mapdot C .* LogCO2 + Fluct,
     T_R mapdot Int .+ T_CO2_R,
     T_Diff mapdot T - T_R,
@@ -1113,7 +1121,7 @@ plot(Request) :-
 
     T_lag lag T / Lag,
     T_R_lag1 lag T_R / Lag,
-    T_R_mod mapdot yearly_mod ~> Months,
+    T_R_mod mapdot Sato*yearly_mod ~> Months,
     T_R_lag mapdot T_R_mod * T_R_lag1,
     (   EQ_ON ->
         SY is (StartYear - 1880)*12+1,

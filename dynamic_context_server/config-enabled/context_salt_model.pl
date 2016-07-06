@@ -1151,7 +1151,7 @@ plot(Request) :-
     CosH mapdot yearly_cos_period(PeriodH,15,WL) ~> Months,
 
     (	4 =< WL ->
-       Dynamo mapdot sin_n(11,172.4,-1.1) ~> Months
+       Dynamo mapdot sin_n(11,172.4,-1.1) ~> Months  %172.4
     ;
        Dynamo = Zeros
     ),
