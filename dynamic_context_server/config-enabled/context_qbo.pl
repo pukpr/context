@@ -11,20 +11,22 @@
 :- context:register(context_qbo:navigate).
 :- context:register(context_qbo:plot).
 
-mod_q(P, -0.3, 0.000) :- P is 6.0.
-biennial(0.0000,2.0).
+mod_q(P, 0.0, 0.0) :- P is 6.0*12.0.
+% mod_q(P, 2.4, 0.0) :- P is 6.0*12.0.
+biennial(0.0000,0.0).
+% biennial(0.0000,2.0).
 % sinmod(0.8).
 
 qbo_sin_period(0.0,N,M,_,0) :- N =< M.
 qbo_sin_period(Period,N,M,X,Y) :- mod_q(W,C,K), biennial(A,B),
     N =< M, test_period(N,Period,P), Y is (1+A*cos(pi/24*X+B))*
-    sin(X*(2*pi/P*(1 + K*sin(2*pi/W*X+C)))).
+    sin(2*pi/P*X + K*sin(2*pi/W*X+C)).
 qbo_sin_period(_,N,M,_,0.0) :- N > M.
 
 qbo_cos_period(0.0,N,M,_,0) :- N =< M.
 qbo_cos_period(Period,N,M,X,Y) :- mod_q(W,C,K),  biennial(A,B),
     N =< M, test_period(N,Period,P), Y is (1+A*cos(pi/24*X+B))*
-    cos(X*(2*pi/P*(1 + K*sin(2*pi/W*X+C)))).
+    cos(2*pi/P*X + K*sin(2*pi/W*X+C)).
 qbo_cos_period(_,N,M,_,0.0) :- N > M.
 
 
@@ -3143,7 +3145,7 @@ scale(_, lin, map, 'Model Temperature', 'C', 'Real Temperature', 'C', false) :- 
 scale(_, lin, correlate, 'TCR*ln(CO2)/ln(2)', 'C', 'Temperature', 'C', false) :- !.
 scale(true, log, residual, 'Wavenumber', '2048/Month', 'Power Spectral', 'density', false) :- !.
 scale(_, lin, model, 'Time', 'year', 'Index', '#', false) :- !.
-scale(_, lin, _, 'Time', 'year', 'Temperature', 'C', false).
+scale(_, lin, _, 'Time', 'year', 'Index', '#', false).
 
 single_filter(In, Out) :-
     % median_filter(In, In0),
@@ -3184,8 +3186,8 @@ temperature_series(true, false, DataSet, T) :-
 %    uniform(12,Win),
 %    T window T0*Win.
 temperature_series(false, false, DataSet, T) :-
-    dataset(DataSet, T),
-    median_filter(T0, T1).
+    dataset(DataSet, T).
+    %median_filter(T, T1).
 
 /*
 temperature_series(true, DataSet, T) :-
@@ -3198,6 +3200,16 @@ temperature_series(false, DataSet, T) :-
 
 get_fit(false, 1.0).
 get_fit(true, 0.0).
+
+mathieu_modulater(Fit,X,-X).
+
+mathieu_modulater(Fit,X,Y) :-
+	Ph is -1.5*1, % 1.6,
+	Y is cos(X/18000 - Ph) - cos(Ph). % 140
+
+mathieu_modulater(Fit,X,Y) :-
+	Ph = -0.75, % 0.5,
+	Y is -sin(X/3200 - Ph) - sin(Ph).
 
 
 mathieu_modulater(Fit,X,Y) :-
@@ -3227,14 +3239,26 @@ second_derivative(Input, Output) :-
    TT3 offset TT2 - 1,
 %   First = TT1,
    Output cat [TT3, [0]].
-
+/*
 first_derivative(Input, Output) :-
    get_years_from_1880(Input, Year, _),
    TT1 derivative Input / Year,
    TT2 offset Input - 1,
    TT3 cat [TT2, [0]],
    Output mapdot TT1 + TT3.
+*/
+first_derivative(Input, Output) :-
+   get_years_from_1880(Input, Year, _),
+   TT1 derivative Input / Year,
+   TT2 offset TT1 - 1,
+   TT3 cat [TT2, [0]],
 
+   Input0 offset Input - 1,
+   Input1 cat [Input0, [0]],
+   TT4 derivative Input1 / Year,
+   TT5 offset TT4 - 1,
+   TT6 cat [TT5, [0]],
+   Output mapdot 0.5 .* (TT3+TT6).
 
 temperature_series(Second, Window, Triple, DataSet, T, Fit, Offset) :-
    temperature_series(Window, Triple, DataSet, TTT),
@@ -3253,7 +3277,7 @@ temperature_series(Second, Window, Triple, DataSet, T, Fit, Offset) :-
    TT8 cat [TT7, [0]],
    Omega2 is -1.0,
    % Omega2 mapdot -1*mathieu_modulater(Fit) ~> Year, % 0.8
-   Scaled0 mapdot Omega2 .* TTT,
+   Scaled0 mapdot Omega2 .* TT3,
    % Scaled0 mapdot mathieu_modulater(Fit) ~> TTT,
        % Offset invert Clip,
 
@@ -3315,8 +3339,16 @@ show_rms(Array, Values) :-
     show_rms(Array, [], Values).
 
 show_equation([], Out, Out).
-show_equation([[0.0,0.0,0.0]|R], In, Out) :-
+show_equation([[_,0.0,0.0]|R], In, Out) :-
     show_equation(R,In, Out).
+show_equation([[Period,S,C]|R], In, Out) :-
+    % Val is sqrt(S*S+C*C),
+    % Phase is atan(C,S),
+    Per is Period/12.0,
+    format(atom(Value), '+ ~14g * sin(2*pi()*$a1/~14g)+ ~14g * cos(2*pi()*$a1/~14g) ', [S,Per,C,Per]),
+    concat(In, Value, Eq),
+    show_equation(R,Eq, Out).
+/*
 show_equation([[Period,S,C]|R], In, Out) :-
     Val is sqrt(S*S+C*C),
     Phase is atan(C,S),
@@ -3324,6 +3356,7 @@ show_equation([[Period,S,C]|R], In, Out) :-
     format(atom(Value), '+ ~14g * sin(2*pi()*$a1/~14g+~14g) ', [Val,Per,Phase]),
     concat(In, Value, Eq),
     show_equation(R,Eq, Out).
+*/
 
 show_periods([], Out, Out).
 show_periods([[0.0,0.0,0.0]|R], In, Out) :-
@@ -3378,7 +3411,7 @@ select_period(true,_,ENSO,R,_Add) :- R is ENSO*12.
 %select_period(true,_,ENSO,R,0*1) :- R is ENSO*12, !.
 %select_period(true,_,ENSO,0.0,0*0).
 
-abcd :- mod_cos_period(1,2,3,4,5).
+% abcd :- mod_cos_period(1,2,3,4,5).
 
 
 plot(Request) :-
@@ -3450,37 +3483,64 @@ plot(Request) :-
     Synodical is 29.53058885,
 */
     Drac is 1/(1/Draconic*Days - 13),
+    Drac_6p is 1/(1/Drac + 1/6/2),
+    Drac_6m is 1/(1/Drac - 1/6/2),
+    Drac_18p is 1/(1/Drac + 1/18.6/2),
+    Drac_18m is 1/(1/Drac - 1/18.6/2),
+    DracHalf is  1/(2/Draconic*Days - 2*13),
+    DracLong is 1/(1-1/DracHalf),
+    DracHalf_1 is -1/(1/DracHalf -1),
+    DracHalf_3 is -1/(1/DracHalf -3),
+    DracSquared is Drac/2,
+    DracCubed is DracSquared*4/3,
     % Drac is 2.359097,  % 2.37
+    Drac_1 is -1/(1/Drac - 2),  % 0.7
+    Drac_2 is -1/(1/Drac - 3),  % 0.7
+    Drac_3 is -1/(1/Drac - 4),  % 0.7
     Drac0 is -1/(1/Drac - 1),  % 0.7
     Drac1 is 1/(1/Drac + 1),  % 0.7
     Drac2 is 1/(1/Drac + 2),  % 0.41
     Drac3 is 1/(1/Drac + 3),  % 0.29
-    DracFour is 1/(1/Drac + 4),  % 0.222
-    % Drac5 is 1/(1/Drac + 5),  % 0.184
+    Drac4 is 1/(1/Drac + 4),  % 0.222
+    Drac5 is 1/(1/Drac + 5),  % 0.184
+    DracHalf1 is 1/(1/DracHalf + 1),
+    DracHalf2 is 1/(1/DracHalf + 2),
     Trop is 1/(1/Tropical*Days - 13), %    Trop is 2.711, % 2.715
+    Trop_1 is 1/(1/Trop - 1),  % 0.7
     Trop1 is 1/(1/Trop + 1),  % 0.7
+    Trop2 is 1/(1/Trop + 2),  % 0.7
     MfP is 1/(1/MfPrime*Days - 13), %    Trop is 2.711, % 2.715
-    MfP2 is 1/(1/MfP + 1),  % 0.7
+    MfP1 is 1/(1/MfP + 1),  % 0.7
+    MfP2 is 1/(1/MfP + 2),  % 0.7
+    MfP_1 is 1/(1/MfP - 1),  % 0.7
+    MfP_2 is 1/(1/MfP - 2),  % 0.7
+    MfP_H is 1/(2/MfPrime*Days - 26), %    Trop is 2.711, % 2.715
+    MfP_H_1 is -1/(1/MfP_H - 1),
+    MfP_H1 is 1/(1/MfP_H + 1),
     Evec is 1/(1/Evectional*Days - 11),
     Synod is -1/(1/Synodical*Days - 13),
     SynodHalf is 1/(2/Synodical*Days - 2*12),
     AnomHalf is 1/(2/Anomalistic*Days - 2*13),
-    Anom is 1/(1/Anomalistic*Days - 14),
-    Anom1 is 1/(1/Anom + 1),  % 0.7
+    AnomHalf2 is 1/(1/AnomHalf + 2),
+    AnomHalf_1 is 1/(1/AnomHalf - 1),
+    Anom is 1/(1/Anomalistic*Days - 13),
+    Anom1 is 1/(1/Anom + 2),  % 0.7
+    Anom_1 is 1/(1/Anom - 1),  % 0.7
     Anom2 is 1/(1/Anom + 2),  % 0.7
-    Drac4 is Anom2, % 0.7967, %  Anom2, % 0.7967,  % 0.222
+    Anom3 is 1/(1/Anom + 3),  % 0.7
+    DracQ is Anom2, % 0.7967, %  Anom2, % 0.7967,  % 0.222
 
     % P  is Sc*Drac*12, % 2.351 *2*pi/2.6532*12, %  27.21 draconic 2.6532
     Drac_F is Draconic/Days,
     select_period(Long, Drac, Drac, Period,1*Add),
     % Period2 is Sc*Trop*12, %2*pi/2.3157*12, %  27.32 tropical
-    select_period(Long, Trop, 1.21, Period2,1*Add),
+    select_period(Long, 0.5, 1.21, Period2,1*Add),
     % Period3 is Sc*Drac1*12, % 0.701 4.15 3.0243*12, %  27.093 also  31.81 evection
     select_period(Long, Drac1, Drac1, Period3,1*Add),
     % Period4 is Sc*Drac2*12, % 0.4129 1.73 3.53 Add*Hale/1 *12 *Q,
     select_period(Long, Drac2, Drac2, Period4,1*Add), % 18.613
     % Period5 is Sc*Drac3*12, % 0.317 18.6 0.717 2.505 1.93 1.583 0*7.944*12, % 7.944 2.54  Venus 9.315*12*Q,  %
-    select_period(Long, 0.292228, 0.8237, Period5,1*Add), % 0.816 0.8237 Drac3 4.06
+    select_period(Long,	Drac3, 0.81935, Period5,1*Add), % $$MfP1 0.816 0.8237 Drac3 4.06
 /*
     A1 is 2*pi/2.701,
     A2 is 2*pi/2.592,
@@ -3496,40 +3556,40 @@ plot(Request) :-
 */
 
     % Period6 is Sc*Drac4*12, % 0.222 1.583 9.3 2*pi/1.6055*12, %  27.55 weak
-    select_period(Long, Anom2, Anom2, Period6,1*Add), % Anom2 6.65
+    select_period(Long, Drac0, Anom2, Period6,1*Add), % Anom1 Anom2 6.65
     % Period7 is Sc*Drac5*12,  % 0.1825 1.35777 18.6 2*pi/1.266993*12, %  27.67 weak
     Short_Year is 354.3671/Days,
-    select_period(Long, MfP2, 0.7111, Period7,1*Add), % 9.3067
+    select_period(Long, Drac_1, -Anom, Period7,1*Add), % 1.271  3.64
 
     % Period8 is -Anom*12, % 1.344  2*pi/2.475*12 27.555 anomalistic
-    select_period(Long, -Anom, -Anom, Period8,1*Add), %3.64
+    select_period(Long, 3.0, Drac_18m, Period8,1*Add), % 3 Drac_2 MfP_H 0.7111 Drac_18m MfP2 9.3067
     % Period9 is Evec*12,       % 2.094 14.77 spin-orbit
-    select_period(Long, Evec, 0.56, Period9,1*Add), %3.64
+    select_period(Long, Trop, Drac_18p, Period9,1*Add), %  Drac4 MfP_H1 0.56  EVEC 3.64
 
     %PeriodA is 2.975*12, % Hale/6 *12 *Q,
     ThreeSyn is 0.6321, % Synodical*3.0/Days,
     % HalfDrac is Drac/2,
-    select_period(Long, 0.666666, ThreeSyn, PeriodA,1*Add), % 1.654 ThreeSyn 1.818 2.975 0.4032 0.711   0.24253
+    select_period(Long, MfP, Drac_6p, PeriodA,1*Add), %  Drac_3 MfP_H_1 ThreeSyn 1.654 ThreeSyn 1.818 2.975 0.4032 0.711   0.24253
     % PeriodB is AnomHalf*12, % 1.954 12*31.786/365.242, 1.965*12, 2*pi/3.0255*12, %  31.81 evection
-    select_period(Long, AnomHalf, AnomHalf, PeriodB,1*Add), % AnomHalf 42.66, 8.8512
+    select_period(Long, 1.812, Drac_6m, PeriodB,1*Add), %  AnomHalf AnomHalf 42.66, 8.8512
     % PeriodC is MfP*12, % 2.528 Sc*8.848*12/2, % 1.7579*12, %  1305.48  somewhat weak
-    select_period(Long, MfP, 1.264166585, PeriodC,1*Add),
+    select_period(Long, 0.66666, 1.264166585, PeriodC,1*Add),  % MfP
 
     Year1 is 365.259/Days,
     % PeriodD is Sc*365.259/Days*12, % 1.009  2*pi/2.5054 13.63
-    select_period(Long, Year1, 1.0, PeriodD,1*Add), % 7.42
+    select_period(Long, Evec, 1.0, PeriodD,1*Add), % 1.265236 AnomHalf2 Drac3 0.292228 7.42
 
     % YearThird is 1.182, % 121.749/Days,
     YearThird is 121.749/Days,
     % YearThird is Drac/3,
     % PeriodE is Sc*121.749/Days*12, % 23.918 18.6 0.73085554 13.52 0*Hale/2 *12,
-    select_period(Long, Drac0, 0.573, PeriodE,1*Add), % YearThird 0.454 0.542304705
+    select_period(Long, 1.812, 0.573, PeriodE,1*Add), % Drac_1 -Anom YearThird 0.454 0.542304705
     % PeriodF is Add*Trop1*12, % 0.8245 Trop1 18.6 2*pi/1.266993*12, %  27.67 weak
-    select_period(Long, Trop1, 0.33333, PeriodF,1*Add), %3.53
+    select_period(Long, Trop, 0.33333, PeriodF,1*Add), % Anom_1 3.53
     % Period7 is Sc*2*pi/1.94405*12, %  27.44
     %PeriodH is Add*Synod*12, % 0.222 1.583, 9.3 2*pi/1.6055*12 %  27.55 weak
     %PeriodH is 0.2428*12, % 0.2427 0.222 1.583, 9.3 2*pi/1.6055*12 %  27.55 weak
-    select_period(Long, 1.83, 1.81, PeriodH,1*Add), % 1.528 1.81 0.528 0.2428 5.695
+    select_period(Long, Trop1, 1.81, PeriodH,1*Add), % AnomHalf2 1.83 1.528 1.81 0.528 0.2428 5.695
 
     Sin mapdot qbo_sin_period(Period,1,WL) ~> Months,
     Cos mapdot qbo_cos_period(Period,1,WL) ~> Months,
@@ -3570,21 +3630,23 @@ plot(Request) :-
     % Evection is Beat_Anom/4*12, % 2.21175 3.813 4.59 6.48,
     % Evection is 12*1.0,
     BA4 is   Beat_Anom/4, % 2.25
-    select_period(Long, BA4, BA4, Evection,1*Add),
+    DracSquared1 is 1/(1/DracSquared +1),
+    select_period(Long, 0.824, BA4, Evection,1*Add), % Drac_2 Evec
     LogCO2 mapdot qbo_sin_period(Evection,17,WL) ~> Months,
     S2 mapdot qbo_cos_period(Evection,17,WL) ~> Months,
 
     % CWobble is Beat_Node/8*12,  % 2.32667 1.7579 1.595 1.185*12,
     BN4 is  Beat_Node/8,
     Drac_One_Third is Drac /3,  % 1.2641
-    select_period(Long, 1.2641,0.836, CWobble,1*Add),  % 0.836 ThreeSyn 0.53 0.56372 0.58 0.531
+    DracCubed1 is 1/(1/DracCubed +1),
+    select_period(Long,	0.531,0.836, CWobble,1*Add),  % 0.531 MfP_2 Drac3 1.2641 0.836 ThreeSyn 0.53 0.56372 0.58 0.531
     V1 mapdot qbo_sin_period(CWobble,18,WL) ~> Months,
     LOD_F mapdot qbo_cos_period(CWobble,18,WL) ~> Months,
 
-    YearHalf is 182.621/Days,
+    YearHalf is 0.5, %  182.621/Days,
     % K1 is 182.621/Days*12, % 2.3347*12, % 5.9935 12*3.79,
     %select_period(Long, YearHalf, 4.2667, K1,0*Add), % 0.08721149897330595
-    select_period(Long, YearHalf, YearHalf, K1,0*Add), % YearHalf 0.08721149897330595
+    select_period(Long, 1.0, YearHalf, K1,0*Add), % YearHalf 0.08721149897330595
     % select_period(Long, YearHalf, Evec, K1), %3.64
     % select_period(Long, YearHalf, 100.0, K1),
 
@@ -3652,6 +3714,7 @@ plot(Request) :-
     T_R_mod mapdot Boost*yearly_qmod ~> Months,
     get_fit(Second, De),
     T_R_lag1 mapdot mathieu_modulater(De) ~> T_R_lagX,
+    % first_derivative(T_R_lag1_0, T_R_lag1),
     T_R_lag mapdot T_R_mod * T_R_lag1,
     (   EQ_ON ->
         T_lag0 = T_lag,
@@ -3659,11 +3722,15 @@ plot(Request) :-
     ;
         SY is (StartYear - 1880)*12+1,
         FY is (FitYear - 1880)*12 + 1,
+	N1953 is (1953-1880)*12+1,
 	% Wi is FY - SY,
         RC range [SY,FY]/1,
 	% offset
         T_lag00 offset T_lag - SY,
         T_R_lag00 offset T_R_lag - SY,
+
+        T_lag11 offset T_lag - N1953,
+        T_R_lag11 offset T_R_lag - N1953,
 
         T_lag0 shrink T_lag00 / RC,
 	%first_derivative(T_lag0a,T_lag0),
@@ -3675,13 +3742,17 @@ plot(Request) :-
     (	SignMetric ->
         excursion(T_lag0, T_R_lag0, R2C20)
     ;
-	 % median_filter(T_lag0, T_med),
-        corrcoeff(T_lag0, T_R_lag0, R2C20)
+	 % median_filter(T_lag0, T_med)
+        true
     ),
-    R2C2 is 100.0*R2C20,
     (
        Characteristic = model ->
-    /*
+         corrcoeff(T_lag0, T_R_lag0, R2C20),
+         corrcoeff(T_lag11, T_R_lag11, R2C2a),
+         R2C2 is -100.0*R2C20,
+         R2C2all is -100.0*R2C2a,
+
+     /*
           r_open_session,
           r_in( library(dcv) ),
           model <- T_lag,
@@ -3698,7 +3769,7 @@ plot(Request) :-
 
     Covar dot T_R_lag0 * T_lag0,
     Var dot T_R_lag0 * T_R_lag0,
-    RatioVar is Var/Covar,
+    RatioVar is Var/Covar/Boost,
     T1_lag mapdot RatioVar .* T_lag,
 
 
@@ -3812,12 +3883,41 @@ plot(Request) :-
          Header = [XLabel, residual, soi_t, soi_d] % , fluctuation]
      ;
        Characteristic = signal ->
-         T1_lag mapdot 2.0 .* T_lag,
-	 R_FFT fft T1_lag,
-	 R_FFT2 fft T_R_lag,
-	 Range ordinal R_FFT,
-	 Data tuple Range + R_FFT + R_FFT2,
-         Header = [XLabel, data, model] % , fluctuation]
+
+         Covar dot T_R_lag0 * T_lag0,
+         Var dot T_R_lag0 * T_R_lag0,
+         RatioVar is Var/Covar/Boost,
+         T1_lag mapdot RatioVar .* T_lag,
+	 % Data tuple Year + T1_lag + T_R_lag, % + Corrections,
+         % Header = [XLabel, DataSet, model], % , correction]
+         % RMS = 1.0,
+
+
+	 T1_acc accumulate T1_lag,
+
+	 mean(T_R_lag,T_mean),
+	 %T_mean is -0.0001,
+	 T_R_adj mapdot -T_mean .+ T_R_lag,
+
+	 T_R_acc accumulate T_R_adj,
+
+	 mean(T1_acc,T1_acc_mean),
+	 mean(T_R_acc,T_R_acc_mean),
+
+         T_R_acc1 mapdot -T_R_acc_mean .+ T_R_acc,
+         T1_acc1 mapdot -T1_acc_mean .+ T1_acc,
+
+	 T00 offset T_R_acc1 - SY,
+         T_R00 offset T1_acc1 - SY,
+
+         T00c shrink T00 / RC,
+         T_R00c shrink T_R00 / RC,
+
+         corrcoeff(T00c, T_R00c, R2C20),
+         R2C2 is -100.0*R2C20,
+
+	 Data tuple Year + T1_acc1 + T_R_acc1, % + Corrections,
+         Header = [XLabel, DataSet, model] % , correction]
      ;
        Characteristic = correlate ->
          CO2_Signal mapdot Int .+ C .* LogCO2,
@@ -3920,8 +4020,8 @@ plot(Request) :-
     reply_html_page([title('GISS and SOI'),
                      \(con_text:style)],
                     [
-		     table([tr([th('R=cc')        ]),
-			    tr([td(b('~5f'-R2C2))      ])
+		     table([tr([th('R=cc(in)'),th('R=cc(out)') ]),
+			    tr([td(b('~5f'-R2C2)), td(b('~5f'-R2C2all)) ])
 			   ]),
 
 		     table( % [class('fixed')],
