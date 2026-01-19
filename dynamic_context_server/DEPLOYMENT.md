@@ -299,9 +299,16 @@ Edit `config-enabled/network.pl`:
 
 ### Memory Settings:
 
-Start with more stack space:
+For custom memory settings, modify `run-cloud.sh` to include SWI-Prolog flags:
+
 ```bash
-swipl -g 'cp_server' -s run.pl --stack-limit=2G
+# In run-cloud.sh, change the nohup line to:
+nohup swipl --stack-limit=2G -g '(cp_server, thread_get_message(keep_alive))' -s run.pl > "$LOG_FILE" 2>&1 &
+```
+
+Or start manually with more stack space:
+```bash
+swipl --stack-limit=2G -g '(cp_server, thread_get_message(keep_alive))' -s run.pl
 ```
 
 ---

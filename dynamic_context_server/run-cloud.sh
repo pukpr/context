@@ -26,8 +26,9 @@ start_server() {
     echo "Port: $PORT"
     
     # Start the server in background
-    # cp_server starts the HTTP server but returns, so we need thread_get_message to keep alive
-    nohup swipl -g '(cp_server, thread_get_message(_))' -s run.pl > "$LOG_FILE" 2>&1 &
+    # cp_server starts the HTTP server but returns, so we use thread_get_message
+    # to block indefinitely and keep the process alive
+    nohup swipl -g '(cp_server, thread_get_message(keep_alive))' -s run.pl > "$LOG_FILE" 2>&1 &
     SERVER_PID=$!
     
     # Save PID
