@@ -2,3 +2,11 @@
 
 *.svg
 
+# Server runtime files
+server.pid
+server.log
+nohup.out
+
+# RDF database lock files
+RDF-store/lock
+
