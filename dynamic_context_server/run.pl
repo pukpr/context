@@ -47,6 +47,8 @@ file_search_path(cliopatria, '../ClioPatria').
 
 :- set_prolog_flag(verbose, normal).
 
-:- cp_server([]).
+% Server is started via command line: swipl -g cp_server -s run.pl
+% Commenting out auto-start to allow proper daemon mode
+% :- cp_server([]).
 
 
