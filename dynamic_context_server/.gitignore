@@ -7,6 +7,6 @@ server.pid
 server.log
 nohup.out
 
-# RDF database lock files
-RDF-store/lock
+# RDF database files
+RDF-store/
 
