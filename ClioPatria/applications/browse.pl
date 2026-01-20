@@ -1675,10 +1675,19 @@ context_graph(URI, Options) -->
 %%	context_graph_with_options(+URI, +Options, -RDF) is det.
 %
 %	Helper predicate for graphviz_graph closure that wraps context_graph/3
-%	with the options already bound.
+%	with the options already bound. If context_graph/3 fails, returns a
+%	fallback graph with a FAIL indicator.
 
 context_graph_with_options(URI, Options, RDF) :-
-	context_graph(URI, RDF, Options).
+	(   catch(context_graph(URI, RDF, Options), Error, 
+		  (   print_message(warning, Error),
+		      fail
+		  ))
+	->  true
+	;   % Fallback: create a simple graph with FAIL indicator
+	    RDF = [rdf(URI, 'http://www.w3.org/1999/02/22-rdf-syntax-ns#type', 
+		       literal('CONTEXT_GRAPH_FAILED'))]
+	).
 
 :- public
 	shape/4.
@@ -1690,6 +1699,9 @@ context_graph_with_options(URI, Options, RDF) :-
 
 shape(Start, Options, URI, Shape) :-
 	cliopatria:node_shape(URI, Shape, [start(Start)|Options]), !.
+shape(_Start, _Options, literal('CONTEXT_GRAPH_FAILED'),
+      [ shape(oval), style(filled), fillcolor('#ffcccc'), 
+        label('FAIL'), fontsize(20), fontcolor('#cc0000') ]) :- !.
 shape(Start, _Options, Start,
       [ shape(tripleoctagon),style(filled),fillcolor('#ff85fd'),id(start) ]).
 
