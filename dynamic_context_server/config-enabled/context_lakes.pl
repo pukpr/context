@@ -73,9 +73,7 @@ set_yearly_range(Request) :-
    call_showing_messages(
        (
        print_message(informational, format('Years ~d to ~d', [From, To])),
-       (   To == 2014 ->
-           get_all_records(From, To),
-	   true),
+       get_all_records(From, To),
        reply_html_page(title('Configuration'),
                    [
                      p(['Configured from ', From, ' to ', To]),
@@ -90,7 +88,8 @@ set_yearly_range(Request) :-
 %%   minnesota_dnr_ice_out(-URL)
 %
 %    Location of ice-out data
-minnesota_dnr_ice_out('http://www.dnr.state.mn.us/services/climatology/ice_out_by_year.html?year=').
+% minnesota_dnr_ice_out('http://www.dnr.state.mn.us/services/climatology/ice_out_by_year.html?year=').
+minnesota_dnr_ice_out('https://maps.dnr.state.mn.us/cgi-bin/climatology/ice_out_by_year.cgi?year=').
 
 :- dynamic
     temperature/6.
