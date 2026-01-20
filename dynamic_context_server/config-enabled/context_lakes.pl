@@ -122,8 +122,27 @@ store_record(json(Fields)) :-
     atom_concat(Year, '-01-01', YearStart),
     parse_time(YearStart, Stamp0),
     Days is (Stamp-Stamp0)/24/60/60,
-    % print(user_error, [Name, Lat, Year, Month, Date, Days, '\n']),
-    assert_temperature(Name, Lat, Year, Month, Date, Days).
+    % Fix for ice-out dates in prior year: if Days > 300 (extreme outlier),
+    % it likely occurred in December of the prior year, so convert to negative
+    % by subtracting days in year (accounting for leap years)
+    (Days > 300 ->
+        atom_number(Year, YearNum),
+        (is_leap_year(YearNum) -> DaysInYear = 366 ; DaysInYear = 365),
+        CorrectedDays is Days - DaysInYear
+    ;
+        CorrectedDays = Days
+    ),
+    % print(user_error, [Name, Lat, Year, Month, Date, CorrectedDays, '\n']),
+    assert_temperature(Name, Lat, Year, Month, Date, CorrectedDays).
+
+%%   is_leap_year(+Year)
+%
+%    Check if a year is a leap year
+is_leap_year(Year) :-
+    (0 is Year mod 400 -> true
+    ; 0 is Year mod 100 -> false
+    ; 0 is Year mod 4 -> true
+    ; false).
 
 %%   record_key(+Record, -Key)
 %
