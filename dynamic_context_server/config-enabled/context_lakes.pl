@@ -201,8 +201,8 @@ remove_temperatures :-
 %
 %    Query to data at a given latitude
 temperature_lat(Lat_Range,Year,Time) :-
-    temperature(_Name,Lat,Y,_Month,_Day,Time),
-    atom_number(Lat, Lat_N),
+    temperature(_Name,Lat_N,Y,_Month,_Day,Time),
+    % atom_number(Lat, Lat_N),
     L is floor(Lat_N),
     Lat_Range = L,
     atom_number(Y, Year).
