@@ -114,12 +114,16 @@ prog_in_dir_no_cache(Prog, Dir) :-
 %	Generate variants of program name with and without .exe extension.
 %	On Windows, we need to check both forms.
 
-prog_with_exe_variant(Prog, Prog).		% Try as-is first
-prog_with_exe_variant(Prog, ProgExe) :-	% Try with .exe if not present
+prog_with_exe_variant(Prog, Prog) :-		% Try as-is first
+	atom(Prog).
+prog_with_exe_variant(Prog, ProgExe) :-		% Try with .exe if not present
+	atom(Prog),
 	\+ sub_atom(Prog, _, _, 0, '.exe'),
 	atom_concat(Prog, '.exe', ProgExe).
 prog_with_exe_variant(Prog, ProgBase) :-	% Try without .exe if present  
 	atom(Prog),
+	sub_atom(Prog, _, _, 0, '.exe'),
 	atom_concat(ProgBase, '.exe', Prog).
+
 
 
