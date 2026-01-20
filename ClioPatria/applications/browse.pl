@@ -1685,7 +1685,7 @@ shape(Start, Options, URI, Shape) :-
 shape(Start, _Options, Start,
       [ shape(tripleoctagon),style(filled),fillcolor('#ff85fd'),id(start) ]).
 
-%%	context_graph(+URI, -Triples, +Options) is det.
+%%	context_graph(+URI, +Options, -Triples) is det.
 %
 %	Triples is a graph  that  describes   the  environment  of  URI.
 %	Currently, the environment is defined as:
