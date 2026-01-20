@@ -78,7 +78,7 @@ prog_in_dir(Prog, Dir) :-
 	->  Cached = dir(Dir)
 	;   setup_call_cleanup(asserta(resolving(Prog), Ref),
 			       absolute_file_name(path(Prog), _,
-						  [ access(read),
+						  [ access(execute),
 						    file_errors(fail)
 						  ]),
 			       erase(Ref))
@@ -99,6 +99,6 @@ prog_in_dir_no_cache(Prog, Dir) :-
 	expand_file_name(Pattern, Files0),
 	reverse(Files0, Files),		% Last one might be last version
 	member(File, Files),
-	access_file(File, read),
+	access_file(File, execute),
 	file_directory_name(File, Dir).
 
