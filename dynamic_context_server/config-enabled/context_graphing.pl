@@ -461,8 +461,8 @@ pre_plotly_script_load -->
 %
 %    Convert a Prolog list to JSON array string
 list_to_json(List, JsonString) :-
-    atomic_list_concat(['[', Items, ']'], JsonString),
-    list_items_to_json(List, Items).
+    list_items_to_json(List, Items),
+    atomic_list_concat(['[', Items, ']'], JsonString).
 
 list_items_to_json([], '').
 list_items_to_json([X], Str) :- !,
