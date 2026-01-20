@@ -31,7 +31,11 @@ below.
 user:file_search_path(path, Dir) :-
 	prog_in_dir('dot.exe', Dir).
 user:file_search_path(path, Dir) :-
+	prog_in_dir(dot, Dir).
+user:file_search_path(path, Dir) :-
 	prog_in_dir('git.exe', Dir).
+user:file_search_path(path, Dir) :-
+	prog_in_dir(git, Dir).
 
 %%	candidate_prog_dir(-Dir) is nondet.
 %
@@ -57,7 +61,9 @@ candidate_prog_dir('C:/Program Files').
 %	executable below a place where programs are normally installed.
 
 prog_dir_pattern('git.exe', 'Git/bin').
+prog_dir_pattern(git, 'Git/bin').
 prog_dir_pattern('dot.exe', 'Graphviz*/bin').
+prog_dir_pattern(dot, 'Graphviz*/bin').
 
 
 %%	prog_in_dir(+Prog, -Directory) is semidet.
@@ -93,12 +99,27 @@ prog_in_dir(Prog, Dir) :-
 
 
 prog_in_dir_no_cache(Prog, Dir) :-
+	prog_with_exe_variant(Prog, ProgVariant),
 	candidate_prog_dir(Dir0),
-	prog_dir_pattern(Prog, SubDirPattern),
-	atomic_list_concat([Dir0, /, SubDirPattern, /, Prog], Pattern),
+	prog_dir_pattern(ProgVariant, SubDirPattern),
+	atomic_list_concat([Dir0, /, SubDirPattern, /, ProgVariant], Pattern),
 	expand_file_name(Pattern, Files0),
 	reverse(Files0, Files),		% Last one might be last version
 	member(File, Files),
 	access_file(File, execute),
 	file_directory_name(File, Dir).
+
+%%	prog_with_exe_variant(+Prog, -ProgVariant) is nondet.
+%
+%	Generate variants of program name with and without .exe extension.
+%	On Windows, we need to check both forms.
+
+prog_with_exe_variant(Prog, Prog).		% Try as-is first
+prog_with_exe_variant(Prog, ProgExe) :-	% Try with .exe if not present
+	\+ sub_atom(Prog, _, _, 0, '.exe'),
+	atom_concat(Prog, '.exe', ProgExe).
+prog_with_exe_variant(Prog, ProgBase) :-	% Try without .exe if present  
+	atom(Prog),
+	atom_concat(ProgBase, '.exe', Prog).
+
 
