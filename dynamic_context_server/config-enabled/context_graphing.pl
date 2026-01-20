@@ -496,7 +496,10 @@ plotly_contour(X, Y, Z, Title, IsContour) -->
     (IsContour = true -> PlotType = 'contour' ; PlotType = 'heatmap'),
     
     % Build colorscale for terrain colors (similar to R's terrain.colors)
-    ColorScale = '[[0,"#00A600"],[0.25,"#E6E600"],[0.5,"#E9BD3A"],[0.75,"#ECB176"],[1,"#F2F2F2"]]'
+    ColorScale = '[[0,"#00A600"],[0.25,"#E6E600"],[0.5,"#E9BD3A"],[0.75,"#ECB176"],[1,"#F2F2F2"]]',
+    
+    % Add contours option if IsContour is true
+    (IsContour = true -> ContoursOption = ', contours: {coloring: "lines"}' ; ContoursOption = '')
    },
    html([
          \pre_plotly_script_load,
@@ -509,7 +512,7 @@ plotly_contour(X, Y, Z, Title, IsContour) -->
           '  y: ', YJson, ',',
           '  z: ', ZJson, ',',
           '  colorscale: ', ColorScale,
-          (IsContour = true -> ', contours: {coloring: "lines"}' ; ''),
+          ContoursOption,
           '}];',
           'var layout = {',
           '  title: "', Title, '",',
