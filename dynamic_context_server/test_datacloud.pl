@@ -52,11 +52,11 @@ main :-
     % Test 5: Test that we can generate a simple DOT graph with graphviz
     write('Test 5: Testing graphviz execution... '),
     catch(
-        (   tmp_file('test_graph', TmpDot),
+        (   tmp_file('test_dot', TmpDot),
             open(TmpDot, write, Stream),
             write(Stream, 'digraph G { A -> B; }\n'),
             close(Stream),
-            tmp_file('test_graph', TmpSvg),
+            tmp_file('test_svg', TmpSvg),
             atom_concat(TmpSvg, '.svg', OutFile),
             process_create(path(dot), ['-Tsvg', '-o', OutFile, TmpDot], []),
             sleep(1),
