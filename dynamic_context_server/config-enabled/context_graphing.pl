@@ -37,7 +37,10 @@ is_log(true, 1).
       dygraph_plot(+,+,+,+,+,+,?,?),
 
       pre_map_load(?,?),
-      map_native(+,+,+,?,?).
+      map_native(+,+,+,?,?),
+
+      pre_plotly_script_load(?,?),
+      plotly_contour(+,+,+,+,?,?).
 
 %%   json_complete(+X, +Y, +In, -Out)
 %
@@ -441,3 +444,78 @@ get_elevation(Lat, Lon) -->
 		   ])
 	     ]).
 */
+
+% %%%%%%%%%%%%
+% Plotly Contour/Heatmap
+% %%%%%%%%%%%%
+
+%%   pre_plotly_script_load//
+%
+%    Plotly.js script loader
+pre_plotly_script_load -->
+   html([
+         script([type('text/javascript'),src('https://cdn.plot.ly/plotly-2.27.0.min.js')], [])
+        ]).
+
+%%   list_to_json(+List, -JsonString)
+%
+%    Convert a Prolog list to JSON array string
+list_to_json(List, JsonString) :-
+    atomic_list_concat(['[', Items, ']'], JsonString),
+    list_items_to_json(List, Items).
+
+list_items_to_json([], '').
+list_items_to_json([X], Str) :- !,
+    (is_list(X) -> list_to_json(X, Str) ; format(atom(Str), '~w', [X])).
+list_items_to_json([X|Rest], Str) :-
+    list_items_to_json(Rest, RestStr),
+    (is_list(X) -> list_to_json(X, XStr) ; format(atom(XStr), '~w', [X])),
+    atomic_list_concat([XStr, ',', RestStr], Str).
+
+%%   plotly_contour(+X, +Y, +Z, +Title, +IsContour)//
+%
+%    Generate a contour or heatmap plot using Plotly.js
+%    X: list of X coordinates
+%    Y: list of Y coordinates  
+%    Z: 2D list of Z values (list of lists, row-major order)
+%    Title: plot title
+%    IsContour: true for contour lines, false for heatmap
+plotly_contour(X, Y, Z, Title, IsContour) -->
+   {
+    % Generate unique div id based on timestamp
+    get_time(Time),
+    Timestamp is floor(Time * 1000),
+    format(atom(DivId), 'plotly_~w', [Timestamp]),
+    
+    % Convert lists to JSON format
+    list_to_json(X, XJson),
+    list_to_json(Y, YJson),
+    list_to_json(Z, ZJson),
+    
+    % Determine plot type
+    (IsContour = true -> PlotType = 'contour' ; PlotType = 'heatmap'),
+    
+    % Build colorscale for terrain colors (similar to R's terrain.colors)
+    ColorScale = '[[0,"#00A600"],[0.25,"#E6E600"],[0.5,"#E9BD3A"],[0.75,"#ECB176"],[1,"#F2F2F2"]]'
+   },
+   html([
+         \pre_plotly_script_load,
+         div([id(DivId), style('width:600px;height:500px')], []),
+         script([type('text/javascript')],
+         [
+          'var data = [{',
+          '  type: "', PlotType, '",',
+          '  x: ', XJson, ',',
+          '  y: ', YJson, ',',
+          '  z: ', ZJson, ',',
+          '  colorscale: ', ColorScale,
+          (IsContour = true -> ', contours: {coloring: "lines"}' ; ''),
+          '}];',
+          'var layout = {',
+          '  title: "', Title, '",',
+          '  xaxis: {title: "X"},',
+          '  yaxis: {title: "Y"}',
+          '};',
+          'Plotly.newPlot("', DivId, '", data, layout);'
+         ])
+        ]).

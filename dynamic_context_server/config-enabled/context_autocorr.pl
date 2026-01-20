@@ -8,6 +8,7 @@
 :- use_module(context_math).
 :- use_module(library(clpfd)).
 :- use_module(library(real)).
+:- use_module(context_graphing).
 
 :- context:register(context_autocorr:navigate).
 :- context:register(context_autocorr:contour).
@@ -526,43 +527,57 @@ model_options([F|R], URI, Opt, Contour)  -->
 
 id_image([A,B,C|_],A,B,C).
 
+%%   js_contour(+X,+Y,+Z, +Title, +IsContour)//
+%
+%    Display a contour or heatmap using JavaScript (Plotly)
+js_contour(X, Y, Z, Title, IsContour) -->
+     {
+     % Get unique X and Y values
+     sort(X, UniqueX),
+     sort(Y, UniqueY),
+     length(UniqueX, NX),
+     length(UniqueY, NY),
+     
+     % Convert flat Z list to 2D matrix (row-major order)
+     convert_to_matrix(X, Y, Z, UniqueX, UniqueY, ZMatrix)
+     },
+     html(\(context_graphing:plotly_contour(UniqueX, UniqueY, ZMatrix, Title, IsContour))).
+
+%%   convert_to_matrix(+X, +Y, +Z, +UniqueX, +UniqueY, -ZMatrix)
+%
+%    Convert flat lists of X, Y, Z coordinates to 2D Z matrix
+convert_to_matrix(X, Y, Z, UniqueX, UniqueY, ZMatrix) :-
+    length(UniqueY, NY),
+    length(UniqueX, NX),
+    length(ZMatrix, NY),
+    maplist(length_list(NX), ZMatrix),
+    fill_matrix(X, Y, Z, UniqueX, UniqueY, ZMatrix).
+
+%%   length_list(+N, -List)
+%
+%    Create a list of length N with unbound variables
+length_list(N, List) :- length(List, N).
+
+%%   fill_matrix(+X, +Y, +Z, +UniqueX, +UniqueY, ?Matrix)
+%
+%    Fill matrix with Z values at correct positions
+fill_matrix([], [], [], _, _, _).
+fill_matrix([Xi|XRest], [Yi|YRest], [Zi|ZRest], UniqueX, UniqueY, Matrix) :-
+    nth0(XIdx, UniqueX, Xi),
+    nth0(YIdx, UniqueY, Yi),
+    nth0(YIdx, Matrix, Row),
+    nth0(XIdx, Row, Zi),
+    fill_matrix(XRest, YRest, ZRest, UniqueX, UniqueY, Matrix).
+
 %%   rcontour(+Image, +X,+Y,+Z, +Contour)//
 %
-%    Display a contour or color image from R
-rcontour(Image, X,Y,Z, Contour) -->
+%    Display a contour or color image (JavaScript version, no R needed)
+rcontour(Image, X, Y, Z, Contour) -->
      {
-     Vector range [3.0,6.0]/0.1,
-     r_open_session,
-     id_image(Z, A,B,C),
-     atomic_list_concat([Image,'?xxx=',A,B,C],Image2),
-     print(user_error,Image2),
-     y <- Y,
-     x <- X,
-     z <- Z,
-     at <- Vector,
-     %r_in(
-	<- library(lattice),
-     %),
-     dquote(Image, FN),
-     % r_in(
-	<- bmp(filename=FN),
-     % ),
-     (   Contour = true,
-         % r_in(
-	<- 'contourplot(z~x*y, cuts=10)'
-	 %)
-     ;
-         % r_in(
-	<- 'levelplot(z~x*y, col.regions=terrain.colors, at=at)'
-	 %)
-     ),
-     %r_print(
-	 r_devoff, % <- 'dev.off()',
-     % ),
-     r_close
+      % Extract title from image path
+      (atom_concat('/contour', _, Image) -> Title = 'Data Distribution' ; Title = 'Model Distribution')
      },
-     % html(p('hello')).
-     html(img(src(Image2))).
+     html(\(js_contour(X, Y, Z, Title, Contour))).
 
 
 %%   contour(+Request)
