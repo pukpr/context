@@ -540,9 +540,7 @@ rcontour(Image, X,Y,Z, Contour) -->
      x <- X,
      z <- Z,
      at <- Vector,
-     r_in(
-	<- library(lattice)
-     ),
+     <- library(lattice),
      dquote(Image, FN),
      % r_in(
 	<- bmp(filename=FN),
