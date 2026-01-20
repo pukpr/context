@@ -1663,7 +1663,7 @@ uri_predicate_info(_, _) --> [].
 context_graph(URI, Options) -->
 	{ merge_options(Options, [style(_)], GraphOption)
 	},
-	html([ \graphviz_graph(context_graph(URI, GraphOption),
+	html([ \graphviz_graph(context_graph_with_options(URI, GraphOption),
 			       [ object_attributes([width('100%')]),
 				 wrap_url(resource_link),
 				 graph_attributes([ rankdir('RL')
@@ -1671,6 +1671,14 @@ context_graph(URI, Options) -->
 				 shape_hook(shape(URI, GraphOption))
 			       ])
 	     ]).
+
+%%	context_graph_with_options(+URI, +Options, -RDF) is det.
+%
+%	Helper predicate for graphviz_graph closure that wraps context_graph/3
+%	with the options already bound.
+
+context_graph_with_options(URI, Options, RDF) :-
+	context_graph(URI, RDF, Options).
 
 :- public
 	shape/4.
@@ -1685,7 +1693,7 @@ shape(Start, Options, URI, Shape) :-
 shape(Start, _Options, Start,
       [ shape(tripleoctagon),style(filled),fillcolor('#ff85fd'),id(start) ]).
 
-%%	context_graph(+URI, +Options, -Triples) is det.
+%%	context_graph(+URI, -Triples, +Options) is det.
 %
 %	Triples is a graph  that  describes   the  environment  of  URI.
 %	Currently, the environment is defined as:
@@ -1695,11 +1703,11 @@ shape(Start, _Options, Start,
 %
 %	This predicate can be hooked using cliopatria:context_graph/2.
 
-context_graph(URI, Options, RDF) :-
+context_graph(URI, RDF, Options) :-
 	cliopatria:context_graph(URI, RDF, Options), !.
-context_graph(URI, _Options, RDF) :-		% Compatibility
+context_graph(URI, RDF, _Options) :-		% Compatibility
 	cliopatria:context_graph(URI, RDF), !.
-context_graph(URI, _, RDF) :-
+context_graph(URI, RDF, _) :-
 	findall(T, context_triple(URI, T), RDF0),
 	sort(RDF0, RDF1),
 	minimise_graph(RDF1, RDF2),		% remove inverse/symmetric/...
