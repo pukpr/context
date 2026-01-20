@@ -41,7 +41,7 @@ user:file_search_path(path, Dir) :-
 %	finally we deal with old Windows versions.
 
 candidate_prog_dir(Dir) :-
-	getenv('PROGRAMFILES', Dir).
+	getenv('ProgramFiles', Dir).
 candidate_prog_dir(Dir) :-
 	getenv('ProgramFiles(x86)', Dir).
 candidate_prog_dir(Dir) :-
