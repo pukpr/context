@@ -106,6 +106,11 @@ assert_temperature(Name, Lat, Year, Month, Date, Days) :-
     !.
 assert_temperature(_,_,_,_,_,_).
 
+%%   default_max_date(-Date)
+%
+%    Default maximum date for sorting when date is missing
+default_max_date('9999-99-99').
+
 %%   store_record(+Term)
 %
 %    Store record - now handles fields in any order
@@ -133,28 +138,24 @@ record_key(json(Fields), Key) :-
 %%   remove_duplicate_records(+Records, -UniqueRecords)
 %
 %    Remove duplicate records based on id, name, and ice_out_date
+%    Uses a list of seen keys for O(n) average performance
 remove_duplicate_records(Records, Unique) :-
-    remove_duplicates_helper(Records, [], Unique).
+    remove_duplicates_with_set(Records, [], [], Unique).
 
-remove_duplicates_helper([], Acc, Unique) :-
-    reverse(Acc, Unique).
-remove_duplicates_helper([Record|Rest], Acc, Unique) :-
-    record_key(Record, Key),
-    (member_key(Key, Acc) ->
-        % Duplicate found, skip it
-        remove_duplicates_helper(Rest, Acc, Unique)
-    ;
-        % Not a duplicate, keep it
-        remove_duplicates_helper(Rest, [Record|Acc], Unique)
-    ).
-
-%%   member_key(+Key, +Records)
+%%   remove_duplicates_with_set(+Records, +SeenKeys, +Acc, -Unique)
 %
-%    Check if a record with the given key exists in the list
-member_key(Key, [Record|_]) :-
-    record_key(Record, Key), !.
-member_key(Key, [_|Rest]) :-
-    member_key(Key, Rest).
+%    Helper that tracks seen keys for efficient deduplication
+remove_duplicates_with_set([], _SeenKeys, Acc, Unique) :-
+    reverse(Acc, Unique).
+remove_duplicates_with_set([Record|Rest], SeenKeys, Acc, Unique) :-
+    record_key(Record, Key),
+    (memberchk(Key, SeenKeys) ->
+        % Duplicate found, skip it
+        remove_duplicates_with_set(Rest, SeenKeys, Acc, Unique)
+    ;
+        % Not a duplicate, add key to seen set and keep record
+        remove_duplicates_with_set(Rest, [Key|SeenKeys], [Record|Acc], Unique)
+    ).
 
 %%   sort_records(+Records, -SortedRecords)
 %
@@ -168,7 +169,8 @@ sort_records(Records, Sorted) :-
 %
 %    Extract sort key from record
 record_sort_key(json(Fields), Key) :-
-    (memberchk(ice_out_date=Date, Fields) -> true ; Date = '9999-99-99'),
+    default_max_date(DefaultDate),
+    (memberchk(ice_out_date=Date, Fields) -> true ; Date = DefaultDate),
     (memberchk(name=Name, Fields) -> true ; Name = ''),
     (memberchk(id=Id, Fields) -> true ; Id = ''),
     Key = sort_key(Date, Name, Id).
