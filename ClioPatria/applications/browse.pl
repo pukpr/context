@@ -67,6 +67,10 @@
 
 :- use_module(user(user_db)).
 
+% Constant for failed context graph indicator
+:- rdf_meta context_graph_failed_literal(o).
+context_graph_failed_literal(literal('CONTEXT_GRAPH_FAILED')).
+
 
 /** <module> ClioPatria RDF data browser
 
@@ -1679,15 +1683,14 @@ context_graph(URI, Options) -->
 %	fallback graph with a FAIL indicator.
 
 context_graph_with_options(URI, Options, RDF) :-
-	(   catch(context_graph(URI, RDF, Options), Error, 
-		  (   print_message(warning, Error),
-		      fail
-		  ))
-	->  true
-	;   % Fallback: create a simple graph with FAIL indicator
-	    RDF = [rdf(URI, 'http://www.w3.org/1999/02/22-rdf-syntax-ns#type', 
-		       literal('CONTEXT_GRAPH_FAILED'))]
-	).
+	catch(context_graph(URI, RDF, Options), Error, 
+	      (print_message(warning, Error), fail)),
+	!.
+context_graph_with_options(URI, _Options, RDF) :-
+	% Fallback: create a simple graph with FAIL indicator
+	context_graph_failed_literal(FailLiteral),
+	rdf_equal(rdf:type, RdfType),
+	RDF = [rdf(URI, RdfType, FailLiteral)].
 
 :- public
 	shape/4.
@@ -1699,9 +1702,10 @@ context_graph_with_options(URI, Options, RDF) :-
 
 shape(Start, Options, URI, Shape) :-
 	cliopatria:node_shape(URI, Shape, [start(Start)|Options]), !.
-shape(_Start, _Options, literal('CONTEXT_GRAPH_FAILED'),
+shape(_Start, _Options, FailLiteral,
       [ shape(oval), style(filled), fillcolor('#ffcccc'), 
-        label('FAIL'), fontsize(20), fontcolor('#cc0000') ]) :- !.
+        label('FAIL'), fontsize(20), fontcolor('#cc0000') ]) :- 
+	context_graph_failed_literal(FailLiteral), !.
 shape(Start, _Options, Start,
       [ shape(tripleoctagon),style(filled),fillcolor('#ff85fd'),id(start) ]).
 
