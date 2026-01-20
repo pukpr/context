@@ -106,24 +106,18 @@ assert_temperature(Name, Lat, Year, Month, Date, Days) :-
     !.
 assert_temperature(_,_,_,_,_,_).
 
+%%   default_max_date(-Date)
+%
+%    Default maximum date for sorting when date is missing
+default_max_date('9999-99-99').
+
 %%   store_record(+Term)
 %
-%    Store record
-store_record(Term) :-
-    Term=json(
-             [ice_out_first_year=_IceOutFirstYear,
-              ice_out_last_year=_IceOutLastYear,
-              lat=Lat,
-              name=Name,
-              ice_out_earliest=_IceOutEarliest,
-              ice_out_latest=_IceOutLatest,
-              ice_out_date=IceOutDate,
-              sentinel_lake=_SentinelLake,
-              ice_out_number_of_entries=_IceOutNumberOfEntries,
-              id=_Id,
-              lon=_Lon,
-              ice_out_median_since_1950=_IceOutMedianSince1950]
-             ),
+%    Store record - now handles fields in any order
+store_record(json(Fields)) :-
+    memberchk(lat=Lat, Fields),
+    memberchk(name=Name, Fields),
+    memberchk(ice_out_date=IceOutDate, Fields),
     atomic_list_concat([Year,Month,Date], '-', IceOutDate),
     parse_time(IceOutDate, Stamp),
     atom_concat(Year, '-01-01', YearStart),
@@ -131,6 +125,55 @@ store_record(Term) :-
     Days is (Stamp-Stamp0)/24/60/60,
     % print(user_error, [Name, Lat, Year, Month, Date, Days, '\n']),
     assert_temperature(Name, Lat, Year, Month, Date, Days).
+
+%%   record_key(+Record, -Key)
+%
+%    Extract a unique key from a record for deduplication
+record_key(json(Fields), Key) :-
+    (memberchk(id=Id, Fields) -> true ; Id = ''),
+    (memberchk(name=Name, Fields) -> true ; Name = ''),
+    (memberchk(ice_out_date=Date, Fields) -> true ; Date = ''),
+    Key = key(Id, Name, Date).
+
+%%   remove_duplicate_records(+Records, -UniqueRecords)
+%
+%    Remove duplicate records based on id, name, and ice_out_date
+%    Uses a list of seen keys for O(n) average performance
+remove_duplicate_records(Records, Unique) :-
+    remove_duplicates_with_set(Records, [], [], Unique).
+
+%%   remove_duplicates_with_set(+Records, +SeenKeys, +Acc, -Unique)
+%
+%    Helper that tracks seen keys for efficient deduplication
+remove_duplicates_with_set([], _SeenKeys, Acc, Unique) :-
+    reverse(Acc, Unique).
+remove_duplicates_with_set([Record|Rest], SeenKeys, Acc, Unique) :-
+    record_key(Record, Key),
+    (memberchk(Key, SeenKeys) ->
+        % Duplicate found, skip it
+        remove_duplicates_with_set(Rest, SeenKeys, Acc, Unique)
+    ;
+        % Not a duplicate, add key to seen set and keep record
+        remove_duplicates_with_set(Rest, [Key|SeenKeys], [Record|Acc], Unique)
+    ).
+
+%%   sort_records(+Records, -SortedRecords)
+%
+%    Sort records by ice_out_date, then name, then id
+sort_records(Records, Sorted) :-
+    map_list_to_pairs(record_sort_key, Records, Pairs),
+    keysort(Pairs, SortedPairs),
+    pairs_values(SortedPairs, Sorted).
+
+%%   record_sort_key(+Record, -SortKey)
+%
+%    Extract sort key from record
+record_sort_key(json(Fields), Key) :-
+    default_max_date(DefaultDate),
+    (memberchk(ice_out_date=Date, Fields) -> true ; Date = DefaultDate),
+    (memberchk(name=Name, Fields) -> true ; Name = ''),
+    (memberchk(id=Id, Fields) -> true ; Id = ''),
+    Key = sort_key(Date, Name, Id).
 
 
 %%   get_ice_out(-Year)
@@ -141,8 +184,13 @@ get_ice_out(Year) :-
     atom_concat(URL, Year, U),
     http_client:http_get(U, R, []),
     atom_json_term(R, J, []),
-    J=json([status='OK', results=L, message='']),
-    maplist(store_record,L).
+    J=json(ResponseFields),
+    (memberchk(status='OK', ResponseFields) ; memberchk(status='SUCCESS', ResponseFields)),
+    memberchk(results=L, ResponseFields),
+    % Remove duplicates and sort by ice_out_date, name, and id for consistent ordering
+    remove_duplicate_records(L, Unique),
+    sort_records(Unique, Sorted),
+    maplist(store_record, Sorted).
 
 %%   remove_temperatures
 %
