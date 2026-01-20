@@ -27,7 +27,7 @@ main :-
     
     % Test 2: Check if graphviz (dot) command is available
     write('Test 2: Checking if graphviz (dot) is available... '),
-    (   absolute_file_name(path(dot), DotPath, [access(execute), file_errors(fail)])
+    (   absolute_file_name(path("dot.exe"), DotPath, [access(execute), file_errors(fail)])
     ->  write('PASSED - found at '), write(DotPath), nl
     ;   write('FAILED - dot command not found in PATH\n'),
         halt(1)
@@ -35,7 +35,7 @@ main :-
     
     % Test 3: Check if fdp command is available
     write('Test 3: Checking if graphviz (fdp) is available... '),
-    (   absolute_file_name(path(fdp), FdpPath, [access(execute), file_errors(fail)])
+    (   absolute_file_name(path("fdp.exe"), FdpPath, [access(execute), file_errors(fail)])
     ->  write('PASSED - found at '), write(FdpPath), nl
     ;   write('FAILED - fdp command not found in PATH\n'),
         halt(1)
@@ -43,7 +43,7 @@ main :-
     
     % Test 4: Check if neato command is available
     write('Test 4: Checking if graphviz (neato) is available... '),
-    (   absolute_file_name(path(neato), NeatoPath, [access(execute), file_errors(fail)])
+    (   absolute_file_name(path("neato.exe"), NeatoPath, [access(execute), file_errors(fail)])
     ->  write('PASSED - found at '), write(NeatoPath), nl
     ;   write('FAILED - neato command not found in PATH\n'),
         halt(1)
@@ -60,7 +60,7 @@ main :-
                 close(Stream),
                 tmp_file('test_svg', TmpSvg),
                 atom_concat(TmpSvg, '.svg', OutFile),
-                process_create(path(dot), ['-Tsvg', '-o', OutFile, TmpDot], [process(PID)]),
+                process_create(path("dot.exe"), ['-Tsvg', '-o', OutFile, TmpDot], [process(PID)]),
                 process_wait(PID, exit(0)),
                 (   exists_file(OutFile)
                 ->  write('PASSED - generated SVG output\n'),
