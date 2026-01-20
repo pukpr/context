@@ -10,10 +10,18 @@
    sudo apt-get install swi-prolog
    ```
 
-2. **Verify Installation**:
+2. **Install Graphviz** (for datacloud visualization):
+   ```bash
+   sudo apt-get install graphviz
+   ```
+
+3. **Verify Installation**:
    ```bash
    swipl --version
    # Should show: SWI-Prolog version 9.0.4 or later
+   
+   dot -V
+   # Should show: dot - graphviz version 2.43.0 or later
    ```
 
 ### Basic Deployment (Core Functionality Only)
@@ -26,6 +34,8 @@ cd dynamic_context_server
 ```
 
 Access the server at: **http://localhost:3020/**
+
+**Note**: The datacloud visualization feature requires graphviz. See Prerequisites above.
 
 ### Full Deployment (With R Integration)
 
@@ -249,6 +259,10 @@ sudo ufw allow 'Nginx Full'
 
 ## Known Limitations
 
+### Without Graphviz:
+- ❌ Datacloud visualization feature won't work
+- ✅ All other RDF/SPARQL features work
+
 ### Without R Integration:
 - ❌ Statistical plotting functions
 - ❌ Bessel function calculations  
@@ -258,10 +272,11 @@ sudo ufw allow 'Nginx Full'
 - ✅ Web interface works
 - ✅ Data browsing works
 
-### With R Integration:
+### With Graphviz + R Integration:
 - ✅ Full functionality
 - ✅ All modeling features
 - ✅ Plotting and visualization
+- ✅ Datacloud visualization
 
 ---
 

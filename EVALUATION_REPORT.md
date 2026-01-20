@@ -320,10 +320,12 @@ nohup swipl -g 'cp_server' -s run.pl > server.log 2>&1 &
 ### Confirmed Working Configuration:
 - **OS**: Ubuntu 24.04 (or similar Linux)
 - **SWI-Prolog**: 9.0.4+
+- **Graphviz**: 2.43.0+ (for datacloud visualization)
 - **RAM**: Minimal (server loaded 0 triples uses <100MB)
 - **Network**: Port 3020 access required
 
 ### For Full Functionality:
+- **Graphviz**: For datacloud visualization (dot, fdp, neato commands)
 - **R**: 3.0+ (for library(real))
 - **R Packages**: gsl, graphics (for Bessel functions and plotting)
 - **Network**: For R package installation
@@ -334,6 +336,7 @@ nohup swipl -g 'cp_server' -s run.pl > server.log 2>&1 &
 
 - [x] SWI-Prolog installed
 - [x] Server starts successfully
+- [x] Graphviz installed (for datacloud visualization)
 - [ ] library(real) pack installed
 - [ ] R installed and configured
 - [ ] Cloud deployment script updated

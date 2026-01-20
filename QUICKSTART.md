@@ -38,6 +38,15 @@ Access the server at: **http://localhost:3020/**
 
 ## What Needs Optional Setup
 
+⚠️ **Graphviz** (for datacloud visualization feature)
+
+To enable datacloud visualization:
+```bash
+sudo apt-get install graphviz
+```
+
+Without graphviz, the datacloud visualization at `/datacloud` won't work, but all other features remain functional.
+
 ⚠️ **R Statistical Integration** (for full climate modeling features)
 
 To enable R features, install:
@@ -62,6 +71,7 @@ The old `nohup-run-cloud` script has been **replaced** by `run-cloud.sh` which i
 - **OS**: Linux (tested on Ubuntu 24.04)
 - **SWI-Prolog**: 9.0.4 or later
 - **Port**: 3020 (configurable)
+- **Optional**: Graphviz 2.43.0+ for datacloud visualization
 - **Optional**: R 3.0+ for statistical features
 
 ## Support
