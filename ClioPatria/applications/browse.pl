@@ -1688,9 +1688,10 @@ context_graph_with_options(URI, Options, RDF) :-
 	!.
 context_graph_with_options(URI, _Options, RDF) :-
 	% Fallback: create a simple graph with FAIL indicator
+	% Use rdfs:comment to indicate the failure, not rdf:type
 	context_graph_failed_literal(FailLiteral),
-	rdf_equal(rdf:type, RdfType),
-	RDF = [rdf(URI, RdfType, FailLiteral)].
+	rdf_equal(rdfs:comment, RdfsComment),
+	RDF = [rdf(URI, RdfsComment, FailLiteral)].
 
 :- public
 	shape/4.
