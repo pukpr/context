@@ -1701,7 +1701,7 @@ shape(Start, _Options, Start,
 %	    * skos:related properties (using 1 step)
 %	    * Transitive properties (using upto 3 steps).
 %
-%	This predicate can be hooked using cliopatria:context_graph/2.
+%	This predicate can be hooked using cliopatria:context_graph/3.
 
 context_graph(URI, RDF, Options) :-
 	cliopatria:context_graph(URI, RDF, Options), !.
