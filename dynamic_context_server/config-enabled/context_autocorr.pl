@@ -572,11 +572,10 @@ fill_matrix([Xi|XRest], [Yi|YRest], [Zi|ZRest], UniqueX, UniqueY, Matrix) :-
 %%   rcontour(+Image, +X,+Y,+Z, +Contour)//
 %
 %    Display a contour or color image (JavaScript version, no R needed)
-rcontour(_Image, X, Y, Z, Contour) -->
+rcontour(Image, X, Y, Z, Contour) -->
      {
       % Extract title from image path
-      atom_codes(_Image, Codes),
-      (atom_concat('/contour', _, _Image) -> Title = 'Data Distribution' ; Title = 'Model Distribution')
+      (atom_concat('/contour', _, Image) -> Title = 'Data Distribution' ; Title = 'Model Distribution')
      },
      html(\(js_contour(X, Y, Z, Title, Contour))).
 

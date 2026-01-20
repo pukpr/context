@@ -466,10 +466,10 @@ list_to_json(List, JsonString) :-
 
 list_items_to_json([], '').
 list_items_to_json([X], Str) :- !,
-    (is_list(X) -> list_to_json(X, Str) ; Str = X).
+    (is_list(X) -> list_to_json(X, Str) ; format(atom(Str), '~w', [X])).
 list_items_to_json([X|Rest], Str) :-
     list_items_to_json(Rest, RestStr),
-    (is_list(X) -> list_to_json(X, XStr) ; XStr = X),
+    (is_list(X) -> list_to_json(X, XStr) ; format(atom(XStr), '~w', [X])),
     atomic_list_concat([XStr, ',', RestStr], Str).
 
 %%   plotly_contour(+X, +Y, +Z, +Title, +IsContour)//
