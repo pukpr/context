@@ -13,7 +13,7 @@ The datacloud feature generates visual representations of CloudNodes - collectio
 
 ### Required
 - **SWI-Prolog 9.0.4+**
-- **Graphviz 2.43.0+** with the following tools:
+- **Graphviz 2.42.0+** with the following tools:
   - `dot` - Hierarchical graph layout
   - `fdp` - Force-directed placement (default)
   - `neato` - Spring model layout

@@ -52,22 +52,24 @@ main :-
     % Test 5: Test that we can generate a simple DOT graph with graphviz
     write('Test 5: Testing graphviz execution... '),
     catch(
-        (   tmp_file('test_dot', TmpDot),
-            open(TmpDot, write, Stream),
-            write(Stream, 'digraph G { A -> B; }\n'),
-            close(Stream),
-            tmp_file('test_svg', TmpSvg),
-            atom_concat(TmpSvg, '.svg', OutFile),
-            process_create(path(dot), ['-Tsvg', '-o', OutFile, TmpDot], []),
-            sleep(1),
-            (   exists_file(OutFile)
-            ->  write('PASSED - generated SVG output\n'),
-                delete_file(TmpDot),
-                delete_file(OutFile)
-            ;   write('FAILED - no SVG output generated\n'),
-                delete_file(TmpDot),
-                halt(1)
-            )
+        setup_call_cleanup(
+            (   tmp_file('test_dot', TmpDot),
+                open(TmpDot, write, Stream)
+            ),
+            (   write(Stream, 'digraph G { A -> B; }\n'),
+                close(Stream),
+                tmp_file('test_svg', TmpSvg),
+                atom_concat(TmpSvg, '.svg', OutFile),
+                process_create(path(dot), ['-Tsvg', '-o', OutFile, TmpDot], [process(PID)]),
+                process_wait(PID, exit(0)),
+                (   exists_file(OutFile)
+                ->  write('PASSED - generated SVG output\n'),
+                    delete_file(OutFile)
+                ;   write('FAILED - no SVG output generated\n'),
+                    halt(1)
+                )
+            ),
+            delete_file(TmpDot)
         ),
         Error,
         (   write('FAILED with error: '), write(Error), nl,
