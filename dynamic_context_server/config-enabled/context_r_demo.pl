@@ -183,6 +183,9 @@ r_complex(FileName) :-
     x <- F,
     y <- Result,
     !,
+    % Ensure parent directory exists before R writes file
+    file_directory_name(FileName, Dir),
+    (exists_directory(Dir) -> true ; make_directory_path(Dir)),
     dquote(FileName, FN),
     %r_in(
        <- bmp(filename=FN),
@@ -199,11 +202,11 @@ r_complex(FileName) :-
 %
 %    R demo page
 r_app(_) :-
-    FN = '/html/images/psd.bmp',
+    FN = 'html/images/psd.bmp',
     r_complex(FN),
     reply_html_page(title('Chart'),
                    [ p('PSD from R'),
-                     img(src(FN))
+                     img(src('/html/images/psd.bmp'))
                    ]).
 
 
