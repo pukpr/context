@@ -67,10 +67,6 @@
 
 :- use_module(user(user_db)).
 
-% Constant for failed context graph indicator
-:- rdf_meta context_graph_failed_literal(o).
-context_graph_failed_literal(literal('CONTEXT_GRAPH_FAILED')).
-
 
 /** <module> ClioPatria RDF data browser
 
@@ -1667,7 +1663,7 @@ uri_predicate_info(_, _) --> [].
 context_graph(URI, Options) -->
 	{ merge_options(Options, [style(_)], GraphOption)
 	},
-	html([ \graphviz_graph(context_graph_with_options(URI, GraphOption),
+	html([ \graphviz_graph(context_graph(URI, GraphOption),
 			       [ object_attributes([width('100%')]),
 				 wrap_url(resource_link),
 				 graph_attributes([ rankdir('RL')
@@ -1675,23 +1671,6 @@ context_graph(URI, Options) -->
 				 shape_hook(shape(URI, GraphOption))
 			       ])
 	     ]).
-
-%%	context_graph_with_options(+URI, +Options, -RDF) is det.
-%
-%	Helper predicate for graphviz_graph closure that wraps context_graph/3
-%	with the options already bound. If context_graph/3 fails, returns a
-%	fallback graph with a FAIL indicator.
-
-context_graph_with_options(URI, Options, RDF) :-
-	catch(context_graph(URI, RDF, Options), Error, 
-	      (print_message(warning, Error), fail)),
-	!.
-context_graph_with_options(URI, _Options, RDF) :-
-	% Fallback: create a simple graph with FAIL indicator
-	% Use rdfs:comment to indicate the failure, not rdf:type
-	context_graph_failed_literal(FailLiteral),
-	rdf_equal(rdfs:comment, RdfsComment),
-	RDF = [rdf(URI, RdfsComment, FailLiteral)].
 
 :- public
 	shape/4.
@@ -1703,10 +1682,6 @@ context_graph_with_options(URI, _Options, RDF) :-
 
 shape(Start, Options, URI, Shape) :-
 	cliopatria:node_shape(URI, Shape, [start(Start)|Options]), !.
-shape(_Start, _Options, FailLiteral,
-      [ shape(oval), style(filled), fillcolor('#ffcccc'), 
-        label('FAIL'), fontsize(20), fontcolor('#cc0000') ]) :- 
-	context_graph_failed_literal(FailLiteral), !.
 shape(Start, _Options, Start,
       [ shape(tripleoctagon),style(filled),fillcolor('#ff85fd'),id(start) ]).
 
@@ -1718,13 +1693,13 @@ shape(Start, _Options, Start,
 %	    * skos:related properties (using 1 step)
 %	    * Transitive properties (using upto 3 steps).
 %
-%	This predicate can be hooked using cliopatria:context_graph/3.
+%	This predicate can be hooked using cliopatria:context_graph/2.
 
-context_graph(URI, RDF, Options) :-
+context_graph(URI, Options, RDF) :-
 	cliopatria:context_graph(URI, RDF, Options), !.
-context_graph(URI, RDF, _Options) :-		% Compatibility
+context_graph(URI, _Options, RDF) :-		% Compatibility
 	cliopatria:context_graph(URI, RDF), !.
-context_graph(URI, RDF, _) :-
+context_graph(URI, _, RDF) :-
 	findall(T, context_triple(URI, T), RDF0),
 	sort(RDF0, RDF1),
 	minimise_graph(RDF1, RDF2),		% remove inverse/symmetric/...
