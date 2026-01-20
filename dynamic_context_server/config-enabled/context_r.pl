@@ -90,6 +90,7 @@ rplot_with_regression(Image, X, Y, Title, X_Axis, Y_Axis, Slope) :-
 %    Calculate linear regression coefficients using least squares method
 linear_regression(X, Y, Slope, Intercept) :-
      length(X, N),
+     length(Y, N),  % Ensure X and Y have same length
      N > 0,
      sum_list(X, SumX),
      sum_list(Y, SumY),
@@ -98,8 +99,14 @@ linear_regression(X, Y, Slope, Intercept) :-
      % Calculate slope: sum((x_i - mean_x) * (y_i - mean_y)) / sum((x_i - mean_x)^2)
      calculate_covariance(X, Y, MeanX, MeanY, Cov),
      calculate_variance(X, MeanX, VarX),
-     Slope is Cov / VarX,
-     Intercept is MeanY - Slope * MeanX.
+     % Handle degenerate case where all X values are identical
+     (VarX =:= 0 -> 
+          Slope = 0,
+          Intercept = MeanY
+     ;
+          Slope is Cov / VarX,
+          Intercept is MeanY - Slope * MeanX
+     ).
 
 %%   calculate_covariance(+X, +Y, +MeanX, +MeanY, -Cov)
 %
@@ -148,13 +155,8 @@ generate_svg_plot(Image, X, Y, Title, X_Axis, Y_Axis, Slope, Intercept) :-
      PlotMinY is MinY - YRange * 0.1,
      PlotMaxY is MaxY + YRange * 0.1,
      
-     % SVG dimensions
-     Width = 800,
-     Height = 600,
-     MarginLeft = 80,
-     MarginRight = 40,
-     MarginTop = 60,
-     MarginBottom = 80,
+     % SVG dimensions (constants for standard plot size)
+     svg_plot_dimensions(Width, Height, MarginLeft, MarginRight, MarginTop, MarginBottom),
      PlotWidth is Width - MarginLeft - MarginRight,
      PlotHeight is Height - MarginTop - MarginBottom,
      
@@ -204,6 +206,11 @@ generate_svg_plot(Image, X, Y, Title, X_Axis, Y_Axis, Slope, Intercept) :-
      format(Stream, '</svg>~n', []),
      close(Stream).
 
+%%   svg_plot_dimensions(-Width, -Height, -MarginLeft, -MarginRight, -MarginTop, -MarginBottom)
+%
+%    Standard SVG plot dimensions
+svg_plot_dimensions(800, 600, 80, 40, 60, 80).
+
 %%   scale_coordinates(+DataX, +DataY, +MinX, +MaxX, +MinY, +MaxY, 
 %%                     +MarginLeft, +MarginTop, +PlotWidth, +PlotHeight, -SvgX, -SvgY)
 %
@@ -212,6 +219,7 @@ scale_coordinates(DataX, DataY, MinX, MaxX, MinY, MaxY,
                  MarginLeft, MarginTop, PlotWidth, PlotHeight, SvgX, SvgY) :-
      XRange is MaxX - MinX,
      YRange is MaxY - MinY,
+     % When range is 0 (all values identical), center the point at 0.5
      (XRange =:= 0 -> NormX = 0.5 ; NormX is (DataX - MinX) / XRange),
      (YRange =:= 0 -> NormY = 0.5 ; NormY is (DataY - MinY) / YRange),
      SvgX is MarginLeft + NormX * PlotWidth,
