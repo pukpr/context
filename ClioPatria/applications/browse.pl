@@ -1667,14 +1667,13 @@ uri_predicate_info(_, _) --> [].
 context_graph(URI, Options) -->
 	{ merge_options(Options, [style(_)], GraphOption)
 	},
-	html([ \graphviz_graph(context_graph_with_options(URI, GraphOption),
-			       [ object_attributes([width('100%')]),
-				 wrap_url(resource_link),
-				 graph_attributes([ rankdir('RL')
-						  ]),
-				 shape_hook(shape(URI, GraphOption))
-			       ])
-	     ]).
+	graphviz_graph(context_graph_with_options(URI, GraphOption),
+		       [ object_attributes([width('100%')]),
+			 wrap_url(resource_link),
+			 graph_attributes([ rankdir('RL')
+					  ]),
+			 shape_hook(shape(URI, GraphOption))
+		       ]).
 
 %%	context_graph_with_options(+URI, +Options, -RDF) is det.
 %
