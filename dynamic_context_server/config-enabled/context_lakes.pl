@@ -53,7 +53,7 @@ navigate(Request) :-
 plot_chart(Request) :-
     http_parameters(Request, [latitude(Latitude, [float, default(46.0)])]),
     Lat is integer(Latitude),
-    FN = '/html/images/xy.bmp',
+    FN = '/html/images/xy.svg',
     lat_list(FN, Lat, _Years, _Times, N, Slope),
     reply_html_page(title('Ice-Out Chart'),
                    [ p(['Fitted slope = ', Slope, ' days/year to ',
@@ -166,8 +166,8 @@ temperature_lat(Lat_Range,Year,Time) :-
 lat_list(FN, Lat, Years, Times, N, Slope) :-
     findall(Y, temperature_lat(Lat,Y,T), Years),
     findall(T, temperature_lat(Lat,Y,T), Times),
-    format(atom(Title), '"Minnesota Latitude : ~D N"', [Lat]),
-    context_r:rplot_with_regression(FN, Years, Times, Title, '"year"', '"iceOutDay"', Slope),
+    format(atom(Title), 'Minnesota Latitude : ~D N', [Lat]),
+    context_r:rplot_with_regression(FN, Years, Times, Title, 'year', 'iceOutDay', Slope),
     length(Years,N).
 
 %%   get_all_records(+Year)

@@ -2473,7 +2473,7 @@ context_r.pl
 context_r.pl
 %%   rplot_with_regression(+Image, +X, +Y, +Title, +X_Axis, +Y_Axis, +Slope)
 %
-%    Demo rplot with regression
+%    Plot with linear regression using pure Prolog (generates SVG, no R dependency)
 
 context_r_demo.pl
 %%   xy(+L, -X, -Y)
