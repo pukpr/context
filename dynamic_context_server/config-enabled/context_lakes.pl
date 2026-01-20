@@ -53,12 +53,12 @@ navigate(Request) :-
 plot_chart(Request) :-
     http_parameters(Request, [latitude(Latitude, [float, default(46.0)])]),
     Lat is integer(Latitude),
-    FN = '/html/images/xy.svg',
+    FN = 'html/images/xy.svg',
     lat_list(FN, Lat, _Years, _Times, N, Slope),
     reply_html_page(title('Ice-Out Chart'),
                    [ p(['Fitted slope = ', Slope, ' days/year to ',
                        N, ' data points.']),
-                     img(src(FN))
+                     img(src('/html/images/xy.svg'))
                    ]).
 
 

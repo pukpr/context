@@ -160,6 +160,10 @@ generate_svg_plot(Image, X, Y, Title, X_Axis, Y_Axis, Slope, Intercept) :-
      PlotWidth is Width - MarginLeft - MarginRight,
      PlotHeight is Height - MarginTop - MarginBottom,
      
+     % Ensure parent directory exists before opening file
+     file_directory_name(Image, Dir),
+     (exists_directory(Dir) -> true ; make_directory_path(Dir)),
+     
      % Open file for writing
      open(Image, write, Stream),
      
