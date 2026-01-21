@@ -192,6 +192,10 @@ generate_svg_plot(Image, X, Y, Title, X_Axis, Y_Axis, Slope, Intercept) :-
      format(Stream, '<rect x="~w" y="~w" width="~w" height="~w" fill="none" stroke="black" stroke-width="2"/>~n',
             [MarginLeft, MarginTop, PlotWidth, PlotHeight]),
      
+     % Draw grid lines - Y axis every 10 days, X axis every 20 years
+     draw_grid_lines(Stream, PlotMinX, PlotMaxX, PlotMinY, PlotMaxY,
+                    MarginLeft, MarginTop, PlotWidth, PlotHeight),
+     
      % Draw regression line
      LineY1 is Intercept + Slope * PlotMinX,
      LineY2 is Intercept + Slope * PlotMaxX,
@@ -242,6 +246,83 @@ draw_points(Stream, [Xh|Xt], [Yh|Yt], MinX, MaxX, MinY, MaxY,
      format(Stream, '<circle cx="~w" cy="~w" r="4" fill="red"/>~n', [SvgX, SvgY]),
      draw_points(Stream, Xt, Yt, MinX, MaxX, MinY, MaxY,
                 MarginLeft, MarginTop, PlotWidth, PlotHeight).
+
+%%   draw_grid_lines(+Stream, +MinX, +MaxX, +MinY, +MaxY,
+%%                   +MarginLeft, +MarginTop, +PlotWidth, +PlotHeight)
+%
+%    Draw grid lines - Y axis every 10 days, X axis every 20 years
+%    Grid intervals are chosen for readability and to match typical data ranges:
+%    - 10 days: suitable for ice-out day ranges (typically -40 to 180 days)
+%    - 20 years: suitable for historical year ranges (typically 100+ years)
+draw_grid_lines(Stream, MinX, MaxX, MinY, MaxY,
+               MarginLeft, MarginTop, PlotWidth, PlotHeight) :-
+     % Draw Y-axis grid lines every 10 days (interval hardcoded per requirements)
+     YGridInterval = 10,
+     StartY is ceiling(MinY / YGridInterval) * YGridInterval,
+     EndY is floor(MaxY / YGridInterval) * YGridInterval,
+     draw_y_grid_lines(Stream, StartY, EndY, YGridInterval, MinX, MaxX, MinY, MaxY,
+                      MarginLeft, MarginTop, PlotWidth, PlotHeight),
+     
+     % Draw X-axis grid lines every 20 years (interval hardcoded per requirements)
+     XGridInterval = 20,
+     StartX is ceiling(MinX / XGridInterval) * XGridInterval,
+     EndX is floor(MaxX / XGridInterval) * XGridInterval,
+     draw_x_grid_lines(Stream, StartX, EndX, XGridInterval, MinX, MaxX, MinY, MaxY,
+                      MarginLeft, MarginTop, PlotWidth, PlotHeight).
+
+%%   draw_y_grid_lines(+Stream, +CurrentY, +EndY, +Interval, +MinX, +MaxX, +MinY, +MaxY,
+%%                     +MarginLeft, +MarginTop, +PlotWidth, +PlotHeight)
+%
+%    Draw horizontal grid lines for Y axis
+draw_y_grid_lines(Stream, CurrentY, EndY, Interval, MinX, MaxX, MinY, MaxY,
+                 MarginLeft, MarginTop, PlotWidth, PlotHeight) :-
+     CurrentY =< EndY,
+     !,
+     % Draw grid line
+     scale_coordinates(MinX, CurrentY, MinX, MaxX, MinY, MaxY,
+                      MarginLeft, MarginTop, PlotWidth, PlotHeight, X1, Y),
+     scale_coordinates(MaxX, CurrentY, MinX, MaxX, MinY, MaxY,
+                      MarginLeft, MarginTop, PlotWidth, PlotHeight, X2, _),
+     format(Stream, '<line x1="~w" y1="~w" x2="~w" y2="~w" stroke="lightgray" stroke-width="1" stroke-dasharray="3,3"/>~n',
+            [X1, Y, X2, Y]),
+     
+     % Draw label
+     LabelX is MarginLeft - 10,
+     format(Stream, '<text x="~w" y="~w" text-anchor="end" font-size="10" dy="0.3em">~w</text>~n',
+            [LabelX, Y, CurrentY]),
+     
+     % Continue with next grid line
+     NextY is CurrentY + Interval,
+     draw_y_grid_lines(Stream, NextY, EndY, Interval, MinX, MaxX, MinY, MaxY,
+                      MarginLeft, MarginTop, PlotWidth, PlotHeight).
+draw_y_grid_lines(_, _, _, _, _, _, _, _, _, _, _, _).
+
+%%   draw_x_grid_lines(+Stream, +CurrentX, +EndX, +Interval, +MinX, +MaxX, +MinY, +MaxY,
+%%                     +MarginLeft, +MarginTop, +PlotWidth, +PlotHeight)
+%
+%    Draw vertical grid lines for X axis
+draw_x_grid_lines(Stream, CurrentX, EndX, Interval, MinX, MaxX, MinY, MaxY,
+                 MarginLeft, MarginTop, PlotWidth, PlotHeight) :-
+     CurrentX =< EndX,
+     !,
+     % Draw grid line
+     scale_coordinates(CurrentX, MinY, MinX, MaxX, MinY, MaxY,
+                      MarginLeft, MarginTop, PlotWidth, PlotHeight, X, Y1),
+     scale_coordinates(CurrentX, MaxY, MinX, MaxX, MinY, MaxY,
+                      MarginLeft, MarginTop, PlotWidth, PlotHeight, _, Y2),
+     format(Stream, '<line x1="~w" y1="~w" x2="~w" y2="~w" stroke="lightgray" stroke-width="1" stroke-dasharray="3,3"/>~n',
+            [X, Y1, X, Y2]),
+     
+     % Draw label
+     LabelY is MarginTop + PlotHeight + 20,
+     format(Stream, '<text x="~w" y="~w" text-anchor="middle" font-size="10">~w</text>~n',
+            [X, LabelY, CurrentX]),
+     
+     % Continue with next grid line
+     NextX is CurrentX + Interval,
+     draw_x_grid_lines(Stream, NextX, EndX, Interval, MinX, MaxX, MinY, MaxY,
+                      MarginLeft, MarginTop, PlotWidth, PlotHeight).
+draw_x_grid_lines(_, _, _, _, _, _, _, _, _, _, _, _).
 
 pipe_interrupt(_Sig) :-
      r_close.
