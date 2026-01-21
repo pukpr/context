@@ -251,25 +251,30 @@ draw_points(Stream, [Xh|Xt], [Yh|Yt], MinX, MaxX, MinY, MaxY,
 %%                   +MarginLeft, +MarginTop, +PlotWidth, +PlotHeight)
 %
 %    Draw grid lines - Y axis every 10 days, X axis every 20 years
+%    Grid intervals are chosen for readability and to match typical data ranges:
+%    - 10 days: suitable for ice-out day ranges (typically -40 to 180 days)
+%    - 20 years: suitable for historical year ranges (typically 100+ years)
 draw_grid_lines(Stream, MinX, MaxX, MinY, MaxY,
                MarginLeft, MarginTop, PlotWidth, PlotHeight) :-
-     % Draw Y-axis grid lines every 10 days
-     StartY is ceiling(MinY / 10) * 10,
-     EndY is floor(MaxY / 10) * 10,
-     draw_y_grid_lines(Stream, StartY, EndY, MinX, MaxX, MinY, MaxY,
+     % Draw Y-axis grid lines every 10 days (interval hardcoded per requirements)
+     YGridInterval = 10,
+     StartY is ceiling(MinY / YGridInterval) * YGridInterval,
+     EndY is floor(MaxY / YGridInterval) * YGridInterval,
+     draw_y_grid_lines(Stream, StartY, EndY, YGridInterval, MinX, MaxX, MinY, MaxY,
                       MarginLeft, MarginTop, PlotWidth, PlotHeight),
      
-     % Draw X-axis grid lines every 20 years
-     StartX is ceiling(MinX / 20) * 20,
-     EndX is floor(MaxX / 20) * 20,
-     draw_x_grid_lines(Stream, StartX, EndX, MinX, MaxX, MinY, MaxY,
+     % Draw X-axis grid lines every 20 years (interval hardcoded per requirements)
+     XGridInterval = 20,
+     StartX is ceiling(MinX / XGridInterval) * XGridInterval,
+     EndX is floor(MaxX / XGridInterval) * XGridInterval,
+     draw_x_grid_lines(Stream, StartX, EndX, XGridInterval, MinX, MaxX, MinY, MaxY,
                       MarginLeft, MarginTop, PlotWidth, PlotHeight).
 
-%%   draw_y_grid_lines(+Stream, +CurrentY, +EndY, +MinX, +MaxX, +MinY, +MaxY,
+%%   draw_y_grid_lines(+Stream, +CurrentY, +EndY, +Interval, +MinX, +MaxX, +MinY, +MaxY,
 %%                     +MarginLeft, +MarginTop, +PlotWidth, +PlotHeight)
 %
 %    Draw horizontal grid lines for Y axis
-draw_y_grid_lines(Stream, CurrentY, EndY, MinX, MaxX, MinY, MaxY,
+draw_y_grid_lines(Stream, CurrentY, EndY, Interval, MinX, MaxX, MinY, MaxY,
                  MarginLeft, MarginTop, PlotWidth, PlotHeight) :-
      CurrentY =< EndY,
      !,
@@ -287,16 +292,16 @@ draw_y_grid_lines(Stream, CurrentY, EndY, MinX, MaxX, MinY, MaxY,
             [LabelX, Y, CurrentY]),
      
      % Continue with next grid line
-     NextY is CurrentY + 10,
-     draw_y_grid_lines(Stream, NextY, EndY, MinX, MaxX, MinY, MaxY,
+     NextY is CurrentY + Interval,
+     draw_y_grid_lines(Stream, NextY, EndY, Interval, MinX, MaxX, MinY, MaxY,
                       MarginLeft, MarginTop, PlotWidth, PlotHeight).
-draw_y_grid_lines(_, _, _, _, _, _, _, _, _, _, _).
+draw_y_grid_lines(_, _, _, _, _, _, _, _, _, _, _, _).
 
-%%   draw_x_grid_lines(+Stream, +CurrentX, +EndX, +MinX, +MaxX, +MinY, +MaxY,
+%%   draw_x_grid_lines(+Stream, +CurrentX, +EndX, +Interval, +MinX, +MaxX, +MinY, +MaxY,
 %%                     +MarginLeft, +MarginTop, +PlotWidth, +PlotHeight)
 %
 %    Draw vertical grid lines for X axis
-draw_x_grid_lines(Stream, CurrentX, EndX, MinX, MaxX, MinY, MaxY,
+draw_x_grid_lines(Stream, CurrentX, EndX, Interval, MinX, MaxX, MinY, MaxY,
                  MarginLeft, MarginTop, PlotWidth, PlotHeight) :-
      CurrentX =< EndX,
      !,
@@ -314,10 +319,10 @@ draw_x_grid_lines(Stream, CurrentX, EndX, MinX, MaxX, MinY, MaxY,
             [X, LabelY, CurrentX]),
      
      % Continue with next grid line
-     NextX is CurrentX + 20,
-     draw_x_grid_lines(Stream, NextX, EndX, MinX, MaxX, MinY, MaxY,
+     NextX is CurrentX + Interval,
+     draw_x_grid_lines(Stream, NextX, EndX, Interval, MinX, MaxX, MinY, MaxY,
                       MarginLeft, MarginTop, PlotWidth, PlotHeight).
-draw_x_grid_lines(_, _, _, _, _, _, _, _, _, _, _).
+draw_x_grid_lines(_, _, _, _, _, _, _, _, _, _, _, _).
 
 pipe_interrupt(_Sig) :-
      r_close.

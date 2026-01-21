@@ -122,9 +122,11 @@ store_record(json(Fields)) :-
     atom_concat(Year, '-01-01', YearStart),
     parse_time(YearStart, Stamp0),
     Days is (Stamp-Stamp0)/24/60/60,
-    % Fix for ice-out dates in prior year: if Days > 300 (extreme outlier),
-    % it likely occurred in December of the prior year, so convert to negative
-    % by subtracting days in year (accounting for leap years)
+    % Fix for ice-out dates in prior year: 
+    % Threshold of 300 days detects ice-outs in November-December (late in the year)
+    % which indicate the lake never fully froze in that winter year.
+    % These outliers need correction to negative values for accurate regression analysis.
+    % For context: typical ice-out occurs in spring (March-May, days 60-150).
     (Days > 300 ->
         atom_number(Year, YearNum),
         (is_leap_year(YearNum) -> DaysInYear = 366 ; DaysInYear = 365),

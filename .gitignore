@@ -4,4 +4,6 @@ tmp
 rdf-store
 ~$*
 *.pl_backup
+test_ice_out_correction.pl
+test_manual_verification.pl
 
