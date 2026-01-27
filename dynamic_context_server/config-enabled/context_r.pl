@@ -243,7 +243,8 @@ draw_points(Stream, [Xh|Xt], [Yh|Yt], MinX, MaxX, MinY, MaxY,
            MarginLeft, MarginTop, PlotWidth, PlotHeight) :-
      scale_coordinates(Xh, Yh, MinX, MaxX, MinY, MaxY,
                       MarginLeft, MarginTop, PlotWidth, PlotHeight, SvgX, SvgY),
-     format(Stream, '<circle cx="~w" cy="~w" r="4" fill="red"/>~n', [SvgX, SvgY]),
+     % format(Stream, '<circle cx="~w" cy="~w" r="4" fill="red"/>~n', [SvgX, SvgY]),
+     format(Stream, '<circle cx="~w" cy="~w" r="4" fill="none" stroke="red" stroke-width="1"/>~n', [SvgX, SvgY]),
      draw_points(Stream, Xt, Yt, MinX, MaxX, MinY, MaxY,
                 MarginLeft, MarginTop, PlotWidth, PlotHeight).
 
