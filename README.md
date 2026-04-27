@@ -35,12 +35,14 @@ For visualization of RDF data relationships:
 - [dynamic_context_server/cpack/cloud/README.md](dynamic_context_server/cpack/cloud/README.md): datacloud visual features.
 
 ## Final Report
-The [`Final_report`](./Final_report) directory contains the key documentation summarizing the project's outcomes and supporting details. You will find:
+The [`Final_report`](./final_report) directory contains the key documentation summarizing the project's outcomes and supporting details. You will find:
 
 - **Main Final Report:** A comprehensive review of all major findings, methodologies, and conclusions.
 - **Broken-out PDFs:** Supplementary documents or appendices separated for convenient access, covering specific sections or detailed datasets highlighted in the main report.
 
-Explore the directory [here](./Final_report) to access the full set of reports.
+Explore the directory [here](./final_report) to access the full set of reports.
+
+
 
 ## Links
 - [ClioPatria project](https://www.swi-prolog.org)
