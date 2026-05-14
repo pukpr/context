@@ -23,6 +23,22 @@ See [EVALUATION_REPORT.md](EVALUATION_REPORT.md) for a full technical analysis:
 More about the underlying toolkit can be found in [ClioPatria/README.md](ClioPatria/README.md).
 - Semantic Web features, SPARQL server, reasoning libraries, admin interface, user management.
 
+## Agent Control Prototype
+
+The legacy server now includes a small agent-control overlay loaded from
+`dynamic_context_server/config-enabled/agent.pl`. It adds isolated
+proposal-graph endpoints under `/agent`, including:
+
+- `/agent/status`
+- `/agent/load_proposal`
+- `/agent/unload_proposal`
+- `/agent/validate_graph`
+- `/agent/diff`
+- `/agent/provenance`
+
+These endpoints are intended for staged, named-graph proposal workflows rather
+than direct mutation of accepted knowledge.
+
 ## Datacloud Visualization
 For visualization of RDF data relationships:
 - [dynamic_context_server/cpack/cloud/README.md](dynamic_context_server/cpack/cloud/README.md) explains the datacloud feature, requirements (Graphviz), and usage for interactive SVG visualizations.

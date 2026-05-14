@@ -37,6 +37,10 @@ Access the server at: **http://localhost:3020/**
 
 **Note**: The datacloud visualization feature requires graphviz. See Prerequisites above.
 
+**First run**: if `RDF-store` is empty, open the web UI and select
+**Repository -> Load Context Data** once to seed the persistent RDF store.
+After that, normal restarts reuse the saved graphs.
+
 ### Full Deployment (With R Integration)
 
 For complete climate/geophysical modeling capabilities:
@@ -92,6 +96,13 @@ For complete climate/geophysical modeling capabilities:
 ```bash
 tail -f server.log
 ```
+
+### First-Time Repository Load
+
+If model-browsing pages return empty tables on a fresh deployment, the usual
+cause is an unseeded persistent RDF store rather than a server startup
+failure. Start the server, browse to the UI, and run
+**Repository -> Load Context Data** once.
 
 ---
 

@@ -1,0 +1,30 @@
+@prefix agent: <urn:agent:> .
+@prefix rdf:   <http://www.w3.org/1999/02/22-rdf-syntax-ns#> .
+@prefix rdfs:  <http://www.w3.org/2000/01/rdf-schema#> .
+
+agent:ProposalGraph a rdfs:Class ;
+    rdfs:label "Agent proposal graph" .
+
+agent:StagingGraph a rdfs:Class ;
+    rdfs:label "Agent staging graph" .
+
+agent:AcceptedGraph a rdfs:Class ;
+    rdfs:label "Agent accepted graph" .
+
+agent:runId a rdf:Property ;
+    rdfs:label "Agent run identifier" .
+
+agent:stage a rdf:Property ;
+    rdfs:label "Agent graph stage" .
+
+agent:promptVersion a rdf:Property ;
+    rdfs:label "Prompt version" .
+
+agent:modelName a rdf:Property ;
+    rdfs:label "Model name" .
+
+agent:confidence a rdf:Property ;
+    rdfs:label "Agent confidence note" .
+
+agent:reviewNotes a rdf:Property ;
+    rdfs:label "Review notes" .

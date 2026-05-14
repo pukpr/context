@@ -13,6 +13,10 @@ cd dynamic_context_server
 
 Access the server at: **http://localhost:3020/**
 
+On a first-time setup with an empty `RDF-store`, open the web UI and run
+**Repository -> Load Context Data** once. After that initial import, later
+restarts will use the persisted store.
+
 ## Server Management
 
 ```bash
@@ -35,6 +39,13 @@ Access the server at: **http://localhost:3020/**
 ✅ Web interface  
 ✅ SPARQL queries  
 ✅ Configuration system  
+
+## First-Time Data Load
+
+If pages such as `/context_model/navigate?characteristics=windSpeed` return
+empty results on a new installation, the server is up but the persistent RDF
+store has not been seeded yet. Use **Repository -> Load Context Data** in the
+browser to populate it.
 
 ## What Needs Optional Setup
 
